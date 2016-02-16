@@ -1,0 +1,47 @@
+# default-config.yml
+#
+# Contains a default template configuration for the server
+# Values that should be changed for your running environment
+# are marked by a CHANGEME comment
+# Other options can be tweaked if you know what you're doing
+
+###############################################################################
+# Application configuration
+# Database connections, application tuning, etc
+###############################################################################
+
+# None yet
+
+###############################################################################
+# DropWizard Server Configuration
+# HTTP, logging, etc
+# https://dropwizard.github.io/dropwizard/0.7.1/docs/manual/configuration.html
+###############################################################################
+server:
+  type: default
+
+  # Compression settings
+  gzip:
+    enabled: true
+
+  # Server type "default" settings
+
+  # Application configuration
+  applicationConnectors:
+    - type: http
+      # This server should be run behind an nginx/Apache facace to process
+      # HTTPS termination and therefore not be visible to the public
+      # Therefore we bind to loopback interface only on port 8080
+      # If this conflicts with your local dev environment, you may change this
+      port: 8080
+      bindHost: 127.0.0.1
+
+  # Administrative configuration
+  adminConnectors:
+    - type: http
+      # Administration/debug access should be private and be protected behind
+      # local access only or by a suitbly configured nginx/Apache route
+      # Therefore we bind to loopback interface only on port 8080
+      # If this conflicts with your local dev environment, you may change this
+      port: 8081
+      bindHost: 127.0.0.1
