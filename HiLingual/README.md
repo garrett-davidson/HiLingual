@@ -14,7 +14,7 @@ Additional software (necessary to do work):
 
  - Redis v3.0.7
  - MySQL Community Server v5.7.11
- - nginx/Apache for SSL termination (for production only)
+ - nginx/Apache for HTTPS termination (for production only)
 
 A default configuration is provided in [default-config.yml](default-config.yml), 
 copy it into the application's running directory and edit it to fit your local 
