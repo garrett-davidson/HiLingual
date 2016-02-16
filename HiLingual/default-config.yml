@@ -27,6 +27,15 @@ server:
   # Server type "default" settings
 
   # Application configuration
+
+  # Base path for service
+  # Service calls are to be made to HOSTNAME:PORT/APPCONTEXTPATH/...
+  applicationContextPath: /api
+
+  # Base path for administration
+  # Access to the admin panel is at HOSTNAME:PORT/admin
+  adminContextPath: /admin
+
   applicationConnectors:
     - type: http
       # This server should be run behind an nginx/Apache facace to process
