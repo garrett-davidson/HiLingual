@@ -1,1 +1,4 @@
 pod 'iCarousel'
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'
