@@ -10,6 +10,7 @@
 #define HiLingual_Bridging_Header_h
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <Google/SignIn.h>
 
 
 #endif /* HiLingual_Bridging_Header_h */
