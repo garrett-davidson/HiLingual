@@ -41,7 +41,7 @@ server:
     - type: http
       # Administration/debug access should be private and be protected behind
       # local access only or by a suitbly configured nginx/Apache route
-      # Therefore we bind to loopback interface only on port 8080
+      # Therefore we bind to loopback interface only on port 8081
       # If this conflicts with your local dev environment, you may change this
       port: 8081
       bindHost: 127.0.0.1
