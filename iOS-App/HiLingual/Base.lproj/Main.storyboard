@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10089" systemVersion="15E39d" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10072.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
         <!--Launch Screen-->
@@ -16,12 +16,28 @@
                     <view key="view" contentMode="scaleToFill" id="mD7-OI-9fd">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HiLingual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o50-s4-HwC">
+                                <rect key="frame" x="124" y="102" width="352" height="135"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="352" id="WoP-dy-edm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="ZapfDingbatsITC" family="Zapf Dingbats" pointSize="69"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fdD-DO-b8o" firstAttribute="top" secondItem="o50-s4-HwC" secondAttribute="bottom" constant="363" id="5JC-xh-k6e"/>
+                            <constraint firstItem="o50-s4-HwC" firstAttribute="top" secondItem="Zdn-Qr-Qn6" secondAttribute="bottom" constant="82" id="rJQ-05-BWS"/>
+                            <constraint firstItem="o50-s4-HwC" firstAttribute="centerX" secondItem="mD7-OI-9fd" secondAttribute="centerX" id="z8p-t4-Fxe"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v2S-FT-Uzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="469" y="-342"/>
+            <point key="canvasLocation" x="351" y="-342"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="xf7-ul-BE6">
@@ -40,24 +56,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f5Q-OG-xco" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1335" y="-342"/>
-        </scene>
-        <!--Signup View Controller-->
-        <scene sceneID="cIb-c3-8he">
-            <objects>
-                <viewController title="Signup View Controller" id="zBM-e9-smp" customClass="SignupViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="JO6-hh-mvU"/>
-                        <viewControllerLayoutGuide type="bottom" id="F1V-0p-e5w"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yuc-1f-UMH">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uag-ua-g4f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1335" y="391"/>
         </scene>
         <!--Messages View Controller-->
         <scene sceneID="EZ9-hI-v6F">

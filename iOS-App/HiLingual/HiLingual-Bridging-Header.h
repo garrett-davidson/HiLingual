@@ -8,7 +8,7 @@
 
 #ifndef HiLingual_Bridging_Header_h
 #define HiLingual_Bridging_Header_h
-
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Google/SignIn.h>
 
