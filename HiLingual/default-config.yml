@@ -10,7 +10,66 @@
 # Database connections, application tuning, etc
 ###############################################################################
 
-# None yet
+# SQL CONFIG (MySQL)
+sqlDb:
+  # JDBC Driver class (set to use MySQL)
+  driverClass: com.mysql.jdbc.Driver
+
+  # Username
+  # CHANGEME
+  user: default
+
+  # Password
+  # CHANGEME
+  password: supersecret
+
+  # JDBC URL
+  # CHANGEME
+  url: jdbc:mysql:localhost/db-local
+
+  # Maximum time for a connection before timing out
+  maxWaitForConnection: 5s
+
+  # Connection alive check query
+  validationQuery: "/* HEALTH CHECK */ SELECT 1"
+
+  # Connection alive check timeout
+  validationQueryTimeout: 5s
+
+  # Minimum connections to keep open
+  minSize: 8
+
+  # Maximum connections to keep open
+  maxSize: 32
+
+  # Validate idle connections
+  checkConnectionWhileIdle: false
+
+  # The amount of time to sleep between runs of the idle connection validation,
+  # abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+ # Minimum idle connection time before being able to be considered for eviction
+ minIdleTime: 1 minute
+
+# REDIS CONFIG
+redis:
+  # Redis server's address
+  # CHANGEME
+  endpoint: localhost:6379
+
+  # Authentication password (set to null for none)
+  # CHANGEME
+  password: null
+
+  # Minimum idle connections to keep in the pool
+  minIdle: 0
+
+  # Max idle connections allowed in the pool
+  maxIdle: 0
+
+  # Max number of connections allowed in the pool
+  maxTotal: 1024
 
 ###############################################################################
 # DropWizard Server Configuration
