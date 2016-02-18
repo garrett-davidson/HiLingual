@@ -197,13 +197,15 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AYh-JO-9h2">
                                                     <rect key="frame" x="8" y="8" width="584" height="77"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hvv-XV-Jgu">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hvv-XV-Jgu">
                                                             <rect key="frame" x="0.0" y="11" width="55" height="55"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="height" constant="55" id="UUS-r7-psM"/>
+                                                                <constraint firstAttribute="width" constant="55" id="oTS-8l-GTG"/>
                                                                 <constraint firstAttribute="width" secondItem="hvv-XV-Jgu" secondAttribute="height" multiplier="1:1" id="pL3-gZ-phz"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PgP-2a-Phw">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PgP-2a-Phw">
                                                             <rect key="frame" x="55" y="0.0" width="437" height="77"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzu-Zh-LvB">
@@ -234,6 +236,9 @@
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPl-gv-Ufh">
                                                             <rect key="frame" x="492" y="24" width="92" height="30"/>
                                                             <state key="normal" title="Send request"/>
+                                                            <connections>
+                                                                <action selector="sendRequest:" destination="EA8-An-G2I" eventType="touchUpInside" id="vlm-JK-xMG"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -253,6 +258,7 @@
                                             <outlet property="languagesSpeaks" destination="Xd6-Dl-92U" id="CyU-Ns-qDr"/>
                                             <outlet property="name" destination="Kzu-Zh-LvB" id="3YX-s5-m5J"/>
                                             <outlet property="profilePicture" destination="hvv-XV-Jgu" id="qaW-46-GjT"/>
+                                            <outlet property="sendRequestButton" destination="hPl-gv-Ufh" id="P0l-VP-TJh"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

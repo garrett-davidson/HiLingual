@@ -13,6 +13,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var langaugesLearning: UILabel!
     @IBOutlet weak var languagesSpeaks: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
+    @IBOutlet weak var sendRequestButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

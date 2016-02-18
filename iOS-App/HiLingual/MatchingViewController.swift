@@ -45,21 +45,30 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         return users.count
     }
     
+    @IBAction func sendRequest(sender: AnyObject) {
+        let index = sender.tag
+        //Mark: send the uuid to server with users[index]
+        print("sent")
+        
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentity = "SearchTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
         let user = users[indexPath.row]
         cell.name.text = user.name
         cell.profilePicture.image = user.profilePicture
-        cell.langaugesLearning.text! += " " + user.learningLanguages[0].rawValue
-        cell.languagesSpeaks.text! += " " + user.knownLanguages[0].rawValue
+        cell.sendRequestButton.tag = indexPath.row
+        //Mark: Fills the view
+        //cell.langaugesLearning.text! += stringFromLanguages(user.learningLanguages)
+        //cell.languagesSpeaks.text! += stringFromLanguages(user.KnownLanguages)
         return cell
     }
     
     func loadSampleUser(){
         let photo = UIImage(named: "cantaloupe")
-        let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English_US], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
-        let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English_US], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
+        let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
+        let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
         users += [user,user1]
         
     }
