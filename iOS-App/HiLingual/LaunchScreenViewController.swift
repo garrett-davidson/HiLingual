@@ -24,17 +24,15 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
             getUserInfo()
             self.performSegueWithIdentifier("LoggedIn", sender: self)
 
+            return
         }
-        else
-        {
-            print("Need to log in")
-            let loginButton = FBSDKLoginButton()
-            loginButton.readPermissions = ["public_profile", "email"]
-            loginButton.center = self.view.center
-            loginButton.delegate = self
-            loginButton.loginBehavior = .SystemAccount
-            self.view.addSubview(loginButton)
-        }
+
+        print("Need to log in")
+        let loginButton = FBSDKLoginButton()
+        loginButton.readPermissions = ["public_profile", "email"]
+        loginButton.center = self.view.center
+        loginButton.delegate = self
+        self.view.addSubview(loginButton)
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         print("User logged in fam")
@@ -44,8 +42,10 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
             print(error!.localizedDescription)
             return
         }
-        
-    
+
+        print("Login complete.")
+        getUserInfo()
+        self.performSegueWithIdentifier("LoggedIn", sender: self)
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -57,17 +57,14 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
     {
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-
             guard error != nil else {
                 print("Error: \(error!)")
                 return
             }
-
             print("fetched user: \(result)")
             let userName : String = result.valueForKey("name") as! String
             print("User Name is: \(userName)")
-            let userEmail : String = result.valueForKey("email") as! String
-            print("User Email is: \(userEmail)")
+            print("User Email is:  \(result.email)")
         })
     }
 
