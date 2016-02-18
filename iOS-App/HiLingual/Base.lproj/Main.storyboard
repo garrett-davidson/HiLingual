@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Launch Screen-->
@@ -17,27 +18,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HiLingual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o50-s4-HwC">
-                                <rect key="frame" x="124" y="102" width="352" height="135"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pHP-vv-FDu">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="HiLingual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o50-s4-HwC">
+                                <rect key="frame" x="124" y="44" width="352" height="135"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="352" id="WoP-dy-edm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ZapfDingbatsITC" family="Zapf Dingbats" pointSize="69"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="fdD-DO-b8o" firstAttribute="top" secondItem="o50-s4-HwC" secondAttribute="bottom" constant="363" id="5JC-xh-k6e"/>
+                            <constraint firstItem="pHP-vv-FDu" firstAttribute="centerX" secondItem="o50-s4-HwC" secondAttribute="centerX" id="lpo-ht-2eP"/>
+                            <constraint firstItem="pHP-vv-FDu" firstAttribute="top" secondItem="mD7-OI-9fd" secondAttribute="top" id="oV6-ZM-5oJ"/>
+                            <constraint firstItem="pHP-vv-FDu" firstAttribute="leading" secondItem="mD7-OI-9fd" secondAttribute="leading" id="pdl-Fk-6pM"/>
                             <constraint firstItem="o50-s4-HwC" firstAttribute="top" secondItem="Zdn-Qr-Qn6" secondAttribute="bottom" constant="82" id="rJQ-05-BWS"/>
+                            <constraint firstItem="pHP-vv-FDu" firstAttribute="bottom" secondItem="fdD-DO-b8o" secondAttribute="top" id="tbM-6Z-aAZ"/>
                             <constraint firstItem="o50-s4-HwC" firstAttribute="centerX" secondItem="mD7-OI-9fd" secondAttribute="centerX" id="z8p-t4-Fxe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="Idi-Fv-ffj" kind="presentation" identifier="LoggedIn" modalTransitionStyle="crossDissolve" id="lJm-fy-4r9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v2S-FT-Uzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="351" y="-342"/>
+            <point key="canvasLocation" x="301" y="-342"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="xf7-ul-BE6">
@@ -50,12 +62,27 @@
                     <view key="view" contentMode="scaleToFill" id="WkI-xS-SlH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="aMf-sE-4dG">
+                                <rect key="frame" x="0.0" y="-5" width="600" height="605"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-sn-vVN">
+                                <rect key="frame" x="85" y="36" width="132" height="120"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aMf-sE-4dG" firstAttribute="top" secondItem="WkI-xS-SlH" secondAttribute="topMargin" constant="-5" id="5fd-Tb-WkR"/>
+                            <constraint firstItem="aMf-sE-4dG" firstAttribute="leading" secondItem="WkI-xS-SlH" secondAttribute="leading" id="E7U-cw-yAY"/>
+                            <constraint firstItem="aMf-sE-4dG" firstAttribute="bottom" secondItem="QlQ-1R-yJb" secondAttribute="top" id="biv-Ox-FJ6"/>
+                            <constraint firstAttribute="trailing" secondItem="aMf-sE-4dG" secondAttribute="trailing" id="fmw-ei-saf"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ytf-7I-x7U"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f5Q-OG-xco" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1335" y="-342"/>
+            <point key="canvasLocation" x="1309" y="-688"/>
         </scene>
         <!--Messages View Controller-->
         <scene sceneID="EZ9-hI-v6F">
@@ -152,4 +179,7 @@
             <point key="canvasLocation" x="3055" y="977"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="BackgroundImage" width="236" height="236"/>
+    </resources>
 </document>

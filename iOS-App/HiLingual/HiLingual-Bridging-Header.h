@@ -12,5 +12,8 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Google/SignIn.h>
 
+@interface ViewController : UIViewController
+@property (weak, nonatomic) IBOutlet FBSDKLoginButton *loginButton;
+@end
 
 #endif /* HiLingual_Bridging_Header_h */

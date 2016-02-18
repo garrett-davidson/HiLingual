@@ -17,37 +17,57 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
         super.viewDidLoad();
         if (FBSDKAccessToken.currentAccessToken() != nil)
         {
-            // User is already logged in, continue to next view
+            print("User has already logged in")
         }
         else
         {
-            let loginView : FBSDKLoginButton = FBSDKLoginButton()
-            self.view.addSubview(loginView)
-            loginView.center = self.view.center
-            loginView.readPermissions = ["public_profile", "email", "user_friends"]
-            loginView.delegate = self
+            print("Need to log in")
+            let loginButton = FBSDKLoginButton()
+            loginButton.readPermissions = ["public_profile", "email"]
+            loginButton.center = self.view.center
+            loginButton.delegate = self
+            self.view.addSubview(loginButton)
         }
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-        if ((error) != nil)
+        print("User logged in fam")
+        if error == nil
         {
-            // Process error
+            print("Login complete.")
+            getUserInfo()
+            self.performSegueWithIdentifier("LoggedIn", sender: self)
         }
-        else if result.isCancelled {
-            // Handle cancellations
+        else
+        {
+            print(error.localizedDescription)
         }
-        else {
-            // If you ask for multiple permissions at once, you
-            // should check if specific permissions missing
-            if result.grantedPermissions.contains("email")
-            {
-                // Do work
-            }
-        }
+        
+        
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
+    }
+    
+    
+    func getUserInfo()
+    {
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil)
+            {
+                print("Error: \(error)")
+            }
+            else
+            {
+                print("fetched user: \(result)")
+                let userName : NSString = result.valueForKey("name") as! NSString
+                print("User Name is: \(userName)")
+                let userEmail : NSString = result.valueForKey("email") as! NSString
+                print("User Email is: \(userEmail)")
+            }
+        })
     }
 
 }
