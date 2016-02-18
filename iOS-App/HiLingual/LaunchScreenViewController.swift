@@ -26,6 +26,7 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
             loginButton.readPermissions = ["public_profile", "email"]
             loginButton.center = self.view.center
             loginButton.delegate = self
+            loginButton.loginBehavior = .SystemAccount
             self.view.addSubview(loginButton)
         }
     }
@@ -42,7 +43,7 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
             print(error.localizedDescription)
         }
         
-        
+    
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
