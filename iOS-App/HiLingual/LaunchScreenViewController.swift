@@ -12,7 +12,7 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
+class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate{
     override func viewDidLoad() {
         super.viewDidLoad();
 
@@ -30,6 +30,9 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
         loginButton.center = self.view.center
         loginButton.delegate = self
         self.view.addSubview(loginButton)
+        
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signInSilently()
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         print("User logged in fam")
@@ -66,6 +69,28 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
             let userEmail : String = result.valueForKey("email") as! String
             print("User Email is: \(userEmail)")
         })
+    }
+    
+    func application(application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+            // Initialize sign-in
+            var configureError: NSError?
+            GGLContext.sharedInstance().configureWithError(&configureError)
+            assert(configureError == nil, "Error configuring Google services: \(configureError)")
+            
+            GIDSignIn.sharedInstance().delegate = self
+            
+            return true
+    }
+    
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
+        withError error: NSError!) {
+            if (error == nil) {
+                // Perform any operations on signed in user here.
+                // ...
+            } else {
+                print("\(error.localizedDescription)")
+            }
     }
 
 }
