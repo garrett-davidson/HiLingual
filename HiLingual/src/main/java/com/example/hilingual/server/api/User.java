@@ -16,13 +16,13 @@ public class User {
     private Gender gender;
     private Date birthdate;
     private URL imageURL;
-    private Set<Locale> knownlanguages;
+    private Set<Locale> knownLanguages;
     private Set<Locale> learningLanguages;
     private Set<User> blockedUsers;
     private Set<User> usersChattedWith;
 
     public User(long uuid, String name, String displayName, String bio, Gender gender, Date birthdate,
-                URL imageURL, Set<Locale> knownlanguages, Set<Locale> learningLanguages,
+                URL imageURL, Set<Locale> knownLanguages, Set<Locale> learningLanguages,
                 Set<User> blockedUsers, Set<User> usersChattedWith) {
         this.uuid = uuid;
         this.name = name;
@@ -31,7 +31,7 @@ public class User {
         this.gender = gender;
         this.birthdate = birthdate;
         this.imageURL = imageURL;
-        this.knownlanguages = knownlanguages;
+        this.knownLanguages = knownLanguages;
         this.learningLanguages = learningLanguages;
         this.blockedUsers = blockedUsers;
         this.usersChattedWith = usersChattedWith;
@@ -65,8 +65,8 @@ public class User {
         return imageURL;
     }
 
-    public Set<Locale> getKnownlanguages() {
-        return knownlanguages;
+    public Set<Locale> getKnownLanguages() {
+        return knownLanguages;
     }
 
     public Set<Locale> getLearningLanguages() {
@@ -106,11 +106,11 @@ public class User {
     }
 
     public void addKnownLanguage(Locale language) {
-        knownlanguages.add(language);
+        knownLanguages.add(language);
     }
 
     public void removeKnownLanguage(Locale language) {
-        knownlanguages.remove(language);
+        knownLanguages.remove(language);
     }
 
     public void addLearningLanguage(Locale language) {
@@ -138,7 +138,7 @@ public class User {
     }
 
     public boolean knowsLanguage(Locale locale) {
-        return knownlanguages.contains(locale);
+        return knownLanguages.contains(locale);
     }
 
     public boolean wantsToLearnLanguage(Locale locale) {
