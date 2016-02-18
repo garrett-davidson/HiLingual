@@ -11,14 +11,12 @@ package com.example.hilingual.server.dao;
 
 import com.example.hilingual.server.api.User;
 
-import java.util.UUID;
-
 public interface UserDAO {
 
-    User getUser(UUID userId);
+    User getUser(long userId);
 
     void updateUser(User newUserData);
 
-    void deleteUser(UUID userId);
+    void deleteUser(long userId);
 
 }

@@ -12,7 +12,6 @@ package com.example.hilingual.server.dao;
 import io.dropwizard.lifecycle.Managed;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Manages user sessions
@@ -26,7 +25,7 @@ public interface SessionDAO extends Managed {
      * @param userId The userId to check the sessionId against
      * @return true if the session is valid for the given user, false otherwise
      */
-    boolean isValidSession(String sessionId, UUID userId);
+    boolean isValidSession(String sessionId, long userId);
 
     /**
      * Revokes the provided session
@@ -45,7 +44,7 @@ public interface SessionDAO extends Managed {
      * @param userId The userId whose sessions are to be revoked
      * @return The number of sessions revoked
      */
-    int revokeAllSessionsForUser(UUID userId);
+    int revokeAllSessionsForUser(long userId);
 
     /**]
      * Generates a new sessionId for the given user. A given user can have
@@ -53,13 +52,13 @@ public interface SessionDAO extends Managed {
      * @param userId The userId to generate a new sessionId for
      * @return The generated sessionId
      */
-    String newSession(UUID userId);
+    String newSession(long userId);
 
     /**
      * Gets all the sessionIds that belong to the given userId
      * @param userId The userId of the sessionIds to get
      * @return A list of sessionIds belonging to the userId
      */
-    List<String> getAllSessionsForUser(UUID userId);
+    List<String> getAllSessionsForUser(long userId);
 
 }
