@@ -6,8 +6,7 @@ package com.example.hilingual.server.api;
 import com.example.hilingual.server.api.Gender;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 public class User {
     private String UUID;
@@ -17,14 +16,14 @@ public class User {
     private Gender gender;
     private Date birthdate;
     private URL imageURL;
-    private ArrayList<Language> knownlanguages;
-    private ArrayList<Language> learningLanguages;
-    private ArrayList<User> blockedUsers;
-    private ArrayList<User> usersChattedWith;
+    private Set<Language> knownlanguages;
+    private Set<Language> learningLanguages;
+    private Set<User> blockedUsers;
+    private Set<User> usersChattedWith;
 
     public User(String UUID, String name, String displayName, String bio, Gender gender, Date birthdate,
-                URL imageURL, ArrayList<Language> knownlanguages, ArrayList<Language> learningLanguages,
-                ArrayList<User> blockedUsers, ArrayList<User> usersChattedWith) {
+                URL imageURL, Set<Language> knownlanguages, Set<Language> learningLanguages,
+                Set<User> blockedUsers, Set<User> usersChattedWith) {
         this.UUID = UUID;
         this.name = name;
         this.displayName = displayName;
@@ -66,19 +65,19 @@ public class User {
         return imageURL;
     }
 
-    public ArrayList<Language> getKnownlanguages() {
+    public Set<Language> getKnownlanguages() {
         return knownlanguages;
     }
 
-    public ArrayList<Language> getLearningLanguages() {
+    public Set<Language> getLearningLanguages() {
         return learningLanguages;
     }
 
-    public ArrayList<User> getBlockedUsers() {
+    public Set<User> getBlockedUsers() {
         return blockedUsers;
     }
 
-    public ArrayList<User> getUsersChattedWith() {
+    public Set<User> getUsersChattedWith() {
         return usersChattedWith;
     }
 
@@ -111,7 +110,7 @@ public class User {
     }
 
     public void removeKnownLanguage(Language language) {
-        knownlanguages.remove(knownlanguages.indexOf(language));
+        knownlanguages.remove(language);
     }
 
     public void addLearningLanguage(Language language) {
@@ -119,7 +118,7 @@ public class User {
     }
 
     public void removeLearningLanguage(Language language) {
-        learningLanguages.remove(learningLanguages.indexOf(language));
+        learningLanguages.remove(language);
     }
 
     public void addBlockedUser(User user) {
@@ -127,7 +126,7 @@ public class User {
     }
 
     public void removeBlockedUser(User user) {
-        blockedUsers.remove(blockedUsers.indexOf(user));
+        blockedUsers.remove(user);
     }
 
     public void addusersChattedWith(User user) {
@@ -135,7 +134,7 @@ public class User {
     }
 
     public void removeusersChattedWith(User user) {
-        usersChattedWith.remove(usersChattedWith.indexOf(user));
+        usersChattedWith.remove(user);
     }
 }
 
