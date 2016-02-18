@@ -30,24 +30,9 @@ class ProfileView: UIView {
         nameLabel.text = user.displayName
         genderLabel.text = "TODO"
         ageLabel.text = "\(NSCalendar.currentCalendar().components(.Year, fromDate: user.birthdate).year)"
-        speaksLabel.text = "Speaks: " + stringFromLanguages(user.knownLanguages)
-        learningLabel.text = "Learning: " + stringFromLanguages(user.learningLanguages)
+        speaksLabel.text = "Speaks: " + user.knownLanguages.toList()
+        learningLabel.text = "Learning: " + user.learningLanguages.toList()
         bioTextView.text = user.bio
-    }
-
-    func stringFromLanguages(languages: [Languages]) -> String {
-        var string = ""
-
-        for lang in languages {
-            string += lang.rawValue + ", "
-        }
-
-        //Remove the trailing ", "
-        if (string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 2) {
-            string = string.substringToIndex(string.endIndex.predecessor().predecessor())
-        }
-
-        return string
     }
 
     required init?(coder aDecoder: NSCoder) {
