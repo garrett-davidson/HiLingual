@@ -1,5 +1,5 @@
 pod 'iCarousel'
 pod 'FBSDKCoreKit'
-pod 'FBSDKLoginKit'
 pod 'FBSDKShareKit'
+pod 'FBSDKLoginKit'
 pod 'Google/SignIn'

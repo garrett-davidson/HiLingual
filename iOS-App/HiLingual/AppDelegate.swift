@@ -18,25 +18,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-        setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
-        setupGoogle()
+        let isFacebookSetup = setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
+        let isGoogleSetup = setupGoogle()
 
-        return true
+        return isFacebookSetup && isGoogleSetup
     }
 
-    func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) {
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+    func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    func setupGoogle() {
+    func setupGoogle() -> Bool {
         var error: NSError?
         GGLContext.sharedInstance().configureWithError(&error)
 
-        if (error != nil) {
+        guard error == nil else {
             print("Error configuring Google services: %@", error!)
+            return false
         }
 
         GIDSignIn.sharedInstance().delegate = self
+
+        return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -68,7 +71,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
 
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
+        if (url.scheme == "fb1016061888432481") {
+            return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
+        }
+
+        else if (url.scheme == "com.googleusercontent.apps.527151665741-3nd8qfrbac2thl2c5mn64lt83q47pgb3") {
+                return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
+        }
+
+        print("Unrecognized url: %@", url)
+        return false
     }
 
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
