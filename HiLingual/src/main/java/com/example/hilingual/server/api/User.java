@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public class User {
-    private String UUID;
+    private String uuid;
     private String name;
     private String displayName;
     private String bio;
@@ -21,10 +21,10 @@ public class User {
     private Set<User> blockedUsers;
     private Set<User> usersChattedWith;
 
-    public User(String UUID, String name, String displayName, String bio, Gender gender, Date birthdate,
+    public User(String uuid, String name, String displayName, String bio, Gender gender, Date birthdate,
                 URL imageURL, Set<Locale> knownlanguages, Set<Locale> learningLanguages,
                 Set<User> blockedUsers, Set<User> usersChattedWith) {
-        this.UUID = UUID;
+        this.uuid = uuid;
         this.name = name;
         this.displayName = displayName;
         this.bio = bio;
@@ -37,8 +37,8 @@ public class User {
         this.usersChattedWith = usersChattedWith;
     }
 
-    public String getUUID() {
-        return UUID;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getName() {
@@ -85,8 +85,8 @@ public class User {
         this.birthdate = birthdate;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public void setName(String name) {
