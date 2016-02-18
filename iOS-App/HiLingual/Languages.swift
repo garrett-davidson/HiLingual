@@ -9,6 +9,6 @@
 import Foundation
 
 enum Languages: String {
-    case English_US = "en-US"
-    case Arabic = "ar"
+    case English = "English"
+    case Arabic = "Arabic"
 }
