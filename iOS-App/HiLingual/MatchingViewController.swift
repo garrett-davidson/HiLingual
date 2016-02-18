@@ -11,6 +11,60 @@ import UIKit
 
 //Displays a list of the potential matches that the current user may want to talk to
 
-class MatchingViewController: UIViewController {
-
+class MatchingViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchTable: UITableView!
+    var users = [HLUser]()
+    
+    
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
+        searchTable.hidden = false
+        return true
+        
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchTable.hidden = true
+        searchBar.resignFirstResponder()
+        
+    }
+    
+    func searchBar(searchBar: UISearchBar,
+        textDidChange searchText: String){
+            //Mark: Send to the server
+            //whatever is recieved users
+            
+            
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cellIdentity = "SearchTableViewCell"
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
+        let user = users[indexPath.row]
+        cell.name.text = user.name
+        cell.profilePicture.image = user.profilePicture
+        cell.langaugesLearning.text! += " " + user.learningLanguages[0].rawValue
+        cell.languagesSpeaks.text! += " " + user.knownLanguages[0].rawValue
+        return cell
+    }
+    
+    func loadSampleUser(){
+        let photo = UIImage(named: "cantaloupe")
+        let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English_US], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
+        let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English_US], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
+        users += [user,user1]
+        
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadSampleUser()
+    }
 }
