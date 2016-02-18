@@ -3,10 +3,10 @@ package com.example.hilingual.server.api;
  * Created by joseph on 2/18/16.
  */
 
-import com.example.hilingual.server.api.Gender;
-
 import java.net.URL;
-import java.util.*;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Set;
 
 public class User {
     private String UUID;
@@ -16,13 +16,13 @@ public class User {
     private Gender gender;
     private Date birthdate;
     private URL imageURL;
-    private Set<Language> knownlanguages;
-    private Set<Language> learningLanguages;
+    private Set<Locale> knownlanguages;
+    private Set<Locale> learningLanguages;
     private Set<User> blockedUsers;
     private Set<User> usersChattedWith;
 
     public User(String UUID, String name, String displayName, String bio, Gender gender, Date birthdate,
-                URL imageURL, Set<Language> knownlanguages, Set<Language> learningLanguages,
+                URL imageURL, Set<Locale> knownlanguages, Set<Locale> learningLanguages,
                 Set<User> blockedUsers, Set<User> usersChattedWith) {
         this.UUID = UUID;
         this.name = name;
@@ -65,11 +65,11 @@ public class User {
         return imageURL;
     }
 
-    public Set<Language> getKnownlanguages() {
+    public Set<Locale> getKnownlanguages() {
         return knownlanguages;
     }
 
-    public Set<Language> getLearningLanguages() {
+    public Set<Locale> getLearningLanguages() {
         return learningLanguages;
     }
 
@@ -105,19 +105,19 @@ public class User {
         this.gender = gender;
     }
 
-    public void addKnownLanguage(Language language) {
+    public void addKnownLanguage(Locale language) {
         knownlanguages.add(language);
     }
 
-    public void removeKnownLanguage(Language language) {
+    public void removeKnownLanguage(Locale language) {
         knownlanguages.remove(language);
     }
 
-    public void addLearningLanguage(Language language) {
+    public void addLearningLanguage(Locale language) {
         learningLanguages.add(language);
     }
 
-    public void removeLearningLanguage(Language language) {
+    public void removeLearningLanguage(Locale language) {
         learningLanguages.remove(language);
     }
 
