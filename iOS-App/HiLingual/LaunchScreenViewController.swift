@@ -18,6 +18,9 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
         if (FBSDKAccessToken.currentAccessToken() != nil)
         {
             print("User has already logged in")
+            getUserInfo()
+            self.performSegueWithIdentifier("LoggedIn", sender: self)
+
         }
         else
         {
