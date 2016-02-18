@@ -9,10 +9,15 @@
 
 package com.example.hilingual.server;
 
+import com.bendb.dropwizard.redis.JedisBundle;
+import com.bendb.dropwizard.redis.JedisFactory;
 import com.example.hilingual.server.config.ServerConfig;
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.skife.jdbi.v2.DBI;
 
 /**
  * Application server entry point and initialization
@@ -31,12 +36,30 @@ public class Main extends Application<ServerConfig> {
 
     @Override
     public void initialize(Bootstrap<ServerConfig> bootstrap) {
-        //  Nothing yet
+        //  Guice initialization
+        GuiceBundle<ServerConfig> guiceBundle = GuiceBundle.<ServerConfig>newBuilder().
+                setConfigClass(ServerConfig.class).
+                enableAutoConfig(getClass().getPackage().getName()).
+                build();
+        bootstrap.addBundle(guiceBundle);
+
+        //  Register Jedis bundle
+        bootstrap.addBundle(new JedisBundle<ServerConfig>() {
+            @Override
+            public JedisFactory getJedisFactory(ServerConfig serverConfig) {
+                return serverConfig.getRedisFactory();
+            }
+        });
+
     }
 
     @Override
     public void run(ServerConfig serverConfig, Environment environment) throws Exception {
-        //  Nothing yet
+        DBIFactory factory = new DBIFactory();
+        DBI jdbi = factory.build(environment,
+                serverConfig.getDataSourceFactory(),
+                serverConfig.getSqlDbType());
+        //  TODO
 
     }
 
