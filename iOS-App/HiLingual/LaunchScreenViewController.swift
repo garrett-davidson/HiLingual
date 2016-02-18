@@ -15,34 +15,34 @@ import UIKit
 class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
     override func viewDidLoad() {
         super.viewDidLoad();
-        if (FBSDKAccessToken.currentAccessToken() != nil)
-        {
+
+        //Use guard if it wouldn't make sense to continue a method if a condition is false
+        //Guard will guarantee a condition is true
+        //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
+        guard FBSDKAccessToken.currentAccessToken() != nil else {
             print("User has already logged in")
+            return
         }
-        else
-        {
-            print("Need to log in")
-            let loginButton = FBSDKLoginButton()
-            loginButton.readPermissions = ["public_profile", "email"]
-            loginButton.center = self.view.center
-            loginButton.delegate = self
-            self.view.addSubview(loginButton)
-        }
+
+        print("Need to log in")
+        let loginButton = FBSDKLoginButton()
+        loginButton.readPermissions = ["public_profile", "email"]
+        loginButton.center = self.view.center
+        loginButton.delegate = self
+        self.view.addSubview(loginButton)
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         print("User logged in fam")
-        if error == nil
-        {
-            print("Login complete.")
-            getUserInfo()
-            self.performSegueWithIdentifier("LoggedIn", sender: self)
+
+        guard error == nil else {
+            //If you know that an optional is not nil, you should force unwrap it when you print it
+            print(error!.localizedDescription)
+            return
         }
-        else
-        {
-            print(error.localizedDescription)
-        }
-        
-        
+
+        print("Login complete.")
+        getUserInfo()
+        self.performSegueWithIdentifier("LoggedIn", sender: self)
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -54,19 +54,17 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
     {
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil)
-            {
-                print("Error: \(error)")
+
+            guard error != nil else {
+                print("Error: \(error!)")
+                return
             }
-            else
-            {
-                print("fetched user: \(result)")
-                let userName : NSString = result.valueForKey("name") as! NSString
-                print("User Name is: \(userName)")
-                let userEmail : NSString = result.valueForKey("email") as! NSString
-                print("User Email is: \(userEmail)")
-            }
+
+            print("fetched user: \(result)")
+            let userName : String = result.valueForKey("name") as! String
+            print("User Name is: \(userName)")
+            let userEmail : String = result.valueForKey("email") as! String
+            print("User Email is: \(userEmail)")
         })
     }
 
