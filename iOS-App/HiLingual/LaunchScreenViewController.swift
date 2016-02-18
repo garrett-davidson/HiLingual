@@ -12,7 +12,7 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
+class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad();
 
@@ -20,26 +20,30 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
         //Guard will guarantee a condition is true
         //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
         guard FBSDKAccessToken.currentAccessToken() != nil else {
-            print("User has already logged in")
-            getUserInfo()
-            self.performSegueWithIdentifier("LoggedIn", sender: self)
-
+            print("Need to log in")
+            let loginButton = FBSDKLoginButton()
+            loginButton.readPermissions = ["public_profile", "email"]
+            loginButton.center = self.view.center
+            loginButton.delegate = self
+            self.view.addSubview(loginButton)
             return
         }
 
-        print("Need to log in")
-        let loginButton = FBSDKLoginButton()
-        loginButton.readPermissions = ["public_profile", "email"]
-        loginButton.center = self.view.center
-        loginButton.delegate = self
-        self.view.addSubview(loginButton)
+        print("User has already logged in")
+        getUserInfo()
+        self.performSegueWithIdentifier("LoggedIn", sender: self)
     }
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         print("User logged in fam")
 
         guard error == nil else {
             //If you know that an optional is not nil, you should force unwrap it when you print it
             print(error!.localizedDescription)
+            return
+        }
+
+        guard !result.isCancelled else {
+            print("User cancelled login")
             return
         }
 
@@ -55,16 +59,18 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate{
     
     func getUserInfo()
     {
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        let fields = ["fields": "name,email"]
+        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: fields)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            guard error != nil else {
+            guard error == nil else {
                 print("Error: \(error!)")
                 return
             }
+
             print("fetched user: \(result)")
-            let userName : String = result.valueForKey("name") as! String
+            let userName = result.valueForKey("name") as! String
             print("User Name is: \(userName)")
-            print("User Email is:  \(result.email)")
+            print("User Email is:  \(result.valueForKey("email") as! String)")
         })
     }
 
