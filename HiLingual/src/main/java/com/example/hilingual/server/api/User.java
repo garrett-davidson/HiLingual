@@ -136,5 +136,13 @@ public class User {
     public void removeusersChattedWith(User user) {
         usersChattedWith.remove(user);
     }
+
+    public boolean knowsLanguage(Locale locale) {
+        return knownlanguages.contains(locale);
+    }
+
+    public boolean wantsToLearnLanguage(Locale locale) {
+        return learningLanguages.contains(locale);
+    }
 }
 
