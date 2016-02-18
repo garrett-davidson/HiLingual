@@ -91,6 +91,21 @@
             <version>${dropwizard.version}</version>
         </dependency>
 
+        <!-- UTILITY -->
+        <dependency>
+            <!-- GOOGLE GUAVA -->
+            <!-- General utilities -->
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+        <dependency>
+            <!-- GOOGLE GUICE -->
+            <!-- Dependency Injection -->
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
+        </dependency>
     </dependencies>
 
 </project>
