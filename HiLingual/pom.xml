@@ -90,6 +90,19 @@
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jdbi</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+
+        <!-- DATABASE -->
+        <dependency>
+            <!-- DROPWIZARD - REDIS INTEGRATION -->
+            <groupId>com.bendb.dropwizard</groupId>
+            <artifactId>dropwizard-redis</artifactId>
+            <version>0.7.1-5</version>
+        </dependency>
 
         <!-- UTILITY -->
         <dependency>
@@ -105,6 +118,12 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>4.0</version>
+        </dependency>
+        <dependency>
+            <!-- GUICE - DROPWIZARD INTEGRATION -->
+            <groupId>com.hubspot.dropwizard</groupId>
+            <artifactId>dropwizard-guice</artifactId>
+            <version>0.7.0.2</version>
         </dependency>
     </dependencies>
 
