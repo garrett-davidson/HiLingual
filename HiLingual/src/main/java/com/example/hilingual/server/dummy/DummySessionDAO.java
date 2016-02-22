@@ -50,7 +50,7 @@ public class DummySessionDAO implements SessionDAO {
 
     @Override
     public long getSessionOwner(String sessionId) {
-        return 1;
+        return DummyUserDAO.JOHN_DOE.getUuid();
     }
 
     @Override

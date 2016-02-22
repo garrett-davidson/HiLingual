@@ -24,12 +24,12 @@ import java.util.Locale;
 public class DummyUserDAO implements UserDAO {
 
     private TLongObjectMap<User> users = new TLongObjectHashMap<>();
+    public static final User JOHN_DOE = new User(1, "johndoe", "John Doe", "", Gender.MALE, Date.from(Instant.now()),
+            null, Sets.newHashSet(Locale.ENGLISH), Sets.newHashSet(Locale.JAPANESE),
+            Collections.emptySet(), Collections.emptySet());
 
     public DummyUserDAO() {
-        User johnDoe = new User(1, "johndoe", "John Doe", "", Gender.MALE, Date.from(Instant.now()),
-                null, Sets.newHashSet(Locale.ENGLISH), Sets.newHashSet(Locale.JAPANESE),
-                Collections.emptySet(), Collections.emptySet());
-        updateUser(johnDoe);
+        updateUser(JOHN_DOE);
     }
 
     @Override
