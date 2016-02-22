@@ -10,7 +10,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
             <connections>
                 <outlet property="ageLabel" destination="Xad-tA-wXK" id="6yi-qr-aJ9"/>
-                <outlet property="bioTextView" destination="0lz-Lz-qrn" id="tkJ-n1-18F"/>
                 <outlet property="genderLabel" destination="JGi-Df-EfT" id="bFW-QH-r0r"/>
                 <outlet property="imageView" destination="odi-Bj-nAX" id="9xk-9t-E8q"/>
                 <outlet property="learningLabel" destination="7eX-35-LIf" id="GE2-xK-kVl"/>
@@ -60,18 +59,22 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0lz-Lz-qrn">
-                    <rect key="frame" x="8" y="234" width="304" height="238"/>
-                    <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q46-eL-3DK">
+                    <rect key="frame" x="8" y="234" width="304" height="230"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <attributedString key="attributedText">
+                        <fragment>
+                            <string key="content">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <attributes>
+                                <font key="NSFont" size="14" name="HelveticaNeue"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="0lz-Lz-qrn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="08a-V8-T1n"/>
                 <constraint firstItem="M4a-zz-yy0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="3JV-C7-sXA"/>
                 <constraint firstItem="7eX-35-LIf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="9VM-Ny-1XG"/>
                 <constraint firstAttribute="trailing" secondItem="JGi-Df-EfT" secondAttribute="trailing" constant="8" id="BcR-oa-8mw"/>
@@ -81,7 +84,6 @@
                 <constraint firstItem="M4a-zz-yy0" firstAttribute="leading" secondItem="odi-Bj-nAX" secondAttribute="trailing" constant="8" id="PVK-lY-SCV"/>
                 <constraint firstItem="Xad-tA-wXK" firstAttribute="leading" secondItem="odi-Bj-nAX" secondAttribute="trailing" constant="8" id="PYp-zx-7RP"/>
                 <constraint firstAttribute="trailing" secondItem="7eX-35-LIf" secondAttribute="trailing" constant="8" id="S4w-QJ-HmY"/>
-                <constraint firstAttribute="trailing" secondItem="0lz-Lz-qrn" secondAttribute="trailing" constant="8" id="T1x-mw-gWj"/>
                 <constraint firstItem="odi-Bj-nAX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="ZjR-Km-2ti"/>
                 <constraint firstItem="Xad-tA-wXK" firstAttribute="top" secondItem="JGi-Df-EfT" secondAttribute="bottom" constant="8" id="amh-K1-geM"/>
                 <constraint firstItem="L5Z-TO-ooy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="d2J-GM-SKV"/>
@@ -89,9 +91,7 @@
                 <constraint firstItem="7eX-35-LIf" firstAttribute="top" secondItem="L5Z-TO-ooy" secondAttribute="bottom" constant="8" id="f7s-rp-h7u"/>
                 <constraint firstItem="odi-Bj-nAX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="fi1-OW-ouh"/>
                 <constraint firstItem="odi-Bj-nAX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="kyd-Qa-Ijt"/>
-                <constraint firstItem="0lz-Lz-qrn" firstAttribute="top" secondItem="7eX-35-LIf" secondAttribute="bottom" constant="8" id="s1N-0A-qzh"/>
                 <constraint firstItem="JGi-Df-EfT" firstAttribute="leading" secondItem="odi-Bj-nAX" secondAttribute="trailing" constant="8" id="u6g-rf-LU3"/>
-                <constraint firstAttribute="bottom" secondItem="0lz-Lz-qrn" secondAttribute="bottom" priority="750" constant="8" id="wQ0-WV-pJi"/>
                 <constraint firstAttribute="trailing" secondItem="L5Z-TO-ooy" secondAttribute="trailing" constant="8" id="zyw-qc-0is"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4BC89A0812899C2EA9094DAD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B4BB672C9B413EC256F1DA /* libPods.a */; };
+		4CB28BC61C7B966B00526FB4 /* ProfileEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CB28BC51C7B966B00526FB4 /* ProfileEdit.xib */; };
 		680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F243F1C70194B009F4EE8 /* HLMessage.swift */; };
 		680F24421C701A45009F4EE8 /* HLUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24411C701A45009F4EE8 /* HLUser.swift */; };
 		680F24441C701A9B009F4EE8 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24431C701A9B009F4EE8 /* Languages.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		44B4BB672C9B413EC256F1DA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CB28BC51C7B966B00526FB4 /* ProfileEdit.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileEdit.xib; sourceTree = "<group>"; };
 		680F243F1C70194B009F4EE8 /* HLMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLMessage.swift; sourceTree = "<group>"; };
 		680F24411C701A45009F4EE8 /* HLUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLUser.swift; sourceTree = "<group>"; };
 		680F24431C701A9B009F4EE8 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 		6876D9951C5A87A90097332A /* HiLingual */ = {
 			isa = PBXGroup;
 			children = (
+				4CB28BC51C7B966B00526FB4 /* ProfileEdit.xib */,
 				6876D9961C5A87A90097332A /* AppDelegate.swift */,
 				6876D99D1C5A87A90097332A /* Assets.xcassets */,
 				680F24531C716997009F4EE8 /* ChatViewController.swift */,
@@ -305,6 +308,7 @@
 				6876D9A11C5A87A90097332A /* LaunchScreen.storyboard in Resources */,
 				682D14831C765FDE00443B7D /* ProfileView.xib in Resources */,
 				68FCBE051C73C74300918112 /* GoogleService-Info.plist in Resources */,
+				4CB28BC61C7B966B00526FB4 /* ProfileEdit.xib in Resources */,
 				6876D99E1C5A87A90097332A /* Assets.xcassets in Resources */,
 				6876D99C1C5A87A90097332A /* Main.storyboard in Resources */,
 			);
