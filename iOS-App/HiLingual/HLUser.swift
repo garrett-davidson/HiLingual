@@ -67,6 +67,23 @@ class HLUser: NSCoding {
         }
     }
 
+    private static var currentUser: HLUser?
+
+    static func getCurrentUser() -> HLUser {
+
+        if (currentUser == nil) {
+            //If current user was nil and this failed, something went wrong
+            currentUser = (NSUserDefaults.standardUserDefaults().objectForKey("currentUser") as! HLUser)
+        }
+
+        return currentUser!
+    }
+
+    func save() {
+        HLUser.currentUser = self
+        NSUserDefaults.standardUserDefaults().setObject(HLUser.currentUser!, forKey: "currentUser")
+    }
+
     @objc func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(UUID, forKey: "UUID")
         aCoder.encodeObject(name, forKey: "name")
