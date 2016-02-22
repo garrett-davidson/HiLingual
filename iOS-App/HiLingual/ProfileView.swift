@@ -35,8 +35,20 @@ class ProfileView: UIView {
         bioTextView.text = user.bio
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    convenience required init?(coder aDecoder: NSCoder) {
+        self.init(coder: aDecoder)
+    }
+
+    init(decoder: NSCoder?, frame: CGRect?) {
+        if (decoder != nil) {
+            super.init(coder: decoder!)!
+        }
+        else if (frame != nil) {
+            super.init(frame: frame!)
+        }
+        else {
+            super.init(frame: CGRectMake(0, 0, 200, 200))
+        }
         NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: self, options: nil)
         self.addSubview(view)
         self.view.translatesAutoresizingMaskIntoConstraints = false
