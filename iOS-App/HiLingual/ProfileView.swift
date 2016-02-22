@@ -36,7 +36,7 @@ class ProfileView: UIView {
     }
 
     convenience required init?(coder aDecoder: NSCoder) {
-        self.init(coder: aDecoder)
+        self.init(decoder: aDecoder, frame: nil)
     }
 
     init(decoder: NSCoder?, frame: CGRect?) {

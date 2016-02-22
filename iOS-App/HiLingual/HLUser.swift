@@ -80,6 +80,7 @@ class HLUser: NSCoding {
     }
 
     func save() {
+        //This should only be called on the current user
         HLUser.currentUser = self
         NSUserDefaults.standardUserDefaults().setObject(HLUser.currentUser!, forKey: "currentUser")
     }
