@@ -10,6 +10,14 @@
 # Database connections, application tuning, etc
 ###############################################################################
 
+# Facebook settings
+facebook:
+  # The app ID from Facebook
+  id: 1016061888432481
+  # The app secret from Facebook, grab it from the Facebook app page
+  # CHANGEME
+  secret: 00000000000000000000000000000000
+
 # SQL CONFIG (MySQL)
 sqlDbType: mysql
 sqlDb:

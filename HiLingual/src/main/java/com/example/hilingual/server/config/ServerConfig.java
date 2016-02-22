@@ -30,6 +30,9 @@ public class ServerConfig extends Configuration {
     @NotNull
     private RedisConfig redisConfig;
 
+    @Valid
+    private FacebookConfig facebookConfig;
+
     @JsonProperty("sqlDb")
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -59,5 +62,16 @@ public class ServerConfig extends Configuration {
     @JsonProperty("redis")
     public void setRedisConfig(RedisConfig redisConfig) {
         this.redisConfig = redisConfig;
+    }
+
+
+    @JsonProperty("facebook")
+    public FacebookConfig getFacebookConfig() {
+        return facebookConfig;
+    }
+
+    @JsonProperty("facebook")
+    public void setFacebookConfig(FacebookConfig facebookConfig) {
+        this.facebookConfig = facebookConfig;
     }
 }
