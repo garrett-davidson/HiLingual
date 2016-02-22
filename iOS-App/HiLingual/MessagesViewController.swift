@@ -14,12 +14,15 @@ import UIKit
 
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var converstationTable: UITableView!
-    var converstaions = [HLUser]()
+    var conversations = [HLUser]()
     var messages = [HLMessage]()
+    var hiddenButtons = [Bool]()
     override func viewDidLoad() {
         loadSamples();
+        // grab any requests from server
         //navigationItem.leftBarButtonItem = editButtonItem()
         //check to see if accept and decline need to be there
+        
         
         
     }
@@ -28,38 +31,55 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return converstaions.count
+        return conversations.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentity = "ConversationTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
-        let user = converstaions[indexPath.row]
+        let user = conversations[indexPath.row]
+        let hidden = hiddenButtons[indexPath.row]
         cell.name.text = user.name
         cell.profilePicture.layer.masksToBounds = false
         cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
         cell.profilePicture.clipsToBounds = true
         cell.profilePicture.image = user.profilePicture
+        cell.acceptButton.tag = indexPath.row
+        cell.declineButton.tag = indexPath.row
+        cell.declineButton.hidden = hidden
+        cell.acceptButton.hidden = hidden
         //Mark: Fills the view
-        cell.date.text = "Yesterday"
-        cell.lastMessage.text = "HEY WAHTS UP THIS MESSAGE IS JUST HERE TO SEE HOW THE WORD WRAPS AT THE END OF THE LINE SOME IGNORE IT"
+        if (hidden){
+            cell.date.text = "Yeserday"
+            cell.lastMessage.text = "This is an already accepted request"
+        }else{
+            cell.date.text = ""
+            cell.lastMessage.text = ""
+            
+        }
         return cell
     }
     @IBAction func accept(sender: UIButton) {
         //send accept to server
-        
         sender.hidden = true
+        let index = sender.tag
+        //hiddenButtons[index] = true
+        let indexPath = NSIndexPath(forRow: index, inSection: 0)
         
     }
     @IBAction func decline(sender: UIButton) {
         sender.hidden = true
-        //let index = sender.tag
-        //converstaions.removeAtIndex(index)
+        let index = sender.tag
+        let indexPath = NSIndexPath(forRow: index, inSection: 0)
+        hiddenButtons.removeAtIndex(index)
+        conversations.removeAtIndex(index)
+        converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
         //send decline to server
     }
     
     func loadSamples(){
-        converstaions += [HLUser.generateTestUser(),HLUser.generateTestUser(),HLUser.generateTestUser() ]
+        conversations += [HLUser.generateTestUser(),HLUser.generateTestUser(),HLUser.generateTestUser() ]
+        hiddenButtons += [false,true,false]
     
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -67,8 +87,9 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let messageDetailViewController = segue.destinationViewController as! ChatViewController
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
+                converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
                 //let selectedMessage = converstaions[indexPath.row]
-                messageDetailViewController.message = converstaions[indexPath.row].name
+                messageDetailViewController.message = conversations[indexPath.row].name
                 
                 //Once messages is complete I can use that
                 
@@ -80,10 +101,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            converstaions.removeAtIndex(indexPath.row)
+            conversations.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

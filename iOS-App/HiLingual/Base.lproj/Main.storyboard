@@ -127,7 +127,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gC5-m3-3gT">
-                                                    <rect key="frame" x="389" y="37" width="51" height="30"/>
+                                                    <rect key="frame" x="399" y="37" width="51" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="51" id="BPs-De-FSj"/>
                                                     </constraints>
@@ -168,7 +168,7 @@
                                                 <constraint firstItem="DsD-GD-Ptj" firstAttribute="top" secondItem="nAO-Cy-IOV" secondAttribute="top" id="UYD-nA-S0Y"/>
                                                 <constraint firstItem="nAO-Cy-IOV" firstAttribute="top" secondItem="jtj-uA-qSk" secondAttribute="bottom" constant="14" id="WHm-PY-1Cr"/>
                                                 <constraint firstItem="jtj-uA-qSk" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="WgF-g1-avJ"/>
-                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="leading" secondItem="gC5-m3-3gT" secondAttribute="trailing" constant="30" id="XI4-ae-KQk"/>
+                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="leading" secondItem="gC5-m3-3gT" secondAttribute="trailing" constant="20" id="XI4-ae-KQk"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="nAO-Cy-IOV" secondAttribute="bottom" constant="5" id="a8x-GQ-1KD"/>
                                                 <constraint firstItem="jtj-uA-qSk" firstAttribute="leading" secondItem="J8t-oZ-gwa" secondAttribute="trailing" constant="27" id="dIv-aU-A4a"/>
                                                 <constraint firstAttribute="topMargin" secondItem="J8t-oZ-gwa" secondAttribute="top" id="gMy-N6-C29"/>
@@ -202,13 +202,7 @@
                             <constraint firstItem="yPp-W9-94i" firstAttribute="bottom" secondItem="oc7-7J-9It" secondAttribute="top" id="cTK-43-YOM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Messages" id="CQv-Ld-E6L">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Z5F-D4-HLo">
-                            <connections>
-                                <action selector="doEdit:" destination="WMC-dk-gVI" id="TbX-E2-RST"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Messages" id="CQv-Ld-E6L"/>
                     <connections>
                         <outlet property="converstationTable" destination="yPp-W9-94i" id="Sbb-NP-NMn"/>
                     </connections>
