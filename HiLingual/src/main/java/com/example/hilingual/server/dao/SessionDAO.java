@@ -30,8 +30,9 @@ public interface SessionDAO extends Managed {
     /**
      * Revokes the provided session
      * @param sessionId The session to revoke
+     * @Param userId The userId of the sessionId to revoke
      */
-    void revokeSession(String sessionId);
+    void revokeSession(String sessionId, long userId);
 
     /**
      * Revokes all sessions
@@ -61,4 +62,10 @@ public interface SessionDAO extends Managed {
      */
     List<String> getAllSessionsForUser(long userId);
 
+    /**
+     * Gets the userId to which this session belongs to
+     * @param sessionId The sessionId to look up
+     * @return The userId that owns the given session
+     */
+    long getSessionOwner(String sessionId);
 }

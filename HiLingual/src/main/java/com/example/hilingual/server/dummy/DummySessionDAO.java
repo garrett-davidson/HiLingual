@@ -24,7 +24,7 @@ public class DummySessionDAO implements SessionDAO {
     }
 
     @Override
-    public void revokeSession(String sessionId) {
+    public void revokeSession(String sessionId, long userId) {
 
     }
 
@@ -46,6 +46,11 @@ public class DummySessionDAO implements SessionDAO {
     @Override
     public List<String> getAllSessionsForUser(long userId) {
         return Lists.newArrayList(DUMMYSESSION);
+    }
+
+    @Override
+    public long getSessionOwner(String sessionId) {
+        return 1;
     }
 
     @Override
