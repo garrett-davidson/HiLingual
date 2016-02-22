@@ -262,7 +262,7 @@
         <!--Profile VIew Controller-->
         <scene sceneID="VMN-Fw-WQy">
             <objects>
-                <viewController title="Profile VIew Controller" id="Q1f-p8-L4k" customClass="ProfileViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Profile VIew Controller" id="Q1f-p8-L4k" customClass="ProfileEditController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rlE-pe-iZu"/>
                         <viewControllerLayoutGuide type="bottom" id="bSj-Mw-pjg"/>
