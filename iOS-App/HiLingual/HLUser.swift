@@ -45,11 +45,11 @@ class HLUser {
     }
 
     class func generateTestUser() -> HLUser {
-        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry"]
-        let randomLanguagesArray = [Languages.Arabic, Languages.English]
+        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley" , "Joey", "IT IS NOT RANDOM"]
+        let randomLanguagesArray = Languages.allValues
         let randomGenderArray = [Gender.Female, Gender.Male]
 
-        let testUUID = ""
+        let testUUID = "1"
         let testName = randomNameArray.random()
         let testDisplayName = randomNameArray.random()
 
@@ -71,7 +71,7 @@ class HLUser {
 
         let testGender = randomGenderArray.random()
         let testBirthDate = NSDate.random()
-        let testImage = UIImage(named: "person")!
+        let testImage = UIImage(named: "cantaloupe")!
 
         return HLUser(UUID: testUUID, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage)
     }

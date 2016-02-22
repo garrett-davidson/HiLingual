@@ -29,6 +29,7 @@
 		68FCBE051C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
 		68FCBE061C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
 		68FCBE071C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
+		720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720F00291C76996200DA197E /* ConversationTableViewCell.swift */; };
 		7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		6876D9B61C5A87AA0097332A /* HiLingualUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiLingualUITests.swift; sourceTree = "<group>"; };
 		6876D9B81C5A87AA0097332A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68FCBE041C73C74300918112 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		720F00291C76996200DA197E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		83E780FFD269DC9326CA0C02 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D2FD8F70A1041E87AC2D329C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				680F24421C701A45009F4EE8 /* HLUser.swift in Sources */,
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
 				680F24481C7165A0009F4EE8 /* LaunchScreenViewController.swift in Sources */,
+				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
 				680F24441C701A9B009F4EE8 /* Languages.swift in Sources */,

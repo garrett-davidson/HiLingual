@@ -49,10 +49,21 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         return searchResults.count
     }
     
-    @IBAction func sendRequest(sender: AnyObject) {
-        let index = sender.tag
-        //Mark: send the uuid to server with users[index]
+    @IBAction func sendRequest(sender: UIButton) {
+        //let index = sender.tag
         print("sent")
+        
+        if (request){
+            sender.setTitle("Cancel", forState: .Normal)
+            request = false
+            //send request to user
+        }else{
+            sender.setTitle("Send Request", forState: .Normal)
+            request = true
+            //send cancel
+        }
+        //sender.hidden = true
+        //sender.userInteractionEnabled = false
         
     }
     
@@ -61,11 +72,14 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
         let user = searchResults[indexPath.row]
         cell.name.text = user.name
+        cell.profilePicture.layer.masksToBounds = false
+        cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
+        cell.profilePicture.clipsToBounds = true
         cell.profilePicture.image = user.profilePicture
         cell.sendRequestButton.tag = indexPath.row
         //Mark: Fills the view
-        //cell.langaugesLearning.text! += stringFromLanguages(user.learningLanguages)
-        //cell.languagesSpeaks.text! += stringFromLanguages(user.KnownLanguages)
+        cell.langaugesLearning.text! = "Learning: " + user.learningLanguages.toList()
+        cell.languagesSpeaks.text! = "  Speaks: " + user.knownLanguages.toList()
         return cell
     }
     
