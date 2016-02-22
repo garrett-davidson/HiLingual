@@ -20,7 +20,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     var searchResults = [HLUser]()
 
     var matches = [HLUser]()
-    
+    var request = true
+
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
         searchTable.hidden = false
         return true

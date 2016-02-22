@@ -71,7 +71,7 @@ class HLUser {
 
         let testGender = randomGenderArray.random()
         let testBirthDate = NSDate.random()
-        let testImage = UIImage(named: "cantaloupe")!
+        let testImage = UIImage(named: "person")!
 
         return HLUser(UUID: testUUID, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage)
     }

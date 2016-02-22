@@ -12,7 +12,6 @@
 		680F24421C701A45009F4EE8 /* HLUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24411C701A45009F4EE8 /* HLUser.swift */; };
 		680F24441C701A9B009F4EE8 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24431C701A9B009F4EE8 /* Languages.swift */; };
 		680F24461C7164C3009F4EE8 /* HLUserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24451C7164C3009F4EE8 /* HLUserSession.swift */; };
-		680F24481C7165A0009F4EE8 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24471C7165A0009F4EE8 /* LaunchScreenViewController.swift */; };
 		680F244A1C716636009F4EE8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24491C716636009F4EE8 /* LoginViewController.swift */; };
 		680F244E1C716875009F4EE8 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F244D1C716875009F4EE8 /* MessagesViewController.swift */; };
 		680F24501C7168D6009F4EE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F244F1C7168D6009F4EE8 /* ProfileViewController.swift */; };
@@ -26,6 +25,7 @@
 		6876D9A11C5A87A90097332A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6876D99F1C5A87A90097332A /* LaunchScreen.storyboard */; };
 		6876D9AC1C5A87A90097332A /* HiLingualTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9AB1C5A87A90097332A /* HiLingualTests.swift */; };
 		6876D9B71C5A87AA0097332A /* HiLingualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9B61C5A87AA0097332A /* HiLingualUITests.swift */; };
+		688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */; };
 		68FCBE051C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
 		68FCBE061C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
 		68FCBE071C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
@@ -56,7 +56,6 @@
 		680F24411C701A45009F4EE8 /* HLUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLUser.swift; sourceTree = "<group>"; };
 		680F24431C701A9B009F4EE8 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
 		680F24451C7164C3009F4EE8 /* HLUserSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLUserSession.swift; sourceTree = "<group>"; };
-		680F24471C7165A0009F4EE8 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		680F24491C716636009F4EE8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		680F244D1C716875009F4EE8 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		680F244F1C7168D6009F4EE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +76,7 @@
 		6876D9B21C5A87A90097332A /* HiLingualUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiLingualUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D9B61C5A87AA0097332A /* HiLingualUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiLingualUITests.swift; sourceTree = "<group>"; };
 		6876D9B81C5A87AA0097332A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		68FCBE041C73C74300918112 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		720F00291C76996200DA197E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -139,6 +139,7 @@
 				6876D9961C5A87A90097332A /* AppDelegate.swift */,
 				6876D99D1C5A87A90097332A /* Assets.xcassets */,
 				680F24531C716997009F4EE8 /* ChatViewController.swift */,
+				720F00291C76996200DA197E /* ConversationTableViewCell.swift */,
 				683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */,
 				680F243F1C70194B009F4EE8 /* HLMessage.swift */,
 				680F24411C701A45009F4EE8 /* HLUser.swift */,
@@ -146,7 +147,7 @@
 				6876D9A21C5A87A90097332A /* Info.plist */,
 				680F24431C701A9B009F4EE8 /* Languages.swift */,
 				6876D99F1C5A87A90097332A /* LaunchScreen.storyboard */,
-				680F24471C7165A0009F4EE8 /* LaunchScreenViewController.swift */,
+				688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */,
 				680F24491C716636009F4EE8 /* LoginViewController.swift */,
 				6876D99A1C5A87A90097332A /* Main.storyboard */,
 				680F24511C716926009F4EE8 /* MatchingViewController.swift */,
@@ -389,10 +390,10 @@
 				680F24521C716926009F4EE8 /* MatchingViewController.swift in Sources */,
 				680F24421C701A45009F4EE8 /* HLUser.swift in Sources */,
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
-				680F24481C7165A0009F4EE8 /* LaunchScreenViewController.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
+				688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */,
 				680F24441C701A9B009F4EE8 /* Languages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
