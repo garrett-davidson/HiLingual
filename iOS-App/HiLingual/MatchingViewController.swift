@@ -85,15 +85,15 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
     
     func loadSampleUser(){
-        let photo = UIImage(named: "cantaloupe")
-        let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
-        let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo!)
+        let photo = UIImage(named: "cantaloupe")!
+        let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
+        let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
         searchResults += [user,user1]
         
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-//        loadSampleUser()
+        loadSampleUser()
         generateTestMatches(5)
         carousel.reloadData()
     }
