@@ -9,7 +9,6 @@
 
 package com.example.hilingual.server.config;
 
-import com.bendb.dropwizard.redis.JedisFactory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
@@ -29,7 +28,7 @@ public class ServerConfig extends Configuration {
 
     @Valid
     @NotNull
-    private JedisFactory redis = new JedisFactory();
+    private RedisConfig redisConfig;
 
     @JsonProperty("sqlDb")
     public DataSourceFactory getDataSourceFactory() {
@@ -51,13 +50,14 @@ public class ServerConfig extends Configuration {
         this.sqlDbType = sqlDbType;
     }
 
+
     @JsonProperty("redis")
-    public JedisFactory getRedisFactory() {
-        return redis;
+    public RedisConfig getRedisConfig() {
+        return redisConfig;
     }
 
     @JsonProperty("redis")
-    public void setRedisFactory(JedisFactory factory) {
-        this.redis = factory;
+    public void setRedisConfig(RedisConfig redisConfig) {
+        this.redisConfig = redisConfig;
     }
 }

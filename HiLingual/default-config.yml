@@ -11,6 +11,7 @@
 ###############################################################################
 
 # SQL CONFIG (MySQL)
+sqlDbType: mysql
 sqlDb:
   # JDBC Driver class (set to use MySQL)
   driverClass: com.mysql.jdbc.Driver
@@ -25,7 +26,7 @@ sqlDb:
 
   # JDBC URL
   # CHANGEME
-  url: jdbc:mysql:localhost/db-local
+  url: jdbc:mysql://localhost/db-local
 
   # Maximum time for a connection before timing out
   maxWaitForConnection: 5s
@@ -56,20 +57,18 @@ sqlDb:
 redis:
   # Redis server's address
   # CHANGEME
-  endpoint: localhost:6379
+  host: localhost
 
-  # Authentication password (set to null for none)
+  # Redis server's port
   # CHANGEME
-  password: null
+  port: 6379
 
-  # Minimum idle connections to keep in the pool
-  minIdle: 0
+  # Password (if present)
+  # CHANGEME
+  password: supersecret
 
-  # Max idle connections allowed in the pool
-  maxIdle: 0
-
-  # Max number of connections allowed in the pool
-  maxTotal: 1024
+  # Connection timeout (s)
+  timeout: 10
 
 ###############################################################################
 # DropWizard Server Configuration
