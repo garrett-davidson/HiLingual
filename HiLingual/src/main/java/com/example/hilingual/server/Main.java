@@ -9,20 +9,31 @@
 
 package com.example.hilingual.server;
 
-import com.bendb.dropwizard.redis.JedisBundle;
-import com.bendb.dropwizard.redis.JedisFactory;
+import com.codahale.metrics.health.HealthCheckRegistry;
+import com.example.hilingual.server.config.RedisConfig;
 import com.example.hilingual.server.config.ServerConfig;
-import com.hubspot.dropwizard.guice.GuiceBundle;
+import com.example.hilingual.server.health.JedisHealthCheck;
+import com.example.hilingual.server.resources.AuthResource;
+import com.example.hilingual.server.resources.UserResource;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.skife.jdbi.v2.DBI;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Application server entry point and initialization
  */
 public class Main extends Application<ServerConfig> {
+
+    private Injector guice;
+    private ServerModule module;
+    private JedisPool jedisPool;
 
     /**
      * Main appliction entry point. Starts our server application
@@ -34,37 +45,48 @@ public class Main extends Application<ServerConfig> {
         new Main().run(args);
     }
 
+
     @Override
     public void initialize(Bootstrap<ServerConfig> bootstrap) {
-        //  Guice initialization
-        GuiceBundle<ServerConfig> guiceBundle = GuiceBundle.<ServerConfig>newBuilder().
-                setConfigClass(ServerConfig.class).
-                enableAutoConfig(getClass().getPackage().getName()).
-                build();
-        bootstrap.addBundle(guiceBundle);
-
-        //  Register Jedis bundle
-        bootstrap.addBundle(new JedisBundle<ServerConfig>() {
-            @Override
-            public JedisFactory getJedisFactory(ServerConfig serverConfig) {
-                return serverConfig.getRedisFactory();
-            }
-        });
-
+        super.initialize(bootstrap);
     }
 
     @Override
     public void run(ServerConfig serverConfig, Environment environment) throws Exception {
+        //  Redis initialization
+        RedisConfig redisConfig = serverConfig.getRedisConfig();
+        jedisPool = new JedisPool(new JedisPoolConfig(),
+                redisConfig.getHost(),
+                redisConfig.getPort(),
+                redisConfig.getTimeout(),
+                redisConfig.getPassword());
+        //  DBI
         DBIFactory factory = new DBIFactory();
         DBI jdbi = factory.build(environment,
                 serverConfig.getDataSourceFactory(),
                 serverConfig.getSqlDbType());
-        //  TODO
+        //  Guice initialization
+        module = new ServerModule(environment);
+        module.setDBI(jdbi);
+        module.setJedisPool(jedisPool);
+        guice = Guice.createInjector(module);
 
+        //  Health checks
+        HealthCheckRegistry h = environment.healthChecks();
+        h.register("jedis", create(JedisHealthCheck.class));
+
+        //  Resources
+        JerseyEnvironment j = environment.jersey();
+        j.register(create(AuthResource.class));
+        j.register(create(UserResource.class));
     }
 
     @Override
     public String getName() {
         return "HiLingual-Shinar";
+    }
+
+    private <T> T create(Class<T> clazz) {
+        return guice.getInstance(clazz);
     }
 }

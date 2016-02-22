@@ -10,6 +10,9 @@
 package com.example.hilingual.server.resources;
 
 import com.example.hilingual.server.api.User;
+import com.example.hilingual.server.dao.SessionDAO;
+import com.example.hilingual.server.dao.UserDAO;
+import com.google.inject.Inject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -27,6 +30,16 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
+
+    private final SessionDAO sessionDAO;
+    private final UserDAO userDAO;
+
+
+    @Inject
+    public UserResource(SessionDAO sessionDAO, UserDAO userDAO) {
+        this.sessionDAO = sessionDAO;
+        this.userDAO = userDAO;
+    }
 
     @GET
     public User getUser(@PathParam("user-id") String userIdStr) {
