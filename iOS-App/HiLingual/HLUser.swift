@@ -79,7 +79,7 @@ class HLUser {
 
 extension Int {
     static func random(max max: Int) -> Int {
-        return Int(rand() % Int32(max))
+        return Int(arc4random_uniform(UInt32(max)))
     }
 }
 
