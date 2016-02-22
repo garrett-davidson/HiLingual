@@ -98,10 +98,11 @@
 
         <!-- DATABASE -->
         <dependency>
-            <!-- DROPWIZARD - REDIS INTEGRATION -->
-            <groupId>com.bendb.dropwizard</groupId>
-            <artifactId>dropwizard-redis</artifactId>
-            <version>0.7.1-5</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.2</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <!-- MYSQL - JDBC -->
@@ -127,10 +128,9 @@
             <version>4.0</version>
         </dependency>
         <dependency>
-            <!-- GUICE - DROPWIZARD INTEGRATION -->
-            <groupId>com.hubspot.dropwizard</groupId>
-            <artifactId>dropwizard-guice</artifactId>
-            <version>0.7.0.2</version>
+            <groupId>net.sf.trove4j</groupId>
+            <artifactId>trove4j</artifactId>
+            <version>3.0.3</version>
         </dependency>
     </dependencies>
 
