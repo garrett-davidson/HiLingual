@@ -9,10 +9,13 @@
 
 package com.example.hilingual.server.resources;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import com.example.hilingual.server.api.AuthenticatedUser;
+import com.example.hilingual.server.api.AuthenticationRequest;
+
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Provides the endpoints for logging in/out of the service.
@@ -27,10 +30,21 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
+    @POST
+    @Path("login")
+    public AuthenticatedUser logIn(@Valid AuthenticationRequest body) {
+
+        throw new ServerErrorException(Response.Status.NOT_IMPLEMENTED);
+    }
 
 
+    @POST
+    @Path("user/{user-id}/logout")
+    public Response logOut(@HeaderParam("Authorization") String sessionToken,
+                           @PathParam("user-id") long userId) {
 
-
+        return Response.noContent().build();
+    }
 
 
 }
