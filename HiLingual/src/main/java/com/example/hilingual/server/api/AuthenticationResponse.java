@@ -17,6 +17,15 @@ public class AuthenticationResponse {
 
     private String sessionId;
 
+
+    public AuthenticationResponse() {
+    }
+
+    public AuthenticationResponse(long userId, String sessionId) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+    }
+
     @JsonProperty
     public long getUserId() {
         return userId;
