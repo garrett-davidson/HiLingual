@@ -9,8 +9,11 @@
 
 package com.example.hilingual.server;
 
+import com.example.hilingual.server.dao.FacebookIntegrationDAO;
+import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.dummy.DummyFacebookGoogleIntegrationDAO;
 import com.example.hilingual.server.dummy.DummySessionDAO;
 import com.example.hilingual.server.dummy.DummyUserDAO;
 import com.google.inject.AbstractModule;
@@ -45,6 +48,12 @@ public class ServerModule extends AbstractModule {
                 in(Scopes.SINGLETON);
         bind(SessionDAO.class).
                 to(DummySessionDAO.class).  //  TODO REPLACE DUMMY
+                in(Scopes.SINGLETON);
+        bind(FacebookIntegrationDAO.class).
+                to(DummyFacebookGoogleIntegrationDAO.class).  //  TODO REPLACE DUMMY
+                in(Scopes.SINGLETON);
+        bind(GoogleIntegrationDAO.class).
+                to(DummyFacebookGoogleIntegrationDAO.class).  //  TODO REPLACE DUMMY
                 in(Scopes.SINGLETON);
     }
 
