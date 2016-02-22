@@ -13,7 +13,7 @@ enum Gender: Int {
     case Male = 0, Female
 }
 
-class HLUser {
+class HLUser: NSCoding {
     let UUID: String
     var name: String
     var displayName: String
@@ -42,6 +42,55 @@ class HLUser {
         self.profilePicture = profilePicture
 
         self.usersChattedWith = []
+    }
+
+    @objc required init?(coder aDecoder: NSCoder) {
+        self.UUID = aDecoder.decodeObjectForKey("UUID") as! String
+        self.name = aDecoder.decodeObjectForKey("name") as! String
+        self.displayName = aDecoder.decodeObjectForKey("displayName") as! String
+        self.bio = aDecoder.decodeObjectForKey("bio") as! String
+        self.gender = Gender(rawValue: aDecoder.decodeObjectForKey("gender") as! Int)!
+        self.birthdate = aDecoder.decodeObjectForKey("birthdate") as! NSDate
+        self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as! UIImage
+        self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
+        self.usersChattedWith = (aDecoder.decodeObjectForKey("usersChattedWith") as! [HLUser])
+        self.session = aDecoder.decodeObjectForKey("session") as? HLUserSession
+
+        learningLanguages = [Languages]()
+        knownLanguages = [Languages]()
+        for lang in aDecoder.decodeObjectForKey("learningLanguages") as! [String] {
+            learningLanguages.append(Languages(rawValue: lang)!)
+        }
+
+        for lang in aDecoder.decodeObjectForKey("knownLanguages") as! [String] {
+            knownLanguages.append(Languages(rawValue: lang)!)
+        }
+    }
+
+    @objc func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(UUID, forKey: "UUID")
+        aCoder.encodeObject(name, forKey: "name")
+        aCoder.encodeObject(displayName, forKey: "displayName")
+        aCoder.encodeObject(bio, forKey: "bio")
+        aCoder.encodeObject(gender.rawValue, forKey: "gender")
+        aCoder.encodeObject(birthdate, forKey: "birthdate")
+        aCoder.encodeObject(profilePicture, forKey: "profilePicture")
+        aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
+        aCoder.encodeObject(usersChattedWith, forKey: "usersChattedWith")
+        aCoder.encodeObject(session, forKey: "session")
+
+        var learningLanguagesStrings = [String]()
+        for lang in learningLanguages {
+            learningLanguagesStrings.append(lang.rawValue)
+        }
+
+        var knownLanguagesStrings = [String]()
+        for lang in knownLanguages {
+            knownLanguagesStrings.append(lang.rawValue)
+        }
+
+        aCoder.encodeObject(learningLanguagesStrings, forKey: "learningLanguages")
+        aCoder.encodeObject(knownLanguagesStrings, forKey: "knownLanguages")
     }
 
     class func generateTestUser() -> HLUser {
