@@ -24,18 +24,21 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
         searchTable.hidden = false
+        searchBar.showsCancelButton = true
         return true
         
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchTable.hidden = true
+        searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         
     }
     
     func searchBar(searchBar: UISearchBar,
         textDidChange searchText: String){
+            
             //Mark: Send to the server
             //whatever is recieved users
             

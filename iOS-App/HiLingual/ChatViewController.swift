@@ -12,5 +12,10 @@ import UIKit
 //Displays both the sent and received messages in a single chat
 
 class ChatViewController: UIViewController {
+    var message: String?
+    @IBOutlet weak var test: UILabel!
     
+    override func viewDidLoad() {
+        test.text = message
+    }
 }
