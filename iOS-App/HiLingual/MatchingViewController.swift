@@ -135,7 +135,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             sendMessageButton.center.y = profileViewCell.profileView.frame.size.height - 20;
         }
 
-        profileViewCell.profileView.user = matches[0]
+        profileViewCell.profileView.user = matches[index]
 
 
 
