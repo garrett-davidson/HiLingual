@@ -45,7 +45,7 @@ class HLUser {
     }
 
     class func generateTestUser() -> HLUser {
-        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley" , "Joey", "IT IS NOT RANDOM"]
+        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley" , "Joey"]
         let randomLanguagesArray = Languages.allValues
         let randomGenderArray = [Gender.Female, Gender.Male]
 
