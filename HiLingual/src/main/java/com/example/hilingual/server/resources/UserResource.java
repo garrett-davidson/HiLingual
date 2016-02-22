@@ -16,7 +16,6 @@ import com.google.inject.Inject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.UUID;
 
 /**
  * Provides the endpoints for retrieving and managing a user profile.
@@ -43,16 +42,19 @@ public class UserResource {
 
     @GET
     public User getUser(@PathParam("user-id") String userIdStr) {
-        UUID userId;
+        long uuid;
         try {
-            userId = UUID.fromString(userIdStr);
-        } catch (IllegalArgumentException e) {
+            uuid = Long.parseLong(userIdStr);
+        } catch (NumberFormatException e) {
             throw new NotFoundException(userIdStr);
         }
+        //  TODO check auth header
 
-        //  TODO
-
-
+        //  Find the user
+        User user = userDAO.getUser(uuid);
+        if (user != null) {
+            return user;
+        }
         throw new NotFoundException(userIdStr);
     }
 
