@@ -41,21 +41,15 @@ public class UserResource {
     }
 
     @GET
-    public User getUser(@PathParam("user-id") String userIdStr) {
-        long uuid;
-        try {
-            uuid = Long.parseLong(userIdStr);
-        } catch (NumberFormatException e) {
-            throw new NotFoundException(userIdStr);
-        }
+    public User getUser(@PathParam("user-id") long userId) {
         //  TODO check auth header
 
         //  Find the user
-        User user = userDAO.getUser(uuid);
+        User user = userDAO.getUser(userId);
         if (user != null) {
             return user;
         }
-        throw new NotFoundException(userIdStr);
+        throw new NotFoundException();
     }
 
 
