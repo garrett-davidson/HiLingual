@@ -25,6 +25,12 @@ class ProfileView: UIView {
         }
     }
 
+    var editing = false {
+        didSet {
+            refreshUI()
+        }
+    }
+
     func refreshUI() {
         imageView.image = user.profilePicture
         nameLabel.text = user.displayName
@@ -33,6 +39,14 @@ class ProfileView: UIView {
         speaksLabel.text = "Speaks: " + user.knownLanguages.toList()
         learningLabel.text = "Learning: " + user.learningLanguages.toList()
         bioTextView.text = user.bio
+
+        if (!editing) {
+            bioTextView.editable = false
+        }
+        else {
+            bioTextView.editable = true
+        }
+
     }
 
     convenience required init?(coder aDecoder: NSCoder) {
