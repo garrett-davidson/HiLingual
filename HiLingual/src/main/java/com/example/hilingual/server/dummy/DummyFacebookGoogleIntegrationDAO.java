@@ -11,8 +11,21 @@ package com.example.hilingual.server.dummy;
 
 import com.example.hilingual.server.dao.FacebookIntegrationDAO;
 import com.example.hilingual.server.dao.GoogleIntegrationDAO;
+import gnu.trove.map.TObjectLongMap;
+import gnu.trove.map.hash.TObjectLongHashMap;
 
 public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO, GoogleIntegrationDAO {
+
+    private TObjectLongMap<String> fbAccts;
+    private TObjectLongMap<String> googleAccts;
+
+    public DummyFacebookGoogleIntegrationDAO() {
+        googleAccts = new TObjectLongHashMap<>();
+        fbAccts = new TObjectLongHashMap<>();
+        googleAccts.put("0", DummyUserDAO.JOHN_DOE.getUuid());
+        fbAccts.put("0", DummyUserDAO.JOHN_DOE.getUuid());
+    }
+
     @Override
     public boolean isValidFacebookSession(String accountId, String token) {
         return true;
@@ -20,7 +33,12 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
 
     @Override
     public long getUserIdFromFacebookAccountId(String accountId) {
-        return DummyUserDAO.JOHN_DOE.getUuid();
+        return fbAccts.get(accountId);
+    }
+
+    @Override
+    public void setUserIdForFacebookAccountId(long userId, String accountId) {
+        fbAccts.put(accountId, userId);
     }
 
     @Override
@@ -30,6 +48,11 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
 
     @Override
     public long getUserIdFromGoogleAccountId(String accountId) {
-        return DummyUserDAO.JOHN_DOE.getUuid();
+        return googleAccts.get(accountId);
+    }
+
+    @Override
+    public void setUserIdForGoogleAccountId(long userId, String accountId) {
+        googleAccts.put(accountId, userId);
     }
 }

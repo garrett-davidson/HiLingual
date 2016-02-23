@@ -17,7 +17,6 @@ import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -26,7 +25,7 @@ public class DummyUserDAO implements UserDAO {
     private TLongObjectMap<User> users = new TLongObjectHashMap<>();
     public static final User JOHN_DOE = new User(1, "johndoe", "John Doe", "", Gender.MALE, Date.from(Instant.now()),
             null, Sets.newHashSet(Locale.ENGLISH), Sets.newHashSet(Locale.JAPANESE),
-            Collections.emptySet(), Collections.emptySet());
+            Sets.newHashSet(), Sets.newHashSet());
 
     public DummyUserDAO() {
         updateUser(JOHN_DOE);
@@ -45,5 +44,14 @@ public class DummyUserDAO implements UserDAO {
     @Override
     public void deleteUser(long userId) {
         users.remove(userId);
+    }
+
+    @Override
+    public User createUser() {
+        User user = new User(users.size(), "", "", "", Gender.NOT_SET, new Date(1), null,
+                Sets.newHashSet(), Sets.newHashSet(),
+                Sets.newHashSet(), Sets.newHashSet());
+        users.put(user.getUuid(), user);
+        return user;
     }
 }

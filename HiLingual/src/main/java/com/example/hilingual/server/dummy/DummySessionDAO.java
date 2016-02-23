@@ -16,11 +16,11 @@ import java.util.List;
 
 public class DummySessionDAO implements SessionDAO {
 
-    public static final String DUMMYSESSION = "dummysession";
+    public static final String DUMMYSESSION = "dummysession-";
 
     @Override
     public boolean isValidSession(String sessionId, long userId) {
-        return DUMMYSESSION.equals(sessionId);
+        return sessionId.startsWith(DUMMYSESSION) && sessionId.endsWith(Long.toString(userId));
     }
 
     @Override
@@ -40,17 +40,17 @@ public class DummySessionDAO implements SessionDAO {
 
     @Override
     public String newSession(long userId) {
-        return DUMMYSESSION;
+        return DUMMYSESSION + userId;
     }
 
     @Override
     public List<String> getAllSessionsForUser(long userId) {
-        return Lists.newArrayList(DUMMYSESSION);
+        return Lists.newArrayList(DUMMYSESSION + userId);
     }
 
     @Override
     public long getSessionOwner(String sessionId) {
-        return DummyUserDAO.JOHN_DOE.getUuid();
+        return Long.parseLong(sessionId.substring(DUMMYSESSION.length()));
     }
 
     @Override

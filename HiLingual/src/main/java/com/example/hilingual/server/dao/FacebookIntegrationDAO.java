@@ -15,4 +15,6 @@ public interface FacebookIntegrationDAO {
 
     long getUserIdFromFacebookAccountId(String accountId);
 
+    void setUserIdForFacebookAccountId(long userId, String accountId);
+
 }

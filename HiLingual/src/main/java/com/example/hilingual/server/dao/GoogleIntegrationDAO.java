@@ -15,4 +15,5 @@ public interface GoogleIntegrationDAO {
 
     long getUserIdFromGoogleAccountId(String accountId);
 
+    void setUserIdForGoogleAccountId(long userId, String accountId);
 }
