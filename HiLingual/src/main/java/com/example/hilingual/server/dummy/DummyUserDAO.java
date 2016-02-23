@@ -48,7 +48,7 @@ public class DummyUserDAO implements UserDAO {
 
     @Override
     public User createUser() {
-        User user = new User(users.size(), "", "", "", Gender.NOT_SET, new Date(1), null,
+        User user = new User(users.size() + 1, "", "", "", Gender.NOT_SET, new Date(1), null,
                 Sets.newHashSet(), Sets.newHashSet(),
                 Sets.newHashSet(), Sets.newHashSet());
         users.put(user.getUuid(), user);
