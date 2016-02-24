@@ -28,7 +28,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         guard FBSDKAccessToken.currentAccessToken() != nil else {
             print("Need to log in")
             let loginButton = FBSDKLoginButton()
-            loginButton.readPermissions = ["public_profile", "email"]
+            loginButton.readPermissions = ["public_profile", "email","user_birthday","user_location","user_photos"]
             loginButton.center = self.view.center
             loginButton.delegate = self
             self.view.addSubview(loginButton)
@@ -61,7 +61,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
         print("Login complete.")
         getUserInfo()
-        self.performSegueWithIdentifier("LoggedIn", sender: self)
+        self.performSegueWithIdentifier("InitialLogin", sender: self)
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -78,10 +78,11 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                 print("Error: \(error!)")
                 return
             }
-
             print("fetched user: \(result)")
             let userName = result.valueForKey("name") as! String
+            //let userGender = result.valueForKey("gender") as! String
             print("User Name is: \(userName)")
+           // print("User Gender  is: \(userGender)")
             print("User Email is:  \(result.valueForKey("email") as! String)")
         })
     }
