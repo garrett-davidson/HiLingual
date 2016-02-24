@@ -14,4 +14,9 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
+    @IBOutlet weak var profileView: ProfileView!
+
+    override func viewDidLoad() {
+        profileView.user = HLUser.generateTestUser()
+    }
 }
