@@ -244,7 +244,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Au8-DZ-63Z" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -520,6 +520,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="eTR-Rc-7JK"/>
-        <segue reference="b9a-c7-V3Y"/>
+        <segue reference="XeF-YT-wgH"/>
     </inferredMetricsTieBreakers>
 </document>
