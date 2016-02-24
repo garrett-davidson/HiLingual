@@ -12,9 +12,15 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate {
+class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
+    @IBOutlet weak var googleSignInButton: GIDSignInButton!
+
     override func viewDidLoad() {
         super.viewDidLoad();
+
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signInSilently()
+
 
         //Use guard if it wouldn't make sense to continue a method if a condition is false
         //Guard will guarantee a condition is true
@@ -29,9 +35,15 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate {
             return
         }
 
-        print("User has already logged in")
-        getUserInfo()
-        self.performSegueWithIdentifier("LoggedIn", sender: self)
+        print("Need to log in")
+        let loginButton = FBSDKLoginButton()
+        loginButton.readPermissions = ["public_profile", "email"]
+        loginButton.center = self.view.center
+        loginButton.delegate = self
+        self.view.addSubview(loginButton)
+        
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signInSilently()
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         print("User logged in fam")
@@ -73,5 +85,4 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate {
             print("User Email is:  \(result.valueForKey("email") as! String)")
         })
     }
-
 }

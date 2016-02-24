@@ -1,0 +1,115 @@
+# default-config.yml
+#
+# Contains a default template configuration for the server
+# Values that should be changed for your running environment
+# are marked by a CHANGEME comment
+# Other options can be tweaked if you know what you're doing
+
+###############################################################################
+# Application configuration
+# Database connections, application tuning, etc
+###############################################################################
+
+# SQL CONFIG (MySQL)
+sqlDb:
+  # JDBC Driver class (set to use MySQL)
+  driverClass: com.mysql.jdbc.Driver
+
+  # Username
+  # CHANGEME
+  user: default
+
+  # Password
+  # CHANGEME
+  password: supersecret
+
+  # JDBC URL
+  # CHANGEME
+  url: jdbc:mysql:localhost/db-local
+
+  # Maximum time for a connection before timing out
+  maxWaitForConnection: 5s
+
+  # Connection alive check query
+  validationQuery: "/* HEALTH CHECK */ SELECT 1"
+
+  # Connection alive check timeout
+  validationQueryTimeout: 5s
+
+  # Minimum connections to keep open
+  minSize: 8
+
+  # Maximum connections to keep open
+  maxSize: 32
+
+  # Validate idle connections
+  checkConnectionWhileIdle: false
+
+  # The amount of time to sleep between runs of the idle connection validation,
+  # abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+ # Minimum idle connection time before being able to be considered for eviction
+ minIdleTime: 1 minute
+
+# REDIS CONFIG
+redis:
+  # Redis server's address
+  # CHANGEME
+  endpoint: localhost:6379
+
+  # Authentication password (set to null for none)
+  # CHANGEME
+  password: null
+
+  # Minimum idle connections to keep in the pool
+  minIdle: 0
+
+  # Max idle connections allowed in the pool
+  maxIdle: 0
+
+  # Max number of connections allowed in the pool
+  maxTotal: 1024
+
+###############################################################################
+# DropWizard Server Configuration
+# HTTP, logging, etc
+# https://dropwizard.github.io/dropwizard/0.7.1/docs/manual/configuration.html
+###############################################################################
+server:
+  type: default
+
+  # Compression settings
+  gzip:
+    enabled: true
+
+  # Server type "default" settings
+
+  # Application configuration
+
+  # Base path for service
+  # Service calls are to be made to HOSTNAME:PORT/APPCONTEXTPATH/...
+  applicationContextPath: /api
+
+  # Base path for administration
+  # Access to the admin panel is at HOSTNAME:PORT/admin
+  adminContextPath: /admin
+
+  applicationConnectors:
+    - type: http
+      # This server should be run behind an nginx/Apache facace to process
+      # HTTPS termination and therefore not be visible to the public
+      # Therefore we bind to loopback interface only on port 8080
+      # If this conflicts with your local dev environment, you may change this
+      port: 8080
+      bindHost: 127.0.0.1
+
+  # Administrative configuration
+  adminConnectors:
+    - type: http
+      # Administration/debug access should be private and be protected behind
+      # local access only or by a suitbly configured nginx/Apache route
+      # Therefore we bind to loopback interface only on port 8081
+      # If this conflicts with your local dev environment, you may change this
+      port: 8081
+      bindHost: 127.0.0.1

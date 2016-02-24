@@ -112,7 +112,7 @@ class HLUser: NSCoding {
     }
 
     class func generateTestUser() -> HLUser {
-        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley" , "Joey"]
+        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley" , "Joey", "Dick"]
         let randomLanguagesArray = Languages.allValues
         let randomGenderArray = [Gender.Female, Gender.Male]
 
