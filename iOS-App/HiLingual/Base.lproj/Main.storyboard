@@ -52,45 +52,13 @@
                     </view>
                     <connections>
                         <outlet property="googleSignInButton" destination="ueO-Dy-BUE" id="KOe-hl-tYv"/>
-                        <segue destination="Idi-Fv-ffj" kind="presentation" identifier="LoggedIn" modalTransitionStyle="crossDissolve" id="lJm-fy-4r9"/>
+                        <segue destination="rAU-kN-Pj2" kind="presentation" identifier="InitialLogin" id="ErH-NY-oPF"/>
+                        <segue destination="0mz-RR-5Wt" kind="presentation" identifier="previousLogin" id="eTR-Rc-7JK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v2S-FT-Uzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-469" y="-680"/>
-        </scene>
-        <!--Login View Controller-->
-        <scene sceneID="xf7-ul-BE6">
-            <objects>
-                <viewController title="Login View Controller" id="Idi-Fv-ffj" customClass="LoginViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Q3b-Ir-wjY"/>
-                        <viewControllerLayoutGuide type="bottom" id="QlQ-1R-yJb"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="WkI-xS-SlH">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="aMf-sE-4dG">
-                                <rect key="frame" x="0.0" y="-5" width="600" height="605"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-sn-vVN">
-                                <rect key="frame" x="85" y="36" width="132" height="120"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="aMf-sE-4dG" firstAttribute="top" secondItem="WkI-xS-SlH" secondAttribute="topMargin" constant="-5" id="5fd-Tb-WkR"/>
-                            <constraint firstItem="aMf-sE-4dG" firstAttribute="leading" secondItem="WkI-xS-SlH" secondAttribute="leading" id="E7U-cw-yAY"/>
-                            <constraint firstItem="aMf-sE-4dG" firstAttribute="bottom" secondItem="QlQ-1R-yJb" secondAttribute="top" id="biv-Ox-FJ6"/>
-                            <constraint firstAttribute="trailing" secondItem="aMf-sE-4dG" secondAttribute="trailing" id="fmw-ei-saf"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="Ytf-7I-x7U"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f5Q-OG-xco" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1309" y="-688"/>
+            <point key="canvasLocation" x="631" y="-812"/>
         </scene>
         <!--Messages View Controller-->
         <scene sceneID="EZ9-hI-v6F">
@@ -313,7 +281,28 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hNt-U5-mGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2199" y="96"/>
+            <point key="canvasLocation" x="2135" y="100"/>
+        </scene>
+        <!--Initial Profile Edit-->
+        <scene sceneID="xmL-sI-VMN">
+            <objects>
+                <viewController title="Initial Profile Edit" id="rAU-kN-Pj2" customClass="ProfileViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Bmt-X7-9EP"/>
+                        <viewControllerLayoutGuide type="bottom" id="fbk-8j-HZO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="faW-i2-Inc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="0mz-RR-5Wt" kind="show" identifier="DoneEditing" id="Utc-Bd-d16"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bTe-oC-AQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="631" y="100"/>
         </scene>
         <!--Profile VIew Controller-->
         <scene sceneID="VMN-Fw-WQy">
@@ -347,7 +336,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMp-E7-ke6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3055" y="155"/>
+            <point key="canvasLocation" x="3055" y="100"/>
         </scene>
         <!--Data Source-->
         <scene sceneID="R3e-Td-13D">
@@ -529,10 +518,8 @@
             <point key="canvasLocation" x="4655" y="-116"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="BackgroundImage" width="236" height="236"/>
-    </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="eTR-Rc-7JK"/>
         <segue reference="b9a-c7-V3Y"/>
     </inferredMetricsTieBreakers>
 </document>
