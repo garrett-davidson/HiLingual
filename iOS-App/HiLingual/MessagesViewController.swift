@@ -22,8 +22,10 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         // grab any requests from server
         //navigationItem.leftBarButtonItem = editButtonItem()
         //check to see if accept and decline need to be there
-        
-        
+        //conversations = getCurrentUser().chattedWith
+        //for (getCurrentUser().chattedWith.count)) hiddenButtons+= true
+        // hiddenButtons = getCurrentUser().chattedWith
+        //grab users.ChattedWith to fill users conversations list
         
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -53,6 +55,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.date.text = "Yeserday"
             cell.lastMessage.text = "This is an already accepted request"
         }else{
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            //cell.userInteractionEnabled = false
             cell.date.text = ""
             cell.lastMessage.text = ""
             
@@ -61,10 +65,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     @IBAction func accept(sender: UIButton) {
         //send accept to server
-        sender.hidden = true
         let index = sender.tag
+        hiddenButtons[index] = true
+        converstationTable.reloadData()
         //hiddenButtons[index] = true
-        let indexPath = NSIndexPath(forRow: index, inSection: 0)
+        //let indexPath = NSIndexPath(forRow: index, inSection: 0)
         
     }
     @IBAction func decline(sender: UIButton) {
@@ -74,6 +79,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         hiddenButtons.removeAtIndex(index)
         conversations.removeAtIndex(index)
         converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
+        converstationTable.reloadData()
         //send decline to server
     }
     
@@ -82,9 +88,40 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         hiddenButtons += [false,true,false]
     
     }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showMessageSegue"{
             let messageDetailViewController = segue.destinationViewController as! ChatViewController
+            if let selectedMessageCell = sender as? ConversationTableViewCell {
+                let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
+                messageDetailViewController.user = conversations[indexPath.row]
+                converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
+                //let selectedMessage = converstaions[indexPath.row]
+                
+                
+                //Once messages is complete I can use that
+                
+            }
+            
+        } else{
+            
+        }
+    
+    }
+    /*
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = converstationTable.cellForRowAtIndexPath(indexPath)
+        if cell?.reuseIdentifier == "ConversationTableViewCell"{
+            if hiddenButtons[indexPath.row]{
+                performSegueWithIdentifier("testMessageSegue", sender: cell)
+            }
+        }
+        
+    }
+
+    override func performSegueWithIdentifier(identifier: String, sender: AnyObject?) {
+        if identifier == "testMessageSegue"{
+            let messageDetailViewController = ChatViewController()
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
@@ -96,13 +133,17 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             
         }
-    
+        
+        
     }
+    */
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
             conversations.removeAtIndex(indexPath.row)
+            hiddenButtons.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            converstationTable.reloadData()
         }
     }
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

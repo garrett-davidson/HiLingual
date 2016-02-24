@@ -13,9 +13,17 @@ import UIKit
 
 class ChatViewController: UIViewController {
     var message: String?
-    @IBOutlet weak var test: UILabel!
+    var user: HLUser!
+    @IBOutlet weak var detailsProfile: UIBarButtonItem!
+
     
     override func viewDidLoad() {
-        test.text = message
+        self.title = user.name
+        print(user.name)
+    }
+    
+    @IBAction func details(sender: AnyObject) {
+        //load user profile
+        
     }
 }
