@@ -41,7 +41,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
         let user = conversations[indexPath.row]
         let hidden = hiddenButtons[indexPath.row]
-        cell.name.text = user.name
+        //Should it be display name or name?
+        cell.name.text = user.displayName
         cell.profilePicture.layer.masksToBounds = false
         cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
         cell.profilePicture.clipsToBounds = true
@@ -95,10 +96,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 messageDetailViewController.user = conversations[indexPath.row]
+                messageDetailViewController.messageHidden = hiddenButtons[indexPath.row]
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                //let selectedMessage = converstaions[indexPath.row]
-                
-                
                 //Once messages is complete I can use that
                 
             }

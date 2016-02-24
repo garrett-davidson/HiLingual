@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0mz-RR-5Wt">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -230,22 +230,71 @@
                     <view key="view" contentMode="scaleToFill" id="X1a-mJ-Bwz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can't message until the request has been accepted " textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncR-NA-06q">
+                                <rect key="frame" x="20" y="289" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ncR-NA-06q" firstAttribute="centerY" secondItem="X1a-mJ-Bwz" secondAttribute="centerY" id="Hq2-82-yuX"/>
+                            <constraint firstItem="ncR-NA-06q" firstAttribute="top" secondItem="iC5-f2-rqO" secondAttribute="bottom" constant="225" id="IIL-fe-kBX"/>
+                            <constraint firstItem="ncR-NA-06q" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leadingMargin" id="eiP-Ud-kLT"/>
+                            <constraint firstItem="ncR-NA-06q" firstAttribute="trailing" secondItem="X1a-mJ-Bwz" secondAttribute="trailingMargin" id="msE-BT-CgG"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ktS-gQ-9LD">
                         <barButtonItem key="rightBarButtonItem" title="Details" id="FPQ-fb-3tr">
                             <connections>
                                 <action selector="details:" destination="nBC-Zq-2jE" id="XvD-Fw-3UK"/>
+                                <segue destination="ycY-NS-58u" kind="show" identifier="detailsSegue" id="3s2-qW-3mn"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
+                        <outlet property="userCanMessageLabel" destination="ncR-NA-06q" id="ziH-7f-Eyc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5471" y="-632"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="3Id-wU-drU">
+            <objects>
+                <viewController id="ycY-NS-58u" customClass="DetailViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Xg5-tY-ybr"/>
+                        <viewControllerLayoutGuide type="bottom" id="Gt4-yr-93m"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QWt-dy-j6t">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Au8-DZ-63Z" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Au8-DZ-63Z" firstAttribute="top" secondItem="Xg5-tY-ybr" secondAttribute="bottom" id="7PX-nb-GSI"/>
+                            <constraint firstItem="Au8-DZ-63Z" firstAttribute="leading" secondItem="QWt-dy-j6t" secondAttribute="leading" id="BdF-JC-YYp"/>
+                            <constraint firstAttribute="trailing" secondItem="Au8-DZ-63Z" secondAttribute="trailing" id="J4v-Ct-NO3"/>
+                            <constraint firstItem="Au8-DZ-63Z" firstAttribute="bottom" secondItem="Gt4-yr-93m" secondAttribute="top" id="WAY-8G-g1j"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="profileView" destination="Au8-DZ-63Z" id="f68-A9-TRj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FAb-ya-Rk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5471" y="987"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="lIS-2g-81Y">
@@ -357,7 +406,7 @@
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
                                                                     <rect key="frame" x="0.0" y="52" width="70" height="26"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

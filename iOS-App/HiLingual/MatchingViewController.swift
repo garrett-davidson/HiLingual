@@ -99,8 +99,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let photo = UIImage(named: "cantaloupe")!
         let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
         let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
-        searchResults += [user,user1]
-        request += [true,true]
+        searchResults += [user,user1,HLUser.generateTestUser()]
+        request += [true,true,true]
         
     }
     override func viewDidLoad() {
