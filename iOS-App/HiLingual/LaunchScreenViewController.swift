@@ -16,6 +16,10 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate, G
     override func viewDidLoad() {
         super.viewDidLoad();
 
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signInSilently()
+
+
         //Use guard if it wouldn't make sense to continue a method if a condition is false
         //Guard will guarantee a condition is true
         //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
