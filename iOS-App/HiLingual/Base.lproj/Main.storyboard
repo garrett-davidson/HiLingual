@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10109" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0mz-RR-5Wt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10112" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10083"/>
@@ -32,10 +32,16 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ueO-Dy-BUE" customClass="GIDSignInButton">
+                                <rect key="frame" x="250" y="453" width="100" height="30"/>
+                                <state key="normal" title="Google Sign In"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="fdD-DO-b8o" firstAttribute="top" secondItem="ueO-Dy-BUE" secondAttribute="bottom" constant="117" id="1To-i5-rsV"/>
                             <constraint firstItem="fdD-DO-b8o" firstAttribute="top" secondItem="o50-s4-HwC" secondAttribute="bottom" constant="363" id="5JC-xh-k6e"/>
+                            <constraint firstItem="ueO-Dy-BUE" firstAttribute="centerX" secondItem="mD7-OI-9fd" secondAttribute="centerX" id="CHo-3p-5Ji"/>
                             <constraint firstItem="pHP-vv-FDu" firstAttribute="centerX" secondItem="o50-s4-HwC" secondAttribute="centerX" id="lpo-ht-2eP"/>
                             <constraint firstItem="pHP-vv-FDu" firstAttribute="top" secondItem="mD7-OI-9fd" secondAttribute="top" id="oV6-ZM-5oJ"/>
                             <constraint firstItem="pHP-vv-FDu" firstAttribute="leading" secondItem="mD7-OI-9fd" secondAttribute="leading" id="pdl-Fk-6pM"/>
@@ -45,6 +51,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="googleSignInButton" destination="ueO-Dy-BUE" id="NBr-7n-blA"/>
                         <segue destination="Idi-Fv-ffj" kind="presentation" identifier="LoggedIn" modalTransitionStyle="crossDissolve" id="lJm-fy-4r9"/>
                     </connections>
                 </viewController>
