@@ -12,7 +12,9 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate{
+class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
+    @IBOutlet weak var googleSignInButton: GIDSignInButton!
+
     override func viewDidLoad() {
         super.viewDidLoad();
 
@@ -83,27 +85,4 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate, G
             print("User Email is:  \(result.valueForKey("email") as! String)")
         })
     }
-    
-    func application(application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-            // Initialize sign-in
-            var configureError: NSError?
-            GGLContext.sharedInstance().configureWithError(&configureError)
-            assert(configureError == nil, "Error configuring Google services: \(configureError)")
-            
-            GIDSignIn.sharedInstance().delegate = self
-            
-            return true
-    }
-    
-    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
-        withError error: NSError!) {
-            if (error == nil) {
-                // Perform any operations on signed in user here.
-                // ...
-            } else {
-                print("\(error.localizedDescription)")
-            }
-    }
-
 }
