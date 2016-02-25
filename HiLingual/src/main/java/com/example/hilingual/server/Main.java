@@ -12,6 +12,10 @@ package com.example.hilingual.server;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.example.hilingual.server.config.RedisConfig;
 import com.example.hilingual.server.config.ServerConfig;
+import com.example.hilingual.server.dao.FacebookIntegrationDAO;
+import com.example.hilingual.server.dao.GoogleIntegrationDAO;
+import com.example.hilingual.server.dao.SessionDAO;
+import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.AuthResource;
 import com.example.hilingual.server.resources.UserResource;
@@ -20,6 +24,7 @@ import com.google.inject.Injector;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.skife.jdbi.v2.DBI;
@@ -79,6 +84,13 @@ public class Main extends Application<ServerConfig> {
         JerseyEnvironment j = environment.jersey();
         j.register(create(AuthResource.class));
         j.register(create(UserResource.class));
+
+        //  Managed
+        LifecycleEnvironment l = environment.lifecycle();
+        l.manage(create(FacebookIntegrationDAO.class));
+        l.manage(create(GoogleIntegrationDAO.class));
+        l.manage(create(SessionDAO.class));
+        l.manage(create(UserDAO.class));
     }
 
     @Override
