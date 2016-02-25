@@ -13,6 +13,7 @@ import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.google.inject.Inject;
+import io.dropwizard.jersey.PATCH;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -41,16 +42,73 @@ public class UserResource {
     }
 
     @GET
-    public User getUser(@PathParam("user-id") long userId) {
-        //  TODO check auth header
-
+    public User getUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
         //  Find the user
         User user = userDAO.getUser(userId);
         if (user != null) {
+            //  Skip scrubbing if its ourselves
+            if (user.getUuid() != authUserId) {
+                //  TODO Determine how much info needs to be scrubbed and scrub it
+            }
             return user;
         }
         throw new NotFoundException();
     }
 
+    @PATCH
+    public User updateUser(@PathParam("user-id") long userId, User user, @HeaderParam("Authorization") String hlat) {
+        //  Only let ourselves update
+        if (userId != user.getUuid()) {
+            throw new ForbiddenException();
+        }
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        if (!sessionDAO.isValidSession(sessionId, userId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User storedUser = userDAO.getUser(userId);
+        //  If we are first time registering, we allow setting stuff like name, username, DoB, gender
+        if (!storedUser.isProfileSet()) {
+            try {
+                //  TODO Verify that these are valid
+
+                storedUser.setName(user.getName());
+                storedUser.setGender(user.getGender());
+                storedUser.setDisplayName(user.getDisplayName());
+                storedUser.setBirthdate(user.getBirthdate());
+                //  Lock the fields
+                storedUser.setProfileSet(true);
+            } catch (NullPointerException npe) {
+                //  Missing fields
+                throw new BadRequestException("Initial registration fields must be set");
+            }
+        }
+        //  Update non-null editable fields
+        if (user.getBio() != null) {
+            storedUser.setBio(user.getBio());
+        }
+        if (user.getBlockedUsers() != null) {
+            storedUser.getBlockedUsers().clear();
+            storedUser.getBlockedUsers().addAll(user.getBlockedUsers());
+        }
+        if (user.getKnownLanguages() != null) {
+            storedUser.getKnownLanguages().clear();
+            storedUser.getKnownLanguages().addAll(user.getKnownLanguages());
+        }
+        if (user.getImageURL() != null) {
+            storedUser.setImageURL(user.getImageURL());
+        }
+        if (user.getName() != null) {
+            storedUser.setName(user.getName());
+        }
+        userDAO.updateUser(storedUser);
+        return storedUser;
+    }
 
 }
