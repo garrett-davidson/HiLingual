@@ -21,4 +21,6 @@ public interface UserDAO {
 
     User createUser();
 
+    User[] findUsers(String query, User invoker);
+
 }

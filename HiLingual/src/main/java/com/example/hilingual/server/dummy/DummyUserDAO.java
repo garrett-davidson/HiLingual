@@ -54,4 +54,14 @@ public class DummyUserDAO implements UserDAO {
         users.put(user.getUuid(), user);
         return user;
     }
+
+    @Override
+    public User[] findUsers(String query, User invoker) {
+        //  For dummy purposes we just grab any random users from our map
+        // (the array backing the map makes no guarantee of order)
+        //  and return it, limiting to 5 results max
+        return users.valueCollection().stream().
+                limit(Math.max(users.size(), 5)).
+                toArray(User[]::new);
+    }
 }
