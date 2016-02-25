@@ -9,7 +9,11 @@
 
 package com.example.hilingual.server.dao;
 
-public interface GoogleIntegrationDAO {
+import io.dropwizard.lifecycle.Managed;
+
+public interface GoogleIntegrationDAO extends Managed {
+
+    void init();
 
     boolean isValidGoogleSession(String accountId, String token);
 

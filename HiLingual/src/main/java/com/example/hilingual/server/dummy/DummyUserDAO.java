@@ -32,6 +32,11 @@ public class DummyUserDAO implements UserDAO {
     }
 
     @Override
+    public void init() {
+        //  Do nothing
+    }
+
+    @Override
     public User getUser(long userId) {
         return users.get(userId);
     }
@@ -63,5 +68,15 @@ public class DummyUserDAO implements UserDAO {
         return users.valueCollection().stream().
                 limit(Math.max(users.size(), 5)).
                 toArray(User[]::new);
+    }
+
+    @Override
+    public void start() throws Exception {
+
+    }
+
+    @Override
+    public void stop() throws Exception {
+
     }
 }

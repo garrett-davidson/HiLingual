@@ -19,6 +19,11 @@ public class DummySessionDAO implements SessionDAO {
     public static final String DUMMYSESSION = "dummysession-";
 
     @Override
+    public void init() {
+        //  Do nothing
+    }
+
+    @Override
     public boolean isValidSession(String sessionId, long userId) {
         return sessionId.startsWith(DUMMYSESSION) && sessionId.endsWith(Long.toString(userId));
     }

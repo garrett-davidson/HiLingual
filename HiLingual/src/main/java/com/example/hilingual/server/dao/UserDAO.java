@@ -10,8 +10,11 @@
 package com.example.hilingual.server.dao;
 
 import com.example.hilingual.server.api.User;
+import io.dropwizard.lifecycle.Managed;
 
-public interface UserDAO {
+public interface UserDAO extends Managed {
+
+    void init();
 
     User getUser(long userId);
 

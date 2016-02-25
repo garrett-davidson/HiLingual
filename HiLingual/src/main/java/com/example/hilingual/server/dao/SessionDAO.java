@@ -19,6 +19,8 @@ import java.util.List;
  */
 public interface SessionDAO extends Managed {
 
+    void init();
+
     /**
      * Checks if the given sessionId is valid for the given user. A given user
      * can have more than one session at a time.

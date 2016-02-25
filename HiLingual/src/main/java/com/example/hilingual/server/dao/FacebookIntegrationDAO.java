@@ -9,7 +9,11 @@
 
 package com.example.hilingual.server.dao;
 
-public interface FacebookIntegrationDAO {
+import io.dropwizard.lifecycle.Managed;
+
+public interface FacebookIntegrationDAO extends Managed {
+
+    void init();
 
     boolean isValidFacebookSession(String accountId, String token);
 
