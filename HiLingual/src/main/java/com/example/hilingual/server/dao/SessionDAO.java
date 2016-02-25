@@ -73,6 +73,9 @@ public interface SessionDAO extends Managed {
     long getSessionOwner(String sessionId);
 
     static String getSessionIdFromHLAT(String hlat) {
+        if (hlat == null) {
+            throw new NotAuthorizedException("Missing session token");
+        }
         if (hlat.startsWith("HLAT ")) {
             return hlat.substring("HLAT ".length());
         }
