@@ -20,7 +20,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     var searchResults = [HLUser]()
 
     var matches = [HLUser]()
-    var request = true
+    var request = [Bool]()
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
         searchTable.hidden = false
@@ -41,6 +41,10 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             
             //Mark: Send to the server
             //whatever is recieved users
+            //fill requests with true for each user
+            searchTable.reloadData()
+            
+            
             
             
     }
@@ -54,16 +58,20 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
     
     @IBAction func sendRequest(sender: UIButton) {
-        //let index = sender.tag
-        print("sent")
+        let index = sender.tag
         
-        if (request){
+        
+        if (request[index]){
             sender.setTitle("Cancel", forState: .Normal)
-            request = false
+            request[index] = false
+            searchTable.reloadData()
+            print("sent")
             //send request to user
         }else{
             sender.setTitle("Send Request", forState: .Normal)
-            request = true
+            searchTable.reloadData()
+            request[index] = true
+            print("cancel")
             //send cancel
         }
         //sender.hidden = true
@@ -91,7 +99,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let photo = UIImage(named: "cantaloupe")!
         let user = HLUser(UUID: "NOthing", name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
         let user1 = HLUser(UUID: "NOthing", name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
-        searchResults += [user,user1]
+        searchResults += [user,user1,HLUser.generateTestUser()]
+        request += [true,true,true]
         
     }
     override func viewDidLoad() {
