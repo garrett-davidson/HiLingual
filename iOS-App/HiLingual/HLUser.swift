@@ -69,14 +69,14 @@ class HLUser: NSCoding {
 
     private static var currentUser: HLUser?
 
-    static func getCurrentUser() -> HLUser {
+    static func getCurrentUser() -> HLUser! {
 
         if (currentUser == nil) {
             //If current user was nil and this failed, something went wrong
-            currentUser = (NSUserDefaults.standardUserDefaults().objectForKey("currentUser") as! HLUser)
+            currentUser = (NSUserDefaults.standardUserDefaults().objectForKey("currentUser") as? HLUser)
         }
 
-        return currentUser!
+        return currentUser
     }
 
     func save() {
