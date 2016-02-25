@@ -17,6 +17,7 @@ class AccountCreationViewController: UIViewController {
     override func viewDidLoad() {
         profileView.user = HLUser.generateTestUser()
         loadFacebookData()
+        loadGoogleData()
     }
 
     @IBAction func saveUser(sender: AnyObject) {
