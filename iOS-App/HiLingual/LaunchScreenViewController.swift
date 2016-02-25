@@ -14,9 +14,8 @@ import UIKit
 //Shows Log In and Sign Up buttons 
 class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
     @IBOutlet weak var googleSignInButton: GIDSignInButton!
-
-    override func viewDidLoad() {
-        super.viewDidLoad();
+    override func viewDidAppear(animated:Bool) {
+        super.viewDidAppear(animated);
 
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signInSilently()
@@ -34,8 +33,8 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             self.view.addSubview(loginButton)
             return
         }
-
-        print("Need to log in")
+        self.performSegueWithIdentifier("previousLogin", sender: self)
+        print("ViewDidLoadHere")
         let loginButton = FBSDKLoginButton()
         loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
         loginButton.center = self.view.center
@@ -46,19 +45,15 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         GIDSignIn.sharedInstance().signInSilently()
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
-        print("User logged in fam")
-
         guard error == nil else {
             //If you know that an optional is not nil, you should force unwrap it when you print it
             print(error!.localizedDescription)
             return
         }
-
         guard !result.isCancelled else {
             print("User cancelled login")
             return
         }
-
         print("Login complete.")
         getUserInfo()
         self.performSegueWithIdentifier("InitialLogin", sender: self)
