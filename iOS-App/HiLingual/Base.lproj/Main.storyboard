@@ -53,7 +53,7 @@
                     <connections>
                         <outlet property="googleSignInButton" destination="ueO-Dy-BUE" id="KOe-hl-tYv"/>
                         <segue destination="0jt-Om-b5k" kind="presentation" identifier="InitialLogin" id="ErH-NY-oPF"/>
-                        <segue destination="0mz-RR-5Wt" kind="presentation" identifier="previousLogin" id="eTR-Rc-7JK"/>
+                        <segue destination="0mz-RR-5Wt" kind="presentation" identifier="previousLogin" modalTransitionStyle="flipHorizontal" id="eTR-Rc-7JK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v2S-FT-Uzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -557,7 +557,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="E7P-wL-Y88"/>
+        <segue reference="eTR-Rc-7JK"/>
         <segue reference="XeF-YT-wgH"/>
     </inferredMetricsTieBreakers>
 </document>
