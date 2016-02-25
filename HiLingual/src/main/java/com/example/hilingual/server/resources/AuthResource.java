@@ -77,6 +77,9 @@ public class AuthResource {
             throw new ClientErrorException(Response.Status.UNAUTHORIZED);
         }
         long userId = getUserIdFromAuthorityAccountId.applyAsLong(authorityAccountId);
+        if (userId == 0) {
+            throw new NotFoundException();
+        }
         String sessionId = sessionDAO.newSession(userId);
         return new AuthenticationResponse(userId, sessionId);
     }
