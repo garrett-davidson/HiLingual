@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0mz-RR-5Wt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10112" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10083"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -52,7 +52,7 @@
                     </view>
                     <connections>
                         <outlet property="googleSignInButton" destination="ueO-Dy-BUE" id="KOe-hl-tYv"/>
-                        <segue destination="rAU-kN-Pj2" kind="presentation" identifier="InitialLogin" id="ErH-NY-oPF"/>
+                        <segue destination="0jt-Om-b5k" kind="presentation" identifier="InitialLogin" id="ErH-NY-oPF"/>
                         <segue destination="0mz-RR-5Wt" kind="presentation" identifier="previousLogin" id="eTR-Rc-7JK"/>
                     </connections>
                 </viewController>
@@ -202,7 +202,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can't message until the request has been accepted " textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncR-NA-06q">
                                 <rect key="frame" x="20" y="289" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -281,12 +281,12 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hNt-U5-mGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2135" y="100"/>
+            <point key="canvasLocation" x="2947" y="100"/>
         </scene>
         <!--Initial Profile Edit-->
         <scene sceneID="xmL-sI-VMN">
             <objects>
-                <viewController title="Initial Profile Edit" id="rAU-kN-Pj2" customClass="ProfileViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Initial Profile Edit" id="rAU-kN-Pj2" customClass="AccountCreationViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Bmt-X7-9EP"/>
                         <viewControllerLayoutGuide type="bottom" id="fbk-8j-HZO"/>
@@ -294,15 +294,35 @@
                     <view key="view" contentMode="scaleToFill" id="faW-i2-Inc">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRK-tG-nLo" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qRK-tG-nLo" firstAttribute="leading" secondItem="faW-i2-Inc" secondAttribute="leading" id="0By-0r-CHJ"/>
+                            <constraint firstAttribute="trailing" secondItem="qRK-tG-nLo" secondAttribute="trailing" id="Nb5-BM-v1v"/>
+                            <constraint firstItem="fbk-8j-HZO" firstAttribute="top" secondItem="qRK-tG-nLo" secondAttribute="bottom" id="eKS-xB-14z"/>
+                            <constraint firstItem="qRK-tG-nLo" firstAttribute="top" secondItem="Bmt-X7-9EP" secondAttribute="bottom" constant="8" id="kUi-kp-ktb"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ifm-1s-9H5">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="dhS-dq-RAP">
+                            <connections>
+                                <action selector="saveUser:" destination="rAU-kN-Pj2" id="xkD-Um-u5H"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <segue destination="0mz-RR-5Wt" kind="show" identifier="DoneEditing" id="Utc-Bd-d16"/>
+                        <outlet property="profileView" destination="qRK-tG-nLo" id="MeB-OQ-ghb"/>
+                        <segue destination="0mz-RR-5Wt" kind="showDetail" identifier="DoneEditing" id="E7P-wL-Y88"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTe-oC-AQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="631" y="100"/>
+            <point key="canvasLocation" x="1443" y="100"/>
         </scene>
         <!--Profile VIew Controller-->
         <scene sceneID="VMN-Fw-WQy">
@@ -336,7 +356,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMp-E7-ke6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3055" y="100"/>
+            <point key="canvasLocation" x="3867" y="100"/>
         </scene>
         <!--Data Source-->
         <scene sceneID="R3e-Td-13D">
@@ -395,7 +415,7 @@
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
                                                                     <rect key="frame" x="0.0" y="52" width="70" height="26"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -515,11 +535,29 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HsG-OM-sHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4655" y="-116"/>
+            <point key="canvasLocation" x="5467" y="-116"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="RDW-iM-Qhh">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0jt-Om-b5k" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pX6-g2-axR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rAU-kN-Pj2" kind="relationship" relationship="rootViewController" id="yVm-q8-nN6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Czw-HC-fmf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="631" y="100"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eTR-Rc-7JK"/>
+        <segue reference="E7P-wL-Y88"/>
         <segue reference="XeF-YT-wgH"/>
     </inferredMetricsTieBreakers>
 </document>

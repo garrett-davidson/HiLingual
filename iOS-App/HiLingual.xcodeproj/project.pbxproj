@@ -25,6 +25,7 @@
 		6876D9A11C5A87A90097332A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6876D99F1C5A87A90097332A /* LaunchScreen.storyboard */; };
 		6876D9AC1C5A87A90097332A /* HiLingualTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9AB1C5A87A90097332A /* HiLingualTests.swift */; };
 		6876D9B71C5A87AA0097332A /* HiLingualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9B61C5A87AA0097332A /* HiLingualUITests.swift */; };
+		687BD42E1C7E9E3A007C5F9B /* AccountCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */; };
 		688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */; };
 		68FCBE051C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
 		68FCBE061C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
@@ -77,6 +78,7 @@
 		6876D9B21C5A87A90097332A /* HiLingualUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiLingualUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D9B61C5A87AA0097332A /* HiLingualUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiLingualUITests.swift; sourceTree = "<group>"; };
 		6876D9B81C5A87AA0097332A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationViewController.swift; sourceTree = "<group>"; };
 		688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		68FCBE041C73C74300918112 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		720F00291C76996200DA197E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
@@ -138,10 +140,12 @@
 		6876D9951C5A87A90097332A /* HiLingual */ = {
 			isa = PBXGroup;
 			children = (
+				687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */,
 				6876D9961C5A87A90097332A /* AppDelegate.swift */,
 				6876D99D1C5A87A90097332A /* Assets.xcassets */,
 				680F24531C716997009F4EE8 /* ChatViewController.swift */,
 				720F00291C76996200DA197E /* ConversationTableViewCell.swift */,
+				720F002B1C7E3F3300DA197E /* DetailViewController.swift */,
 				683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */,
 				680F243F1C70194B009F4EE8 /* HLMessage.swift */,
 				680F24411C701A45009F4EE8 /* HLUser.swift */,
@@ -157,7 +161,6 @@
 				682D14841C76620600443B7D /* ProfileView.swift */,
 				682D14821C765FDE00443B7D /* ProfileView.xib */,
 				680F244F1C7168D6009F4EE8 /* ProfileViewController.swift */,
-				720F002B1C7E3F3300DA197E /* DetailViewController.swift */,
 				7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */,
 			);
 			path = HiLingual;
@@ -391,6 +394,7 @@
 				682D14851C76620600443B7D /* ProfileView.swift in Sources */,
 				6876D9971C5A87A90097332A /* AppDelegate.swift in Sources */,
 				680F24521C716926009F4EE8 /* MatchingViewController.swift in Sources */,
+				687BD42E1C7E9E3A007C5F9B /* AccountCreationViewController.swift in Sources */,
 				680F24421C701A45009F4EE8 /* HLUser.swift in Sources */,
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
