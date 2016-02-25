@@ -84,9 +84,9 @@ public class AuthResource {
 
     @POST
     @Path("logout/{user-id}")
-    public Response logOut(@HeaderParam("Authorization") String sessionToken,
+    public Response logOut(@HeaderParam("Authorization") String hlat,
                            @PathParam("user-id") long userId) {
-        sessionDAO.revokeSession(sessionToken, userId);
+        sessionDAO.revokeSession(SessionDAO.getSessionIdFromHLAT(hlat), userId);
         return Response.noContent().build();
     }
 

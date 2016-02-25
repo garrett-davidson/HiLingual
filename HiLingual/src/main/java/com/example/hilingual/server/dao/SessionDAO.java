@@ -11,6 +11,7 @@ package com.example.hilingual.server.dao;
 
 import io.dropwizard.lifecycle.Managed;
 
+import javax.ws.rs.NotAuthorizedException;
 import java.util.List;
 
 /**
@@ -68,4 +69,11 @@ public interface SessionDAO extends Managed {
      * @return The userId that owns the given session
      */
     long getSessionOwner(String sessionId);
+
+    static String getSessionIdFromHLAT(String hlat) {
+        if (hlat.startsWith("HLAT ")) {
+            return hlat.substring("HLAT ".length());
+        }
+        throw new NotAuthorizedException("Bad session token");
+    }
 }
