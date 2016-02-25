@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
  * <b>Endpoints:</b>
  *
  */
-@Path("/user/{user-id}")
+@Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
@@ -42,6 +42,7 @@ public class UserResource {
     }
 
     @GET
+    @Path("{user-id}")
     public User getUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
@@ -62,15 +63,21 @@ public class UserResource {
     }
 
     @PATCH
+    @Path("{user-id}")
     public User updateUser(@PathParam("user-id") long userId, User user, @HeaderParam("Authorization") String hlat) {
-        //  Only let ourselves update
+        //  Request body user ID must match the ID of the user we wish to update
         if (userId != user.getUuid()) {
             throw new ForbiddenException();
         }
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
-        if (!sessionDAO.isValidSession(sessionId, userId)) {
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
             throw new NotAuthorizedException("Bad session token");
+        }
+        //  Prevent users from editing other users
+        if (userId != authUserId) {
+            throw new ForbiddenException();
         }
         User storedUser = userDAO.getUser(userId);
         //  If we are first time registering, we allow setting stuff like name, username, DoB, gender
