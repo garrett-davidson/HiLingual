@@ -10,12 +10,13 @@ import Foundation
 
 class AccountCreationViewController: UIViewController {
 
-    @IBOutlet weak var profileView: ProfileView!
+
+    @IBOutlet weak var editProfileView: EditProfileView!
 
     var user: HLUser?
 
     override func viewDidLoad() {
-        profileView.user = HLUser.generateTestUser()
+        editProfileView.user = HLUser.generateTestUser()
         loadFacebookData()
         loadGoogleData()
     }
@@ -100,7 +101,7 @@ class AccountCreationViewController: UIViewController {
             picture = UIImage(data: profilePictureData)!
 
             let user = HLUser(UUID: "", name: firstName + " " + lastName, displayName: firstName+lastName, knownLanguages: languages, learningLanguages: [], bio: bio, gender: gender, birthdate: birthday, profilePicture: picture)
-            self.profileView.user = user
+            self.editProfileView.user = user
         })
     }
 
