@@ -60,21 +60,41 @@ class AccountCreationViewController: UIViewController {
             //This force unwrapping is bad practice, but we'll fix it later 😅
             let formatter = NSDateFormatter()
             formatter.dateFormat = "MM/dd/yyyy"
-            birthday = formatter.dateFromString(result.valueForKey("birthday") as! String)!
+            if let birthdayString = result.valueForKey("birthday") as? String {
+                if let fbBirthday = formatter.dateFromString(birthdayString) {
+                    birthday = fbBirthday
+                }
+                else {
+                    birthday = NSDate()
+                }
+            }
+            else {
+                birthday = NSDate()
+            }
+
 
             //First name
-            firstName = result.valueForKey("first_name") as! String
+            if let fbFirstName = result.valueForKey("first_name") as? String {
+                firstName = fbFirstName
+            }
+            else {
+                firstName = ""
+            }
 
             //Gender
-            let genderString = result.valueForKey("gender") as! String
-            switch (genderString) {
-            case "male":
-                gender = .Male
+            if let genderString = result.valueForKey("gender") as? String {
+                switch (genderString) {
+                case "male":
+                    gender = .Male
 
-            case "female":
-                gender = .Female
+                case "female":
+                    gender = .Female
 
-            default:
+                default:
+                    gender = .NotSpecified
+                }
+            }
+            else {
                 gender = .NotSpecified
             }
 
@@ -89,14 +109,19 @@ class AccountCreationViewController: UIViewController {
             }
 
             //Last name
-            lastName = result.valueForKey("last_name") as! String
+            if let fbLastName = result.valueForKey("last_name") as? String {
+                lastName = fbLastName
+            }
+            else {
+                lastName = ""
+            }
 
             //Profile picture
             //Written this way for debug purposes
-            let profilePictureURLString = result.valueForKey("picture")!.valueForKey("data")!.valueForKey("url") as! String
-            let profilePictureURL = NSURL(string: profilePictureURLString)!
-            let profilePictureData = NSData(contentsOfURL: profilePictureURL)!
-            picture = UIImage(data: profilePictureData)!
+            let profilePictureURLString = result.valueForKey("picture")?.valueForKey("data")?.valueForKey("url") as! String
+                let profilePictureURL = NSURL(string: profilePictureURLString)!
+                let profilePictureData = NSData(contentsOfURL: profilePictureURL)!
+                picture = UIImage(data: profilePictureData)!
 
             let user = HLUser(UUID: "", name: firstName + " " + lastName, displayName: firstName+lastName, knownLanguages: languages, learningLanguages: [], bio: bio, gender: gender, birthdate: birthday, profilePicture: picture)
             self.profileView.user = user
