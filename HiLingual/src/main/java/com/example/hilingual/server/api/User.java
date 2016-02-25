@@ -23,10 +23,11 @@ public class User {
     private Set<Locale> learningLanguages;
     private Set<User> blockedUsers;
     private Set<User> usersChattedWith;
+    private boolean profileSet;
 
     public User(long uuid, String name, String displayName, String bio, Gender gender, Date birthdate,
                 URL imageURL, Set<Locale> knownLanguages, Set<Locale> learningLanguages,
-                Set<User> blockedUsers, Set<User> usersChattedWith) {
+                Set<User> blockedUsers, Set<User> usersChattedWith, boolean profileSet) {
         this.uuid = uuid;
         this.name = name;
         this.displayName = displayName;
@@ -38,6 +39,7 @@ public class User {
         this.learningLanguages = learningLanguages;
         this.blockedUsers = blockedUsers;
         this.usersChattedWith = usersChattedWith;
+        this.profileSet = profileSet;
     }
 
     @JsonProperty
@@ -123,6 +125,21 @@ public class User {
     @JsonProperty
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @JsonProperty
+    public void setImageURL(URL imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    @JsonIgnore
+    public boolean isProfileSet() {
+        return profileSet;
+    }
+
+    @JsonIgnore
+    public void setProfileSet(boolean profileSet) {
+        this.profileSet = profileSet;
     }
 
     @JsonIgnore

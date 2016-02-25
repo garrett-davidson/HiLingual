@@ -25,7 +25,7 @@ public class DummyUserDAO implements UserDAO {
     private TLongObjectMap<User> users = new TLongObjectHashMap<>();
     public static final User JOHN_DOE = new User(1, "johndoe", "John Doe", "", Gender.MALE, Date.from(Instant.now()),
             null, Sets.newHashSet(Locale.ENGLISH), Sets.newHashSet(Locale.JAPANESE),
-            Sets.newHashSet(), Sets.newHashSet());
+            Sets.newHashSet(), Sets.newHashSet(), true);
 
     public DummyUserDAO() {
         updateUser(JOHN_DOE);
@@ -50,7 +50,7 @@ public class DummyUserDAO implements UserDAO {
     public User createUser() {
         User user = new User(users.size() + 1, "", "", "", Gender.NOT_SET, new Date(1), null,
                 Sets.newHashSet(), Sets.newHashSet(),
-                Sets.newHashSet(), Sets.newHashSet());
+                Sets.newHashSet(), Sets.newHashSet(), false);
         users.put(user.getUuid(), user);
         return user;
     }
