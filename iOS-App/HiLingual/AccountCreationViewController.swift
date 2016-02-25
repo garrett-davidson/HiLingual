@@ -80,7 +80,7 @@ class AccountCreationViewController: UIViewController {
 
             //Languages
             languages = []
-            if let languageStrings = result.valueForKey("languages")!.valueForKey("name") as? [String] {
+            if let languageStrings = result.valueForKey("languages")?.valueForKey("name") as? [String] {
                 for langString in languageStrings {
                     if let lang = Languages(rawValue: langString) {
                         languages.append(lang)
