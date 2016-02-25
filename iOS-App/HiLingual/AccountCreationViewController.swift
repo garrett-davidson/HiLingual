@@ -16,7 +16,8 @@ class AccountCreationViewController: UIViewController {
 
     override func viewDidLoad() {
         profileView.user = HLUser.generateTestUser()
-        loadFacebookData()
+//        loadFacebookData()
+        loadGoogleData()
     }
 
     @IBAction func saveUser(sender: AnyObject) {
@@ -57,7 +58,6 @@ class AccountCreationViewController: UIViewController {
             }
 
             //Birthday
-            //This force unwrapping is bad practice, but we'll fix it later 😅
             let formatter = NSDateFormatter()
             formatter.dateFormat = "MM/dd/yyyy"
             if let birthdayString = result.valueForKey("birthday") as? String {
@@ -118,6 +118,7 @@ class AccountCreationViewController: UIViewController {
 
             //Profile picture
             //Written this way for debug purposes
+            //I don't think this can be nil, so we're leaving it like this for now
             let profilePictureURLString = result.valueForKey("picture")?.valueForKey("data")?.valueForKey("url") as! String
                 let profilePictureURL = NSURL(string: profilePictureURLString)!
                 let profilePictureData = NSData(contentsOfURL: profilePictureURL)!
@@ -129,6 +130,16 @@ class AccountCreationViewController: UIViewController {
     }
 
     func loadGoogleData() {
+        let googleUser = GIDSignIn.sharedInstance().currentUser
 
+        let picture: UIImage?
+        let userName = googleUser.profile.name
+
+        if googleUser.profile.hasImage {
+            picture = UIImage(data: NSData(contentsOfURL: googleUser.profile.imageURLWithDimension(100))!)
+        }
+        else {
+            picture = nil
+        }
     }
 }
