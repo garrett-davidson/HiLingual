@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditProfileView" customModule="HiLingual" customModuleProvider="target">
+            <connections>
+                <outlet property="ageLabel" destination="thM-fQ-h5b" id="2Bt-no-d0a"/>
+                <outlet property="bioText" destination="VCT-Qw-TZ1" id="jBl-sQ-PhW"/>
+                <outlet property="genderLabel" destination="EP1-OT-Q5T" id="wXr-vP-k6b"/>
+                <outlet property="languagesLearning" destination="CCJ-CG-M0J" id="OEE-BP-0tw"/>
+                <outlet property="languagesSpeaks" destination="4Fl-0e-YAL" id="59y-od-wW5"/>
+                <outlet property="nameText" destination="v2x-fg-pw2" id="y9a-1z-aLu"/>
+                <outlet property="pickerView" destination="xuJ-H6-jyd" id="cw3-UN-yg8"/>
+                <outlet property="profileImage" destination="prR-kc-wq2" id="hdL-fN-wNQ"/>
+                <outlet property="toolBar" destination="jeS-Zi-PjY" id="B0u-rM-mMu"/>
+                <outlet property="view" destination="iN0-l3-epB" id="QzI-bb-sGX"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="0Lt-LS-xOJ">
+                    <rect key="frame" x="8" y="8" width="359" height="160"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prR-kc-wq2">
+                            <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="160" id="HYS-ET-YSp"/>
+                                <constraint firstAttribute="width" secondItem="prR-kc-wq2" secondAttribute="height" multiplier="1:1" id="I9m-Ih-f6X"/>
+                                <constraint firstAttribute="width" constant="160" id="mUa-6b-y5j"/>
+                            </constraints>
+                        </imageView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6P6-cM-HDo">
+                            <rect key="frame" x="160" y="0.0" width="199" height="94"/>
+                            <subviews>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2x-fg-pw2">
+                                    <rect key="frame" x="0.0" y="0.0" width="199" height="26"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EP1-OT-Q5T">
+                                    <rect key="frame" x="0.0" y="34" width="199" height="26"/>
+                                    <gestureRecognizers/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="7xG-BG-M2c" appends="YES" id="RmO-Ud-eZo"/>
+                                    </connections>
+                                </label>
+                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thM-fQ-h5b">
+                                    <rect key="frame" x="0.0" y="68" width="199" height="26"/>
+                                    <gestureRecognizers/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="ZhA-lO-5cN" appends="YES" id="55n-ei-Dfo"/>
+                                    </connections>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="EP1-OT-Q5T" secondAttribute="trailing" id="9QE-E1-4G9"/>
+                                <constraint firstAttribute="trailing" secondItem="v2x-fg-pw2" secondAttribute="trailing" id="Njw-jo-Xvh"/>
+                                <constraint firstAttribute="trailing" secondItem="thM-fQ-h5b" secondAttribute="trailing" id="ejk-GE-Xr5"/>
+                                <constraint firstItem="EP1-OT-Q5T" firstAttribute="height" secondItem="v2x-fg-pw2" secondAttribute="height" id="fkA-2b-hLo"/>
+                                <constraint firstItem="thM-fQ-h5b" firstAttribute="height" secondItem="EP1-OT-Q5T" secondAttribute="height" id="qub-Cf-Ulp"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="prR-kc-wq2" secondAttribute="bottom" id="3qc-9V-dXS"/>
+                    </constraints>
+                </stackView>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fl-0e-YAL">
+                    <rect key="frame" x="8" y="176" width="359" height="21"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="c0q-aN-1jJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="5xf-sL-gMJ" appends="YES" id="528-LU-Qx2"/>
+                    </connections>
+                </label>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCJ-CG-M0J">
+                    <rect key="frame" x="8" y="205" width="359" height="21"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="9Rz-eg-CUg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="6OE-2I-EBj" appends="YES" id="0bC-Zy-1f6"/>
+                    </connections>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-Qw-TZ1">
+                    <rect key="frame" x="0.0" y="244" width="375" height="423"/>
+                    <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textView>
+                <pickerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuJ-H6-jyd">
+                    <rect key="frame" x="0.0" y="451" width="375" height="216"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="VGX-HU-goR"/>
+                        <outlet property="delegate" destination="-1" id="8gq-yj-gu0"/>
+                    </connections>
+                </pickerView>
+                <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeS-Zi-PjY">
+                    <rect key="frame" x="0.0" y="407" width="375" height="44"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="4j0-KW-aCx"/>
+                        <barButtonItem title="Done" id="g3o-wo-TLm">
+                            <connections>
+                                <action selector="donePicker:" destination="-1" id="4by-CH-Ste"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="VCT-Qw-TZ1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="33b-9W-NLS"/>
+                <constraint firstItem="4Fl-0e-YAL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="5WM-We-fFQ"/>
+                <constraint firstAttribute="trailing" secondItem="xuJ-H6-jyd" secondAttribute="trailing" id="5ev-2h-p6Y"/>
+                <constraint firstAttribute="bottom" secondItem="xuJ-H6-jyd" secondAttribute="bottom" id="7v0-TB-a4m"/>
+                <constraint firstAttribute="trailing" secondItem="4Fl-0e-YAL" secondAttribute="trailing" constant="8" id="CpU-aB-wpJ"/>
+                <constraint firstItem="xuJ-H6-jyd" firstAttribute="trailing" secondItem="VCT-Qw-TZ1" secondAttribute="trailing" id="IRh-wf-h9m"/>
+                <constraint firstItem="VCT-Qw-TZ1" firstAttribute="centerX" secondItem="0Lt-LS-xOJ" secondAttribute="centerX" id="KtV-ad-Qq8"/>
+                <constraint firstItem="0Lt-LS-xOJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="ObL-WE-8M4"/>
+                <constraint firstItem="jeS-Zi-PjY" firstAttribute="bottom" secondItem="xuJ-H6-jyd" secondAttribute="top" id="Ta4-kF-mEX"/>
+                <constraint firstAttribute="trailingMargin" secondItem="0Lt-LS-xOJ" secondAttribute="trailing" id="U5B-l3-m9u"/>
+                <constraint firstAttribute="trailing" secondItem="CCJ-CG-M0J" secondAttribute="trailing" constant="8" id="UYk-xW-jWr"/>
+                <constraint firstItem="0Lt-LS-xOJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="Vxw-B8-MjE"/>
+                <constraint firstItem="CCJ-CG-M0J" firstAttribute="top" secondItem="4Fl-0e-YAL" secondAttribute="bottom" constant="8" symbolic="YES" id="XHO-MI-c3E"/>
+                <constraint firstAttribute="bottom" secondItem="0Lt-LS-xOJ" secondAttribute="bottom" constant="499" id="adU-fH-NyY"/>
+                <constraint firstItem="xuJ-H6-jyd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bNM-0S-EdM"/>
+                <constraint firstAttribute="bottom" secondItem="VCT-Qw-TZ1" secondAttribute="bottom" id="cQx-JL-2mT"/>
+                <constraint firstItem="4Fl-0e-YAL" firstAttribute="top" secondItem="0Lt-LS-xOJ" secondAttribute="bottom" constant="8" id="ieL-W8-dTB"/>
+                <constraint firstItem="jeS-Zi-PjY" firstAttribute="trailing" secondItem="VCT-Qw-TZ1" secondAttribute="trailing" id="kkd-rq-Q2Y"/>
+                <constraint firstItem="0Lt-LS-xOJ" firstAttribute="leading" secondItem="CCJ-CG-M0J" secondAttribute="leading" id="rU7-5f-rlI"/>
+                <constraint firstItem="jeS-Zi-PjY" firstAttribute="leading" secondItem="xuJ-H6-jyd" secondAttribute="leading" id="t20-Ce-W48"/>
+                <constraint firstItem="VCT-Qw-TZ1" firstAttribute="top" secondItem="CCJ-CG-M0J" secondAttribute="bottom" constant="18" id="tWb-kT-OLs"/>
+                <constraint firstItem="xuJ-H6-jyd" firstAttribute="bottom" secondItem="VCT-Qw-TZ1" secondAttribute="bottom" id="vi8-we-knA"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <point key="canvasLocation" x="252.5" y="382.5"/>
+        </view>
+        <tapGestureRecognizer cancelsTouchesInView="NO" id="7xG-BG-M2c" userLabel="Tap Gesture Gender">
+            <connections>
+                <action selector="genderTap:" destination="-1" id="BEb-h0-F31"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer cancelsTouchesInView="NO" id="ZhA-lO-5cN" userLabel="Tap Gesture Age">
+            <connections>
+                <action selector="ageTap:" destination="-1" id="92i-YK-uh1"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer cancelsTouchesInView="NO" id="5xf-sL-gMJ" userLabel="Tap Gesture Speaks">
+            <connections>
+                <action selector="speaksTap:" destination="-1" id="e9z-dV-Ofy"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer cancelsTouchesInView="NO" id="6OE-2I-EBj" userLabel="Tap Gesture Learning">
+            <connections>
+                <action selector="learningTap:" destination="-1" id="qeH-v0-NeA"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+</document>
