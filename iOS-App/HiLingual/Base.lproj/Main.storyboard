@@ -296,7 +296,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRK-tG-nLo" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -305,7 +305,7 @@
                             <constraint firstItem="qRK-tG-nLo" firstAttribute="leading" secondItem="faW-i2-Inc" secondAttribute="leading" id="0By-0r-CHJ"/>
                             <constraint firstAttribute="trailing" secondItem="qRK-tG-nLo" secondAttribute="trailing" id="Nb5-BM-v1v"/>
                             <constraint firstItem="fbk-8j-HZO" firstAttribute="top" secondItem="qRK-tG-nLo" secondAttribute="bottom" id="eKS-xB-14z"/>
-                            <constraint firstItem="qRK-tG-nLo" firstAttribute="top" secondItem="Bmt-X7-9EP" secondAttribute="bottom" constant="8" id="kUi-kp-ktb"/>
+                            <constraint firstItem="qRK-tG-nLo" firstAttribute="top" secondItem="Bmt-X7-9EP" secondAttribute="bottom" id="kUi-kp-ktb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ifm-1s-9H5">

@@ -9,5 +9,8 @@
 import Foundation
 
 class HLUserSession {
-    
+    func isValid() -> Bool {
+        //Check to make sure the current token is valid
+        return true
+    }
 }

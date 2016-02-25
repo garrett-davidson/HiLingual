@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum Gender: Int {
-    case Male = 0, Female
+    case Male = 0, Female, NotSpecified
 }
 
 class HLUser: NSCoding {
@@ -27,7 +27,7 @@ class HLUser: NSCoding {
     var blockedUsers: [HLUser]?
     var usersChattedWith: [HLUser]
 
-    var session: HLUserSession?
+    private var session: HLUserSession?
 
 
     init(UUID: String, name: String, displayName: String, knownLanguages: [Languages], learningLanguages: [Languages], bio: String, gender: Gender, birthdate: NSDate, profilePicture: UIImage) {
@@ -83,6 +83,15 @@ class HLUser: NSCoding {
         //This should only be called on the current user
         HLUser.currentUser = self
         NSUserDefaults.standardUserDefaults().setObject(HLUser.currentUser!, forKey: "currentUser")
+    }
+
+    func getSession() -> HLUserSession? {
+        //The expilicit check against false handles the nil case
+        if ((session?.isValid()) == false) {
+            session = nil
+        }
+
+        return session
     }
 
     @objc func encodeWithCoder(aCoder: NSCoder) {

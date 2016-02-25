@@ -28,7 +28,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         guard FBSDKAccessToken.currentAccessToken() != nil else {
             print("Need to log in")
             let loginButton = FBSDKLoginButton()
-            loginButton.readPermissions = ["public_profile", "email","user_birthday","user_location","user_photos"]
+            loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
             loginButton.center = self.view.center
             loginButton.delegate = self
             self.view.addSubview(loginButton)
@@ -37,7 +37,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
         print("Need to log in")
         let loginButton = FBSDKLoginButton()
-        loginButton.readPermissions = ["public_profile", "email"]
+        loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
         loginButton.center = self.view.center
         loginButton.delegate = self
         self.view.addSubview(loginButton)
