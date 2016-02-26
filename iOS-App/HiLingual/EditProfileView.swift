@@ -52,22 +52,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     @IBAction func genderTap(sender: AnyObject) {
-        if(user.gender == .NotSpecified){
+        //if(user.gender == .NotSpecified){
             genderBool = true
+            ageBool = false
             animationUp()
             pickerData = ["Male", "Female"]
             pickerView.reloadAllComponents()
-        }
+        //}
         
     }
     
     @IBAction func ageTap(sender: AnyObject) {
-        if(user.birthdate == NSDate()){
+        //if(user.birthdate == NSDate()){
             ageBool = true
+            genderBool = false
             animationUp()
             pickerAge += 13...100
             pickerView.reloadAllComponents()
-        }
+        //}
     }
     
     @IBAction func speaksTap(sender: AnyObject) {
@@ -89,12 +91,15 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    
         if (genderBool && !ageBool){
             genderLabel.text = pickerData[row]
         } else if (ageBool && !genderBool){
             ageLabel.text = "\(pickerAge[row])"
         }
     }
+    
+
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -142,15 +147,15 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     
     func animationUp(){
         
-        UIView.animateWithDuration(1, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
-        UIView.animateWithDuration(1, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
         
     }
     
     func animationDown(){
         
-        UIView.animateWithDuration(1, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
-        UIView.animateWithDuration(1, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
     }
 
 

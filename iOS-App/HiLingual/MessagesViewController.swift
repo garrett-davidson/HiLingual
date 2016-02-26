@@ -42,7 +42,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         let user = conversations[indexPath.row]
         let hidden = hiddenButtons[indexPath.row]
         //Should it be displayname or name?
-        cell.name.text = user.displayName
+        if(hidden){
+            cell.name.text = user.name
+        }else{
+            cell.name.text = user.displayName
+        }
         cell.profilePicture.layer.masksToBounds = false
         cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
         cell.profilePicture.clipsToBounds = true

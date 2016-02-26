@@ -19,7 +19,12 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var userCanMessageLabel: UILabel!
     
     override func viewDidLoad() {
-        self.title = user.displayName
+        
+        if((messageHidden) != nil && messageHidden == true){
+            self.title = user.name
+        }else{
+            self.title = user.displayName
+        }
         userCanMessageLabel.hidden = messageHidden
         print(user.name)
     }
