@@ -55,7 +55,7 @@ class AccountCreationViewController: UIViewController {
                 bio = bioString
             }
             else {
-                bio = ""
+                bio = "Bio"
             }
 
             //Birthday

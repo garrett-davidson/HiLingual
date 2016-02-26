@@ -25,6 +25,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
         searchTable.hidden = false
         searchBar.showsCancelButton = true
+        searchBar.showsSearchResultsButton = true
         return true
         
     }
@@ -32,21 +33,25 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchTable.hidden = true
         searchBar.showsCancelButton = false
+        searchBar.showsSearchResultsButton = false
         searchBar.resignFirstResponder()
         
     }
-    
+    /*
     func searchBar(searchBar: UISearchBar,
         textDidChange searchText: String){
-            
             //Mark: Send to the server
             //whatever is recieved users
             //fill requests with true for each user
             searchTable.reloadData()
-            
-            
-            
-            
+    }
+    */
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        //Mark: Send to the server
+        //whatever users that are received go into users
+        //fill requests with true for each user
+        print("sent search")
+        searchTable.reloadData()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
