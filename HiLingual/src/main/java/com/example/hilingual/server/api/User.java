@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public class User {
-    private long uuid;
+    private long userId;
     private String name;
     private String displayName;
     private String bio;
@@ -25,10 +25,10 @@ public class User {
     private Set<User> usersChattedWith;
     private boolean profileSet;
 
-    public User(long uuid, String name, String displayName, String bio, Gender gender, Date birthdate,
+    public User(long userId, String name, String displayName, String bio, Gender gender, Date birthdate,
                 URL imageURL, Set<Locale> knownLanguages, Set<Locale> learningLanguages,
                 Set<User> blockedUsers, Set<User> usersChattedWith, boolean profileSet) {
-        this.uuid = uuid;
+        this.userId = userId;
         this.name = name;
         this.displayName = displayName;
         this.bio = bio;
@@ -43,8 +43,8 @@ public class User {
     }
 
     @JsonProperty
-    public long getUuid() {
-        return uuid;
+    public long getUserId() {
+        return userId;
     }
 
     @JsonProperty
@@ -103,8 +103,8 @@ public class User {
     }
 
     @JsonProperty
-    public void setUuid(long uuid) {
-        this.uuid = uuid;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     @JsonProperty

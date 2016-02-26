@@ -116,7 +116,7 @@ public class AuthResource {
             throw new ClientErrorException(Response.Status.UNAUTHORIZED);
         }
         User user = userDAO.createUser();
-        long userId = user.getUuid();
+        long userId = user.getUserId();
         assignUserIdToAccount.accept(userId, authorityAccountId);
         String sessionId = sessionDAO.newSession(userId);
         return new AuthenticationResponse(userId, sessionId);

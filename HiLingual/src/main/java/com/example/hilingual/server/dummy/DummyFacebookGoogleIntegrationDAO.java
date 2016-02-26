@@ -22,8 +22,8 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
     public DummyFacebookGoogleIntegrationDAO() {
         googleAccts = new TObjectLongHashMap<>();
         fbAccts = new TObjectLongHashMap<>();
-        googleAccts.put("0", DummyUserDAO.JOHN_DOE.getUuid());
-        fbAccts.put("0", DummyUserDAO.JOHN_DOE.getUuid());
+        googleAccts.put("0", DummyUserDAO.JOHN_DOE.getUserId());
+        fbAccts.put("0", DummyUserDAO.JOHN_DOE.getUserId());
     }
 
     @Override

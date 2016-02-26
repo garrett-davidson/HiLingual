@@ -43,7 +43,7 @@ public class DummyUserDAO implements UserDAO {
 
     @Override
     public void updateUser(User newUserData) {
-        users.put(newUserData.getUuid(), newUserData);
+        users.put(newUserData.getUserId(), newUserData);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DummyUserDAO implements UserDAO {
         User user = new User(users.size() + 1, "", "", "", Gender.NOT_SET, new Date(1), null,
                 Sets.newHashSet(), Sets.newHashSet(),
                 Sets.newHashSet(), Sets.newHashSet(), false);
-        users.put(user.getUuid(), user);
+        users.put(user.getUserId(), user);
         return user;
     }
 

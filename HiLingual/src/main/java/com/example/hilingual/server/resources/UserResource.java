@@ -54,7 +54,7 @@ public class UserResource {
         User user = userDAO.getUser(userId);
         if (user != null) {
             //  Skip scrubbing if its ourselves
-            if (user.getUuid() != authUserId) {
+            if (user.getUserId() != authUserId) {
                 //  TODO Determine how much info needs to be scrubbed and scrub it
             }
             return user;
@@ -66,7 +66,7 @@ public class UserResource {
     @Path("{user-id}")
     public User updateUser(@PathParam("user-id") long userId, User user, @HeaderParam("Authorization") String hlat) {
         //  Request body user ID must match the ID of the user we wish to update
-        if (userId != user.getUuid()) {
+        if (userId != user.getUserId()) {
             throw new ForbiddenException();
         }
         //  Check auth
