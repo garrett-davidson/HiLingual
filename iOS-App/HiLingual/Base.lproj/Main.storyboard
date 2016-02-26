@@ -329,29 +329,17 @@
             <objects>
                 <viewController title="Profile VIew Controller" id="Q1f-p8-L4k" customClass="ProfileViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="rlE-pe-iZu"/>
-                        <viewControllerLayoutGuide type="bottom" id="bSj-Mw-pjg"/>
+                        <viewControllerLayoutGuide type="top" id="3fu-bS-tSv"/>
+                        <viewControllerLayoutGuide type="bottom" id="CW8-Eh-gqr"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ie9-if-uOt">
+                    <view key="view" contentMode="scaleToFill" id="Iso-nN-x3G">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fPq-LF-HYR" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="523"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="fPq-LF-HYR" firstAttribute="top" secondItem="Ie9-if-uOt" secondAttribute="top" constant="28" id="6qX-ZB-46j"/>
-                            <constraint firstItem="bSj-Mw-pjg" firstAttribute="top" secondItem="fPq-LF-HYR" secondAttribute="bottom" id="P1k-ug-OWH"/>
-                            <constraint firstAttribute="trailing" secondItem="fPq-LF-HYR" secondAttribute="trailing" id="QHk-gV-KmT"/>
-                            <constraint firstItem="fPq-LF-HYR" firstAttribute="leading" secondItem="Ie9-if-uOt" secondAttribute="leading" id="eRM-VK-34f"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" id="ndt-1q-acR"/>
                     <connections>
-                        <outlet property="profileView" destination="fPq-LF-HYR" id="vvN-zC-m45"/>
+                        <outlet property="editProfileView" destination="Iso-nN-x3G" id="hpC-DS-Cnq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMp-E7-ke6" userLabel="First Responder" sceneMemberID="firstResponder"/>

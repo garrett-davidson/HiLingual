@@ -15,6 +15,7 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     @IBOutlet weak var editProfileView: EditProfileView!
+    //@IBOutlet weak var editProfileView: EditProfileView!
     
     var user: HLUser?
     
