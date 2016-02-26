@@ -65,10 +65,6 @@ public class UserResource {
     @PATCH
     @Path("{user-id}")
     public User updateUser(@PathParam("user-id") long userId, User user, @HeaderParam("Authorization") String hlat) {
-        //  Request body user ID must match the ID of the user we wish to update
-        if (userId != user.getUserId()) {
-            throw new ForbiddenException();
-        }
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
