@@ -9,20 +9,38 @@
 
 package com.example.hilingual.server.dao.impl;
 
+import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.FacebookIntegrationDAO;
 import com.google.inject.Inject;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import io.dropwizard.lifecycle.Managed;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONObject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.core.MediaType;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Managed {
 
     private final DBI dbi;
+    private ServerConfig config;
     private Handle handle;
 
+    private static Logger LOGGER = Logger.getLogger(FacebookIntegrationDAOImpl.class.getName());
+
     @Inject
-    public FacebookIntegrationDAOImpl(DBI dbi) {
+    public FacebookIntegrationDAOImpl(DBI dbi, ServerConfig config) {
         this.dbi = dbi;
+        this.config = config;
     }
 
     @Override
@@ -34,9 +52,27 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
 
     @Override
     public boolean isValidFacebookSession(String accountId, String token) {
-        //  TODO Hit Facebook server
-        //  Return true for now
-        return true;
+        Map<String, Object> queryParams = new LinkedHashMap<>();
+        queryParams.put("input_token", token);
+        queryParams.put("access_token",
+                config.getFacebookConfig().getId() + "|" + config.getFacebookConfig().getSecret());
+        try {
+            HttpResponse<JsonNode> response = Unirest.get("https://graph.facebook.com/debug_token").
+                    header(HTTP.CONTENT_TYPE, MediaType.APPLICATION_JSON).
+                    queryString(queryParams).
+                    asJson();
+            if (response.getStatus() != 200) {
+                throw new UnirestException("Facebook returned non-200 response code " + response.getStatus() +
+                        ", " + response.getStatusText());
+            }
+            JSONObject val = response.getBody().getObject();
+            return val.getBoolean("is_valid") &&    //  Whether or not the token is valid
+                    config.getFacebookConfig().getId().equals(val.getString("app_id")) &&   //  If this is our app
+                    accountId.equals(val.getString("user_id")); //  If this is our user
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Failed to contact Facebook", e);
+            throw new InternalServerErrorException("Failed to contact Facebook", e);
+        }
     }
 
     @Override
