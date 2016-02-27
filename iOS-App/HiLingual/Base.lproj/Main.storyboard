@@ -376,11 +376,23 @@
                     <view key="view" contentMode="scaleToFill" id="Iso-nN-x3G">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iwx-Bx-znf" customClass="EditProfileView" customModule="HiLingual" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="iwx-Bx-znf" firstAttribute="top" secondItem="3fu-bS-tSv" secondAttribute="bottom" id="A43-xE-Ae7"/>
+                            <constraint firstItem="iwx-Bx-znf" firstAttribute="leading" secondItem="Iso-nN-x3G" secondAttribute="leading" id="Pch-Tl-Ykm"/>
+                            <constraint firstAttribute="trailing" secondItem="iwx-Bx-znf" secondAttribute="trailing" id="dLB-PZ-k7g"/>
+                            <constraint firstItem="CW8-Eh-gqr" firstAttribute="top" secondItem="iwx-Bx-znf" secondAttribute="bottom" id="eJ5-Nb-np8"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" id="ndt-1q-acR"/>
                     <connections>
-                        <outlet property="editProfileView" destination="Iso-nN-x3G" id="hpC-DS-Cnq"/>
+                        <outlet property="editProfileView" destination="iwx-Bx-znf" id="ILe-5x-EWJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMp-E7-ke6" userLabel="First Responder" sceneMemberID="firstResponder"/>
