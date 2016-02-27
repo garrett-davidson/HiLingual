@@ -41,8 +41,12 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
         let user = conversations[indexPath.row]
         let hidden = hiddenButtons[indexPath.row]
-        //Should it be display name or name?
-        cell.name.text = user.displayName
+        //Should it be displayname or name?
+        if(hidden){
+            cell.name.text = user.name
+        }else{
+            cell.name.text = user.displayName
+        }
         cell.profilePicture.layer.masksToBounds = false
         cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
         cell.profilePicture.clipsToBounds = true
@@ -57,7 +61,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.lastMessage.text = "This is an already accepted request"
         }else{
             cell.selectionStyle = UITableViewCellSelectionStyle.None
-            //cell.userInteractionEnabled = false
             cell.date.text = ""
             cell.lastMessage.text = ""
             
@@ -69,8 +72,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         let index = sender.tag
         hiddenButtons[index] = true
         converstationTable.reloadData()
-        //hiddenButtons[index] = true
-        //let indexPath = NSIndexPath(forRow: index, inSection: 0)
         
     }
     @IBAction func decline(sender: UIButton) {

@@ -78,7 +78,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             //let userGender = result.valueForKey("gender") as! String
             print("User Name is: \(userName)")
            // print("User Gender  is: \(userGender)")
-            print("User Email is:  \(result.valueForKey("email") as! String)")
+            //print("User Email is:  \(result.valueForKey("email") as! String)")
         })
     }
 }

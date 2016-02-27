@@ -14,9 +14,14 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-    @IBOutlet weak var profileView: ProfileView!
-
+    @IBOutlet weak var editProfileView: EditProfileView!
+    //@IBOutlet weak var editProfileView: EditProfileView!
+    
+    var user: HLUser?
+    
     override func viewDidLoad() {
-        profileView.user = HLUser.generateTestUser()
+        //editProfileView.user = HLUser.getCurrentUser();
+        editProfileView.user = HLUser.generateTestUser();
     }
+
 }

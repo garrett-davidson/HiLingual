@@ -24,6 +24,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var bioText: UITextView!
     @IBOutlet weak var languagesLearning: UILabel!
     @IBOutlet weak var languagesSpeaks: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var toolBar: UIToolbar!
     
@@ -35,9 +36,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     }
     func refreshUI() {
         profileImage.image = user.profilePicture
+        nameLabel.text = user.name
         nameText.text = user.displayName
-        genderLabel.text = "Gender"
-        ageLabel.text = "\(NSCalendar.currentCalendar().components(.Year, fromDate: user.birthdate).year)"
+        //can people have the same display name 💩
+        //don't know how to send infoback to accountcreationview
+        genderLabel.text = "\(user.gender)"
+        //age is current date - birthday date will need to change later 💩
+        ageLabel.text = "\(NSCalendar.currentCalendar().components([.Day , .Month , .Year], fromDate: NSDate()).year - NSCalendar.currentCalendar().components(.Year, fromDate: user.birthdate).year)"
         languagesSpeaks.text = "Speaks: " + user.knownLanguages.toList()
         languagesLearning.text = "Learning: " + user.learningLanguages.toList()
         bioText.text = user.bio
@@ -47,24 +52,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     @IBAction func genderTap(sender: AnyObject) {
-        //if gender is set can't change
-        
-        //Do animation still 💩
-        genderBool = true
-        toolBar.hidden = false
-        pickerView.hidden = false
-        pickerData = ["Male", "Female"]
-        pickerView.reloadAllComponents()
+        //if(user.gender == .NotSpecified){
+            genderBool = true
+            ageBool = false
+            animationUp()
+            pickerData = ["Male", "Female"]
+            pickerView.reloadAllComponents()
+        //}
         
     }
     
     @IBAction func ageTap(sender: AnyObject) {
-        //if age is set can't change
-        ageBool = true
-        pickerView.hidden = false
-        toolBar.hidden = false
-        pickerAge += 13...100
-        pickerView.reloadAllComponents()
+        //if(user.birthdate == NSDate()){
+            ageBool = true
+            genderBool = false
+            animationUp()
+            pickerAge += 13...100
+            pickerView.reloadAllComponents()
+        //}
     }
     
     @IBAction func speaksTap(sender: AnyObject) {
@@ -76,9 +81,9 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (genderBool){
+        if (genderBool && !ageBool){
             return pickerData[row]
-        } else if (ageBool){
+        } else if (ageBool && !genderBool){
             return "\(pickerAge[row])"
         } else{
             return pickerData[row]
@@ -86,21 +91,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if (genderBool){
+    
+        if (genderBool && !ageBool){
             genderLabel.text = pickerData[row]
-        } else if (ageBool){
+        } else if (ageBool && !genderBool){
             ageLabel.text = "\(pickerAge[row])"
         }
     }
+    
+
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (genderBool){
+        if (genderBool && !ageBool){
             return pickerData.count
-        } else if (ageBool){
+        } else if (ageBool && !genderBool){
             return pickerAge.count
         } else{
             return pickerData.count
@@ -111,8 +119,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
         
         ageBool = false
         genderBool = false
-        pickerView.hidden = true
-        toolBar.hidden = true
+        animationDown()
     }
     
     init(decoder: NSCoder?, frame: CGRect?) {
@@ -132,9 +139,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
         pickerView.backgroundColor = .whiteColor()
         toolBar.backgroundColor = .whiteColor()
+        self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2
+        self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2
+        
         
     }
-
+    
+    func animationUp(){
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
+        
+    }
+    
+    func animationDown(){
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+    }
 
 
 }
