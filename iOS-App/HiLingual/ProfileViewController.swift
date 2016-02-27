@@ -12,7 +12,8 @@ import UIKit
 //Displays the current user's profile
 //Facilitates editing of any aspect of the profile
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate
+{
 
     @IBOutlet weak var editProfileView: EditProfileView!
     //@IBOutlet weak var editProfileView: EditProfileView!

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
+class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
     var pickerData = [String]()
     var pickerAge = [Int]()
@@ -50,6 +50,38 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }
+    @IBAction func pictureTap(sender: UITapGestureRecognizer) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .PhotoLibrary
+        imagePickerController.delegate = self
+        
+        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        while((topVC!.presentedViewController) != nil){
+            topVC = topVC!.presentedViewController
+        }
+        topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        // Dismiss the picker if the user canceled.
+        
+        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        while((topVC!.presentedViewController) != nil){
+            topVC = topVC!.presentedViewController
+        }
+        topVC?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        profileImage.image = selectedImage
+        
+        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        while((topVC!.presentedViewController) != nil){
+            topVC = topVC!.presentedViewController
+        }
+        topVC?.dismissViewControllerAnimated(true, completion: nil)
+    }
+
     
     @IBAction func genderTap(sender: AnyObject) {
         //if(user.gender == .NotSpecified){
@@ -61,7 +93,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
         //}
         
     }
-    
     @IBAction func ageTap(sender: AnyObject) {
         //if(user.birthdate == NSDate()){
             ageBool = true

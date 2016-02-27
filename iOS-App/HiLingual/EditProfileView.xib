@@ -17,13 +17,14 @@
                 <outlet property="nameLabel" destination="gvm-3o-omc" id="cnb-Y4-e2f"/>
                 <outlet property="nameText" destination="v2x-fg-pw2" id="y9a-1z-aLu"/>
                 <outlet property="pickerView" destination="xuJ-H6-jyd" id="cw3-UN-yg8"/>
+                <outlet property="pictureTap" destination="9Rm-ed-J1v" id="tti-oe-Zcf"/>
                 <outlet property="profileImage" destination="prR-kc-wq2" id="hdL-fN-wNQ"/>
                 <outlet property="toolBar" destination="jeS-Zi-PjY" id="B0u-rM-mMu"/>
                 <outlet property="view" destination="iN0-l3-epB" id="QzI-bb-sGX"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -32,11 +33,15 @@
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prR-kc-wq2">
                             <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="160" id="HYS-ET-YSp"/>
                                 <constraint firstAttribute="width" secondItem="prR-kc-wq2" secondAttribute="height" multiplier="1:1" id="I9m-Ih-f6X"/>
                                 <constraint firstAttribute="width" constant="160" id="mUa-6b-y5j"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="9Rm-ed-J1v" appends="YES" id="MkG-nL-Z1H"/>
+                            </connections>
                         </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6P6-cM-HDo">
                             <rect key="frame" x="160" y="0.0" width="199" height="124"/>
@@ -44,7 +49,7 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvm-3o-omc">
                                     <rect key="frame" x="0.0" y="0.0" width="45" height="25"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Display Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2x-fg-pw2">
@@ -175,6 +180,11 @@
         <tapGestureRecognizer cancelsTouchesInView="NO" id="6OE-2I-EBj" userLabel="Tap Gesture Learning">
             <connections>
                 <action selector="learningTap:" destination="-1" id="qeH-v0-NeA"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="9Rm-ed-J1v" userLabel="Tap Gesture Picture">
+            <connections>
+                <action selector="pictureTap:" destination="-1" id="n3A-Za-fbY"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
