@@ -15,14 +15,14 @@ enum Gender: Int {
 
 class HLUser: NSCoding {
     let UUID: String
-    var name: String
-    var displayName: String
+    var name: String?
+    var displayName: String?
     var knownLanguages: [Languages]
     var learningLanguages: [Languages]
-    var bio: String
-    let gender: Gender
-    let birthdate: NSDate
-    var profilePicture: UIImage
+    var bio: String?
+    let gender: Gender?
+    let birthdate: NSDate?
+    var profilePicture: UIImage?
 
     var blockedUsers: [HLUser]?
     var usersChattedWith: [HLUser]
@@ -30,12 +30,12 @@ class HLUser: NSCoding {
     private var session: HLUserSession?
 
 
-    init(UUID: String, name: String, displayName: String, knownLanguages: [Languages], learningLanguages: [Languages], bio: String, gender: Gender, birthdate: NSDate, profilePicture: UIImage) {
+    init(UUID: String, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
         self.UUID = UUID
         self.name = name
         self.displayName = displayName
-        self.knownLanguages = knownLanguages
-        self.learningLanguages = learningLanguages
+        self.knownLanguages = knownLanguages != nil ? knownLanguages! : []
+        self.learningLanguages = learningLanguages != nil ? learningLanguages! : []
         self.bio = bio
         self.gender = gender
         self.birthdate = birthdate
@@ -46,12 +46,17 @@ class HLUser: NSCoding {
 
     @objc required init?(coder aDecoder: NSCoder) {
         self.UUID = aDecoder.decodeObjectForKey("UUID") as! String
-        self.name = aDecoder.decodeObjectForKey("name") as! String
-        self.displayName = aDecoder.decodeObjectForKey("displayName") as! String
-        self.bio = aDecoder.decodeObjectForKey("bio") as! String
-        self.gender = Gender(rawValue: aDecoder.decodeObjectForKey("gender") as! Int)!
-        self.birthdate = aDecoder.decodeObjectForKey("birthdate") as! NSDate
-        self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as! UIImage
+        self.name = aDecoder.decodeObjectForKey("name") as? String
+        self.displayName = aDecoder.decodeObjectForKey("displayName") as? String
+        self.bio = aDecoder.decodeObjectForKey("bio") as? String
+        if let rawGender = aDecoder.decodeObjectForKey("gender") as? Int {
+            self.gender = Gender(rawValue: rawGender)!
+        }
+        else {
+            self.gender = nil
+        }
+        self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
+        self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as? UIImage
         self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
         self.usersChattedWith = (aDecoder.decodeObjectForKey("usersChattedWith") as! [HLUser])
         self.session = aDecoder.decodeObjectForKey("session") as? HLUserSession
@@ -99,7 +104,7 @@ class HLUser: NSCoding {
         aCoder.encodeObject(name, forKey: "name")
         aCoder.encodeObject(displayName, forKey: "displayName")
         aCoder.encodeObject(bio, forKey: "bio")
-        aCoder.encodeObject(gender.rawValue, forKey: "gender")
+        if gender != nil { aCoder.encodeObject(gender!.rawValue, forKey: "gender") }
         aCoder.encodeObject(birthdate, forKey: "birthdate")
         aCoder.encodeObject(profilePicture, forKey: "profilePicture")
         aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
