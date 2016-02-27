@@ -71,7 +71,7 @@ public class Main extends Application<ServerConfig> {
                 serverConfig.getDataSourceFactory(),
                 serverConfig.getSqlDbType());
         //  Guice initialization
-        module = new ServerModule(environment);
+        module = new ServerModule(environment, serverConfig);
         module.setDBI(jdbi);
         module.setJedisPool(jedisPool);
         guice = Guice.createInjector(module);

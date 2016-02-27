@@ -9,6 +9,7 @@
 
 package com.example.hilingual.server;
 
+import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.FacebookIntegrationDAO;
 import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
@@ -28,14 +29,18 @@ public class ServerModule extends AbstractModule {
     private Environment environment;
     private JedisPool jedisPool;
     private DBI dbi;
+    private ServerConfig config;
 
-    public ServerModule(Environment environment) {
+    public ServerModule(Environment environment, ServerConfig config) {
         this.environment = environment;
+        this.config = config;
     }
 
     @Override
     protected void configure() {
         //  Environment/providers
+        bind(ServerConfig.class).
+                toInstance(config);
         bind(Environment.class).
                 toInstance(environment);
         bind(JedisPool.class).
