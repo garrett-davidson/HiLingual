@@ -53,7 +53,8 @@ public class FacebookGraphAPIServiceImpl implements FacebookGraphAPIService {
                         ", " + response.getStatusText());
             }
             JSONObject val = response.getBody().getObject();
-            return val.getBoolean("is_valid") &&    //  Whether or not the token is valid
+            return val.has("is_valid") &&
+                    val.getBoolean("is_valid") &&    //  Whether or not the token is valid
                     config.getFacebookConfig().getId().equals(val.getString("app_id")) &&   //  If this is our app
                     accountId.equals(val.getString("user_id")); //  If this is our user
         } catch (Exception e) {
