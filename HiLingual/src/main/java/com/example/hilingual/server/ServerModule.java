@@ -15,9 +15,9 @@ import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.dao.impl.FacebookIntegrationDAOImpl;
+import com.example.hilingual.server.dao.impl.UserDAOImpl;
 import com.example.hilingual.server.dummy.DummyFacebookGoogleIntegrationDAO;
 import com.example.hilingual.server.dummy.DummySessionDAO;
-import com.example.hilingual.server.dummy.DummyUserDAO;
 import com.example.hilingual.server.service.FacebookGraphAPIService;
 import com.example.hilingual.server.service.impl.FacebookGraphAPIServiceImpl;
 import com.google.inject.AbstractModule;
@@ -52,7 +52,7 @@ public class ServerModule extends AbstractModule {
 
         //  DAOs
         bind(UserDAO.class).
-                to(DummyUserDAO.class). //  TODO REPLACE DUMMY
+                to(UserDAOImpl.class).
                 in(Scopes.SINGLETON);
         bind(SessionDAO.class).
                 to(DummySessionDAO.class).  //  TODO REPLACE DUMMY
