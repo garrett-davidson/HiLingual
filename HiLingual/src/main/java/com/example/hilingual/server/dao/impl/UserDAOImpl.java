@@ -60,7 +60,7 @@ public class UserDAOImpl implements UserDAO {
         long userId = newUserData.getUserId();
         Date birthDate = newUserData.getBirthdate();
         String[] newUserStrings = getUserData(newUserData);
-        u.update(new User(userId, newUserStrings[0], newUserStrings[1], newUserStrings[2], newUserStrings[3], birthDate, newUserStrings[4], newUserStrings[5], newUserStrings[6], newUserStrings[7], newUserStrings[8], newUserStrings[9]));
+        u.update(new DbUser(userId, newUserStrings[0], newUserStrings[1], newUserStrings[2], newUserStrings[3], birthDate, newUserStrings[4], newUserStrings[5], newUserStrings[6], newUserStrings[7], newUserStrings[8], newUserStrings[9]).toUser());
    }
 
     @Override
@@ -107,17 +107,17 @@ public class UserDAOImpl implements UserDAO {
         handle.close();
     }
     //Takes users and returns all the Strings of data in an array for quick access.
-    private String[] getUserData(User newUserData) {
+    private String[] getUserData(DbUser newUserData) {
         String[] data = new String[9];
         data[0] = newUserData.getName();
         data[1] = newUserData.getDisplayName();
         data[2] = newUserData.getBio();
-        data[3] = newUserData.getGender().name();
+        data[3] = newUserData.getGender();
         data[4] = newUserData.getImageURL().toString();
-        data[5] = Arrays.toString(newUserData.getKnownLanguages().toArray());
-        data[6] = Arrays.toString(newUserData.getLearningLanguages().toArray());
-        data[7] = Arrays.toString(newUserData.getBlockedUsers().toArray());
-        data[8] = Arrays.toString(newUserData.getUsersChattedWith().toArray());
+        data[5] = newUserData.getKnownLanguages();
+        data[6] = newUserData.getLearningLanguages();
+        data[7] = newUserData.getBlockedUsers();
+        data[8] = newUserData.getUsersChattedWith();
         return data;
     }
     class UserMapper implements ResultSetMapper<User> {
