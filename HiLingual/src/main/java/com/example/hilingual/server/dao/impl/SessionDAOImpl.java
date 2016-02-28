@@ -20,6 +20,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.LongAdder;
 
 public class SessionDAOImpl implements SessionDAO {
 
@@ -67,10 +68,11 @@ public class SessionDAOImpl implements SessionDAO {
     @Override
     public int revokeAllSessions() {
         Set<String> sessionedUsers = jedis.smembers(HL_SESSIONS_USERS_KEY);
+        LongAdder adder = new LongAdder();
         sessionedUsers.stream().
                 mapToLong(Long::parseLong).
-                forEach(this::revokeAllSessionsForUser);
-        return sessionedUsers.size();
+                forEach(u -> adder.add(revokeAllSessionsForUser(u)));
+        return (int) adder.sum();
     }
 
     @Override
