@@ -16,7 +16,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     var ageBool = false
     @IBOutlet weak var pickerView: UIPickerView!
     
-    @IBOutlet var view: UIView!
+    @IBOutlet weak var view: UIView!
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!

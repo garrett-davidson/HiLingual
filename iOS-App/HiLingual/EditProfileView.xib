@@ -17,7 +17,6 @@
                 <outlet property="nameLabel" destination="gvm-3o-omc" id="cnb-Y4-e2f"/>
                 <outlet property="nameText" destination="v2x-fg-pw2" id="y9a-1z-aLu"/>
                 <outlet property="pickerView" destination="xuJ-H6-jyd" id="cw3-UN-yg8"/>
-                <outlet property="pictureTap" destination="9Rm-ed-J1v" id="tti-oe-Zcf"/>
                 <outlet property="profileImage" destination="prR-kc-wq2" id="hdL-fN-wNQ"/>
                 <outlet property="toolBar" destination="jeS-Zi-PjY" id="B0u-rM-mMu"/>
                 <outlet property="view" destination="iN0-l3-epB" id="QzI-bb-sGX"/>
