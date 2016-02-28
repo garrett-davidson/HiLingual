@@ -33,7 +33,13 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             self.view.addSubview(loginButton)
             return
         }
-        self.performSegueWithIdentifier("previousLogin", sender: self)
+
+        if let user = HLUser.getCurrentUser() {
+            if let _ = user.getSession() {
+                self.performSegueWithIdentifier("previousLogin", sender: self)
+            }
+        }
+
         print("ViewDidLoadHere")
         let loginButton = FBSDKLoginButton()
         loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
