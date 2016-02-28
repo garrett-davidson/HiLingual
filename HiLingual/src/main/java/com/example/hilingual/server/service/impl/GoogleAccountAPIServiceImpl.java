@@ -10,11 +10,46 @@
 package com.example.hilingual.server.service.impl;
 
 import com.example.hilingual.server.service.GoogleAccountAPIService;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONObject;
+
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.core.MediaType;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GoogleAccountAPIServiceImpl implements GoogleAccountAPIService {
+
+    private static Logger LOGGER = Logger.getLogger(GoogleAccountAPIServiceImpl.class.getName());
+
     @Override
     public boolean isValidGoogleSession(String accountId, String token) {
-        //  TODO
-        return true;
+        Map<String, Object> queryParams = new LinkedHashMap<>();
+        queryParams.put("access_token", token);
+        try {
+            HttpResponse<JsonNode> response = Unirest.get("https://www.googleapis.com/oauth2/v1/tokeninfo").
+                    header(HTTP.CONTENT_TYPE, MediaType.APPLICATION_JSON).
+                    queryString(queryParams).
+                    asJson();
+            if (response.getStatus() != 200) {
+                throw new UnirestException("Google returned non-200 response code " + response.getStatus() +
+                        ", " + response.getStatusText());
+            }
+            JSONObject val = response.getBody().getObject();
+            if (val.has("error")) {
+                throw new UnirestException("Error: " + val.getString("error") + ", " +
+                        val.getString("error_description"));
+            }
+            return val.getString("user_id").equals(accountId);
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Failed to contact Facebook", e);
+            throw new InternalServerErrorException("Failed to contact Facebook", e);
+        }
     }
 }

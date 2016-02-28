@@ -16,11 +16,11 @@ import com.example.hilingual.server.dao.FacebookIntegrationDAO;
 import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
-import com.example.hilingual.server.dummy.DummyServerModule;
 import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.AuthResource;
 import com.example.hilingual.server.resources.UserResource;
 import com.example.hilingual.server.task.RevokeAllSessionsTask;
+import com.example.hilingual.server.task.TruncateTask;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.Application;
@@ -98,6 +98,7 @@ public class Main extends Application<ServerConfig> {
         //  Tasks
         AdminEnvironment a = environment.admin();
         a.addTask(create(RevokeAllSessionsTask.class));
+        a.addTask(create(TruncateTask.class));
     }
 
     @Override
