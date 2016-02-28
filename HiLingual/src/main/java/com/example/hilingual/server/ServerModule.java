@@ -18,6 +18,8 @@ import com.example.hilingual.server.dao.impl.FacebookIntegrationDAOImpl;
 import com.example.hilingual.server.dummy.DummyFacebookGoogleIntegrationDAO;
 import com.example.hilingual.server.dummy.DummySessionDAO;
 import com.example.hilingual.server.dummy.DummyUserDAO;
+import com.example.hilingual.server.service.FacebookGraphAPIService;
+import com.example.hilingual.server.service.impl.FacebookGraphAPIServiceImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import io.dropwizard.setup.Environment;
@@ -60,6 +62,11 @@ public class ServerModule extends AbstractModule {
                 in(Scopes.SINGLETON);
         bind(GoogleIntegrationDAO.class).
                 to(DummyFacebookGoogleIntegrationDAO.class).  //  TODO REPLACE DUMMY
+                in(Scopes.SINGLETON);
+
+        //  Services
+        bind(FacebookGraphAPIService.class).
+                to(FacebookGraphAPIServiceImpl.class).
                 in(Scopes.SINGLETON);
     }
 

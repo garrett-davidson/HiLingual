@@ -15,8 +15,6 @@ public interface FacebookIntegrationDAO extends Managed {
 
     void init();
 
-    boolean isValidFacebookSession(String accountId, String token);
-
     long getUserIdFromFacebookAccountId(String accountId);
 
     void setUserIdForFacebookAccountId(long userId, String accountId);

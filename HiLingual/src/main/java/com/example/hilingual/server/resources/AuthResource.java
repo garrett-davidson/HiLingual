@@ -16,6 +16,7 @@ import com.example.hilingual.server.dao.FacebookIntegrationDAO;
 import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.service.FacebookGraphAPIService;
 import com.google.inject.Inject;
 
 import javax.validation.Valid;
@@ -42,16 +43,19 @@ public class AuthResource {
     private final UserDAO userDAO;
     private final FacebookIntegrationDAO facebookIntegrationDAO;
     private final GoogleIntegrationDAO googleIntegrationDAO;
+    private final FacebookGraphAPIService fbApiService;
 
     @Inject
     public AuthResource(SessionDAO sessionDAO,
                         UserDAO userDAO,
                         FacebookIntegrationDAO facebookIntegrationDAO,
-                        GoogleIntegrationDAO googleIntegrationDAO) {
+                        GoogleIntegrationDAO googleIntegrationDAO,
+                        FacebookGraphAPIService fbApiService) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.facebookIntegrationDAO = facebookIntegrationDAO;
         this.googleIntegrationDAO = googleIntegrationDAO;
+        this.fbApiService = fbApiService;
     }
 
     @POST
@@ -63,7 +67,7 @@ public class AuthResource {
         ToLongFunction<String> getUserIdFromAuthorityAccountId;
         switch (body.getAuthority()) {
             case FACEBOOK:
-                sessionCheck = facebookIntegrationDAO::isValidFacebookSession;
+                sessionCheck = fbApiService::isValidFacebookSession;
                 getUserIdFromAuthorityAccountId = facebookIntegrationDAO::getUserIdFromFacebookAccountId;
                 break;
             case GOOGLE:
@@ -102,7 +106,7 @@ public class AuthResource {
         BiConsumer<Long, String> assignUserIdToAccount;
         switch (body.getAuthority()) {
             case FACEBOOK:
-                sessionCheck = facebookIntegrationDAO::isValidFacebookSession;
+                sessionCheck = fbApiService::isValidFacebookSession;
                 assignUserIdToAccount = facebookIntegrationDAO::setUserIdForFacebookAccountId;
                 break;
             case GOOGLE:
