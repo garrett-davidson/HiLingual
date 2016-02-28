@@ -10,6 +10,8 @@ import Foundation
 
 class LanguageSelectionTableViewController: UITableViewController {
 
+    var delegate: LanguageSelectionDelegate?
+
     //Make sure you set this from wherever you are using this view!!!
     var selectedLanguages: [Languages]!
 
@@ -46,8 +48,13 @@ class LanguageSelectionTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Languages.allValues.count
     }
+    @IBAction func save(sender: AnyObject) {
+        delegate?.setNewSelectedLanguages(selectedLanguages)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 protocol LanguageSelectionDelegate {
-    func setLangauges(languages: [Languages])
+    func performLanguageSelectionSegue(selectedLanguages: [Languages])
+    func setNewSelectedLanguages(selectedLanguages: [Languages])
 }

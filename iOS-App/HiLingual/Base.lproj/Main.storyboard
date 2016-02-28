@@ -358,7 +358,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="aMj-XI-BgR">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="IdZ-eO-hby"/>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="IdZ-eO-hby">
+                            <connections>
+                                <action selector="save:" destination="9T3-ic-4W2" id="bdO-UO-5wC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mbp-D5-nqZ" userLabel="First Responder" sceneMemberID="firstResponder"/>

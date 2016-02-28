@@ -8,17 +8,18 @@
 
 import Foundation
 
-class AccountCreationViewController: UIViewController {
+class AccountCreationViewController: UIViewController, LanguageSelectionDelegate {
 
 
     @IBOutlet weak var editProfileView: EditProfileView!
 
     var user: HLUser?
+    var selectedLanguages: [Languages]?
 
     override func viewDidLoad() {
-        editProfileView.user = HLUser.generateTestUser()
-//        loadFacebookData()
-        loadGoogleData()
+        editProfileView.languageSelectionDelegate = self
+        loadFacebookData()
+//        loadGoogleData()
     }
 
     @IBAction func saveUser(sender: AnyObject) {
@@ -27,6 +28,24 @@ class AccountCreationViewController: UIViewController {
         //Be sure to call user.save() !!
 
         performSegueWithIdentifier("DoneEditing", sender: self)
+    }
+
+    func setNewSelectedLanguages(selectedLanguages: [Languages]) {
+        self.editProfileView.updateSelectedLanguages(selectedLanguages)
+    }
+
+    func performLanguageSelectionSegue(selectedLanguages: [Languages]) {
+        self.selectedLanguages = selectedLanguages
+        self.performSegueWithIdentifier("SelectLanguagesSegue", sender: nil)
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destNav = segue.destinationViewController as? UINavigationController {
+            if let dest = destNav.topViewController as? LanguageSelectionTableViewController {
+                dest.delegate = self
+                dest.selectedLanguages = self.selectedLanguages
+            }
+        }
     }
 
     func loadFacebookData() {

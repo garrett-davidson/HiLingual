@@ -14,11 +14,17 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         case Gender, Age
     }
 
-    var currentPickerField = PickerField.Age
+    enum LanguageFields {
+        case Knows, Learning
+    }
 
+    var currentPickerField = PickerField.Age
     let minimunAge = 13
 
     var isPickerViewDown = true
+
+    var languageSelectionDelegate: LanguageSelectionDelegate?
+    var currentLanguageField = LanguageFields.Knows
 
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var view: UIView!
@@ -95,6 +101,16 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
 
+    func updateSelectedLanguages(selectedLangauges: [Languages]) {
+        switch currentLanguageField {
+        case .Knows:
+            user.knownLanguages = selectedLangauges
+        case .Learning:
+            user.learningLanguages = selectedLangauges
+        }
+
+        self.refreshUI()
+    }
     
     @IBAction func genderTap(sender: AnyObject) {
         dismissKeyboard(self)
@@ -110,11 +126,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     
     @IBAction func speaksTap(sender: AnyObject) {
-        
+        currentLanguageField = .Knows
+        languageSelectionDelegate?.performLanguageSelectionSegue(user.knownLanguages)
     }
 
     @IBAction func learningTap(sender: AnyObject) {
-        
+        currentLanguageField = .Learning
+        languageSelectionDelegate?.performLanguageSelectionSegue(user.learningLanguages)
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
