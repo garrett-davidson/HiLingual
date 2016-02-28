@@ -39,7 +39,12 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         nameText.text = user.displayName
         //can people have the same display name 💩
         //don't know how to send infoback to accountcreationview
-        genderLabel.text = "\(user.gender)"
+        if user.gender != nil {
+            genderLabel.text = "\(user.gender!)"
+        }
+        else {
+            genderLabel.text = "Not Specified"
+        }
         //age is current date - birthday date will need to change later 💩
         ageLabel.text = "\(user.age)"
         languagesSpeaks.text = "Speaks: " + user.knownLanguages.toList()
