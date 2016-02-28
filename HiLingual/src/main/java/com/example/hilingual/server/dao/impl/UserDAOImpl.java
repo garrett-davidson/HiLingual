@@ -85,6 +85,11 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public void truncate() {
+        handle.execute("TRUNCATE hl_users");
+    }
+
+    @Override
     public void start() throws Exception {
         handle = dbi.open();
         init();

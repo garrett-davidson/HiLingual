@@ -26,4 +26,6 @@ public interface UserDAO extends Managed {
 
     User[] findUsers(String query, User invoker);
 
+    void truncate();
+
 }

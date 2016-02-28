@@ -71,6 +71,11 @@ public class DummyUserDAO implements UserDAO {
     }
 
     @Override
+    public void truncate() {
+
+    }
+
+    @Override
     public void start() throws Exception {
 
     }
