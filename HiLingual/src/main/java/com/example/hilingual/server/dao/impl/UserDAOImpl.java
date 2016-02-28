@@ -100,7 +100,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void start() throws Exception {
+        LOGGER.info("Opening DBI handle");
         handle = dbi.open();
+        LOGGER.info("Init DAO");
         init();
     }
 

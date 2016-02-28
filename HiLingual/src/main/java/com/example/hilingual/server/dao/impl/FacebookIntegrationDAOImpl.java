@@ -74,7 +74,9 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
 
     @Override
     public void start() throws Exception {
+        LOGGER.info("Opening DBI handle");
         handle = dbi.open();
+        LOGGER.info("Init DAO");
         init();
     }
 
