@@ -41,7 +41,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         //don't know how to send infoback to accountcreationview
         genderLabel.text = "\(user.gender)"
         //age is current date - birthday date will need to change later 💩
-        ageLabel.text = "\(NSCalendar.currentCalendar().components([.Day , .Month , .Year], fromDate: NSDate()).year - NSCalendar.currentCalendar().components(.Year, fromDate: user.birthdate!).year)"
+        ageLabel.text = "\(user.age)"
         languagesSpeaks.text = "Speaks: " + user.knownLanguages.toList()
         languagesLearning.text = "Learning: " + user.learningLanguages.toList()
         bioText.text = user.bio

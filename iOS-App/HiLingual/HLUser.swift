@@ -27,6 +27,12 @@ class HLUser: NSCoding {
     var blockedUsers: [HLUser]?
     var usersChattedWith: [HLUser]
 
+    var age: Int {
+        get {
+            return NSCalendar.currentCalendar().components(.Year, fromDate: self.birthdate!, toDate: NSDate(), options: .MatchFirst).year
+        }
+    }
+
     private var session: HLUserSession?
 
 
