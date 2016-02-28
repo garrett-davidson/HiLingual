@@ -16,6 +16,10 @@ import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.Update;
+import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.BindBean;
+import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
@@ -52,18 +56,12 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void updateUser(User newUserData) {
+        Update u = handle.attach(Update.class);
         long userId = newUserData.getUserId();
-        String name = newUserData.getName();
-        String displayName = newUserData.getDisplayName();
-        String bio = newUserData.getBio();
-        String gender = newUserData.getGender().name();
         Date birthDate = newUserData.getBirthdate();
-        String imageURL = newUserData.getImageURL().toString();
-        String knownLanguages = Arrays.toString(newUserData.getKnownLanguages().toArray());
-        String learningLanguages = Arrays.toString(newUserData.getLearningLanguages().toArray());
-        String blockedUsers = Arrays.toString(newUserData.getBlockedUsers().toArray());
-        String usersChattedWith = Arrays.toString(newUserData.getUsersChattedWith().toArray());
-    }
+        String[] newUserStrings = getUserData(newUserData);
+        u.update(new User(userId, newUserStrings[0], newUserStrings[1], newUserStrings[2], newUserStrings[3], birthDate, newUserStrings[4], newUserStrings[5], newUserStrings[6], newUserStrings[7], newUserStrings[8], newUserStrings[9]));
+   }
 
     @Override
     public void deleteUser(long userId) {
@@ -108,7 +106,20 @@ public class UserDAOImpl implements UserDAO {
     public void stop() throws Exception {
         handle.close();
     }
-
+    //Takes users and returns all the Strings of data in an array for quick access.
+    private String[] getUserData(User newUserData) {
+        String[] data = new String[9];
+        data[0] = newUserData.getName();
+        data[1] = newUserData.getDisplayName();
+        data[2] = newUserData.getBio();
+        data[3] = newUserData.getGender().name();
+        data[4] = newUserData.getImageURL().toString();
+        data[5] = Arrays.toString(newUserData.getKnownLanguages().toArray());
+        data[6] = Arrays.toString(newUserData.getLearningLanguages().toArray());
+        data[7] = Arrays.toString(newUserData.getBlockedUsers().toArray());
+        data[8] = Arrays.toString(newUserData.getUsersChattedWith().toArray());
+        return data;
+    }
     class UserMapper implements ResultSetMapper<User> {
 
         @Override
@@ -124,5 +135,17 @@ public class UserDAOImpl implements UserDAO {
 
             return user;
         }
+    }
+
+    public static interface Update
+    {
+        @SqlUpdate("CREATE TABLE IF NOT EXISTS hl_users(user_id BIGINT, user_name TINYTEXT, display_name TINYTEXT,bio TEXT, gender TEXT, birth_date DATE, image_url LONGTEXT, known_languages LONGTEXT, learning_languages LONGTEXT, blocked_users LONGTEXT, users_chatted_with LONGTEXT, profile_set TINYINT")
+        void createTable();
+
+        @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_lanuages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_lanuages, :blocked_users, :users_chatted_with)")
+        int insert(@Bind("user_id") long id, @Bind("user_name") String name, @Bind("display_name") String displayName, @Bind("bio") String bio, @Bind("gender") String gender, @Bind("birth_date") String birthDate, @Bind("image_url") String imageURL, @Bind("known_languages") String knowLanguages, @Bind("learning_lanuages") String learningLangauges, @Bind("blocked_users") String blockedUsers, @Bind("users_chatted_with") String usersChattedWith);
+
+        @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_lanuages = :learning_lanuages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with where user_id = :user_id")
+        int update(@BindBean User user);
     }
 }
