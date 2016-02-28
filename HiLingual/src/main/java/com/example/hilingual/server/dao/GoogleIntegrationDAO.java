@@ -15,8 +15,6 @@ public interface GoogleIntegrationDAO extends Managed {
 
     void init();
 
-    boolean isValidGoogleSession(String accountId, String token);
-
     long getUserIdFromGoogleAccountId(String accountId);
 
     void setUserIdForGoogleAccountId(long userId, String accountId);

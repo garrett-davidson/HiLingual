@@ -17,6 +17,7 @@ import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.service.FacebookGraphAPIService;
+import com.example.hilingual.server.service.GoogleAccountAPIService;
 import com.google.inject.Inject;
 
 import javax.validation.Valid;
@@ -44,18 +45,21 @@ public class AuthResource {
     private final FacebookIntegrationDAO facebookIntegrationDAO;
     private final GoogleIntegrationDAO googleIntegrationDAO;
     private final FacebookGraphAPIService fbApiService;
+    private final GoogleAccountAPIService googleApiService;
 
     @Inject
     public AuthResource(SessionDAO sessionDAO,
                         UserDAO userDAO,
                         FacebookIntegrationDAO facebookIntegrationDAO,
                         GoogleIntegrationDAO googleIntegrationDAO,
-                        FacebookGraphAPIService fbApiService) {
+                        FacebookGraphAPIService fbApiService,
+                        GoogleAccountAPIService googleApiService) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.facebookIntegrationDAO = facebookIntegrationDAO;
         this.googleIntegrationDAO = googleIntegrationDAO;
         this.fbApiService = fbApiService;
+        this.googleApiService = googleApiService;
     }
 
     @POST
@@ -73,7 +77,7 @@ public class AuthResource {
                 tokenSetter = facebookIntegrationDAO::setFacebookToken;
                 break;
             case GOOGLE:
-                sessionCheck = googleIntegrationDAO::isValidGoogleSession;
+                sessionCheck = googleApiService::isValidGoogleSession;
                 getUserIdFromAuthorityAccountId = googleIntegrationDAO::getUserIdFromGoogleAccountId;
                 tokenSetter = googleIntegrationDAO::setGoogleToken;
                 break;
@@ -116,7 +120,7 @@ public class AuthResource {
                 tokenSetter = facebookIntegrationDAO::setFacebookToken;
                 break;
             case GOOGLE:
-                sessionCheck = googleIntegrationDAO::isValidGoogleSession;
+                sessionCheck = googleApiService::isValidGoogleSession;
                 assignUserIdToAccount = googleIntegrationDAO::setUserIdForGoogleAccountId;
                 tokenSetter = googleIntegrationDAO::setGoogleToken;
                 break;
