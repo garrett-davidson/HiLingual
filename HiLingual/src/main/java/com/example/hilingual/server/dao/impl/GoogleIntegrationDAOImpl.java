@@ -62,6 +62,11 @@ public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
     }
 
     @Override
+    public void truncate() {
+        handle.execute("TRUNCATE hl_google_data");
+    }
+
+    @Override
     public void start() throws Exception {
         handle = dbi.open();
         init();

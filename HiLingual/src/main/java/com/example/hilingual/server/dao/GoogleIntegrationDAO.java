@@ -22,4 +22,6 @@ public interface GoogleIntegrationDAO extends Managed {
     String getGoogleToken(long userId);
 
     void setGoogleToken(long userId, String token);
+
+    void truncate();
 }

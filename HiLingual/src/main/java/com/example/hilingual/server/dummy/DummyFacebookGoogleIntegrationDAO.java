@@ -72,6 +72,11 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
     }
 
     @Override
+    public void truncate() {
+
+    }
+
+    @Override
     public void start() throws Exception {
 
     }
