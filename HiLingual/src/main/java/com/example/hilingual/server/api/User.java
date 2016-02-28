@@ -6,8 +6,10 @@ package com.example.hilingual.server.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -26,6 +28,17 @@ public class User {
     private boolean profileSet;
 
     public User() {
+        name = "";
+        displayName = "";
+        bio = "";
+        gender = Gender.NOT_SET;
+        birthdate = new Date(0);
+        imageURL = url("http://gethilingual.com/assets/noavatar.png");
+        knownLanguages = new HashSet<>();
+        learningLanguages = new HashSet<>();
+        blockedUsers = new HashSet<>();
+        usersChattedWith = new HashSet<>();
+        profileSet = false;
     }
 
     public User(long userId, String name, String displayName, String bio, Gender gender, Date birthdate,
@@ -213,6 +226,15 @@ public class User {
     @JsonIgnore
     public boolean wantsToLearnLanguage(Locale locale) {
         return learningLanguages.contains(locale);
+    }
+
+
+    private static URL url(String url) {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(url);
+        }
     }
 }
 
