@@ -63,6 +63,11 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
     }
 
     @Override
+    public void truncate() {
+        handle.execute("TRUNCATE hl_facebook_data");
+    }
+
+    @Override
     public void start() throws Exception {
         handle = dbi.open();
         init();

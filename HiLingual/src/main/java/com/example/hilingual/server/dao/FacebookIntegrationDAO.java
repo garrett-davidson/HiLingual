@@ -23,4 +23,6 @@ public interface FacebookIntegrationDAO extends Managed {
 
     void setFacebookToken(long userId, String token);
 
+    void truncate();
+
 }
