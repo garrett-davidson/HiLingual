@@ -23,8 +23,8 @@ public class User {
     private URL imageURL;
     private Set<Locale> knownLanguages;
     private Set<Locale> learningLanguages;
-    private Set<User> blockedUsers;
-    private Set<User> usersChattedWith;
+    private Set<Long> blockedUsers;
+    private Set<Long> usersChattedWith;
     private boolean profileSet;
 
     public User() {
@@ -43,7 +43,7 @@ public class User {
 
     public User(long userId, String name, String displayName, String bio, Gender gender, Date birthdate,
                 URL imageURL, Set<Locale> knownLanguages, Set<Locale> learningLanguages,
-                Set<User> blockedUsers, Set<User> usersChattedWith, boolean profileSet) {
+                Set<Long> blockedUsers, Set<Long> usersChattedWith, boolean profileSet) {
         this.userId = userId;
         this.name = name;
         this.displayName = displayName;
@@ -104,12 +104,12 @@ public class User {
     }
 
     @JsonProperty
-    public Set<User> getBlockedUsers() {
+    public Set<Long> getBlockedUsers() {
         return blockedUsers;
     }
 
     @JsonProperty
-    public Set<User> getUsersChattedWith() {
+    public Set<Long> getUsersChattedWith() {
         return usersChattedWith;
     }
 
@@ -124,12 +124,12 @@ public class User {
     }
 
     @JsonProperty
-    public void setBlockedUsers(Set<User> blockedUsers) {
+    public void setBlockedUsers(Set<Long> blockedUsers) {
         this.blockedUsers = blockedUsers;
     }
 
     @JsonProperty
-    public void setUsersChattedWith(Set<User> usersChattedWith) {
+    public void setUsersChattedWith(Set<Long> usersChattedWith) {
         this.usersChattedWith = usersChattedWith;
     }
 
@@ -200,21 +200,41 @@ public class User {
 
     @JsonIgnore
     public void addBlockedUser(User user) {
+        blockedUsers.add(user.getUserId());
+    }
+
+    @JsonIgnore
+    public void addBlockedUser(long user) {
         blockedUsers.add(user);
     }
 
     @JsonIgnore
     public void removeBlockedUser(User user) {
+        blockedUsers.remove(user.getUserId());
+    }
+
+    @JsonIgnore
+    public void removeBlockedUser(long user) {
         blockedUsers.remove(user);
     }
 
     @JsonIgnore
     public void addusersChattedWith(User user) {
+        usersChattedWith.add(user.getUserId());
+    }
+
+    @JsonIgnore
+    public void addusersChattedWith(long user) {
         usersChattedWith.add(user);
     }
 
     @JsonIgnore
     public void removeusersChattedWith(User user) {
+        usersChattedWith.remove(user.getUserId());
+    }
+
+    @JsonIgnore
+    public void removeusersChattedWith(long user) {
         usersChattedWith.remove(user);
     }
 
