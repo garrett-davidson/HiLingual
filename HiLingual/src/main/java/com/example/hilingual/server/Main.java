@@ -34,6 +34,8 @@ import org.skife.jdbi.v2.DBI;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.logging.Logger;
+
 /**
  * Application server entry point and initialization
  */
@@ -42,6 +44,8 @@ public class Main extends Application<ServerConfig> {
     private Injector guice;
     private ServerModule module;
     private JedisPool jedisPool;
+
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     /**
      * Main appliction entry point. Starts our server application
@@ -61,7 +65,9 @@ public class Main extends Application<ServerConfig> {
 
     @Override
     public void run(ServerConfig serverConfig, Environment environment) throws Exception {
+        LOGGER.info("Shinar starting");
         //  Redis initialization
+        LOGGER.info("Initializing Redis connection pool");
         RedisConfig redisConfig = serverConfig.getRedisConfig();
         jedisPool = new JedisPool(new JedisPoolConfig(),
                 redisConfig.getHost(),
@@ -69,26 +75,31 @@ public class Main extends Application<ServerConfig> {
                 redisConfig.getTimeout(),
                 redisConfig.getPassword());
         //  DBI
+        LOGGER.info("Initializing JDBI");
         DBIFactory factory = new DBIFactory();
         DBI jdbi = factory.build(environment,
                 serverConfig.getDataSourceFactory(),
                 serverConfig.getSqlDbType());
         //  Guice initialization
+        LOGGER.info("Configuring injector");
         module = new ServerModule(environment, serverConfig);
         module.setDBI(jdbi);
         module.setJedisPool(jedisPool);
         guice = Guice.createInjector(module);
 
         //  Health checks
+        LOGGER.info("Registering health checks");
         HealthCheckRegistry h = environment.healthChecks();
         h.register("jedis", create(JedisHealthCheck.class));
 
         //  Resources
+        LOGGER.info("Registering resources");
         JerseyEnvironment j = environment.jersey();
         j.register(create(AuthResource.class));
         j.register(create(UserResource.class));
 
         //  Managed
+        LOGGER.info("Creating managed objects");
         LifecycleEnvironment l = environment.lifecycle();
         l.manage(create(FacebookIntegrationDAO.class));
         l.manage(create(GoogleIntegrationDAO.class));
@@ -96,6 +107,7 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(UserDAO.class));
 
         //  Tasks
+        LOGGER.info("Registering tasks");
         AdminEnvironment a = environment.admin();
         a.addTask(create(RevokeAllSessionsTask.class));
         a.addTask(create(TruncateTask.class));

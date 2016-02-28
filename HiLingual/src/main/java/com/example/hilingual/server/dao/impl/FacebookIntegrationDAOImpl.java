@@ -15,6 +15,7 @@ import io.dropwizard.lifecycle.Managed;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Managed {
@@ -39,14 +40,18 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
 
     @Override
     public long getUserIdFromFacebookAccountId(String accountId) {
-        return handle.createQuery("SELECT user_id FROM hl_facebook_data WHERE account_id = :aid").
+        Map<String, Object> ret = handle.createQuery("SELECT user_id FROM hl_facebook_data WHERE account_id = :aid").
                 bind("aid", accountId).
-                first(long.class);
+                first();
+        if (ret == null) {
+            return 0;
+        }
+        return (Long) ret.get("user_id");
     }
 
     @Override
     public void setUserIdForFacebookAccountId(long userId, String accountId) {
-        handle.update("INSERT INTO hl_facebook_data (user_id, account_id) VALUES (?, ?)",
+        handle.update("INSERT INTO hl_facebook_data (account_id, user_id) VALUES (?, ?)",
                 accountId, userId);
     }
 
@@ -69,7 +74,9 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
 
     @Override
     public void start() throws Exception {
+        LOGGER.info("Opening DBI handle");
         handle = dbi.open();
+        LOGGER.info("Init DAO");
         init();
     }
 

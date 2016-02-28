@@ -21,7 +21,7 @@ public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
     private final DBI dbi;
     private Handle handle;
 
-    private static Logger LOGGER = Logger.getLogger(FacebookIntegrationDAOImpl.class.getName());
+    private static Logger LOGGER = Logger.getLogger(GoogleIntegrationDAOImpl.class.getName());
 
     @Inject
     public GoogleIntegrationDAOImpl(DBI dbi) {
@@ -68,7 +68,9 @@ public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
 
     @Override
     public void start() throws Exception {
+        LOGGER.info("Opening DBI handle");
         handle = dbi.open();
+        LOGGER.info("Init DAO");
         init();
     }
 

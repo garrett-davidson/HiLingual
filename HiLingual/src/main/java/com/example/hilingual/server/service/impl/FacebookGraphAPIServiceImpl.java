@@ -19,7 +19,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.MediaType;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -53,11 +55,21 @@ public class FacebookGraphAPIServiceImpl implements FacebookGraphAPIService {
                         ", " + response.getStatusText());
             }
             JSONObject val = response.getBody().getObject();
-            return val.has("is_valid") &&
-                    val.getBoolean("is_valid") &&    //  Whether or not the token is valid
-                    config.getFacebookConfig().getId().equals(val.getString("app_id")) &&   //  If this is our app
-                    accountId.equals(val.getString("user_id")); //  If this is our user
-        } catch (Exception e) {
+            val = val.getJSONObject("data");
+            if (!val.has("is_valid")) {
+                throw new InternalServerErrorException("Facebook response was invalid");
+            }
+            if (!val.getBoolean("is_valid")) {
+                throw new NotAuthorizedException("Token is not valid");
+            }
+            if (!config.getFacebookConfig().getId().equals(val.getString("app_id"))) {
+                throw new BadRequestException("Token is not for this app");
+            }
+            if (!accountId.equals(val.getString("user_id"))) {
+                throw new BadRequestException("Token is not for this user");
+            }
+            return true;
+        } catch (UnirestException e) {
             LOGGER.log(Level.WARNING, "Failed to contact Facebook", e);
             throw new InternalServerErrorException("Failed to contact Facebook", e);
         }
