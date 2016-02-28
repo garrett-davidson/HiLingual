@@ -15,20 +15,22 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.logging.Logger;
 
 public class SessionDAOImpl implements SessionDAO {
+
+    private static Logger LOGGER = Logger.getLogger(SessionDAOImpl.class.getName());
 
     public static final String HL_SESSIONS_USER_SCOPE = "hl:sessions:user:";
     public static final String HL_SESSIONS_SESSION_SCOPE = "hl:sessions:session:";
     public static final String HL_SESSIONS_USERS_KEY = "hl:sessions:users";
     private Jedis jedis;
-    private SecureRandom secureRandom;
+    private Random random;
 
     @Inject
     public SessionDAOImpl(Jedis jedis) {
@@ -38,14 +40,10 @@ public class SessionDAOImpl implements SessionDAO {
 
     @Override
     public void init() {
-        try {
-            secureRandom = SecureRandom.getInstanceStrong();
-            //  Force secure seeding
-            byte[] temp = new byte[128];
-            secureRandom.nextBytes(temp);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Cannot get a strong PRNG", e);
-        }
+        random = new Random();
+        //  Force secure seeding
+        byte[] temp = new byte[128];
+        random.nextBytes(temp);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class SessionDAOImpl implements SessionDAO {
 
     @Override
     public String newSession(long userId) {
-        String sid = new BigInteger(130, secureRandom).toString(32);
+        String sid = new BigInteger(130, random).toString(32);
         String userIdStr = longStr(userId);
         Transaction t = jedis.multi();
         t.sadd(userIdKey(userId), sid);
@@ -114,6 +112,7 @@ public class SessionDAOImpl implements SessionDAO {
 
     @Override
     public void start() throws Exception {
+        LOGGER.info("Init DAO");
         init();
     }
 
