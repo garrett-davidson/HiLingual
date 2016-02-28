@@ -98,6 +98,26 @@ public class User {
     }
 
     @JsonProperty
+    public void setKnownLanguages(Set<Locale> knownLanguages) {
+        this.knownLanguages = knownLanguages;
+    }
+
+    @JsonProperty
+    public void setLearningLanguages(Set<Locale> learningLanguages) {
+        this.learningLanguages = learningLanguages;
+    }
+
+    @JsonProperty
+    public void setBlockedUsers(Set<User> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
+
+    @JsonProperty
+    public void setUsersChattedWith(Set<User> usersChattedWith) {
+        this.usersChattedWith = usersChattedWith;
+    }
+
+    @JsonProperty
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
