@@ -37,8 +37,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void init() {
-        //  TODO Joey - Set up the schema for the user table (Story 1.11)
-        handle.execute("CREATE TABLE IF NOT EXISTS hl_users(/* TODO */)");
+        handle.execute("CREATE TABLE IF NOT EXISTS hl_users(user_id BIGINT, user_name TINYTEXT, display_name TINYTEXT,
+            bio TEXT, gender ENUM(MALE, FEMALE, NOT_SET), birth_date DATE, image_url LONGTEXT, known_languages LONGTEXT,
+            learning_languages LONGTEXT, blocked_users LONGTEXT, users_chatted_with LONGTEXT, profile_set TINYINT");
     }
 
     @Override
@@ -52,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void updateUser(User newUserData) {
         long userId = newUserData.getUserId();
-        //  TODO Joey - update row columns with new data (Story 1.14)
+            
 
     }
 
