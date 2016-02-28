@@ -16,15 +16,18 @@ import com.example.hilingual.server.dao.FacebookIntegrationDAO;
 import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.dummy.DummyServerModule;
 import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.AuthResource;
 import com.example.hilingual.server.resources.UserResource;
+import com.example.hilingual.server.task.RevokeAllSessionsTask;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
+import io.dropwizard.setup.AdminEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.skife.jdbi.v2.DBI;
@@ -91,6 +94,10 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(GoogleIntegrationDAO.class));
         l.manage(create(SessionDAO.class));
         l.manage(create(UserDAO.class));
+
+        //  Tasks
+        AdminEnvironment a = environment.admin();
+        a.addTask(create(RevokeAllSessionsTask.class));
     }
 
     @Override
