@@ -24,6 +24,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import io.dropwizard.setup.Environment;
 import org.skife.jdbi.v2.DBI;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 public class ServerModule extends AbstractModule {
@@ -47,6 +48,8 @@ public class ServerModule extends AbstractModule {
                 toInstance(environment);
         bind(JedisPool.class).
                 toInstance(jedisPool);
+        bind(Jedis.class).
+                toProvider(jedisPool::getResource);
         bind(DBI.class).
                 toInstance(dbi);
 
