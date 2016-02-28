@@ -9,11 +9,15 @@
 import UIKit
 
 class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    
-    var pickerData = [String]()
-    var pickerAge = [Int]()
-    var genderBool = false
-    var ageBool = false
+
+    enum PickerField {
+        case Gender, Age
+    }
+
+    var currentPickerField = PickerField.Age
+
+    let minimunAge = 13
+
     @IBOutlet weak var pickerView: UIPickerView!
     
     @IBOutlet weak var view: UIView!
@@ -88,23 +92,14 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     
     @IBAction func genderTap(sender: AnyObject) {
-        //if(user.gender == .NotSpecified){
-            genderBool = true
-            ageBool = false
-            animationUp()
-            pickerData = ["Male", "Female"]
-            pickerView.reloadAllComponents()
-        //}
-        
+        currentPickerField = .Gender
+        pickerView.reloadAllComponents()
+        animationUp()
     }
     @IBAction func ageTap(sender: AnyObject) {
-        //if(user.birthdate == NSDate()){
-            ageBool = true
-            genderBool = false
-            animationUp()
-            pickerAge += 13...100
-            pickerView.reloadAllComponents()
-        //}
+        currentPickerField = .Age
+        pickerView.reloadAllComponents()
+        animationUp()
     }
     
     @IBAction func speaksTap(sender: AnyObject) {
@@ -116,21 +111,21 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (genderBool && !ageBool){
-            return pickerData[row]
-        } else if (ageBool && !genderBool){
-            return "\(pickerAge[row])"
-        } else{
-            return pickerData[row]
+        switch currentPickerField {
+        case .Age:
+            return "\(minimunAge + row)"
+
+        case .Gender:
+            return "\(Gender.allValues[row])"
         }
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    
-        if (genderBool && !ageBool){
-            genderLabel.text = pickerData[row]
-        } else if (ageBool && !genderBool){
-            ageLabel.text = "\(pickerAge[row])"
+        switch currentPickerField {
+        case .Age:
+            ageLabel.text = "\(minimunAge + row)"
+        case .Gender:
+            genderLabel.text = "\(Gender.allValues[row])"
         }
     }
     
@@ -141,19 +136,17 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (genderBool && !ageBool){
-            return pickerData.count
-        } else if (ageBool && !genderBool){
-            return pickerAge.count
-        } else{
-            return pickerData.count
+        switch (currentPickerField) {
+        case .Age:
+            //Max age = 100
+            return 100 - minimunAge + 1
+
+        case .Gender:
+            return Gender.allValues.count
         }
     }
     
     @IBAction func donePicker(sender: AnyObject) {
-        
-        ageBool = false
-        genderBool = false
         animationDown()
     }
     
@@ -184,7 +177,12 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     
     func animationUp(){
-        
+        switch currentPickerField {
+        case .Age:
+            pickerView.selectRow(user.age - minimunAge, inComponent: 0, animated: false)
+        case .Gender:
+            pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
+        }
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
         
