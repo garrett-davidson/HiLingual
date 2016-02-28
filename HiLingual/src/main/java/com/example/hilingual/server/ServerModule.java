@@ -31,10 +31,10 @@ import redis.clients.jedis.JedisPool;
 
 public class ServerModule extends AbstractModule {
 
-    private Environment environment;
-    private JedisPool jedisPool;
-    private DBI dbi;
-    private ServerConfig config;
+    protected Environment environment;
+    protected JedisPool jedisPool;
+    protected DBI dbi;
+    protected ServerConfig config;
 
     public ServerModule(Environment environment, ServerConfig config) {
         this.environment = environment;
