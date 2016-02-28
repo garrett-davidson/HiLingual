@@ -32,8 +32,9 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
     @Override
     public void init() {
         handle.execute("CREATE TABLE IF NOT EXISTS hl_facebook_data(" +
-                "user_id BIGINT UNIQUE PRIMARY KEY," +
-                " account_id VARCHAR(255))");
+                "user_id BIGINT UNIQUE PRIMARY KEY, " +
+                "account_id VARCHAR(255), " +
+                "token VARCHAR(255))");
     }
 
     @Override
@@ -47,6 +48,18 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
     public void setUserIdForFacebookAccountId(long userId, String accountId) {
         handle.update("INSERT INTO hl_facebook_data (user_id, account_id) VALUES (?, ?)",
                 accountId, userId);
+    }
+
+    @Override
+    public String getFacebookToken(long userId) {
+        return handle.createQuery("SELECT token FROM hl_facebook_data WHERE user_id = :uid").
+                bind("uid", userId).
+                first(String.class);
+    }
+
+    @Override
+    public void setFacebookToken(long userId, String token) {
+        handle.execute("UPDATE hl_facebook_data SET token=? WHERE user_id=?", token, userId);
     }
 
     @Override

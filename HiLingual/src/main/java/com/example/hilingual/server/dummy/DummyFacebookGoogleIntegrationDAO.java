@@ -42,6 +42,16 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
     }
 
     @Override
+    public String getFacebookToken(long userId) {
+        return "";
+    }
+
+    @Override
+    public void setFacebookToken(long userId, String token) {
+
+    }
+
+    @Override
     public boolean isValidGoogleSession(String accountId, String token) {
         return true;
     }
@@ -54,6 +64,16 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
     @Override
     public void setUserIdForGoogleAccountId(long userId, String accountId) {
         googleAccts.put(accountId, userId);
+    }
+
+    @Override
+    public String getGoogleToken(long userId) {
+        return "";
+    }
+
+    @Override
+    public void setGoogleToken(long userId, String token) {
+
     }
 
     @Override

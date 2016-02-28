@@ -19,4 +19,8 @@ public interface FacebookIntegrationDAO extends Managed {
 
     void setUserIdForFacebookAccountId(long userId, String accountId);
 
+    String getFacebookToken(long userId);
+
+    void setFacebookToken(long userId, String token);
+
 }

@@ -20,4 +20,8 @@ public interface GoogleIntegrationDAO extends Managed {
     long getUserIdFromGoogleAccountId(String accountId);
 
     void setUserIdForGoogleAccountId(long userId, String accountId);
+
+    String getGoogleToken(long userId);
+
+    void setGoogleToken(long userId, String token);
 }
