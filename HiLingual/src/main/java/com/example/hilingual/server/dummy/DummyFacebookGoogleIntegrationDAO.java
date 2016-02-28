@@ -52,11 +52,6 @@ public class DummyFacebookGoogleIntegrationDAO implements FacebookIntegrationDAO
     }
 
     @Override
-    public boolean isValidGoogleSession(String accountId, String token) {
-        return true;
-    }
-
-    @Override
     public long getUserIdFromGoogleAccountId(String accountId) {
         return googleAccts.get(accountId);
     }
