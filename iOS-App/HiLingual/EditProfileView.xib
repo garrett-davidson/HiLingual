@@ -136,6 +136,7 @@
                 </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="4Fl-0e-YAL" firstAttribute="top" secondItem="0Lt-LS-xOJ" secondAttribute="bottom" constant="8" symbolic="YES" id="1UL-fn-LBM"/>
                 <constraint firstItem="VCT-Qw-TZ1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="33b-9W-NLS"/>
@@ -159,6 +160,9 @@
                 <constraint firstItem="jeS-Zi-PjY" firstAttribute="top" secondItem="xuJ-H6-jyd" secondAttribute="top" id="z8S-tL-h1z"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="bhD-eq-WQ4" appends="YES" id="wqP-kK-roe"/>
+            </connections>
             <point key="canvasLocation" x="252.5" y="382.5"/>
         </view>
         <tapGestureRecognizer cancelsTouchesInView="NO" id="7xG-BG-M2c" userLabel="Tap Gesture Gender">
@@ -184,6 +188,11 @@
         <tapGestureRecognizer id="9Rm-ed-J1v" userLabel="Tap Gesture Picture">
             <connections>
                 <action selector="pictureTap:" destination="-1" id="n3A-Za-fbY"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="bhD-eq-WQ4">
+            <connections>
+                <action selector="dismissKeyboard:" destination="-1" id="bMm-RA-yaU"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

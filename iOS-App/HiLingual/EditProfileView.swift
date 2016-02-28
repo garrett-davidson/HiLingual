@@ -28,7 +28,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     
     @IBOutlet weak var toolBar: UIToolbar!
     
-    
     var user: HLUser! {
         didSet {
             refreshUI()
@@ -153,6 +152,9 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         animationDown()
     }
     
+    @IBAction func dismissKeyboard(sender: AnyObject) {
+        self.endEditing(false)
+    }
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
@@ -188,6 +190,4 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
     }
-
-
 }
