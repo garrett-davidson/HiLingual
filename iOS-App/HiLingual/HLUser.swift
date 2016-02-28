@@ -18,7 +18,7 @@ enum Gender: Int {
 }
 
 class HLUser: NSCoding {
-    let UUID: String
+    let userId: Int64
     var name: String?
     var displayName: String?
     var knownLanguages: [Languages]
@@ -43,8 +43,8 @@ class HLUser: NSCoding {
     private var session: HLUserSession?
 
 
-    init(UUID: String, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
-        self.UUID = UUID
+    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
+        self.userId = userId
         self.name = name
         self.displayName = displayName
         self.knownLanguages = knownLanguages != nil ? knownLanguages! : []
@@ -58,7 +58,7 @@ class HLUser: NSCoding {
     }
 
     @objc required init?(coder aDecoder: NSCoder) {
-        self.UUID = aDecoder.decodeObjectForKey("UUID") as! String
+        self.userId = (aDecoder.decodeObjectForKey("UUID") as! NSNumber).longLongValue
         self.name = aDecoder.decodeObjectForKey("name") as? String
         self.displayName = aDecoder.decodeObjectForKey("displayName") as? String
         self.bio = aDecoder.decodeObjectForKey("bio") as? String
@@ -113,7 +113,7 @@ class HLUser: NSCoding {
     }
 
     @objc func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(UUID, forKey: "UUID")
+        aCoder.encodeObject(NSNumber(longLong: userId), forKey: "UUID")
         aCoder.encodeObject(name, forKey: "name")
         aCoder.encodeObject(displayName, forKey: "displayName")
         aCoder.encodeObject(bio, forKey: "bio")
@@ -143,7 +143,7 @@ class HLUser: NSCoding {
         let randomLanguagesArray = Languages.allValues
         let randomGenderArray = [Gender.Female, Gender.Male]
 
-        let testUUID = "1"
+        let testUserId: Int64 = 1
         let testName = randomNameArray.random()
         let testDisplayName = randomNameArray.random()
 
@@ -167,7 +167,7 @@ class HLUser: NSCoding {
         let testBirthDate = NSDate.random()
         let testImage = UIImage(named: "person")!
 
-        return HLUser(UUID: testUUID, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage)
+        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage)
     }
 }
 
