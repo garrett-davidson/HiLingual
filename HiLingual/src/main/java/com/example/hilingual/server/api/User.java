@@ -25,6 +25,9 @@ public class User {
     private Set<User> usersChattedWith;
     private boolean profileSet;
 
+    public User() {
+    }
+
     public User(long userId, String name, String displayName, String bio, Gender gender, Date birthdate,
                 URL imageURL, Set<Locale> knownLanguages, Set<Locale> learningLanguages,
                 Set<User> blockedUsers, Set<User> usersChattedWith, boolean profileSet) {
