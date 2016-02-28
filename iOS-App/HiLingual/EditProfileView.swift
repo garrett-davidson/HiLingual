@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextViewDelegate {
 
     enum PickerField {
         case Gender, Age
@@ -18,8 +18,9 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     let minimunAge = 13
 
+    var isPickerViewDown = true
+
     @IBOutlet weak var pickerView: UIPickerView!
-    
     @IBOutlet weak var view: UIView!
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var genderLabel: UILabel!
@@ -29,7 +30,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     @IBOutlet weak var languagesLearning: UILabel!
     @IBOutlet weak var languagesSpeaks: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    
     @IBOutlet weak var toolBar: UIToolbar!
     
     var user: HLUser! {
@@ -97,11 +97,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     
     @IBAction func genderTap(sender: AnyObject) {
+        dismissKeyboard(self)
         currentPickerField = .Gender
         pickerView.reloadAllComponents()
         animationUp()
     }
     @IBAction func ageTap(sender: AnyObject) {
+        dismissKeyboard(self)
         currentPickerField = .Age
         pickerView.reloadAllComponents()
         animationUp()
@@ -134,6 +136,9 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         }
     }
     
+    @IBAction func dismissPickerView(sender: AnyObject) {
+        animationDown()
+    }
 
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -158,6 +163,15 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     @IBAction func dismissKeyboard(sender: AnyObject) {
         self.endEditing(false)
     }
+
+    func textViewDidBeginEditing(textView: UITextView) {
+        self.dismissPickerView(self)
+    }
+
+    func textViewDidEndEditing(textView: UITextView) {
+        self.dismissKeyboard(self)
+    }
+
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
@@ -177,29 +191,39 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         toolBar.backgroundColor = .whiteColor()
         self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2
         self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2
-        
-        
     }
     
     func animationUp(){
-        switch currentPickerField {
-        case .Age:
-            if (user.age != nil) {
-                pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
+
+        if (isPickerViewDown) {
+
+            switch currentPickerField {
+            case .Age:
+                if (user.age != nil) {
+                    pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
+                }
+            case .Gender:
+                if (user.gender != nil) {
+                    pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
+                }
             }
-        case .Gender:
-            if (user.gender != nil) {
-                pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
-            }
+
+            let animationDuration = 0.2
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
+
+            isPickerViewDown = false
         }
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
-        
     }
     
     func animationDown(){
-        
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+
+        if (!isPickerViewDown) {
+            let animationDuration = 0.2
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+
+            isPickerViewDown = true
+        }
     }
 }
