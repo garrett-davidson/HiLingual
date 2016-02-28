@@ -65,14 +65,17 @@ public class AuthResource {
         String authorityToken = body.getAuthorityToken();
         BiPredicate<String, String> sessionCheck;
         ToLongFunction<String> getUserIdFromAuthorityAccountId;
+        BiConsumer<Long, String> tokenSetter;
         switch (body.getAuthority()) {
             case FACEBOOK:
                 sessionCheck = fbApiService::isValidFacebookSession;
                 getUserIdFromAuthorityAccountId = facebookIntegrationDAO::getUserIdFromFacebookAccountId;
+                tokenSetter = facebookIntegrationDAO::setFacebookToken;
                 break;
             case GOOGLE:
                 sessionCheck = googleIntegrationDAO::isValidGoogleSession;
                 getUserIdFromAuthorityAccountId = googleIntegrationDAO::getUserIdFromGoogleAccountId;
+                tokenSetter = googleIntegrationDAO::setGoogleToken;
                 break;
             default:
                 throw new BadRequestException();
@@ -84,6 +87,7 @@ public class AuthResource {
         if (userId == 0) {
             throw new NotFoundException();
         }
+        tokenSetter.accept(userId, authorityToken);
         String sessionId = sessionDAO.newSession(userId);
         return new AuthenticationResponse(userId, sessionId);
     }
@@ -104,14 +108,17 @@ public class AuthResource {
         String authorityToken = body.getAuthorityToken();
         BiPredicate<String, String> sessionCheck;
         BiConsumer<Long, String> assignUserIdToAccount;
+        BiConsumer<Long, String> tokenSetter;
         switch (body.getAuthority()) {
             case FACEBOOK:
                 sessionCheck = fbApiService::isValidFacebookSession;
                 assignUserIdToAccount = facebookIntegrationDAO::setUserIdForFacebookAccountId;
+                tokenSetter = facebookIntegrationDAO::setFacebookToken;
                 break;
             case GOOGLE:
                 sessionCheck = googleIntegrationDAO::isValidGoogleSession;
                 assignUserIdToAccount = googleIntegrationDAO::setUserIdForGoogleAccountId;
+                tokenSetter = googleIntegrationDAO::setGoogleToken;
                 break;
             default:
                 throw new BadRequestException();
@@ -122,6 +129,7 @@ public class AuthResource {
         User user = userDAO.createUser();
         long userId = user.getUserId();
         assignUserIdToAccount.accept(userId, authorityAccountId);
+        tokenSetter.accept(userId, authorityToken);
         String sessionId = sessionDAO.newSession(userId);
         return new AuthenticationResponse(userId, sessionId);
     }
