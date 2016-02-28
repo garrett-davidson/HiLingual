@@ -195,19 +195,18 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     
     func animationUp(){
 
-        if (isPickerViewDown) {
-
-            switch currentPickerField {
-            case .Age:
-                if (user.age != nil) {
-                    pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
-                }
-            case .Gender:
-                if (user.gender != nil) {
-                    pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
-                }
+        switch currentPickerField {
+        case .Age:
+            if (user.age != nil) {
+                pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
             }
+        case .Gender:
+            if (user.gender != nil) {
+                pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
+            }
+        }
 
+        if (isPickerViewDown) {
             let animationDuration = 0.2
             UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
             UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
