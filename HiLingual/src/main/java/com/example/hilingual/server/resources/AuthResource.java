@@ -112,15 +112,18 @@ public class AuthResource {
         String authorityToken = body.getAuthorityToken();
         BiPredicate<String, String> sessionCheck;
         BiConsumer<Long, String> assignUserIdToAccount;
+        ToLongFunction<String> getUserIdFromAuthorityAccountId;
         BiConsumer<Long, String> tokenSetter;
         switch (body.getAuthority()) {
             case FACEBOOK:
                 sessionCheck = fbApiService::isValidFacebookSession;
+                getUserIdFromAuthorityAccountId = facebookIntegrationDAO::getUserIdFromFacebookAccountId;
                 assignUserIdToAccount = facebookIntegrationDAO::setUserIdForFacebookAccountId;
                 tokenSetter = facebookIntegrationDAO::setFacebookToken;
                 break;
             case GOOGLE:
                 sessionCheck = googleApiService::isValidGoogleSession;
+                getUserIdFromAuthorityAccountId = googleIntegrationDAO::getUserIdFromGoogleAccountId;
                 assignUserIdToAccount = googleIntegrationDAO::setUserIdForGoogleAccountId;
                 tokenSetter = googleIntegrationDAO::setGoogleToken;
                 break;
@@ -129,6 +132,9 @@ public class AuthResource {
         }
         if (!sessionCheck.test(authorityAccountId, authorityToken)) {
             throw new ClientErrorException(Response.Status.UNAUTHORIZED);
+        }
+        if (getUserIdFromAuthorityAccountId.applyAsLong(authorityAccountId) != 0) {
+            throw new ForbiddenException("Account is already associated with a Hilingual account");
         }
         User user = userDAO.createUser();
         long userId = user.getUserId();
