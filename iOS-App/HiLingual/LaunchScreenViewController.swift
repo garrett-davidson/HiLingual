@@ -72,19 +72,15 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     
     func getUserInfo()
     {
-        let fields = ["fields": "name,email"]
+        let fields = ["fields": "id,name,email"]
         let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: fields)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             guard error == nil else {
                 print("Error: \(error!)")
                 return
             }
-            print("fetched user: \(result)")
-            let userName = result.valueForKey("name") as! String
-            //let userGender = result.valueForKey("gender") as! String
-            print("User Name is: \(userName)")
-           // print("User Gender  is: \(userGender)")
-            //print("User Email is:  \(result.valueForKey("email") as! String)")
+            print("Facebook user id: \(result.valueForKey("id") as! String)")
+            print("Facebook acess token: " + FBSDKAccessToken.currentAccessToken().tokenString)
         })
     }
 }
