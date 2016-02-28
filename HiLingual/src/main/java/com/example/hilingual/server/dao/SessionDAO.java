@@ -43,6 +43,10 @@ public interface SessionDAO extends Managed {
      */
     int revokeAllSessions();
 
+    default void truncate() {
+        revokeAllSessions();
+    }
+
     /**
      * Revokes all sessions that belong to the given userId
      * @param userId The userId whose sessions are to be revoked
