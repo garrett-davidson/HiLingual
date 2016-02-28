@@ -35,7 +35,12 @@ class ProfileView: UIView {
         imageView.image = user.profilePicture
         nameLabel.text = user.displayName
         genderLabel.text = "TODO"
-        ageLabel.text = "\(user.age)"
+        if (user.age != nil) {
+            ageLabel.text = "\(user.age!)"
+        }
+        else {
+            ageLabel.text = ""
+        }
         speaksLabel.text = "Speaks: " + user.knownLanguages.toList()
         learningLabel.text = "Learning: " + user.learningLanguages.toList()
         bioTextView.text = user.bio

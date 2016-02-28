@@ -49,8 +49,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         else {
             genderLabel.text = "Not Specified"
         }
-        //age is current date - birthday date will need to change later 💩
-        ageLabel.text = "\(user.age)"
+
+        if (user.age != nil) {
+            ageLabel.text = "\(user.age!)"
+        }
+        else {
+            ageLabel.text = ""
+        }
         languagesSpeaks.text = "Speaks: " + user.knownLanguages.toList()
         languagesLearning.text = "Learning: " + user.learningLanguages.toList()
         bioText.text = user.bio
@@ -179,9 +184,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     func animationUp(){
         switch currentPickerField {
         case .Age:
-            pickerView.selectRow(user.age - minimunAge, inComponent: 0, animated: false)
+            if (user.age != nil) {
+                pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
+            }
         case .Gender:
-            pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
+            if (user.gender != nil) {
+                pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
+            }
         }
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
