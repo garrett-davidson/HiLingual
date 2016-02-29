@@ -80,15 +80,23 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User[] findUsers(String query, User invoker) {
         User[] results = null;
+        String sql_query;
+        List<Map<String, Object>> queryReturn;
         if (query.startsWith("RNAME:")) {
             //  TODO Nate - implement search based on real name (Story 4.2)
+            sql_query = "SELECT * FROM hl_users WHERE display_name LIKE '%" + query.substring(6) + "%'";
+            queryReturn = handle.execute(sql_query);
+
 
         } else if (query.startsWith("UNAME:")) {
             //  TODO Nate - implement search based on username (Story 4.3)
+            sql_query = "SELECT * FROM hl_users WHERE user_name LIKE '%" + query.substring(6) + "%'";
+            queryReturn = handle.execute(sql_query);
 
         } else {
             results = new User[0];
         }
+        //TODO create user objects for each db entry in the list of key maps and return
         return results;
     }
 
