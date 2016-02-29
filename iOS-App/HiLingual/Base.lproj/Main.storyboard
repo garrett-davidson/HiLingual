@@ -275,7 +275,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="KKk-kp-eLC" kind="relationship" relationship="viewControllers" id="zmD-Gt-X9g"/>
-                        <segue destination="Q1f-p8-L4k" kind="relationship" relationship="viewControllers" id="6GW-Be-OvZ"/>
+                        <segue destination="2in-sX-LFU" kind="relationship" relationship="viewControllers" id="6GW-Be-OvZ"/>
                         <segue destination="EA8-An-G2I" kind="relationship" relationship="viewControllers" id="Tm2-hg-sfu"/>
                     </connections>
                 </tabBarController>
@@ -377,27 +377,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iwx-Bx-znf" customClass="EditProfileView" customModule="HiLingual" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iwx-Bx-znf" customClass="ProfileView" customModule="HiLingual" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="600" height="531"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lqy-PJ-PuE" customClass="EditProfileView" customModule="HiLingual" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="CW8-Eh-gqr" firstAttribute="top" secondItem="lqy-PJ-PuE" secondAttribute="bottom" id="70f-8c-TXV"/>
                             <constraint firstItem="iwx-Bx-znf" firstAttribute="top" secondItem="3fu-bS-tSv" secondAttribute="bottom" id="A43-xE-Ae7"/>
                             <constraint firstItem="iwx-Bx-znf" firstAttribute="leading" secondItem="Iso-nN-x3G" secondAttribute="leading" id="Pch-Tl-Ykm"/>
                             <constraint firstAttribute="trailing" secondItem="iwx-Bx-znf" secondAttribute="trailing" id="dLB-PZ-k7g"/>
+                            <constraint firstAttribute="trailing" secondItem="lqy-PJ-PuE" secondAttribute="trailing" id="dVQ-4p-acN"/>
                             <constraint firstItem="CW8-Eh-gqr" firstAttribute="top" secondItem="iwx-Bx-znf" secondAttribute="bottom" id="eJ5-Nb-np8"/>
+                            <constraint firstItem="lqy-PJ-PuE" firstAttribute="leading" secondItem="Iso-nN-x3G" secondAttribute="leading" id="ths-oG-L0S"/>
+                            <constraint firstItem="lqy-PJ-PuE" firstAttribute="top" secondItem="3fu-bS-tSv" secondAttribute="bottom" id="upm-y3-iID"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="ndt-1q-acR"/>
+                    <navigationItem key="navigationItem" id="BgE-VS-eTi">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="pHn-AO-3os">
+                            <connections>
+                                <action selector="tapEdit:" destination="Q1f-p8-L4k" id="RRc-eO-XdD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="editProfileView" destination="iwx-Bx-znf" id="ILe-5x-EWJ"/>
+                        <outlet property="editProfileView" destination="lqy-PJ-PuE" id="0cZ-Yf-XgA"/>
+                        <outlet property="profileView" destination="iwx-Bx-znf" id="r8x-Iy-GbJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMp-E7-ke6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3867" y="100"/>
+            <point key="canvasLocation" x="4679" y="100"/>
         </scene>
         <!--Data Source-->
         <scene sceneID="R3e-Td-13D">
@@ -576,7 +591,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HsG-OM-sHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4679" y="-184"/>
+            <point key="canvasLocation" x="5491" y="-184"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RDW-iM-Qhh">
@@ -613,6 +628,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ddS-Cx-eD3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1443" y="956"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="M57-JD-ddN">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2in-sX-LFU" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Profile" id="ndt-1q-acR"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cRd-of-hUa">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Q1f-p8-L4k" kind="relationship" relationship="rootViewController" id="zmk-fq-zhS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9mn-4i-qhH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3867" y="100"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
