@@ -71,14 +71,39 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     @IBAction func pictureTap(sender: UITapGestureRecognizer) {
         let imagePickerController = UIImagePickerController()
-        imagePickerController.sourceType = .PhotoLibrary
-        imagePickerController.delegate = self
+        let alertController = UIAlertController(title: nil, message: "Choose Source", preferredStyle: .ActionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            return
+        }
+        alertController.addAction(cancelAction)
         
+        let takePictureAction = UIAlertAction(title: "Take Picture", style: .Default) { (action) in
+            imagePickerController.sourceType = .Camera
+            imagePickerController.delegate = self
+            
+            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            while((topVC!.presentedViewController) != nil){
+                topVC = topVC!.presentedViewController
+            }
+            topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+        }
+        alertController.addAction(takePictureAction)
+        let usePhotoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default) { (action) in
+            imagePickerController.sourceType = .PhotoLibrary
+            imagePickerController.delegate = self
+            
+            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            while((topVC!.presentedViewController) != nil){
+                topVC = topVC!.presentedViewController
+            }
+            topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+        }
+        alertController.addAction(usePhotoLibraryAction)
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil){
             topVC = topVC!.presentedViewController
         }
-        topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+        topVC?.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
