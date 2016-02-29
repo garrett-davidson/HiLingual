@@ -8,14 +8,25 @@
 
 import UIKit
 
-class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    
-    var pickerData = [String]()
-    var pickerAge = [Int]()
-    var genderBool = false
-    var ageBool = false
+class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextViewDelegate {
+
+    enum PickerField {
+        case Gender, Age
+    }
+
+    enum LanguageFields {
+        case Knows, Learning
+    }
+
+    var currentPickerField = PickerField.Age
+    let minimunAge = 13
+
+    var isPickerViewDown = true
+
+    var languageSelectionDelegate: LanguageSelectionDelegate?
+    var currentLanguageField = LanguageFields.Knows
+
     @IBOutlet weak var pickerView: UIPickerView!
-    
     @IBOutlet weak var view: UIView!
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var genderLabel: UILabel!
@@ -25,9 +36,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     @IBOutlet weak var languagesLearning: UILabel!
     @IBOutlet weak var languagesSpeaks: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    
     @IBOutlet weak var toolBar: UIToolbar!
-    
     
     var user: HLUser! {
         didSet {
@@ -40,9 +49,19 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         nameText.text = user.displayName
         //can people have the same display name 💩
         //don't know how to send infoback to accountcreationview
-        genderLabel.text = "\(user.gender)"
-        //age is current date - birthday date will need to change later 💩
-        ageLabel.text = "\(NSCalendar.currentCalendar().components([.Day , .Month , .Year], fromDate: NSDate()).year - NSCalendar.currentCalendar().components(.Year, fromDate: user.birthdate!).year)"
+        if user.gender != nil {
+            genderLabel.text = "\(user.gender!)"
+        }
+        else {
+            genderLabel.text = "Not Specified"
+        }
+
+        if (user.age != nil) {
+            ageLabel.text = "\(user.age!)"
+        }
+        else {
+            ageLabel.text = ""
+        }
         languagesSpeaks.text = "Speaks: " + user.knownLanguages.toList()
         languagesLearning.text = "Learning: " + user.learningLanguages.toList()
         bioText.text = user.bio
@@ -82,54 +101,62 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
 
+    func updateSelectedLanguages(selectedLangauges: [Languages]) {
+        switch currentLanguageField {
+        case .Knows:
+            user.knownLanguages = selectedLangauges
+        case .Learning:
+            user.learningLanguages = selectedLangauges
+        }
+
+        self.refreshUI()
+    }
     
     @IBAction func genderTap(sender: AnyObject) {
-        //if(user.gender == .NotSpecified){
-            genderBool = true
-            ageBool = false
-            animationUp()
-            pickerData = ["Male", "Female"]
-            pickerView.reloadAllComponents()
-        //}
-        
+        dismissKeyboard(self)
+        currentPickerField = .Gender
+        pickerView.reloadAllComponents()
+        animationUp()
     }
     @IBAction func ageTap(sender: AnyObject) {
-        //if(user.birthdate == NSDate()){
-            ageBool = true
-            genderBool = false
-            animationUp()
-            pickerAge += 13...100
-            pickerView.reloadAllComponents()
-        //}
+        dismissKeyboard(self)
+        currentPickerField = .Age
+        pickerView.reloadAllComponents()
+        animationUp()
     }
     
     @IBAction func speaksTap(sender: AnyObject) {
-        
+        currentLanguageField = .Knows
+        languageSelectionDelegate?.performLanguageSelectionSegue(user.knownLanguages)
     }
 
     @IBAction func learningTap(sender: AnyObject) {
-        
+        currentLanguageField = .Learning
+        languageSelectionDelegate?.performLanguageSelectionSegue(user.learningLanguages)
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if (genderBool && !ageBool){
-            return pickerData[row]
-        } else if (ageBool && !genderBool){
-            return "\(pickerAge[row])"
-        } else{
-            return pickerData[row]
+        switch currentPickerField {
+        case .Age:
+            return "\(minimunAge + row)"
+
+        case .Gender:
+            return "\(Gender.allValues[row])"
         }
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    
-        if (genderBool && !ageBool){
-            genderLabel.text = pickerData[row]
-        } else if (ageBool && !genderBool){
-            ageLabel.text = "\(pickerAge[row])"
+        switch currentPickerField {
+        case .Age:
+            ageLabel.text = "\(minimunAge + row)"
+        case .Gender:
+            genderLabel.text = "\(Gender.allValues[row])"
         }
     }
     
+    @IBAction func dismissPickerView(sender: AnyObject) {
+        animationDown()
+    }
 
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -137,22 +164,32 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (genderBool && !ageBool){
-            return pickerData.count
-        } else if (ageBool && !genderBool){
-            return pickerAge.count
-        } else{
-            return pickerData.count
+        switch (currentPickerField) {
+        case .Age:
+            //Max age = 100
+            return 100 - minimunAge + 1
+
+        case .Gender:
+            return Gender.allValues.count
         }
     }
     
     @IBAction func donePicker(sender: AnyObject) {
-        
-        ageBool = false
-        genderBool = false
         animationDown()
     }
     
+    @IBAction func dismissKeyboard(sender: AnyObject) {
+        self.endEditing(false)
+    }
+
+    func textViewDidBeginEditing(textView: UITextView) {
+        self.dismissPickerView(self)
+    }
+
+    func textViewDidEndEditing(textView: UITextView) {
+        self.dismissKeyboard(self)
+    }
+
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
@@ -172,22 +209,38 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         toolBar.backgroundColor = .whiteColor()
         self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2
         self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2
-        
-        
     }
     
     func animationUp(){
-        
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
-        
+
+        switch currentPickerField {
+        case .Age:
+            if (user.age != nil) {
+                pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
+            }
+        case .Gender:
+            if (user.gender != nil) {
+                pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
+            }
+        }
+
+        if (isPickerViewDown) {
+            let animationDuration = 0.2
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
+
+            isPickerViewDown = false
+        }
     }
     
     func animationDown(){
-        
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+
+        if (!isPickerViewDown) {
+            let animationDuration = 0.2
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+
+            isPickerViewDown = true
+        }
     }
-
-
 }

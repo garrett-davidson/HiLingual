@@ -11,6 +11,10 @@ import UIKit
 
 enum Gender: Int {
     case Male = 0, Female, NotSpecified
+
+    //It is important that these are in the same order as declared in the line above
+    //We're currently not allowing "Not Specified" as an option
+    static let allValues: [Gender] = [.Male, .Female]
 }
 
 class HLUser: NSCoding {
@@ -26,6 +30,15 @@ class HLUser: NSCoding {
 
     var blockedUsers: [HLUser]?
     var usersChattedWith: [HLUser]
+
+    var age: Int? {
+        get {
+            if (self.birthdate != nil) {
+                return NSCalendar.currentCalendar().components(.Year, fromDate: self.birthdate!, toDate: NSDate(), options: .MatchFirst).year
+            }
+            return nil
+        }
+    }
 
     private var session: HLUserSession?
 
