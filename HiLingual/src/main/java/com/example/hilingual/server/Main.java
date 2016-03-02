@@ -20,6 +20,7 @@ import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.AuthResource;
 import com.example.hilingual.server.resources.UserResource;
 import com.example.hilingual.server.service.APNsService;
+import com.example.hilingual.server.task.ApnsTestTask;
 import com.example.hilingual.server.task.RevokeAllSessionsTask;
 import com.example.hilingual.server.task.TruncateTask;
 import com.google.inject.Guice;
@@ -113,6 +114,7 @@ public class Main extends Application<ServerConfig> {
         AdminEnvironment a = environment.admin();
         a.addTask(create(RevokeAllSessionsTask.class));
         a.addTask(create(TruncateTask.class));
+        a.addTask(create(ApnsTestTask.class));
     }
 
     @Override
