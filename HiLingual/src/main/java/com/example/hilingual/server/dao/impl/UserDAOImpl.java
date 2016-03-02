@@ -23,9 +23,10 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -164,6 +165,22 @@ public class UserDAOImpl implements UserDAO {
 
             return user;
         }
+    }
+
+    private <T> String setToString(Set<T> set, Function<T, String> toStringer) {
+        return set.stream().
+                map(toStringer).
+                collect(Collectors.joining(","));
+    }
+
+    private <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
+        Set<T> set = new HashSet<>();
+        StringTokenizer tokenizer = new StringTokenizer(input, ",");
+        while (tokenizer.hasMoreTokens()) {
+            T t = fromStringer.apply(tokenizer.nextToken());
+            set.add(t);
+        }
+        return set;
     }
 
     public static interface Update
