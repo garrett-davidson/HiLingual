@@ -87,48 +87,28 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User[] findUsers(String query, User invoker) {
-        User[] results = null;
-        String sql_query;
-        List<Map<String, Object>> queryReturn;
-        if (query.startsWith("RNAME:")) {
-            //  TODO Nate - implement search based on real name (Story 4.2)
-            sql_query = "SELECT * FROM hl_users WHERE display_name LIKE '%" + query.substring(6) + "%'";
-            queryReturn = handle.select(sql_query);
-
-
-        } else if (query.startsWith("UNAME:")) {
-            //  TODO Nate - implement search based on username (Story 4.3)
-            sql_query = "SELECT * FROM hl_users WHERE user_name LIKE '%" + query.substring(6) + "%'";
-            queryReturn = handle.select(sql_query);
-
+        User[] results;
+        List<User> usersList;
+        if (query.startsWith("RNAME:")) { //if the search query is by real/display name
+            //create query to search for users where real/dipslay name is like query. use UserMapper
+            usersList = handle.createQuery("SELECT * FROM hl_users WHERE display_name LIKE :rname")
+                    .bind("rname", query.substring(6))
+                    .map(new UserMapper())
+                    .list();
+        } else if (query.startsWith("UNAME:")) { //if the seach query is by username
+            //create query to search for users where user name is like query. use UserMapper
+            usersList = handle.createQuery("SELECT * FROM hl_users WHERE user_name LIKE :uname")
+                    .bind("uname", query.substring(6))
+                    .map(new UserMapper())
+                    .list();
         } else {
+            //if the query has invalid format return empty array
             results = new User[0];
             return results;
         }
-
-        results = new User[queryReturn.size()];
-
-        for (int i = 0; i < queryReturn.size(); i++) {
-            //create a DbUser with the strings from the databse
-            DbUser temp_db_user = new DbUser(
-                    (String)queryReturn.get(i).get("user_id"),
-                    (String)queryReturn.get(i).get("user_name"),
-                    (String)queryReturn.get(i).get("display_name"),
-                    (String)queryReturn.get(i).get("bio"),
-                    (String)queryReturn.get(i).get("gender"),
-                    (String)queryReturn.get(i).get("birth_date"),
-                    (String)queryReturn.get(i).get("image_url"),
-                    (String)queryReturn.get(i).get("known_languages"),
-                    (String)queryReturn.get(i).get("learning_languages"),
-                    (String)queryReturn.get(i).get("blocked_users"),
-                    (String)queryReturn.get(i).get("users_chatted_with"),
-                    (String)queryReturn.get(i).get("profile_set"));
-
-            results[i] = temp_db_user.toUser(); //convert the DbUser to a User and add it to results array
-        }
-
-
-
+        //convert the List to Array and return
+        results = new User[usersList.size()];
+        results = usersList.toArray(results);
         return results;
     }
 
