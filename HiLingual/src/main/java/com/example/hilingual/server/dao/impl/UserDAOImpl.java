@@ -69,7 +69,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void updateUser(User newUserData) {
-        u.update(newUserData);
+        u.update(new DbUser(newUserData));
     }
 
     @Override
@@ -173,7 +173,7 @@ public class UserDAOImpl implements UserDAO {
         void insert(@BindBean DbUser dbUser);
 
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_lanuages = :learning_lanuages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with where user_id = :user_id")
-        int update(@BindBean User user);
+        int update(@BindBean DbUser user);
 
         @SqlUpdate("delete from hl_users where id = :user_id")
         void deleteByName(@Bind long id);
