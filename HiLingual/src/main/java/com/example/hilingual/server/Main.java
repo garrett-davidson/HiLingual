@@ -19,6 +19,7 @@ import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.AuthResource;
 import com.example.hilingual.server.resources.UserResource;
+import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.task.RevokeAllSessionsTask;
 import com.example.hilingual.server.task.TruncateTask;
 import com.google.inject.Guice;
@@ -105,6 +106,7 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(GoogleIntegrationDAO.class));
         l.manage(create(SessionDAO.class));
         l.manage(create(UserDAO.class));
+        l.manage(create(APNsService.class));
 
         //  Tasks
         LOGGER.info("Registering tasks");
