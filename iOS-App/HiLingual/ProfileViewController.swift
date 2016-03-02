@@ -33,6 +33,9 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
     
     }
     
+    @IBAction func showSettings(sender: AnyObject) {
+        performSegueWithIdentifier("SettingsSegue", sender: self)
+    }
     override func viewDidLoad() {
         editProfileView.user = HLUser.generateTestUser();
         profileView.user = HLUser.generateTestUser();

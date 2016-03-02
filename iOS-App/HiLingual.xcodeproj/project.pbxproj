@@ -36,6 +36,7 @@
 		7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */; };
 		72F621551C7F95D200A8A489 /* EditProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72F621541C7F95D200A8A489 /* EditProfileView.xib */; };
 		72F621571C7F977700A8A489 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F621561C7F977700A8A489 /* EditProfileView.swift */; };
+		7CF1F1931C875BCA00BC258A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		72F621541C7F95D200A8A489 /* EditProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfileView.xib; sourceTree = "<group>"; };
 		72F621561C7F977700A8A489 /* EditProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		83E780FFD269DC9326CA0C02 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D2FD8F70A1041E87AC2D329C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +165,7 @@
 				688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */,
 				680F24491C716636009F4EE8 /* LoginViewController.swift */,
 				6876D99A1C5A87A90097332A /* Main.storyboard */,
+				7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */,
 				680F24511C716926009F4EE8 /* MatchingViewController.swift */,
 				680F244D1C716875009F4EE8 /* MessagesViewController.swift */,
 				682D14841C76620600443B7D /* ProfileView.swift */,
@@ -402,6 +405,7 @@
 				680F24461C7164C3009F4EE8 /* HLUserSession.swift in Sources */,
 				680F24501C7168D6009F4EE8 /* ProfileViewController.swift in Sources */,
 				680F244E1C716875009F4EE8 /* MessagesViewController.swift in Sources */,
+				7CF1F1931C875BCA00BC258A /* SettingsViewController.swift in Sources */,
 				682D14851C76620600443B7D /* ProfileView.swift in Sources */,
 				6876D9971C5A87A90097332A /* AppDelegate.swift in Sources */,
 				68AA6DCD1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift in Sources */,
