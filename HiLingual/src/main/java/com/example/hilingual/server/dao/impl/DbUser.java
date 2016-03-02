@@ -2,7 +2,11 @@ package com.example.hilingual.server.dao.impl; /**
  * Created by joseph on 2/18/16.
  */
 
+import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.User;
+
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DbUser {
@@ -27,13 +31,17 @@ public class DbUser {
         birthdate = user.getBirthdate();
         imageURL = user.getImageURL().toString();
         knownLanguages = Arrays.toString(user.getKnownLanguages().toArray());
+        knownLanguages = knownLanguages.substring(1, knownLanguages.length()-1); //remove the beginning and end brackets from string leaving csv format
         learningLanguages = Arrays.toString(user.getLearningLanguages().toArray());
+        learningLanguages = learningLanguages.substring(1, learningLanguages.length()-1);//remove...
         blockedUsers = Arrays.toString(user.getBlockedUsers().toArray());
+        blockedUsers = blockedUsers.substring(1, blockedUsers.length()-1); // remove
         usersChattedWith = Arrays.toString(user.getUsersChattedWith().toArray());
+        usersChattedWith = usersChattedWith.substring(1, usersChattedWith.length()-1); //remove
         if(user.isProfileSet())
-            profileSet = "true";
+            profileSet = "TRUE";
         else
-            profileSet = "false";
+            profileSet = "FALSE";
     }
 
     public DbUser(long userId, String name, String displayName, String bio, String gender, Date birthdate,
@@ -148,7 +156,73 @@ public class DbUser {
     }
 
     public User toUser() {
-        return null;
+        Long tempUserId this.userId;
+        String tempUserName = this.name;
+        String tempDisplayName = this.displayName;
+        String tempBio = this.bio;
+        Gender tempGender;
+        if (this.gender.equals("male")) {
+            tempGender = Gender.MALE;
+
+        } else if (this.gender.equals("female")) {
+            tempGender = Gender.FEMALE;
+        } else {
+            tempGender = Gender.NOT_SET;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
+        Date tempBirthdate = formatter.parse(this.birthdate);
+        URL tempImageURL = new URL(this.imageURL);
+
+        //split the string of known languages with regex ',' because language locale strings are csv
+        String[] splitKnownLanguageLocales = this.knownLanguages.split(",");
+        Set<Locale> tempKnownLanguages = new HashSet<>();
+        for (int i = 0; i < splitKnownLanguageLocales.length; i++) {
+            tempKnownLanguages.add(new Locale(splitKnownLanguageLocales[i])); //add each locale to set
+        }
+        //learning langugages
+        String[] splitLearningLanguageLocales = this.learningLanguages.split(",");
+        Set<Locale> tempLearningLanguages = new HashSet<>();
+        for (int i = 0; i < splitLearningLanguageLocales.length; i++) {
+            tempLearningLanguages.add(new Locale(splitLearningLanguageLocales[i])); //add each locale to set
+        }
+        //blocked users
+        String[] splitBlockedUsers = this.blockedUsers.split(".");
+        Set<Long> tempBlockedUsers = new HashSet<>();
+        for (int i = 0; i < splitBlockedUsers.length; i++) {
+            tempBlockedUsers.add(Long.parseLong(splitBlockedUsers[i]));
+        }
+        //users chatted with
+        String[] splitUsersChattedWith = this.usersChattedWith.split(".");
+        Set<Long> tempUsersChattedWith = new HashSet<>();
+        for (int i = 0; i < splitUsersChattedWith.length; i++) {
+            tempUsersChattedWith.add(Long.parseLong(splitUsersChattedWith[i]));
+        }
+
+        Boolean tempProfileSet;
+        if (this.profileSet.equals("true")) {
+            tempProfileSet = Boolean.TRUE;
+        } else if (this.profileSet.equals("true")) {
+            tempProfileSet = Boolean.FALSE;
+        } else {
+            //something is fucked
+        }
+
+        User returnUser = new User(tempUserId,
+                tempUserName,
+                tempDisplayName,
+                tempBio,
+                tempGender,
+                tempBirthdate,
+                tempImageURL,
+                tempKnownLanguages,
+                tempLearningLanguages,
+                tempBlockedUsers,
+                tempUsersChattedWith,
+                tempProfileSet);
+
+
+
+        return returnUser;
     }
 }
 
