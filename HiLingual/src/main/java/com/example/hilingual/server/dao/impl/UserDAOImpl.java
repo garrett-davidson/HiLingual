@@ -14,6 +14,8 @@ import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindUser;
 import com.google.inject.Inject;
+import com.sun.tools.internal.xjc.Language;
+import org.apache.commons.codec.language.bm.Languages;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
@@ -153,15 +155,22 @@ public class UserDAOImpl implements UserDAO {
         @Override
         public User map(int index, ResultSet r, StatementContext ctx) throws SQLException {
             User user = new User();
-            //  TODO Joey - populate User fields from result
-            user.setUserId(r.getLong("CHANGEME_COLUMN_NAME"));
-            user.setName(r.getString("CHANGEME_COLUMN_NAME"));
-            user.setDisplayName(r.getString("CHANGEME_COLUMN_NAME"));
-            user.setBio(r.getString("CHANGEME_COLUMN_NAME"));
-            user.setGender(Gender.valueOf(r.getString("CHANGEME_COLUMN_NAME")));
-            //  etc
-
-
+            user.setUserId(r.getLong("user_id"));
+            user.setName(r.getString("user_name"));
+            user.setDisplayName(r.getString("display_name"));
+            user.setBio(r.getString("bio"));
+            user.setGender(Gender.valueOf(r.getString("gender")));
+            user.setBirthdate(r.getDate("birth_date"));
+            user.setImageURL(r.getURL("image_url"));
+            String usersChattedWith = r.getString("users_chatted_with");
+            user.setUsersChattedWith(stringToSet(usersChattedWith, Long::parseLong));
+            String blockedUsers = r.getString("blocked_users");
+            user.setBlockedUsers(stringToSet(blockedUsers, Long::parseLong));
+            String knownLanguages = r.getString("known_languages");
+            user.setKnownLanguages(stringToSet(knownLanguages, Locale::forLanguageTag));
+            String learningLanguages = r.getString("learning_languages");
+            user.setLearningLanguages(stringToSet(learningLanguages, Locale::forLanguageTag));
+            user.setProfileSet(r.getBoolean("profile_set"));
 
             return user;
         }
