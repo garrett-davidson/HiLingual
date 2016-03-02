@@ -44,7 +44,7 @@ public class DbUser {
             profileSet = "FALSE";
     }
 
-    public DbUser(long userId, String name, String displayName, String bio, String gender, Date birthdate,
+    public DbUser(Long userId, String name, String displayName, String bio, String gender, Date birthdate,
                   String imageURL, String knownLanguages, String learningLanguages,
                   String blockedUsers, String usersChattedWith, String profileSet) {
         this.userId = userId;
