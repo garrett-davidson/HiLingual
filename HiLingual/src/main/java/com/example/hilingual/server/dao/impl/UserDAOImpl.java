@@ -16,16 +16,15 @@ import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.Update;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class UserDAOImpl implements UserDAO {
@@ -40,17 +39,29 @@ public class UserDAOImpl implements UserDAO {
     @Inject
     public UserDAOImpl(DBI dbi) {
         this.dbi = dbi;
-        Update u = handle.attach(Update.class);
     }
 
     @Override
     public void init() {
-        handle.execute("CREATE TABLE IF NOT EXISTS hl_users(user_id BIGINT, user_name TINYTEXT, display_name TINYTEXT,bio TEXT, gender TEXT, birth_date DATE, image_url LONGTEXT, known_languages LONGTEXT, learning_languages LONGTEXT, blocked_users LONGTEXT, users_chatted_with LONGTEXT, profile_set TINYINT");
+        u = handle.attach(Update.class);
+        handle.execute("CREATE TABLE IF NOT EXISTS hl_users(" +
+                "user_id BIGINT, " +
+                "user_name TINYTEXT, " +
+                "display_name TINYTEXT, " +
+                "bio TEXT, " +
+                "gender TEXT, " +
+                "birth_date DATE, " +
+                "image_url LONGTEXT, " +
+                "known_languages LONGTEXT, " +
+                "learning_languages LONGTEXT, " +
+                "blocked_users LONGTEXT, " +
+                "users_chatted_with LONGTEXT, " +
+                "profile_set TINYINT)");
     }
 
     @Override
     public User getUser(long userId) {
-        return handle.createQuery("SELECT * FROM hl_users WHERE userId = :uid").
+        return handle.createQuery("SELECT * FROM hl_users WHERE user_id = :uid").
                 bind("uid", userId).
                 map(new UserMapper()).
                 first();
@@ -58,16 +69,12 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void updateUser(User newUserData) {
-        long userId = newUserData.getUserId();
-        Date birthDate = newUserData.getBirthdate();
-        DbUser dbUser = new DbUser(newUserData);
-        String[] newUserStrings = getUserData(dbUser);
-        u.update(new DbUser(userId, newUserStrings[0], newUserStrings[1], newUserStrings[2], newUserStrings[3], birthDate, newUserStrings[4], newUserStrings[5], newUserStrings[6], newUserStrings[7], newUserStrings[8], newUserStrings[9]).toUser());
-   }
+        u.update(newUserData);
+    }
 
     @Override
     public void deleteUser(long userId) {
-        u.deleteByName(Long.toString(userId));
+        u.deleteByName(userId);
     }
 
     @Override
@@ -139,20 +146,7 @@ public class UserDAOImpl implements UserDAO {
     public void stop() throws Exception {
         handle.close();
     }
-    //Takes users and returns all the Strings of data in an array for quick access.
-    private String[] getUserData(DbUser newUserData) {
-        String[] data = new String[9];
-        data[0] = newUserData.getName();
-        data[1] = newUserData.getDisplayName();
-        data[2] = newUserData.getBio();
-        data[3] = newUserData.getGender();
-        data[4] = newUserData.getImageURL().toString();
-        data[5] = newUserData.getKnownLanguages();
-        data[6] = newUserData.getLearningLanguages();
-        data[7] = newUserData.getBlockedUsers();
-        data[8] = newUserData.getUsersChattedWith();
-        return data;
-    }
+
     class UserMapper implements ResultSetMapper<User> {
 
         @Override
@@ -172,8 +166,8 @@ public class UserDAOImpl implements UserDAO {
 
     public static interface Update
     {
-        @SqlUpdate("CREATE TABLE IF NOT EXISTS hl_users(user_id BIGINT, user_name TINYTEXT, display_name TINYTEXT,bio TEXT, gender TEXT, birth_date DATE, image_url LONGTEXT, known_languages LONGTEXT, learning_languages LONGTEXT, blocked_users LONGTEXT, users_chatted_with LONGTEXT, profile_set TINYINT")
-        void createTable();
+//        @SqlUpdate("CREATE TABLE IF NOT EXISTS hl_users(user_id BIGINT, user_name TINYTEXT, display_name TINYTEXT,bio TEXT, gender TEXT, birth_date DATE, image_url LONGTEXT, known_languages LONGTEXT, learning_languages LONGTEXT, blocked_users LONGTEXT, users_chatted_with LONGTEXT, profile_set TINYINT")
+//        void createTable();
 
         @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_lanuages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_lanuages, :blocked_users, :users_chatted_with)")
         void insert(@BindBean DbUser dbUser);
@@ -182,6 +176,6 @@ public class UserDAOImpl implements UserDAO {
         int update(@BindBean User user);
 
         @SqlUpdate("delete from hl_users where id = :user_id")
-        void deleteByName(@Bind String id);
+        void deleteByName(@Bind long id);
     }
 }
