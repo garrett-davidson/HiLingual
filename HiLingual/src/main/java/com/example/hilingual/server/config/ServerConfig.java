@@ -33,6 +33,9 @@ public class ServerConfig extends Configuration {
     @Valid
     private FacebookConfig facebookConfig;
 
+    @Valid
+    private APNsConfig apnsConfig;
+
     @JsonProperty("sqlDb")
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -73,5 +76,15 @@ public class ServerConfig extends Configuration {
     @JsonProperty("facebook")
     public void setFacebookConfig(FacebookConfig facebookConfig) {
         this.facebookConfig = facebookConfig;
+    }
+
+    @JsonProperty("apns")
+    public APNsConfig getApnsConfig() {
+        return apnsConfig;
+    }
+
+    @JsonProperty("apns")
+    public void setApnsConfig(APNsConfig apnsConfig) {
+        this.apnsConfig = apnsConfig;
     }
 }

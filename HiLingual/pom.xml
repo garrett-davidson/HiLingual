@@ -116,6 +116,12 @@
             <version>5.1.38</version>
         </dependency>
 
+        <!-- APNS -->
+        <dependency>
+            <groupId>com.relayrides</groupId>
+            <artifactId>pushy</artifactId>
+            <version>0.5.2</version>
+        </dependency>
 
         <!-- UTILITY -->
         <dependency>

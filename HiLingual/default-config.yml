@@ -18,6 +18,18 @@ facebook:
   # CHANGEME
   secret: 00000000000000000000000000000000
 
+# Apple Push Notification Service settings
+apns:
+  # Path to the APNs p12 certificate
+  # CHANGEME
+  certFile: CERT_FILE
+  # Password for the p12 certificate
+  # CHANGEME
+  certPassword: supersecret
+  # Whether or not to use the developer APNS server
+  # CHANGEME
+  developer: true
+
 # SQL CONFIG (MySQL)
 sqlDbType: mysql
 sqlDb:
@@ -58,8 +70,8 @@ sqlDb:
   # abandoned cleaner and idle pool resizing
   evictionInterval: 10s
 
- # Minimum idle connection time before being able to be considered for eviction
- minIdleTime: 1 minute
+  # Minimum idle connection time before being able to be considered for eviction
+  minIdleTime: 1 minute
 
 # REDIS CONFIG
 redis:
