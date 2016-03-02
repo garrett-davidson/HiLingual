@@ -10,8 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DbUser {
-    private long userId;
-    private Date birthdate;
+    private String userId;
+    private String birthdate;
     private String name;
     private String displayName;
     private String bio;
@@ -44,7 +44,7 @@ public class DbUser {
             profileSet = "FALSE";
     }
 
-    public DbUser(Long userId, String name, String displayName, String bio, String gender, Date birthdate,
+    public DbUser(String userId, String name, String displayName, String bio, String gender, String birthdate,
                   String imageURL, String knownLanguages, String learningLanguages,
                   String blockedUsers, String usersChattedWith, String profileSet) {
         this.userId = userId;
@@ -61,7 +61,7 @@ public class DbUser {
         this.profileSet = profileSet;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -80,7 +80,7 @@ public class DbUser {
         return gender;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
@@ -124,7 +124,7 @@ public class DbUser {
         this.birthdate = birthdate;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
