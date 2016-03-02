@@ -12,6 +12,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- DROPWIZARD -->
         <dropwizard.version>0.9.2</dropwizard.version>
+
+        <!-- Configure the os-maven-plugin extension to expand the classifier on -->
+        <!-- Fedora-"like" systems. -->
+        <os.detection.classifierWithLikes>fedora</os.detection.classifierWithLikes>
     </properties>
 
     <!--
@@ -55,8 +59,10 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.example.hilingual.server.Main</mainClass>
                                 </transformer>
                             </transformers>
@@ -78,6 +84,13 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.4.0.Final</version>
+            </extension>
+        </extensions>
     </build>
 
     <!--
@@ -122,6 +135,19 @@
             <artifactId>pushy</artifactId>
             <version>0.5.2</version>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative</artifactId>
+            <version>1.1.33.Fork9</version>
+            <classifier>${os.detected.classifier}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.alpn</groupId>
+            <artifactId>alpn-api</artifactId>
+            <version>1.1.2.v20150522</version>
+            <scope>runtime</scope>
+        </dependency>
+
 
         <!-- UTILITY -->
         <dependency>
