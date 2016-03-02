@@ -5,7 +5,9 @@ package com.example.hilingual.server.dao.impl; /**
 import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.User;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,7 +30,7 @@ public class DbUser {
         displayName = user.getDisplayName();
         bio = user.getBio();
         gender = user.getGender().name();
-        birthdate = user.getBirthdate();
+        birthdate = user.getBirthdate().toString();
         imageURL = user.getImageURL().toString();
         knownLanguages = Arrays.toString(user.getKnownLanguages().toArray());
         knownLanguages = knownLanguages.substring(1, knownLanguages.length()-1); //remove the beginning and end brackets from string leaving csv format
@@ -120,7 +122,7 @@ public class DbUser {
         this.usersChattedWith = usersChattedWith;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -156,73 +158,82 @@ public class DbUser {
     }
 
     public User toUser() {
-        Long tempUserId this.userId;
-        String tempUserName = this.name;
-        String tempDisplayName = this.displayName;
-        String tempBio = this.bio;
-        Gender tempGender;
-        if (this.gender.equals("male")) {
-            tempGender = Gender.MALE;
+        try {
+            Long tempUserId = Long.parseLong(this.userId, 10);
+            String tempUserName = this.name;
+            String tempDisplayName = this.displayName;
+            String tempBio = this.bio;
+            Gender tempGender;
+            if (this.gender.equals("male")) {
+                tempGender = Gender.MALE;
 
-        } else if (this.gender.equals("female")) {
-            tempGender = Gender.FEMALE;
-        } else {
-            tempGender = Gender.NOT_SET;
+            } else if (this.gender.equals("female")) {
+                tempGender = Gender.FEMALE;
+            } else {
+                tempGender = Gender.NOT_SET;
+            }
+
+            SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
+            Date tempBirthdate = formatter.parse(this.birthdate);
+            URL tempImageURL = new URL(this.imageURL);
+
+
+            //split the string of known languages with regex ',' because language locale strings are csv
+            String[] splitKnownLanguageLocales = this.knownLanguages.split(",");
+            Set<Locale> tempKnownLanguages = new HashSet<>();
+            for (int i = 0; i < splitKnownLanguageLocales.length; i++) {
+                tempKnownLanguages.add(new Locale(splitKnownLanguageLocales[i])); //add each locale to set
+            }
+            //learning langugages
+            String[] splitLearningLanguageLocales = this.learningLanguages.split(",");
+            Set<Locale> tempLearningLanguages = new HashSet<>();
+            for (int i = 0; i < splitLearningLanguageLocales.length; i++) {
+                tempLearningLanguages.add(new Locale(splitLearningLanguageLocales[i])); //add each locale to set
+            }
+            //blocked users
+            String[] splitBlockedUsers = this.blockedUsers.split(".");
+            Set<Long> tempBlockedUsers = new HashSet<>();
+            for (int i = 0; i < splitBlockedUsers.length; i++) {
+                tempBlockedUsers.add(Long.parseLong(splitBlockedUsers[i]));
+            }
+            //users chatted with
+            String[] splitUsersChattedWith = this.usersChattedWith.split(".");
+            Set<Long> tempUsersChattedWith = new HashSet<>();
+            for (int i = 0; i < splitUsersChattedWith.length; i++) {
+                tempUsersChattedWith.add(Long.parseLong(splitUsersChattedWith[i]));
+            }
+
+            Boolean tempProfileSet = Boolean.FALSE;
+            if (this.profileSet.equals("true")) {
+                tempProfileSet = Boolean.TRUE;
+            } else if (this.profileSet.equals("true")) {
+                tempProfileSet = Boolean.FALSE;
+            } else {
+                //something is fucked
+            }
+
+            User returnUser = new User(tempUserId,
+                    tempUserName,
+                    tempDisplayName,
+                    tempBio,
+                    tempGender,
+                    tempBirthdate,
+                    tempImageURL,
+                    tempKnownLanguages,
+                    tempLearningLanguages,
+                    tempBlockedUsers,
+                    tempUsersChattedWith,
+                    tempProfileSet);
+
+
+
+            return returnUser;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException i) {
+            i.printStackTrace();
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
-        Date tempBirthdate = formatter.parse(this.birthdate);
-        URL tempImageURL = new URL(this.imageURL);
-
-        //split the string of known languages with regex ',' because language locale strings are csv
-        String[] splitKnownLanguageLocales = this.knownLanguages.split(",");
-        Set<Locale> tempKnownLanguages = new HashSet<>();
-        for (int i = 0; i < splitKnownLanguageLocales.length; i++) {
-            tempKnownLanguages.add(new Locale(splitKnownLanguageLocales[i])); //add each locale to set
-        }
-        //learning langugages
-        String[] splitLearningLanguageLocales = this.learningLanguages.split(",");
-        Set<Locale> tempLearningLanguages = new HashSet<>();
-        for (int i = 0; i < splitLearningLanguageLocales.length; i++) {
-            tempLearningLanguages.add(new Locale(splitLearningLanguageLocales[i])); //add each locale to set
-        }
-        //blocked users
-        String[] splitBlockedUsers = this.blockedUsers.split(".");
-        Set<Long> tempBlockedUsers = new HashSet<>();
-        for (int i = 0; i < splitBlockedUsers.length; i++) {
-            tempBlockedUsers.add(Long.parseLong(splitBlockedUsers[i]));
-        }
-        //users chatted with
-        String[] splitUsersChattedWith = this.usersChattedWith.split(".");
-        Set<Long> tempUsersChattedWith = new HashSet<>();
-        for (int i = 0; i < splitUsersChattedWith.length; i++) {
-            tempUsersChattedWith.add(Long.parseLong(splitUsersChattedWith[i]));
-        }
-
-        Boolean tempProfileSet;
-        if (this.profileSet.equals("true")) {
-            tempProfileSet = Boolean.TRUE;
-        } else if (this.profileSet.equals("true")) {
-            tempProfileSet = Boolean.FALSE;
-        } else {
-            //something is fucked
-        }
-
-        User returnUser = new User(tempUserId,
-                tempUserName,
-                tempDisplayName,
-                tempBio,
-                tempGender,
-                tempBirthdate,
-                tempImageURL,
-                tempKnownLanguages,
-                tempLearningLanguages,
-                tempBlockedUsers,
-                tempUsersChattedWith,
-                tempProfileSet);
-
-
-
-        return returnUser;
+        return null;
     }
 }
 
