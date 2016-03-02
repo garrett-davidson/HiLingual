@@ -6,7 +6,7 @@
  *
  * Copyright © 2016 Team3. All rights reserved.
  */
-//h
+
 package com.example.hilingual.server.dao.impl;
 
 import com.example.hilingual.server.api.Gender;
@@ -22,10 +22,10 @@ import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class UserDAOImpl implements UserDAO {
@@ -85,18 +85,42 @@ public class UserDAOImpl implements UserDAO {
         if (query.startsWith("RNAME:")) {
             //  TODO Nate - implement search based on real name (Story 4.2)
             sql_query = "SELECT * FROM hl_users WHERE display_name LIKE '%" + query.substring(6) + "%'";
-            queryReturn = handle.execute(sql_query);
+            queryReturn = handle.select(sql_query);
 
 
         } else if (query.startsWith("UNAME:")) {
             //  TODO Nate - implement search based on username (Story 4.3)
             sql_query = "SELECT * FROM hl_users WHERE user_name LIKE '%" + query.substring(6) + "%'";
-            queryReturn = handle.execute(sql_query);
+            queryReturn = handle.select(sql_query);
 
         } else {
             results = new User[0];
+            return results;
         }
-        //TODO create user objects for each db entry in the list of key maps and return
+
+        results = new User[queryReturn.size()];
+
+        for (int i = 0; i < queryReturn.size(); i++) {
+            //create a DbUser with the strings from the databse
+            DbUser temp_db_user = new DbUser(
+                    (String)queryReturn.get(i).get("user_id"),
+                    (String)queryReturn.get(i).get("user_name"),
+                    (String)queryReturn.get(i).get("display_name"),
+                    (String)queryReturn.get(i).get("bio"),
+                    (String)queryReturn.get(i).get("gender"),
+                    (String)queryReturn.get(i).get("birth_date"),
+                    (String)queryReturn.get(i).get("image_url"),
+                    (String)queryReturn.get(i).get("known_languages"),
+                    (String)queryReturn.get(i).get("learning_languages"),
+                    (String)queryReturn.get(i).get("blocked_users"),
+                    (String)queryReturn.get(i).get("users_chatted_with"),
+                    (String)queryReturn.get(i).get("profile_set"));
+
+            results[i] = temp_db_user.toUser(); //convert the DbUser to a User and add it to results array
+        }
+
+
+
         return results;
     }
 
