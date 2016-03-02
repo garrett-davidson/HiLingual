@@ -72,7 +72,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void updateUser(User newUserData) {
-        u.update(new DbUser(newUserData));
+        u.update(newUserData);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User createUser() {
         User user = new User();
-        u.insert(new DbUser(user));
+        u.insert(user);
         return user;
     }
 
@@ -178,10 +178,10 @@ public class UserDAOImpl implements UserDAO {
 //        void createTable();
 
         @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_lanuages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_lanuages, :blocked_users, :users_chatted_with)")
-        void insert(@BindUser DbUser dbUser);
+        void insert(@BindUser User dbUser);
 
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_lanuages = :learning_lanuages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with where user_id = :user_id")
-        int update(@BindUser DbUser user);
+        int update(@BindUser User user);
 
         @SqlUpdate("delete from hl_users where id = :user_id")
         void deleteByName(@Bind long id);
