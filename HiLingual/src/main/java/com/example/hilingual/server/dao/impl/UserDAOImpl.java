@@ -176,13 +176,13 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    private <T> String setToString(Set<T> set, Function<T, String> toStringer) {
+    public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
         return set.stream().
                 map(toStringer).
                 collect(Collectors.joining(","));
     }
 
-    private <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
+    public static <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
         Set<T> set = new HashSet<>();
         StringTokenizer tokenizer = new StringTokenizer(input, ",");
         while (tokenizer.hasMoreTokens()) {
