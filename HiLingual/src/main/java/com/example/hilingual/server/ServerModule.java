@@ -18,8 +18,10 @@ import com.example.hilingual.server.dao.impl.FacebookIntegrationDAOImpl;
 import com.example.hilingual.server.dao.impl.GoogleIntegrationDAOImpl;
 import com.example.hilingual.server.dao.impl.SessionDAOImpl;
 import com.example.hilingual.server.dao.impl.UserDAOImpl;
+import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.FacebookGraphAPIService;
 import com.example.hilingual.server.service.GoogleAccountAPIService;
+import com.example.hilingual.server.service.impl.APNsServiceImpl;
 import com.example.hilingual.server.service.impl.FacebookGraphAPIServiceImpl;
 import com.example.hilingual.server.service.impl.GoogleAccountAPIServiceImpl;
 import com.google.inject.AbstractModule;
@@ -75,6 +77,9 @@ public class ServerModule extends AbstractModule {
                 in(Scopes.SINGLETON);
         bind(GoogleAccountAPIService.class).
                 to(GoogleAccountAPIServiceImpl.class).
+                in(Scopes.SINGLETON);
+        bind(APNsService.class).
+                to(APNsServiceImpl.class).
                 in(Scopes.SINGLETON);
     }
 
