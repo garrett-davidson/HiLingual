@@ -12,12 +12,12 @@ package com.example.hilingual.server.dao.impl;
 import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.dao.impl.annotation.BindUser;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
@@ -160,6 +160,8 @@ public class UserDAOImpl implements UserDAO {
             user.setGender(Gender.valueOf(r.getString("CHANGEME_COLUMN_NAME")));
             //  etc
 
+
+
             return user;
         }
     }
@@ -170,10 +172,10 @@ public class UserDAOImpl implements UserDAO {
 //        void createTable();
 
         @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_lanuages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_lanuages, :blocked_users, :users_chatted_with)")
-        void insert(@BindBean DbUser dbUser);
+        void insert(@BindUser DbUser dbUser);
 
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_lanuages = :learning_lanuages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with where user_id = :user_id")
-        int update(@BindBean DbUser user);
+        int update(@BindUser DbUser user);
 
         @SqlUpdate("delete from hl_users where id = :user_id")
         void deleteByName(@Bind long id);
