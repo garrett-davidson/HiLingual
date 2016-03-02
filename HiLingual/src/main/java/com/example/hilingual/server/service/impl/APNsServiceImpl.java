@@ -38,7 +38,7 @@ public class APNsServiceImpl implements APNsService {
     }
 
     @Override
-    public void sendNotification(String token, String topic, String payload) {
+    public void sendNotification(String token, String payload) {
         SimpleApnsPushNotification pushNotif = new SimpleApnsPushNotification(TokenUtil.sanitizeTokenString(token),
                 "com.example.hilingual",
                 payload);

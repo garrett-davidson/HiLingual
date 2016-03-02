@@ -13,6 +13,6 @@ import io.dropwizard.lifecycle.Managed;
 
 public interface APNsService extends Managed {
 
-    void sendNotification(String token, String topic, String payload);
+    void sendNotification(String token, String payload);
 
 }
