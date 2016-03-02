@@ -18,6 +18,7 @@ import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
@@ -46,7 +47,7 @@ public class UserDAOImpl implements UserDAO {
     public void init() {
         u = handle.attach(Update.class);
         handle.execute("CREATE TABLE IF NOT EXISTS hl_users(" +
-                "user_id BIGINT, " +
+                "user_id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT, " +
                 "user_name TINYTEXT, " +
                 "display_name TINYTEXT, " +
                 "bio TEXT, " +
@@ -82,6 +83,9 @@ public class UserDAOImpl implements UserDAO {
     public User createUser() {
         User user = new User();
         u.insert(user);
+        int lastId = u.getLastInsertId();
+        user.setUserId(lastId);
+        updateUser(user);
         return user;
     }
 
@@ -170,18 +174,18 @@ public class UserDAOImpl implements UserDAO {
         return set;
     }
 
-    public static interface Update
-    {
-//        @SqlUpdate("CREATE TABLE IF NOT EXISTS hl_users(user_id BIGINT, user_name TINYTEXT, display_name TINYTEXT,bio TEXT, gender TEXT, birth_date DATE, image_url LONGTEXT, known_languages LONGTEXT, learning_languages LONGTEXT, blocked_users LONGTEXT, users_chatted_with LONGTEXT, profile_set TINYINT")
-//        void createTable();
+    public static interface Update {
 
-        @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with)")
+        @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
         void insert(@BindUser User user);
 
-        @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with where user_id = :user_id")
+        @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")
         int update(@BindUser User user);
 
         @SqlUpdate("delete from hl_users where id = :user_id")
         void deleteByName(@Bind long id);
+
+        @SqlQuery("SELECT LAST_INSERT_ID()")
+        int getLastInsertId();
     }
 }
