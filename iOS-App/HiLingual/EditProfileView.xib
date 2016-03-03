@@ -85,7 +85,7 @@
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0Lt-LS-xOJ">
                     <rect key="frame" x="8" y="8" width="359" height="175.5"/>
                     <subviews>
-                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prR-kc-wq2">
+                        <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prR-kc-wq2">
                             <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
                             <gestureRecognizers/>
                             <constraints>
