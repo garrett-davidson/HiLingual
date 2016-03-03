@@ -31,6 +31,50 @@ class HiLingualUITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let displayNameTextField = app.textFields["Display Name"]
+        displayNameTextField.tap()
+        displayNameTextField.typeText("hi")
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+        
+        
+    }
+    func testEditBio() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let textView = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+        textView.tap()
+        textView.typeText("This Test better work!!!!!!!!jjjjjjjjsdfkjghsdfgjrxyctfuvygbuhnijhugyvftcdrcfvgybhunoubgyuftycdrcytfvgybuhbgyvftcdrtfvgybuhygvuftcydrctfvygbuh")
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+    }
+    func testDisplayName() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let displayNameTextField = app.textFields["Display Name"]
+        displayNameTextField.tap()
+        displayNameTextField.typeText("NOah")
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+        
     }
     
 }
