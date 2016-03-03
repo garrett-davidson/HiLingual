@@ -133,7 +133,7 @@ public class UserDAOImpl implements UserDAO {
             user.setDisplayName(r.getString("display_name"));
             user.setBio(r.getString("bio"));
             user.setGender(Gender.valueOf(r.getString("gender")));
-            user.setBirthdate(r.getDate("birth_date"));
+            user.setBirthdate(r.getDate("birth_date").getTime());
             user.setImageURL(r.getURL("image_url"));
             String usersChattedWith = r.getString("users_chatted_with");
             user.setUsersChattedWith(stringToSet(usersChattedWith, Long::parseLong));

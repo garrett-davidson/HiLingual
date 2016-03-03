@@ -16,7 +16,7 @@ public class User {
     private String displayName;
     private String bio;
     private Gender gender;
-    private Date birthdate;
+    private long birthdate;
     private URL imageURL;
     private Set<String> knownLanguages;
     private Set<String> learningLanguages;
@@ -29,7 +29,7 @@ public class User {
         displayName = "";
         bio = "";
         gender = Gender.NOT_SET;
-        birthdate = new Date(0);
+        birthdate = 0;
         imageURL = url("http://gethilingual.com/assets/noavatar.png");
         knownLanguages = new HashSet<>();
         learningLanguages = new HashSet<>();
@@ -38,7 +38,7 @@ public class User {
         profileSet = false;
     }
 
-    public User(long userId, String name, String displayName, String bio, Gender gender, Date birthdate,
+    public User(long userId, String name, String displayName, String bio, Gender gender, long birthdate,
                 URL imageURL, Set<String> knownLanguages, Set<String> learningLanguages,
                 Set<Long> blockedUsers, Set<Long> usersChattedWith, boolean profileSet) {
         this.userId = userId;
@@ -81,7 +81,7 @@ public class User {
     }
 
     @JsonProperty
-    public Date getBirthdate() {
+    public long getBirthdate() {
         return birthdate;
     }
 
@@ -131,7 +131,7 @@ public class User {
     }
 
     @JsonProperty
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(long birthdate) {
         this.birthdate = birthdate;
     }
 

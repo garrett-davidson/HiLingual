@@ -16,6 +16,7 @@ import org.skife.jdbi.v2.sqlobject.BinderFactory;
 import org.skife.jdbi.v2.sqlobject.BindingAnnotation;
 
 import java.lang.annotation.*;
+import java.util.Date;
 import java.util.function.Function;
 
 import static com.example.hilingual.server.dao.impl.UserDAOImpl.setToString;
@@ -37,7 +38,7 @@ public @interface BindUser {
                     q.bind("display_name", arg.getDisplayName());
                     q.bind("bio", arg.getBio());
                     q.bind("gender", arg.getGender());
-                    q.bind("birth_date", arg.getBirthdate());
+                    q.bind("birth_date", new Date(arg.getBirthdate()));
                     q.bind("image_url", arg.getImageURL());
                     q.bind("known_languages", setToString(arg.getKnownLanguages(), Function.identity()));
                     q.bind("learning_languages", setToString(arg.getLearningLanguages(), Function.identity()));
