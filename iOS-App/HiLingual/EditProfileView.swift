@@ -49,7 +49,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             profileImage.image = user.profilePicture
             nameLabel.text = user.name
             nameText.text = user.displayName
-            //can people have the same display name 💩
             //don't know how to send infoback to accountcreationview
             if user.gender != nil {
                 genderLabel.text = "\(user.gender!)"
