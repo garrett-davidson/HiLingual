@@ -104,6 +104,10 @@ public class UserResource {
             storedUser.getKnownLanguages().clear();
             storedUser.getKnownLanguages().addAll(user.getKnownLanguages());
         }
+        if (user.getLearningLanguages() != null) {
+            storedUser.getKnownLanguages().clear();;
+            storedUser.getKnownLanguages().addAll(user.getLearningLanguages());
+        }
         if (user.getImageURL() != null) {
             storedUser.setImageURL(user.getImageURL());
         }
