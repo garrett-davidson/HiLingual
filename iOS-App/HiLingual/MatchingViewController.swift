@@ -55,7 +55,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         if let text = searchBar.text {
             let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/search?query=" + text)!)
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT o8g8a0nlpmg09g6ph4mu72380"]
-            let returnedData = NSURLConnection.sendSynchronousRequest(request, returningResponse: nil)
+           // let returnedData = NSURLConnection.sendSynchronousRequest(request, returningResponse: nil)
             searchTable.reloadData()
         }
     }

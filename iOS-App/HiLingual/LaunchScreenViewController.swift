@@ -40,10 +40,10 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             return
         }
 
-        if let user = HLUser.getCurrentUser() {
-            if let _ = user.getSession() {
+      if let user = HLUser.getCurrentUser() {
+           // if let _ = user.getSession() {
                 self.performSegueWithIdentifier("previousLogin", sender: self)
-            }
+           // }
         }
 
         print("ViewDidLoadHere")
