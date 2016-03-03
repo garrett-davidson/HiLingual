@@ -53,7 +53,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
         print("sent search")
         if let text = searchBar.text {
-            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/search?query=" + text)!)
+            let urlString = "https://gethilingual.com/api/user/search?query=" + text
+            let request = NSMutableURLRequest(URL: NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!)
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
             //TODO: Use non-deprecated API
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
