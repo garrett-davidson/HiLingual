@@ -157,6 +157,54 @@ class HLUser: NSObject, NSCoding {
         HLUser.currentUser = self
         let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
         NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
+
+        //TODO: Implement creating a loggin in to server user
+        //That way this doesn't have to be hard-coded
+        if let userJSONData = self.toJSON() {
+            let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
+            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+            request.HTTPMethod = "PATCH"
+            request.HTTPBody = userJSONData
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+            }
+        }
+    }
+
+    func toJSON() -> NSData? {
+        let userDict = NSMutableDictionary()
+        userDict.setObject(NSNumber(longLong: userId), forKey: "userId")
+        if name != nil {
+            userDict.setObject(name!, forKey: "name")
+        }
+        if displayName != nil {
+            userDict.setObject(displayName!, forKey: "displayName")
+        }
+        if bio != nil {
+            userDict.setObject(bio!, forKey: "bio")
+        }
+        if gender != nil {
+            userDict.setObject("\(gender!)".capitalizedString, forKey: "gender")
+        }
+        if birthdate != nil {
+            userDict.setObject(birthdate!.timeIntervalSince1970, forKey: "birthdate")
+        }
+
+        let learningLanguagesStrings = learningLanguages.map { (language) -> String in
+            language.rawValue
+        }
+        userDict.setObject(learningLanguagesStrings, forKey: "learningLanguages")
+
+        let knownLanguagesStrings = knownLanguages.map { (language) -> String in
+            language.rawValue
+        }
+        userDict.setObject(knownLanguagesStrings, forKey: "learningLanguages")
+
+        return try? NSJSONSerialization.dataWithJSONObject(userDict, options: NSJSONWritingOptions(rawValue: 0))
     }
 
     func getSession() -> HLUserSession? {
