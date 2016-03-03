@@ -97,6 +97,10 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+## GGLInstanceID
+
+Copyright 2015 Google Inc.
+
 ## Google
 
 Copyright 2015 Google Inc.
@@ -106,6 +110,14 @@ Copyright 2015 Google Inc.
 Copyright 2015 Google Inc.
 
 ## GoogleAuthUtilities
+
+Copyright 2015 Google Inc.
+
+## GoogleCloudMessaging
+
+Copyright 2015 Google Inc.
+
+## GoogleIPhoneUtilities
 
 Copyright 2015 Google Inc.
 

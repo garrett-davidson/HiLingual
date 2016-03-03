@@ -28,9 +28,7 @@
 		687BD42E1C7E9E3A007C5F9B /* AccountCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */; };
 		688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */; };
 		68AA6DCD1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA6DCC1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift */; };
-		68FCBE051C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
-		68FCBE061C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
-		68FCBE071C73C74300918112 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68FCBE041C73C74300918112 /* GoogleService-Info.plist */; };
+		68E893D61C87686E00E7AA46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */; };
 		720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720F00291C76996200DA197E /* ConversationTableViewCell.swift */; };
 		720F002C1C7E3F3300DA197E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720F002B1C7E3F3300DA197E /* DetailViewController.swift */; };
 		7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */; };
@@ -84,7 +82,7 @@
 		687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationViewController.swift; sourceTree = "<group>"; };
 		688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		68AA6DCC1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageSelectionTableViewController.swift; path = ../LanguageSelectionTableViewController.swift; sourceTree = "<group>"; };
-		68FCBE041C73C74300918112 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		720F00291C76996200DA197E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		720F002B1C7E3F3300DA197E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -123,7 +121,7 @@
 		6876D98A1C5A87A90097332A = {
 			isa = PBXGroup;
 			children = (
-				68FCBE041C73C74300918112 /* GoogleService-Info.plist */,
+				68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */,
 				6876D9951C5A87A90097332A /* HiLingual */,
 				6876D9AA1C5A87A90097332A /* HiLingualTests */,
 				6876D9B51C5A87A90097332A /* HiLingualUITests */,
@@ -281,6 +279,12 @@
 				TargetAttributes = {
 					6876D9921C5A87A90097332A = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = FL8523SFDK;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					6876D9A61C5A87A90097332A = {
 						CreatedOnToolsVersion = 7.2;
@@ -320,9 +324,9 @@
 				72F621551C7F95D200A8A489 /* EditProfileView.xib in Resources */,
 				6876D9A11C5A87A90097332A /* LaunchScreen.storyboard in Resources */,
 				682D14831C765FDE00443B7D /* ProfileView.xib in Resources */,
-				68FCBE051C73C74300918112 /* GoogleService-Info.plist in Resources */,
 				6876D99E1C5A87A90097332A /* Assets.xcassets in Resources */,
 				6876D99C1C5A87A90097332A /* Main.storyboard in Resources */,
+				68E893D61C87686E00E7AA46 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +334,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68FCBE061C73C74300918112 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +341,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68FCBE071C73C74300918112 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,7 +562,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HiLingual/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.HiLingual;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GetHilingual.HiLingual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "HiLingual/HiLingual-Bridging-Header.h";
@@ -577,7 +579,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HiLingual/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.HiLingual;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GetHilingual.HiLingual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "HiLingual/HiLingual-Bridging-Header.h";

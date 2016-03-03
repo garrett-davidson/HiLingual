@@ -10,10 +10,10 @@ import UIKit
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLInstanceIDDelegate {
 
     var window: UIWindow?
-
+    var registrationOptions: [String: NSObject]?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -21,12 +21,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let isFacebookSetup = setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
         let isGoogleSetup = setupGoogle()
 
+        //        if #available(iOS 8.0, *) {
+        let settings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
+        //        } else {
+        //            // Fallback
+        //            let types: UIRemoteNotificationType = [.Alert, .Badge, .Sound]
+        //            application.registerForRemoteNotificationTypes(types)
+        //        }
+
+
         return isFacebookSetup && isGoogleSetup
     }
 
     func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        print("Failed to register for notifications")
+        print("Error: \(error)")
+    }
+
+    func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData ) {
+        let string = deviceToken.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
+        print(deviceToken)
+        print(string)
+//        print("Notification token: \(deviceToken.base64EncodedStringWithOptions(NSB))")
+        // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
+        let instanceIDConfig = GGLInstanceIDConfig.defaultConfig()
+        instanceIDConfig.delegate = self
+        // Start the GGLInstanceID shared instance with that config and request a registration
+        // token to enable reception of notifications
+//        GGLInstanceID.sharedInstance().startWithConfig(instanceIDConfig)
+//        registrationOptions = [kGGLInstanceIDRegisterAPNSOption:deviceToken,
+//                               kGGLInstanceIDAPNSServerTypeSandboxOption:true]
+//        GGLInstanceID.sharedInstance().tokenWithAuthorizedEntity("527151665741", scope: kGGLInstanceIDScopeGCM, options: registrationOptions, handler: nil)
+    }
+
+    func onTokenRefresh() {
+        // A rotation of the registration tokens is happening, so the app needs to request a new token.
+        print("The GCM registration token needs to be changed.")
+        GGLInstanceID.sharedInstance().tokenWithAuthorizedEntity("527151665741", scope: kGGLInstanceIDScopeGCM, options: registrationOptions, handler: nil)
+    }
+
 
     func setupGoogle() -> Bool {
         var error: NSError?
