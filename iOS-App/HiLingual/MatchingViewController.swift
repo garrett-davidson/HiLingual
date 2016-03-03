@@ -126,6 +126,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
 
     func sendMessageButtonPressed(sender: AnyObject) {
+        HLUser.getCurrentUser().usersChattedWith.append(matches[sender.tag])
         print("Send message button pressed")
     }
 
@@ -150,6 +151,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             sendMessageButton.frame.size = CGSize(width: profileViewCell.profileView.frame.size.width, height: 12)
             sendMessageButton.center.x = profileViewCell.profileView.frame.size.width/2
             sendMessageButton.center.y = profileViewCell.profileView.frame.size.height - 20;
+            sendMessageButton.tag = index
         }
 
         profileViewCell.profileView.user = matches[index]

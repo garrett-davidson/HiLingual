@@ -14,7 +14,7 @@ import UIKit
 
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var converstationTable: UITableView!
-    var conversations = [HLUser]()
+    var conversations = HLUser.getCurrentUser().usersChattedWith
     var messages = [HLMessage]()
     var hiddenButtons = [Bool]()
     override func viewDidLoad() {
@@ -34,6 +34,21 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return conversations.count
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        refreshTableView()
+    }
+
+    func refreshTableView() {
+        conversations = HLUser.getCurrentUser().usersChattedWith
+
+        //TODO: Actually check the server
+        hiddenButtons = conversations.map({ (user) -> Bool in
+            false
+        })
+
+        self.converstationTable.reloadData()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -80,15 +95,16 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
         hiddenButtons.removeAtIndex(index)
         conversations.removeAtIndex(index)
+        HLUser.getCurrentUser().usersChattedWith.removeAtIndex(index)
         converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
         converstationTable.reloadData()
         //send decline to server
     }
     
     func loadSamples(){
-        conversations += [HLUser.generateTestUser(),HLUser.generateTestUser(),HLUser.generateTestUser() ]
-        hiddenButtons += [false,true,false]
-    
+//        conversations += [HLUser.generateTestUser(),HLUser.generateTestUser(),HLUser.generateTestUser() ]
+//        hiddenButtons += [false,true,false]
+
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
