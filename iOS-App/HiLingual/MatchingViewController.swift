@@ -63,7 +63,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
                     print(returnString)
                 }
                 searchResults = HLUser.fromJSON(returnedData)
-                for _ in 1...searchResults.count {
+                for _ in 0..<searchResults.count {
                     
                     requests += [true]
                 }

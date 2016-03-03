@@ -120,8 +120,6 @@ class HLUser: NSObject, NSCoding {
                     //Not important
                     let usersChattedWith = userDict["usersChattedWith"]
 
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateFormat = "YYYY-mm-dd"
                     let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
                     let birthday = NSDate(timeIntervalSince1970: birthdayNumber)
                     //TODO: ^^ This doesn't quite work
