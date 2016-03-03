@@ -61,7 +61,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                 ageLabel.text = "\(user.age!)"
             }
             else {
-                ageLabel.text = ""
+                ageLabel.text = "Not Specified"
             }
 
             let knownList = user.knownLanguages.toList()
