@@ -20,7 +20,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     var searchResults = [HLUser]()
 
     var matches = [HLUser]()
-    var request = [Bool]()
+    var requests = [Bool]()
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
         searchTable.hidden = false
@@ -63,6 +63,10 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
                     print(returnString)
                 }
                 searchResults = HLUser.fromJSON(returnedData)
+                for _ in 1...searchResults.count {
+                    
+                    requests += [true]
+                }
             }
             searchTable.reloadData()
         }
@@ -80,16 +84,16 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let index = sender.tag
         
         
-        if (request[index]){
+        if (requests[index]){
             sender.setTitle("Cancel", forState: .Normal)
-            request[index] = false
+            requests[index] = false
             searchTable.reloadData()
             print("sent")
             //send request to user
         }else{
             sender.setTitle("Send Request", forState: .Normal)
             searchTable.reloadData()
-            request[index] = true
+            requests[index] = true
             print("cancel")
             //send cancel
         }
@@ -119,7 +123,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let user = HLUser(userId: 1, name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
         let user1 = HLUser(userId: 1, name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
         searchResults += [user,user1,HLUser.generateTestUser()]
-        request += [true,true,true]
+        requests += [true,true,true]
         
     }
     override func viewDidLoad() {
