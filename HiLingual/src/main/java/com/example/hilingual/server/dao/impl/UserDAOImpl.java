@@ -93,23 +93,27 @@ public class UserDAOImpl implements UserDAO {
     public User[] findUsers(String query, User invoker) {
         User[] results;
         List<User> usersList;
+        /*
         if (query.startsWith("RNAME:")) { //if the search query is by real/display name
             //create query to search for users where real/dipslay name is like query. use UserMapper
             usersList = handle.createQuery("SELECT * FROM hl_users WHERE display_name LIKE :rname")
                     .bind("rname", query.substring(6))
                     .map(new UserMapper())
                     .list();
-        } else if (query.startsWith("UNAME:")) { //if the seach query is by username
+        } else
+        if (query.startsWith("UNAME:")) { //if the seach query is by username */
+
             //create query to search for users where user name is like query. use UserMapper
-            usersList = handle.createQuery("SELECT * FROM hl_users WHERE user_name LIKE :uname")
+        usersList = handle.createQuery("SELECT * FROM hl_users WHERE user_name LIKE :uname")
                     .bind("uname", query.substring(6))
                     .map(new UserMapper())
                     .list();
-        } else {
+        /*} else {
             //if the query has invalid format return empty array
             results = new User[0];
             return results;
         }
+        */
         //convert the List to Array and return
         results = new User[usersList.size()];
         results = usersList.toArray(results);
