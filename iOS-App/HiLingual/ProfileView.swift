@@ -36,12 +36,18 @@ class ProfileView: UIView {
         imageView.image = user.profilePicture
         nameLabel.text = user.name
         displayNameLabel.text = user.displayName
-        genderLabel.text = "\(user.gender!)"
         if (user.age != nil) {
             ageLabel.text = "\(user.age!)"
         }
         else {
-            ageLabel.text = ""
+            ageLabel.text = "Not Specified"
+        }
+        
+        if user.gender != nil {
+            genderLabel.text = "\(user.gender!)"
+        }
+        else {
+            genderLabel.text = "Not Specified"
         }
 
         let knownList = user.knownLanguages.toList()
