@@ -21,8 +21,8 @@ public class User {
     private Gender gender;
     private Date birthdate;
     private URL imageURL;
-    private Set<Locale> knownLanguages;
-    private Set<Locale> learningLanguages;
+    private Set<String> knownLanguages;
+    private Set<String> learningLanguages;
     private Set<Long> blockedUsers;
     private Set<Long> usersChattedWith;
     private boolean profileSet;
@@ -42,7 +42,7 @@ public class User {
     }
 
     public User(long userId, String name, String displayName, String bio, Gender gender, Date birthdate,
-                URL imageURL, Set<Locale> knownLanguages, Set<Locale> learningLanguages,
+                URL imageURL, Set<String> knownLanguages, Set<String> learningLanguages,
                 Set<Long> blockedUsers, Set<Long> usersChattedWith, boolean profileSet) {
         this.userId = userId;
         this.name = name;
@@ -94,12 +94,12 @@ public class User {
     }
 
     @JsonProperty
-    public Set<Locale> getKnownLanguages() {
+    public Set<String> getKnownLanguages() {
         return knownLanguages;
     }
 
     @JsonProperty
-    public Set<Locale> getLearningLanguages() {
+    public Set<String> getLearningLanguages() {
         return learningLanguages;
     }
 
@@ -114,12 +114,12 @@ public class User {
     }
 
     @JsonProperty
-    public void setKnownLanguages(Set<Locale> knownLanguages) {
+    public void setKnownLanguages(Set<String> knownLanguages) {
         this.knownLanguages = knownLanguages;
     }
 
     @JsonProperty
-    public void setLearningLanguages(Set<Locale> learningLanguages) {
+    public void setLearningLanguages(Set<String> learningLanguages) {
         this.learningLanguages = learningLanguages;
     }
 
@@ -179,22 +179,22 @@ public class User {
     }
 
     @JsonIgnore
-    public void addKnownLanguage(Locale language) {
+    public void addKnownLanguage(String language) {
         knownLanguages.add(language);
     }
 
     @JsonIgnore
-    public void removeKnownLanguage(Locale language) {
+    public void removeKnownLanguage(String language) {
         knownLanguages.remove(language);
     }
 
     @JsonIgnore
-    public void addLearningLanguage(Locale language) {
+    public void addLearningLanguage(String language) {
         learningLanguages.add(language);
     }
 
     @JsonIgnore
-    public void removeLearningLanguage(Locale language) {
+    public void removeLearningLanguage(String language) {
         learningLanguages.remove(language);
     }
 

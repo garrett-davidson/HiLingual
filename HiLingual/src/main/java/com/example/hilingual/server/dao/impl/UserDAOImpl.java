@@ -153,9 +153,9 @@ public class UserDAOImpl implements UserDAO {
             String blockedUsers = r.getString("blocked_users");
             user.setBlockedUsers(stringToSet(blockedUsers, Long::parseLong));
             String knownLanguages = r.getString("known_languages");
-            user.setKnownLanguages(stringToSet(knownLanguages, Locale::forLanguageTag));
+            user.setKnownLanguages(stringToSet(knownLanguages, Function.identity()));
             String learningLanguages = r.getString("learning_languages");
-            user.setLearningLanguages(stringToSet(learningLanguages, Locale::forLanguageTag));
+            user.setLearningLanguages(stringToSet(learningLanguages, Function.identity()));
             user.setProfileSet(r.getBoolean("profile_set"));
 
             return user;

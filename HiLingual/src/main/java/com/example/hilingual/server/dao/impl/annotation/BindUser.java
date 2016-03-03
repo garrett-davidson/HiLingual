@@ -16,7 +16,7 @@ import org.skife.jdbi.v2.sqlobject.BinderFactory;
 import org.skife.jdbi.v2.sqlobject.BindingAnnotation;
 
 import java.lang.annotation.*;
-import java.util.Locale;
+import java.util.function.Function;
 
 import static com.example.hilingual.server.dao.impl.UserDAOImpl.setToString;
 
@@ -39,8 +39,8 @@ public @interface BindUser {
                     q.bind("gender", arg.getGender());
                     q.bind("birth_date", arg.getBirthdate());
                     q.bind("image_url", arg.getImageURL());
-                    q.bind("known_languages", setToString(arg.getKnownLanguages(), Locale::toLanguageTag));
-                    q.bind("learning_languages", setToString(arg.getLearningLanguages(), Locale::toLanguageTag));
+                    q.bind("known_languages", setToString(arg.getKnownLanguages(), Function.identity()));
+                    q.bind("learning_languages", setToString(arg.getLearningLanguages(), Function.identity()));
                     q.bind("blocked_users", setToString(arg.getBlockedUsers(), l -> Long.toString(l)));
                     q.bind("users_chatted_with", setToString(arg.getUsersChattedWith(), l -> Long.toString(l)));
                     q.bind("profile_set", arg.isProfileSet());
