@@ -48,6 +48,9 @@ public class SessionDAOImpl implements SessionDAO {
 
     @Override
     public boolean isValidSession(String sessionId, long userId) {
+        if (userId == -1) {
+            return false;
+        }
         return jedis.sismember(userIdKey(userId), sessionId);
     }
 
@@ -106,7 +109,11 @@ public class SessionDAOImpl implements SessionDAO {
 
     @Override
     public long getSessionOwner(String sessionId) {
-        return Long.parseLong(jedis.get(sessionKey(sessionId)));
+        try {
+            return Long.parseLong(jedis.get(sessionKey(sessionId)));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
 
