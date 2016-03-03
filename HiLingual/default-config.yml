@@ -29,6 +29,8 @@ apns:
   # Whether or not to use the developer APNS server
   # CHANGEME
   developer: true
+  # Our BundleID/topic
+  topic: com.example.hilingual
 
 # SQL CONFIG (MySQL)
 sqlDbType: mysql

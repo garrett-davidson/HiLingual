@@ -22,6 +22,9 @@ public class APNsConfig {
 
     private boolean developer;
 
+    @NotEmpty
+    private String topic;
+
     @JsonProperty
     public boolean isDeveloper() {
         return developer;
@@ -50,5 +53,15 @@ public class APNsConfig {
     @JsonProperty
     public void setCertPassword(String certPassword) {
         this.certPassword = certPassword;
+    }
+
+    @JsonProperty
+    public String getTopic() {
+        return topic;
+    }
+
+    @JsonProperty
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }
