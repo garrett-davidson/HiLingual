@@ -33,7 +33,7 @@ public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
         handle.execute("CREATE TABLE IF NOT EXISTS hl_google_data(" +
                 "user_id BIGINT UNIQUE PRIMARY KEY, " +
                 "account_id VARCHAR(255), " +
-                "token VARCHAR(255))");
+                "token TEXT)");
     }
 
     @Override

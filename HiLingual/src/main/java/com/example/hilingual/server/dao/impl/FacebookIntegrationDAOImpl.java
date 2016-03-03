@@ -35,7 +35,7 @@ public class FacebookIntegrationDAOImpl implements FacebookIntegrationDAO, Manag
         handle.execute("CREATE TABLE IF NOT EXISTS hl_facebook_data(" +
                 "user_id BIGINT UNIQUE PRIMARY KEY, " +
                 "account_id VARCHAR(255), " +
-                "token VARCHAR(255))");
+                "token TEXT)");
     }
 
     @Override
