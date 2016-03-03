@@ -27,6 +27,8 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
         //Create a new HLUser user with the information from this view
         //Be sure to call user.save() !!
 
+        editProfileView.user.save()
+
         performSegueWithIdentifier("DoneEditing", sender: self)
     }
 

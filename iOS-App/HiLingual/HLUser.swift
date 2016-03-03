@@ -17,7 +17,7 @@ enum Gender: Int {
     static let allValues: [Gender] = [.Male, .Female]
 }
 
-class HLUser: NSCoding {
+class HLUser: NSObject, NSCoding {
     let userId: Int64
     var name: String?
     var displayName: String?
@@ -91,7 +91,7 @@ class HLUser: NSCoding {
 
         if (currentUser == nil) {
             //If current user was nil and this failed, something went wrong
-//            currentUser = NSKeyedUnarchiver.unarchiveObjectWithData((NSUserDefaults.standardUserDefaults().objectForKey("currentUser") as! NSData)) as? HLUser
+            currentUser = NSKeyedUnarchiver.unarchiveObjectWithData((NSUserDefaults.standardUserDefaults().objectForKey("currentUser") as! NSData)) as? HLUser
         }
 
         return currentUser
@@ -99,9 +99,9 @@ class HLUser: NSCoding {
 
     func save() {
         //This should only be called on the current user
-//        HLUser.currentUser = self
-//        let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
-//        NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
+        HLUser.currentUser = self
+        let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
+        NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
     }
 
     func getSession() -> HLUserSession? {
