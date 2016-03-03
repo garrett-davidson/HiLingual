@@ -37,8 +37,8 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
         performSegueWithIdentifier("SettingsSegue", sender: self)
     }
     override func viewDidLoad() {
-        editProfileView.user = HLUser.generateTestUser();
-        profileView.user = HLUser.generateTestUser();
+        editProfileView.user = HLUser.getCurrentUser()
+        profileView.user = HLUser.getCurrentUser()
     }
 
 }
