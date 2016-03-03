@@ -24,7 +24,10 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -92,28 +95,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User[] findUsers(String query, User invoker) {
         User[] results;
-        List<User> usersList;
-        /*
-        if (query.startsWith("RNAME:")) { //if the search query is by real/display name
-            //create query to search for users where real/dipslay name is like query. use UserMapper
-            usersList = handle.createQuery("SELECT * FROM hl_users WHERE display_name LIKE :rname")
-                    .bind("rname", query.substring(6))
-                    .map(new UserMapper())
-                    .list();
-        } else
-        if (query.startsWith("UNAME:")) { //if the seach query is by username */
-
-            //create query to search for users where user name is like query. use UserMapper
-        usersList = handle.createQuery("SELECT * FROM hl_users WHERE user_name LIKE :uname")
-                    .bind("uname", "%" + query + "%")
-                    .map(new UserMapper())
-                    .list();
-        /*} else {
-            //if the query has invalid format return empty array
-            results = new User[0];
-            return results;
-        }
-        */
+        Set<User> usersList = new LinkedHashSet<>();
+        //create query to search for users where user name is like query. use UserMapper
+        usersList.addAll(handle.createQuery("SELECT * FROM hl_users WHERE display_name LIKE :uname")
+                .bind("uname", "%" + query + "%")
+                .map(new UserMapper())
+                .list());
         //convert the List to Array and return
         results = new User[usersList.size()];
         results = usersList.toArray(results);
