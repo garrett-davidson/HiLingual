@@ -104,7 +104,7 @@ public class UserDAOImpl implements UserDAO {
         if (query.startsWith("UNAME:")) { //if the seach query is by username */
 
             //create query to search for users where user name is like query. use UserMapper
-        usersList = handle.createQuery("SELECT * FROM hl_users WHERE user_name LIKE :uname")
+        usersList = handle.createQuery("SELECT * FROM hl_users WHERE user_name LIKE %:uname%")
                     .bind("uname", query)
                     .map(new UserMapper())
                     .list();
