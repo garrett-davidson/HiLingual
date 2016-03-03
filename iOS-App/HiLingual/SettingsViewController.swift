@@ -55,7 +55,7 @@ class SettingsCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBAction func switchChanged(sender: UISwitch) {
-        NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: (self.textLabel?.text)!)
+        NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: (self.titleLabel?.text)!)
     }
 
 }
