@@ -13,6 +13,7 @@ class ProfileView: UIView {
     @IBOutlet var view: UIView!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var displayNameLabel: UILabel!
     @IBOutlet private weak var genderLabel: UILabel!
     @IBOutlet private weak var ageLabel: UILabel!
     @IBOutlet private weak var speaksLabel: UILabel!
@@ -33,8 +34,9 @@ class ProfileView: UIView {
 
     func refreshUI() {
         imageView.image = user.profilePicture
-        nameLabel.text = user.displayName
-        genderLabel.text = "TODO"
+        nameLabel.text = user.name
+        displayNameLabel.text = user.displayName
+        genderLabel.text = "\(user.gender!)"
         if (user.age != nil) {
             ageLabel.text = "\(user.age!)"
         }
