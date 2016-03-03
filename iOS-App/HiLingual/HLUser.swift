@@ -122,8 +122,8 @@ class HLUser: NSObject, NSCoding {
 
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "YYYY-mm-dd"
-                    let birthdayString = userDict["birthdate"] as! String
-                    let birthday = dateFormatter.dateFromString(birthdayString)!
+                    let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
+                    let birthday = NSDate(timeIntervalSince1970: birthdayNumber)
                     //TODO: ^^ This doesn't quite work
 
                     //TODO: Load this image
