@@ -50,7 +50,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         //Mark: Send to the server
         //whatever users that are received go into users
         //fill requests with true for each user
-        let testSessionId = "l5ds00a0nqho576g23ohc4kfn5"
+        let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
         print("sent search")
         searchTable.reloadData()
     }

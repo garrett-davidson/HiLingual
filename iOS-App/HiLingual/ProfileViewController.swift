@@ -30,6 +30,8 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
         }
 
         else {
+            editProfileView.dismissKeyboard(self)
+            editProfileView.dismissPickerView(self)
             editProfileView.user.save()
             editProfileView.hidden = true
             profileView.hidden = false
