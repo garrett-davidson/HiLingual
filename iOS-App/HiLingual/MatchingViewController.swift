@@ -54,8 +54,15 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         print("sent search")
         if let text = searchBar.text {
             let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/search?query=" + text)!)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT o8g8a0nlpmg09g6ph4mu72380"]
-            let returnedData = NSURLConnection.sendSynchronousRequest(request, returningResponse: nil)
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+            //TODO: Use non-deprecated API
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+                searchResults = HLUser.fromJSON(returnedData)
+            }
             searchTable.reloadData()
         }
     }
@@ -116,7 +123,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSampleUser()
+//        loadSampleUser()
         generateTestMatches(5)
         carousel.bounceDistance = 0.1;
         carousel.decelerationRate = 0.2;

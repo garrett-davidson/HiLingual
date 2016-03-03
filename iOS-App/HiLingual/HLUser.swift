@@ -99,6 +99,59 @@ class HLUser: NSObject, NSCoding {
         return currentUser
     }
 
+    static func fromJSON(jsonData: NSData) -> [HLUser] {
+        var userArray = [HLUser]()
+        if let obj = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) {
+            if let array = obj as? [NSDictionary] {
+                for userDict in array {
+                    let userId = (userDict["userId"] as! NSNumber).longLongValue
+                    let displayName = userDict["displayName"] as! String
+
+//                    let gender = userDict["gender"]
+                    //TODO: Fix this
+                    let gender = Gender.Female
+
+                    //Not important
+                    let blockedUsers = userDict["blockedUsers"]
+
+
+                    let bio = userDict["bio"] as! String
+
+                    //Not important
+                    let usersChattedWith = userDict["usersChattedWith"]
+
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "YYYY-mm-dd"
+                    let birthdayString = userDict["birthdate"] as! String
+                    let birthday = dateFormatter.dateFromString(birthdayString)!
+                    //TODO: ^^ This doesn't quite work
+
+                    //TODO: Load this image
+                    let imageURL = userDict["imageURL"]
+
+                    let knownLanguagesStrings = userDict["knownLanguages"] as! [String]
+                    let learningLanguagesStrings = userDict["learningLanguages"] as! [String]
+
+                    let knownLanguages = knownLanguagesStrings.map({ (languageString) -> Languages in
+                        Languages(rawValue: languageString)!
+                    })
+
+                    let learningLanguages = learningLanguagesStrings.map({ (languageString) -> Languages in
+                        Languages(rawValue: languageString)!
+                    })
+
+
+
+                    let name = userDict["name"] as! String
+
+                    userArray.append(HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe")))
+                }
+            }
+        }
+
+        return userArray
+    }
+
     func save() {
         //This should only be called on the current user
         HLUser.currentUser = self
