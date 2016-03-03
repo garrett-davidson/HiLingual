@@ -14,11 +14,17 @@ import UIKit
 //Shows Log In and Sign Up buttons 
 class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
     @IBOutlet weak var googleSignInButton: GIDSignInButton!
+
+    override func viewDidLoad() {
+        GIDSignIn.sharedInstance().signOut()
+    }
+
     override func viewDidAppear(animated:Bool) {
         super.viewDidAppear(animated);
 
+
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signInSilently()
+//        GIDSignIn.sharedInstance().signInSilently()
 
 
         //Use guard if it wouldn't make sense to continue a method if a condition is false
@@ -48,7 +54,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         self.view.addSubview(loginButton)
         
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signInSilently()
+//        GIDSignIn.sharedInstance().signInSilently()
     }
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         guard error == nil else {
@@ -62,7 +68,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
-        self.performSegueWithIdentifier("InitialLogin", sender: self)
+        didLoginWithSession(HLUserSession(sessionId: "", authority: .Facebook, authorityAccountId: "", authorityToken: ""))
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -82,5 +88,24 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             print("Facebook user id: \(result.valueForKey("id") as! String)")
             print("Facebook acess token: " + FBSDKAccessToken.currentAccessToken().tokenString)
         })
+    }
+
+    func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
+        viewController.dismissViewControllerAnimated(true, completion: nil)
+        didLoginWithSession(HLUserSession(sessionId: "", authority: .Google, authorityAccountId: "", authorityToken: ""))
+    }
+
+    func didLoginWithSession(session: HLUserSession) {
+        self.performSegueWithIdentifier("InitialLogin", sender: session)
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destNav = segue.destinationViewController as? UINavigationController {
+            if let dest = destNav.topViewController as? AccountCreationViewController {
+                if let session = sender as? HLUserSession {
+                    dest.session = session
+                }
+            }
+        }
     }
 }

@@ -45,31 +45,40 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
 
     func refreshUI() {
-        profileImage.image = user.profilePicture
-        nameLabel.text = user.name
-        nameText.text = user.displayName
-        //can people have the same display name 💩
-        //don't know how to send infoback to accountcreationview
-        if user.gender != nil {
-            genderLabel.text = "\(user.gender!)"
+        func redraw() {
+            profileImage.image = user.profilePicture
+            nameLabel.text = user.name
+            nameText.text = user.displayName
+            //can people have the same display name 💩
+            //don't know how to send infoback to accountcreationview
+            if user.gender != nil {
+                genderLabel.text = "\(user.gender!)"
+            }
+            else {
+                genderLabel.text = "Not Specified"
+            }
+
+            if (user.age != nil) {
+                ageLabel.text = "\(user.age!)"
+            }
+            else {
+                ageLabel.text = ""
+            }
+
+            let knownList = user.knownLanguages.toList()
+            let learningList = user.learningLanguages.toList()
+
+            languagesSpeaks.text = "Speaks: " + (knownList == "" ? "None" : knownList)
+            languagesLearning.text = "Learning: " + (learningList == "" ? "None" : learningList)
+            bioText.text = user.bio
+        }
+
+        if NSThread.isMainThread() {
+            redraw()
         }
         else {
-            genderLabel.text = "Not Specified"
+            dispatch_async(dispatch_get_main_queue(), {redraw()})
         }
-
-        if (user.age != nil) {
-            ageLabel.text = "\(user.age!)"
-        }
-        else {
-            ageLabel.text = ""
-        }
-
-        let knownList = user.knownLanguages.toList()
-        let learningList = user.learningLanguages.toList()
-
-        languagesSpeaks.text = "Speaks: " + (knownList == "" ? "None" : knownList)
-        languagesLearning.text = "Learning: " + (learningList == "" ? "None" : learningList)
-        bioText.text = user.bio
     }
 
     convenience required init?(coder aDecoder: NSCoder) {

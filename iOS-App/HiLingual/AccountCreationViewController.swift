@@ -15,11 +15,21 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
 
     var user: HLUser?
     var selectedLanguages: [Languages]?
+    var session: HLUserSession?
 
     override func viewDidLoad() {
         editProfileView.languageSelectionDelegate = self
-        loadFacebookData()
-//        loadGoogleData()
+
+        switch session?.authority {
+        case .None:
+            break
+
+        case .Some(.Facebook):
+            loadFacebookData()
+
+        case .Some(.Google):
+            loadGoogleData()
+        }
     }
 
     @IBAction func saveUser(sender: AnyObject) {
@@ -152,16 +162,28 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
     }
 
     func loadGoogleData() {
-        let googleUser = GIDSignIn.sharedInstance().currentUser
 
-        let picture: UIImage?
-        let userName = googleUser.profile.name
+        //TODO: Fix this 💩
+        //Lazy way to fix race condition
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            while GIDSignIn.sharedInstance().currentUser == nil {
+                sleep(100)
+            }
 
-        if googleUser.profile.hasImage {
-            picture = UIImage(data: NSData(contentsOfURL: googleUser.profile.imageURLWithDimension(100))!)
-        }
-        else {
-            picture = nil
-        }
+            let googleUser = GIDSignIn.sharedInstance().currentUser
+
+            let picture: UIImage?
+            let userName = googleUser.profile.name
+
+            if googleUser.profile.hasImage {
+                picture = UIImage(data: NSData(contentsOfURL: googleUser.profile.imageURLWithDimension(100))!)
+            }
+            else {
+                picture = nil
+            }
+
+            let user = HLUser(userId: 1, name: userName, displayName: userName, knownLanguages: nil, learningLanguages: nil, bio: nil, gender: nil, birthdate: nil, profilePicture: picture)
+            self.editProfileView.user = user
+        })
     }
 }
