@@ -755,8 +755,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="b9a-c7-V3Y"/>
         <segue reference="eTR-Rc-7JK"/>
-        <segue reference="XeF-YT-wgH"/>
         <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>

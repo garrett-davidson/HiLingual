@@ -72,7 +72,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.acceptButton.hidden = hidden
         //Mark: Fills the view
         if (hidden){
-            cell.date.text = "Yeserday"
+            cell.date.text = "Yesterday"
             cell.lastMessage.text = "This is an already accepted request"
         }else{
             cell.selectionStyle = UITableViewCellSelectionStyle.None
