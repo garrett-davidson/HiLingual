@@ -91,7 +91,9 @@ class HLUser: NSObject, NSCoding {
 
         if (currentUser == nil) {
             //If current user was nil and this failed, something went wrong
-            currentUser = NSKeyedUnarchiver.unarchiveObjectWithData((NSUserDefaults.standardUserDefaults().objectForKey("currentUser") as! NSData)) as? HLUser
+            if let userData = NSUserDefaults.standardUserDefaults().dataForKey("currentUser") {
+                currentUser = NSKeyedUnarchiver.unarchiveObjectWithData(userData) as? HLUser
+            }
         }
 
         return currentUser
