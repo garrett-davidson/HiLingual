@@ -112,6 +112,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         super.viewDidLoad()
         loadSampleUser()
         generateTestMatches(5)
+        carousel.bounceDistance = 0.1;
+        carousel.decelerationRate = 0.2;
         carousel.reloadData()
     }
 
