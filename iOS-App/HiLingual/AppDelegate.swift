@@ -114,11 +114,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
             return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
         }
 
-        else if (url.scheme == "com.googleusercontent.apps.527151665741-3nd8qfrbac2thl2c5mn64lt83q47pgb3") {
+        else if (url.scheme == "com.googleusercontent.apps.527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46") {
                 return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
         }
 
-        print("Unrecognized url: %@", url)
+        print("Unrecognized url: ", url)
         return false
     }
 
