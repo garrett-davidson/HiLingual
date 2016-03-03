@@ -15,14 +15,30 @@ import UIKit
 class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate
 {
 
-    @IBOutlet weak var editProfileView: EditProfileView!
-    //@IBOutlet weak var editProfileView: EditProfileView!
-    
+    @IBOutlet var editProfileView: EditProfileView!
+    @IBOutlet var profileView: ProfileView!
     var user: HLUser?
+    @IBAction func tapEdit(sender: AnyObject) {
+        if(editProfileView.hidden == true){
+            editProfileView.hidden = false
+            profileView.hidden = true
+            self.navigationItem.rightBarButtonItem?.title = "Done"
+        }else{
+            editProfileView.user.save()
+            editProfileView.hidden = true
+            profileView.hidden = false
+            self.navigationItem.rightBarButtonItem?.title = "Edit"
+        }
+        
     
+    }
+    
+    @IBAction func showSettings(sender: AnyObject) {
+        performSegueWithIdentifier("SettingsSegue", sender: self)
+    }
     override func viewDidLoad() {
-        //editProfileView.user = HLUser.getCurrentUser();
         editProfileView.user = HLUser.generateTestUser();
+        profileView.user = HLUser.generateTestUser();
     }
 
 }
