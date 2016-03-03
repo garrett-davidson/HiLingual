@@ -24,8 +24,8 @@ class HLUser: NSObject, NSCoding {
     var knownLanguages: [Languages]
     var learningLanguages: [Languages]
     var bio: String?
-    let gender: Gender?
-    let birthdate: NSDate?
+    var gender: Gender?
+    var birthdate: NSDate?
     var profilePicture: UIImage?
 
     var blockedUsers: [HLUser]?

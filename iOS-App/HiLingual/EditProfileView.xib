@@ -64,6 +64,7 @@
                                     <connections>
                                         <action selector="dismissKeyboard:" destination="-1" eventType="editingDidEnd" id="lvC-bw-pIK"/>
                                         <action selector="dismissPickerView:" destination="-1" eventType="editingDidBegin" id="k39-ub-Zda"/>
+                                        <action selector="displayNameDidEndEditing:" destination="-1" eventType="editingDidEnd" id="gG9-nw-2YI"/>
                                     </connections>
                                 </textField>
                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="oWo-kz-l9z">

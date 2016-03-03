@@ -34,9 +34,9 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
             editProfileView.hidden = true
             profileView.hidden = false
             self.navigationItem.rightBarButtonItem?.title = "Edit"
+            editProfileView.user = HLUser.getCurrentUser()
+            profileView.user = HLUser.getCurrentUser()
         }
-        
-    
     }
     
     @IBAction func showSettings(sender: AnyObject) {
@@ -44,6 +44,7 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         editProfileView.user = HLUser.getCurrentUser()
         profileView.user = HLUser.getCurrentUser()
         editProfileView.languageSelectionDelegate = self

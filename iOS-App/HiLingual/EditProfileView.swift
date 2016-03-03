@@ -43,6 +43,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             refreshUI()
         }
     }
+
     func refreshUI() {
         profileImage.image = user.profilePicture
         nameLabel.text = user.name
@@ -70,9 +71,11 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         languagesLearning.text = "Learning: " + (learningList == "" ? "None" : learningList)
         bioText.text = user.bio
     }
+
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }
+
     @IBAction func pictureTap(sender: UITapGestureRecognizer) {
         let imagePickerController = UIImagePickerController()
         let alertController = UIAlertController(title: nil, message: "Choose Source", preferredStyle: .ActionSheet)
@@ -119,9 +122,11 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
+
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         profileImage.image = selectedImage
+        user.profilePicture = selectedImage
         
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil){
@@ -147,6 +152,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         pickerView.reloadAllComponents()
         animationUp()
     }
+
     @IBAction func ageTap(sender: AnyObject) {
         dismissKeyboard(self)
         currentPickerField = .Age
@@ -178,8 +184,10 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         switch currentPickerField {
         case .Age:
             ageLabel.text = "\(minimunAge + row)"
+            user.birthdate = NSCalendar.currentCalendar().dateByAddingUnit(.Year, value: -(minimunAge + row), toDate: NSDate(), options: NSCalendarOptions(rawValue: 0))
         case .Gender:
             genderLabel.text = "\(Gender.allValues[row])"
+            user.gender = Gender(rawValue: row)
         }
     }
     
@@ -217,6 +225,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     func textViewDidEndEditing(textView: UITextView) {
         self.dismissKeyboard(self)
+        user.bio = bioText.text
     }
 
     init(decoder: NSCoder?, frame: CGRect?) {
@@ -271,5 +280,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
             isPickerViewDown = true
         }
+    }
+    @IBAction func displayNameDidEndEditing(sender: AnyObject) {
+        user.displayName = nameText.text
     }
 }
