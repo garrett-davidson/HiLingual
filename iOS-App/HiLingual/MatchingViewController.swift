@@ -106,7 +106,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let cellIdentity = "SearchTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
         let user = searchResults[indexPath.row]
-        cell.name.text = user.name
+        cell.name.text = user.displayName
         cell.profilePicture.layer.masksToBounds = false
         cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
         cell.profilePicture.clipsToBounds = true
