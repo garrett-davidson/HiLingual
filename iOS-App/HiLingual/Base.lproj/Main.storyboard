@@ -418,6 +418,7 @@
                         <outlet property="editProfileView" destination="lqy-PJ-PuE" id="0cZ-Yf-XgA"/>
                         <outlet property="profileView" destination="iwx-Bx-znf" id="r8x-Iy-GbJ"/>
                         <segue destination="m70-ah-pK1" kind="presentation" identifier="SelectLanguagesSegue" id="S8b-uI-wvn"/>
+                        <segue destination="tti-zX-m3L" kind="presentation" identifier="SettingsSegue" modalTransitionStyle="flipHorizontal" id="S5h-BQ-gtT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMp-E7-ke6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -437,7 +438,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EZg-6C-lcc">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="FAi-Zl-ei5" customClass="SettingsCell" customModule="HiLingual" customModuleProvider="target">
@@ -447,16 +448,29 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WAo-sR-7Fu">
-                                                    <rect key="frame" x="543" y="4" width="51" height="31"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WAo-sR-7Fu">
+                                                    <rect key="frame" x="543" y="6.5" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="switchChanged:" destination="FAi-Zl-ei5" eventType="valueChanged" id="A43-Sy-b5s"/>
                                                     </connections>
                                                 </switch>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtD-dL-fnB">
+                                                    <rect key="frame" x="8" y="11" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="WAo-sR-7Fu" firstAttribute="centerY" secondItem="YJE-FB-1v3" secondAttribute="centerY" id="2Rj-vz-Nck"/>
+                                                <constraint firstItem="gtD-dL-fnB" firstAttribute="centerY" secondItem="YJE-FB-1v3" secondAttribute="centerY" id="GtS-SP-O8p"/>
+                                                <constraint firstItem="WAo-sR-7Fu" firstAttribute="trailing" secondItem="YJE-FB-1v3" secondAttribute="trailingMargin" id="J95-7h-3mx"/>
+                                                <constraint firstItem="gtD-dL-fnB" firstAttribute="leading" secondItem="YJE-FB-1v3" secondAttribute="leadingMargin" id="dbY-3E-gcC"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="switch" destination="WAo-sR-7Fu" id="tyS-Sh-iQF"/>
+                                            <outlet property="titleLabel" destination="gtD-dL-fnB" id="MaC-rx-RFV"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -469,14 +483,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="EZg-6C-lcc" firstAttribute="top" secondItem="BPD-DK-4T0" secondAttribute="bottom" id="2vU-CR-e5d"/>
                             <constraint firstItem="po8-7X-3KW" firstAttribute="top" secondItem="EZg-6C-lcc" secondAttribute="bottom" id="pQi-4U-9GM"/>
+                            <constraint firstItem="EZg-6C-lcc" firstAttribute="top" secondItem="9fx-vR-vke" secondAttribute="top" id="q64-8o-4k0"/>
                             <constraint firstAttribute="trailing" secondItem="EZg-6C-lcc" secondAttribute="trailing" id="yTD-JF-W2j"/>
                             <constraint firstItem="EZg-6C-lcc" firstAttribute="leading" secondItem="9fx-vR-vke" secondAttribute="leading" id="yfe-2G-ZqT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dSe-Gq-UaC">
-                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="Z5f-4H-Weu"/>
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="Z5f-4H-Weu">
+                            <connections>
+                                <action selector="pressedDone:" destination="Pji-NK-j4l" id="FZt-Ou-rT6"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uji-b7-0Wm" userLabel="First Responder" sceneMemberID="firstResponder"/>

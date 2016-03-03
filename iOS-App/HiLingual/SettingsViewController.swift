@@ -29,7 +29,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! SettingsCell
-        cell.textLabel?.text = settings[indexPath.row]
+        cell.titleLabel?.text = settings[indexPath.row]
         let isChecked = NSUserDefaults.standardUserDefaults().boolForKey(settings[indexPath.row])
         cell.`switch`.on = isChecked
         return cell
@@ -45,10 +45,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     */
 
+    @IBAction func pressedDone(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 class SettingsCell: UITableViewCell {
     @IBOutlet weak var `switch`: UISwitch!
+    @IBOutlet weak var titleLabel: UILabel!
     
     @IBAction func switchChanged(sender: UISwitch) {
         NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: (self.textLabel?.text)!)
