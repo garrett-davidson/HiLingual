@@ -30,7 +30,7 @@ apns:
   # CHANGEME
   developer: true
   # Our BundleID/topic
-  topic: com.example.hilingual
+  topic: com.gethilingual.hilingual
 
 # SQL CONFIG (MySQL)
 sqlDbType: mysql
