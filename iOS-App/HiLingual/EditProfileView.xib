@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10115" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10084"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -27,7 +27,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="0Lt-LS-xOJ">
+                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0Lt-LS-xOJ">
                     <rect key="frame" x="8" y="8" width="359" height="160"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prR-kc-wq2">
@@ -42,17 +42,23 @@
                                 <outletCollection property="gestureRecognizers" destination="9Rm-ed-J1v" appends="YES" id="MkG-nL-Z1H"/>
                             </connections>
                         </imageView>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6P6-cM-HDo">
-                            <rect key="frame" x="160" y="0.0" width="199" height="124"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6P6-cM-HDo">
+                            <rect key="frame" x="168" y="0.0" width="191" height="154"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvm-3o-omc">
-                                    <rect key="frame" x="0.0" y="0.0" width="45" height="25"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="751" misplaced="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvm-3o-omc">
+                                    <rect key="frame" x="0.0" y="0.0" width="45" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Display Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2x-fg-pw2">
-                                    <rect key="frame" x="0.0" y="33" width="199" height="25"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Display Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKJ-ua-Xsy">
+                                    <rect key="frame" x="0.0" y="38" width="110" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Display Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2x-fg-pw2">
+                                    <rect key="frame" x="0.0" y="67" width="191" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <connections>
@@ -60,39 +66,67 @@
                                         <action selector="dismissPickerView:" destination="-1" eventType="editingDidBegin" id="k39-ub-Zda"/>
                                     </connections>
                                 </textField>
-                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EP1-OT-Q5T">
-                                    <rect key="frame" x="0.0" y="66" width="199" height="25"/>
-                                    <gestureRecognizers/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="7xG-BG-M2c" appends="YES" id="RmO-Ud-eZo"/>
-                                    </connections>
-                                </label>
-                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thM-fQ-h5b">
-                                    <rect key="frame" x="0.0" y="99" width="199" height="25"/>
-                                    <gestureRecognizers/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="ZhA-lO-5cN" appends="YES" id="55n-ei-Dfo"/>
-                                    </connections>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="oWo-kz-l9z">
+                                    <rect key="frame" x="0.0" y="105" width="191" height="21"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Gender: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fwc-fh-aKk">
+                                            <rect key="frame" x="0.0" y="0.0" width="66" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" text="Gender" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EP1-OT-Q5T">
+                                            <rect key="frame" x="66" y="0.0" width="125" height="21"/>
+                                            <gestureRecognizers/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="7xG-BG-M2c" appends="YES" id="RmO-Ud-eZo"/>
+                                            </connections>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Jps-ru-9F4">
+                                    <rect key="frame" x="0.0" y="133" width="191" height="21"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Age:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKn-yi-esB">
+                                            <rect key="frame" x="0.0" y="0.0" width="35" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="Age" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thM-fQ-h5b">
+                                            <rect key="frame" x="35" y="0.0" width="156" height="21"/>
+                                            <gestureRecognizers/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="ZhA-lO-5cN" appends="YES" id="55n-ei-Dfo"/>
+                                            </connections>
+                                        </label>
+                                    </subviews>
+                                </stackView>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="EP1-OT-Q5T" secondAttribute="trailing" id="9QE-E1-4G9"/>
+                                <constraint firstItem="oWo-kz-l9z" firstAttribute="leading" secondItem="6P6-cM-HDo" secondAttribute="leading" id="FvG-ja-Hob"/>
+                                <constraint firstItem="oWo-kz-l9z" firstAttribute="top" secondItem="v2x-fg-pw2" secondAttribute="bottom" id="HQt-xl-vuP"/>
                                 <constraint firstAttribute="trailing" secondItem="v2x-fg-pw2" secondAttribute="trailing" id="Njw-jo-Xvh"/>
+                                <constraint firstItem="Jps-ru-9F4" firstAttribute="leading" secondItem="6P6-cM-HDo" secondAttribute="leading" id="T5t-Rn-ggz"/>
                                 <constraint firstItem="v2x-fg-pw2" firstAttribute="height" secondItem="gvm-3o-omc" secondAttribute="height" id="YpX-pr-k3u"/>
-                                <constraint firstAttribute="trailing" secondItem="thM-fQ-h5b" secondAttribute="trailing" id="ejk-GE-Xr5"/>
-                                <constraint firstItem="EP1-OT-Q5T" firstAttribute="height" secondItem="v2x-fg-pw2" secondAttribute="height" id="fkA-2b-hLo"/>
-                                <constraint firstItem="thM-fQ-h5b" firstAttribute="height" secondItem="EP1-OT-Q5T" secondAttribute="height" id="qub-Cf-Ulp"/>
+                                <constraint firstAttribute="trailing" secondItem="Jps-ru-9F4" secondAttribute="trailing" id="mm8-Lg-DlB"/>
+                                <constraint firstAttribute="trailing" secondItem="oWo-kz-l9z" secondAttribute="trailing" id="xHS-Z5-y2d"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="HQt-xl-vuP"/>
+                                </mask>
+                            </variation>
                         </stackView>
                     </subviews>
                 </stackView>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fl-0e-YAL">
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fl-0e-YAL">
                     <rect key="frame" x="8" y="176" width="359" height="20.5"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -102,7 +136,7 @@
                         <outletCollection property="gestureRecognizers" destination="5xf-sL-gMJ" appends="YES" id="528-LU-Qx2"/>
                     </connections>
                 </label>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCJ-CG-M0J">
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" misplaced="YES" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCJ-CG-M0J">
                     <rect key="frame" x="8" y="204" width="359" height="20.5"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -112,8 +146,8 @@
                         <outletCollection property="gestureRecognizers" destination="6OE-2I-EBj" appends="YES" id="0bC-Zy-1f6"/>
                     </connections>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" text="Bio:" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-Qw-TZ1">
-                    <rect key="frame" x="0.0" y="243" width="375" height="424"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" misplaced="YES" text="Bio text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-Qw-TZ1">
+                    <rect key="frame" x="0.0" y="261" width="375" height="406"/>
                     <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
@@ -141,6 +175,12 @@
                         </barButtonItem>
                     </items>
                 </toolbar>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Bio:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bMO-ri-N1e">
+                    <rect key="frame" x="7" y="232" width="360" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
@@ -154,15 +194,18 @@
                 <constraint firstAttribute="bottom" secondItem="xuJ-H6-jyd" secondAttribute="bottom" constant="-249" id="7v0-TB-a4m"/>
                 <constraint firstAttribute="trailing" secondItem="4Fl-0e-YAL" secondAttribute="trailing" constant="8" id="CpU-aB-wpJ"/>
                 <constraint firstItem="xuJ-H6-jyd" firstAttribute="trailing" secondItem="VCT-Qw-TZ1" secondAttribute="trailing" id="IRh-wf-h9m"/>
+                <constraint firstItem="bMO-ri-N1e" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="JrR-M4-CXa"/>
                 <constraint firstItem="4Fl-0e-YAL" firstAttribute="leading" secondItem="CCJ-CG-M0J" secondAttribute="leading" id="KCu-Tr-YaD"/>
                 <constraint firstAttribute="trailing" secondItem="CCJ-CG-M0J" secondAttribute="trailing" constant="8" id="UYk-xW-jWr"/>
                 <constraint firstItem="CCJ-CG-M0J" firstAttribute="top" secondItem="4Fl-0e-YAL" secondAttribute="bottom" constant="8" symbolic="YES" id="XHO-MI-c3E"/>
+                <constraint firstItem="bMO-ri-N1e" firstAttribute="top" secondItem="CCJ-CG-M0J" secondAttribute="bottom" constant="8" id="ayt-pw-l82"/>
                 <constraint firstItem="xuJ-H6-jyd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bNM-0S-EdM"/>
                 <constraint firstAttribute="bottom" secondItem="VCT-Qw-TZ1" secondAttribute="bottom" id="cQx-JL-2mT"/>
+                <constraint firstAttribute="trailingMargin" secondItem="bMO-ri-N1e" secondAttribute="trailing" id="hsu-CV-mmB"/>
                 <constraint firstItem="0Lt-LS-xOJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="k0l-fQ-UhP"/>
                 <constraint firstItem="jeS-Zi-PjY" firstAttribute="trailing" secondItem="VCT-Qw-TZ1" secondAttribute="trailing" id="kkd-rq-Q2Y"/>
+                <constraint firstItem="VCT-Qw-TZ1" firstAttribute="top" secondItem="bMO-ri-N1e" secondAttribute="bottom" constant="8" id="ooY-L3-PtR"/>
                 <constraint firstItem="jeS-Zi-PjY" firstAttribute="leading" secondItem="xuJ-H6-jyd" secondAttribute="leading" id="t20-Ce-W48"/>
-                <constraint firstItem="VCT-Qw-TZ1" firstAttribute="top" secondItem="CCJ-CG-M0J" secondAttribute="bottom" constant="18" id="tWb-kT-OLs"/>
                 <constraint firstItem="xuJ-H6-jyd" firstAttribute="bottom" secondItem="VCT-Qw-TZ1" secondAttribute="bottom" constant="249" id="vi8-we-knA"/>
                 <constraint firstItem="jeS-Zi-PjY" firstAttribute="top" secondItem="xuJ-H6-jyd" secondAttribute="top" id="z8S-tL-h1z"/>
             </constraints>

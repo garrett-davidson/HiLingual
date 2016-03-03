@@ -41,8 +41,12 @@ class ProfileView: UIView {
         else {
             ageLabel.text = ""
         }
-        speaksLabel.text = "Speaks: " + user.knownLanguages.toList()
-        learningLabel.text = "Learning: " + user.learningLanguages.toList()
+
+        let knownList = user.knownLanguages.toList()
+        let learningList = user.learningLanguages.toList()
+
+        speaksLabel.text = "Speaks: " + (knownList == "" ? "None" : knownList)
+        learningLabel.text = "Learning: " + (learningList == "" ? "None" : learningList)
         bioTextView.text = user.bio
 
         if (!editing) {

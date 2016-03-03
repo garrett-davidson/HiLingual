@@ -62,8 +62,12 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         else {
             ageLabel.text = ""
         }
-        languagesSpeaks.text = "Speaks: " + user.knownLanguages.toList()
-        languagesLearning.text = "Learning: " + user.learningLanguages.toList()
+
+        let knownList = user.knownLanguages.toList()
+        let learningList = user.learningLanguages.toList()
+
+        languagesSpeaks.text = "Speaks: " + (knownList == "" ? "None" : knownList)
+        languagesLearning.text = "Learning: " + (learningList == "" ? "None" : learningList)
         bioText.text = user.bio
     }
     convenience required init?(coder aDecoder: NSCoder) {
