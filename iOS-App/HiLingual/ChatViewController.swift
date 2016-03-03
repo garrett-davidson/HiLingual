@@ -38,6 +38,7 @@ class ChatViewController: UIViewController {
         if segue.identifier == "detailsSegue"{
             let messageDetailViewController = segue.destinationViewController as! DetailViewController
             messageDetailViewController.user = user
+            messageDetailViewController.hidden = messageHidden
             
         }
 
