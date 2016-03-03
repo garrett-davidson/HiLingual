@@ -156,7 +156,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
                 let profilePictureData = NSData(contentsOfURL: profilePictureURL)!
                 picture = UIImage(data: profilePictureData)!
 
-            let user = HLUser(userId: 1, name: firstName + " " + lastName, displayName: firstName+lastName, knownLanguages: languages, learningLanguages: [], bio: bio, gender: gender, birthdate: birthday, profilePicture: picture)
+            let user = HLUser(userId: 5, name: firstName + " " + lastName, displayName: firstName+lastName, knownLanguages: languages, learningLanguages: [], bio: bio, gender: gender, birthdate: birthday, profilePicture: picture)
             self.editProfileView.user = user
         })
     }
