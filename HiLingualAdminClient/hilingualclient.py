@@ -15,7 +15,8 @@ http = urllib3.PoolManager(
 
 
 
-def searchUsers
+def searchUsers():
+	pass
 
 def updateUserInfo():
 	pass
