@@ -76,5 +76,25 @@ class HiLingualUITests: XCTestCase {
         
         
     }
+    func testSettingTab() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        app.navigationBars["HiLingual.ProfileView"].buttons["Settings"].tap()
+        
+        let tablesQuery2 = app.tables
+        let showGenderSwitch = tablesQuery2.switches["Show Gender"]
+        showGenderSwitch.tap()
+        showGenderSwitch.tap()
+        showGenderSwitch.tap()
+        
+        let tablesQuery = tablesQuery2
+        tablesQuery.switches["Show Age"].tap()
+        tablesQuery.switches["Show Profile in Matching"].tap()
+        tablesQuery.switches["Display Full Name"].tap()
+        app.navigationBars["HiLingual.SettingsView"].buttons["Done"].tap()
+        
+        
+    }
     
 }
