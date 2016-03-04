@@ -10,15 +10,22 @@
 package com.example.hilingual.server.dao;
 
 import com.example.hilingual.server.api.User;
+import io.dropwizard.lifecycle.Managed;
 
-import java.util.UUID;
+public interface UserDAO extends Managed {
 
-public interface UserDAO {
+    void init();
 
-    User getUser(UUID userId);
+    User getUser(long userId);
 
     void updateUser(User newUserData);
 
-    void deleteUser(UUID userId);
+    void deleteUser(long userId);
+
+    User createUser();
+
+    User[] findUsers(String query, User invoker);
+
+    void truncate();
 
 }

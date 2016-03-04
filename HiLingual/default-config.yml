@@ -10,7 +10,30 @@
 # Database connections, application tuning, etc
 ###############################################################################
 
+# Facebook settings
+facebook:
+  # The app ID from Facebook
+  id: 1016061888432481
+  # The app secret from Facebook, grab it from the Facebook app page
+  # CHANGEME
+  secret: 00000000000000000000000000000000
+
+# Apple Push Notification Service settings
+apns:
+  # Path to the APNs p12 certificate
+  # CHANGEME
+  certFile: CERT_FILE
+  # Password for the p12 certificate
+  # CHANGEME
+  certPassword: supersecret
+  # Whether or not to use the developer APNS server
+  # CHANGEME
+  developer: true
+  # Our BundleID/topic
+  topic: com.gethilingual.hilingual
+
 # SQL CONFIG (MySQL)
+sqlDbType: mysql
 sqlDb:
   # JDBC Driver class (set to use MySQL)
   driverClass: com.mysql.jdbc.Driver
@@ -25,7 +48,7 @@ sqlDb:
 
   # JDBC URL
   # CHANGEME
-  url: jdbc:mysql:localhost/db-local
+  url: jdbc:mysql://localhost/db-local
 
   # Maximum time for a connection before timing out
   maxWaitForConnection: 5s
@@ -49,27 +72,25 @@ sqlDb:
   # abandoned cleaner and idle pool resizing
   evictionInterval: 10s
 
- # Minimum idle connection time before being able to be considered for eviction
- minIdleTime: 1 minute
+  # Minimum idle connection time before being able to be considered for eviction
+  minIdleTime: 1 minute
 
 # REDIS CONFIG
 redis:
   # Redis server's address
   # CHANGEME
-  endpoint: localhost:6379
+  host: localhost
 
-  # Authentication password (set to null for none)
+  # Redis server's port
   # CHANGEME
-  password: null
+  port: 6379
 
-  # Minimum idle connections to keep in the pool
-  minIdle: 0
+  # Password (if present)
+  # CHANGEME
+  password: supersecret
 
-  # Max idle connections allowed in the pool
-  maxIdle: 0
-
-  # Max number of connections allowed in the pool
-  maxTotal: 1024
+  # Connection timeout (s)
+  timeout: 10
 
 ###############################################################################
 # DropWizard Server Configuration
