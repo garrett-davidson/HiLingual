@@ -2,7 +2,6 @@
 
 This is a simple python command-line application to interact with the HiLingual API.
 
-
 Dependencies:
  - python3
  - urllib3
