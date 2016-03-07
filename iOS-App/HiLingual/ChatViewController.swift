@@ -12,20 +12,13 @@ import UIKit
 //Displays both the sent and received messages in a single chat
 
 class ChatViewController: UIViewController {
-    var messageHidden: Bool!
     var user: HLUser!
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
 
     @IBOutlet weak var userCanMessageLabel: UILabel!
     
     override func viewDidLoad() {
-        
-        if((messageHidden) != nil && messageHidden == true){
-            self.title = user.name
-        }else{
-            self.title = user.displayName
-        }
-        userCanMessageLabel.hidden = messageHidden
+        self.title = user.name
         print(user.name)
     }
     
@@ -38,7 +31,7 @@ class ChatViewController: UIViewController {
         if segue.identifier == "detailsSegue"{
             let messageDetailViewController = segue.destinationViewController as! DetailViewController
             messageDetailViewController.user = user
-            messageDetailViewController.hidden = messageHidden
+            messageDetailViewController.hiddenName = true
             
         }
 

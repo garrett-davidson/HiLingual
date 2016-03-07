@@ -9,7 +9,7 @@
 import Foundation
 
 class ProfileView: UIView {
-    
+    var hiddenName = true
     @IBOutlet var view: UIView!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -34,6 +34,12 @@ class ProfileView: UIView {
 
     func refreshUI() {
         imageView.image = user.profilePicture
+        if(hiddenName){
+            nameLabel.hidden = true
+        }
+        else {
+            nameLabel.text = user.name
+        }
         nameLabel.text = user.name
         displayNameLabel.text = user.displayName
         if (user.age != nil) {

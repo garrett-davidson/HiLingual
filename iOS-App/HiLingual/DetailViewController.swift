@@ -11,21 +11,22 @@ import UIKit
 class DetailViewController: UIViewController {
     
     var user: HLUser!
-    var hidden: Bool!
+    var hiddenName: Bool!
     
     @IBOutlet weak var profileView: ProfileView!
     
     override func viewDidLoad() {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        if ((hidden) != nil && hidden == true){
+        if ((hiddenName) != nil && hiddenName == true){
             self.title = user.name
-            
+            profileView.hiddenName = false
         }else {
             self.title = user.displayName
             
         }
         print(user.displayName)
         profileView.user = user
+        
     }
 
 }

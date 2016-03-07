@@ -108,33 +108,45 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showMessageSegue"{
-            let messageDetailViewController = segue.destinationViewController as! ChatViewController
+        if segue.identifier == "SegueToProfile"{
+            let messageDetailViewController = segue.destinationViewController as! DetailViewController
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
-                messageDetailViewController.user = conversations[indexPath.row]
-                messageDetailViewController.messageHidden = hiddenButtons[indexPath.row]
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
+                messageDetailViewController.user = conversations[indexPath.row]
                 //Once messages is complete I can use that
                 
             }
+
             
-        } else{
+        }
             
+        else if segue.identifier == "SegueToMessages" {
+            let messageDetailViewController = segue.destinationViewController as! ChatViewController
+            if let selectedMessageCell = sender as? ConversationTableViewCell {
+                let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
+                converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
+                messageDetailViewController.user = conversations[indexPath.row]
+                //Once messages is complete I can use that
+                
+            }
         }
     
     }
-    /*
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = converstationTable.cellForRowAtIndexPath(indexPath)
-        if cell?.reuseIdentifier == "ConversationTableViewCell"{
-            if hiddenButtons[indexPath.row]{
-                performSegueWithIdentifier("testMessageSegue", sender: cell)
-            }
+        if(hiddenButtons[indexPath.row]){
+            self.performSegueWithIdentifier("SegueToMessages", sender: cell)
+            print("ACCEPTED")
+        }
+        else{
+            
+            self.performSegueWithIdentifier("SegueToProfile", sender: cell)
         }
         
     }
-
+    /*
     override func performSegueWithIdentifier(identifier: String, sender: AnyObject?) {
         if identifier == "testMessageSegue"{
             let messageDetailViewController = ChatViewController()

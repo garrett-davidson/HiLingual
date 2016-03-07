@@ -48,6 +48,7 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
     override func viewDidLoad() {
         super.viewDidLoad()
         editProfileView.user = HLUser.getCurrentUser()
+        profileView.hiddenName = false
         profileView.user = HLUser.getCurrentUser()
         editProfileView.languageSelectionDelegate = self
     }
