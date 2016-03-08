@@ -159,7 +159,6 @@
                                             <outlet property="lastMessage" destination="DsD-GD-Ptj" id="Ljx-e1-dra"/>
                                             <outlet property="name" destination="J8t-oZ-gwa" id="K50-eu-YVD"/>
                                             <outlet property="profilePicture" destination="IUP-Vd-aa4" id="hvB-px-Kvd"/>
-                                            <segue destination="nBC-Zq-2jE" kind="show" identifier="showMessageSegue" id="b9a-c7-V3Y"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -181,6 +180,8 @@
                     <connections>
                         <outlet property="converstationTable" destination="yPp-W9-94i" id="Sbb-NP-NMn"/>
                         <segue destination="hZt-T2-x0x" kind="show" identifier="segueToNavBar" id="J6G-JF-rh9"/>
+                        <segue destination="ycY-NS-58u" kind="show" identifier="SegueToProfile" id="US8-Fg-o83"/>
+                        <segue destination="nBC-Zq-2jE" kind="show" identifier="SegueToMessages" id="uD0-O0-1tF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nht-pf-gJO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -198,21 +199,7 @@
                     <view key="view" contentMode="scaleToFill" id="X1a-mJ-Bwz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can't message until the request has been accepted " textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncR-NA-06q">
-                                <rect key="frame" x="20" y="289" width="560" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ncR-NA-06q" firstAttribute="centerY" secondItem="X1a-mJ-Bwz" secondAttribute="centerY" id="Hq2-82-yuX"/>
-                            <constraint firstItem="ncR-NA-06q" firstAttribute="top" secondItem="iC5-f2-rqO" secondAttribute="bottom" constant="225" id="IIL-fe-kBX"/>
-                            <constraint firstItem="ncR-NA-06q" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leadingMargin" id="eiP-Ud-kLT"/>
-                            <constraint firstItem="ncR-NA-06q" firstAttribute="trailing" secondItem="X1a-mJ-Bwz" secondAttribute="trailingMargin" id="msE-BT-CgG"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ktS-gQ-9LD">
                         <barButtonItem key="rightBarButtonItem" title="Details" id="FPQ-fb-3tr">
@@ -224,12 +211,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
-                        <outlet property="userCanMessageLabel" destination="ncR-NA-06q" id="ziH-7f-Eyc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5471" y="-632"/>
+            <point key="canvasLocation" x="5591" y="-612"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="3Id-wU-drU">
@@ -262,7 +248,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FAb-ya-Rk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7095" y="987"/>
+            <point key="canvasLocation" x="6567" y="-797"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="lIS-2g-81Y">
@@ -678,7 +664,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HsG-OM-sHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4741" y="-876"/>
+            <point key="canvasLocation" x="4757" y="-1372"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RDW-iM-Qhh">
@@ -755,8 +741,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="b9a-c7-V3Y"/>
         <segue reference="eTR-Rc-7JK"/>
+        <segue reference="US8-Fg-o83"/>
+        <segue reference="uD0-O0-1tF"/>
         <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>
