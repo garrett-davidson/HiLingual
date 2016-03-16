@@ -49,7 +49,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             profileImage.image = user.profilePicture
             nameLabel.text = user.name
             nameText.text = user.displayName
-            //don't know how to send infoback to accountcreationview
+
             if user.gender != nil {
                 genderLabel.text = "\(user.gender!)"
             }
@@ -97,7 +97,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             imagePickerController.delegate = self
             
             var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-            while((topVC!.presentedViewController) != nil){
+            while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
             }
             topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
@@ -108,14 +108,14 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             imagePickerController.delegate = self
             
             var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-            while((topVC!.presentedViewController) != nil){
+            while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
             }
             topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
         }
         alertController.addAction(usePhotoLibraryAction)
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-        while((topVC!.presentedViewController) != nil){
+        while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
         topVC?.presentViewController(alertController, animated: true, completion: nil)
@@ -125,7 +125,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         // Dismiss the picker if the user canceled.
         
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-        while((topVC!.presentedViewController) != nil){
+        while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)

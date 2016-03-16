@@ -21,6 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         let isFacebookSetup = setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
         let isGoogleSetup = setupGoogle()
 
+        registerForNotifications(application)
+
+
+        return isFacebookSetup && isGoogleSetup
+    }
+
+    func registerForNotifications(application: UIApplication) {
         //        if #available(iOS 8.0, *) {
         let settings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         application.registerUserNotificationSettings(settings)
@@ -30,9 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         //            let types: UIRemoteNotificationType = [.Alert, .Badge, .Sound]
         //            application.registerForRemoteNotificationTypes(types)
         //        }
-
-
-        return isFacebookSetup && isGoogleSetup
     }
 
     func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -124,11 +128,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
 
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
         if (error == nil) {
-            print("User signed in here")
+            print("Google user signed in")
             print(signIn)
             print(user)
-            
-            
         }
         else {
             print(error)
@@ -136,7 +138,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     }
 
     func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
-
+        print("Google user logged out")
+        print(user)
     }
 }
 
