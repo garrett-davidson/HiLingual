@@ -89,6 +89,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             requests[index] = false
             searchTable.reloadData()
             print("sent")
+            HLUser.getCurrentUser().usersChattedWith.append(searchResults[index])
             //send request to user
         }else{
             sender.setTitle("Send Request", forState: .Normal)

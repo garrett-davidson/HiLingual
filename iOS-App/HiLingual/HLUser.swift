@@ -159,7 +159,7 @@ class HLUser: NSObject, NSCoding {
         //TODO: Implement creating a loggin in to server user
         //That way this doesn't have to be hard-coded
         if let userJSONData = self.toJSON() {
-            let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
+            let testSessionId = "k9ike03ko65fkh0ih51163o4a6"
             let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
             request.HTTPMethod = "PATCH"
