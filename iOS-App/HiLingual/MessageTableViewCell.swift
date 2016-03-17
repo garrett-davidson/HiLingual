@@ -6,8 +6,6 @@
 //  Copyright © 2016 Team3. All rights reserved.
 //
 
-import Cocoa
-
 class MessageTableViewCell: UITableViewCell {
 
 }
