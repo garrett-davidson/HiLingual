@@ -19,6 +19,7 @@
 		680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24531C716997009F4EE8 /* ChatViewController.swift */; };
 		682D14831C765FDE00443B7D /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682D14821C765FDE00443B7D /* ProfileView.xib */; };
 		682D14851C76620600443B7D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682D14841C76620600443B7D /* ProfileView.swift */; };
+		685A39DD1C99DF56002AE089 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685A39DC1C99DF56002AE089 /* MessageTableViewCell.swift */; };
 		6876D9971C5A87A90097332A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9961C5A87A90097332A /* AppDelegate.swift */; };
 		6876D99C1C5A87A90097332A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6876D99A1C5A87A90097332A /* Main.storyboard */; };
 		6876D99E1C5A87A90097332A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6876D99D1C5A87A90097332A /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		682D14821C765FDE00443B7D /* ProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
 		682D14841C76620600443B7D /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiLingual-Bridging-Header.h"; sourceTree = "<group>"; };
+		685A39DC1C99DF56002AE089 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		6876D9931C5A87A90097332A /* HiLingual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiLingual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D9961C5A87A90097332A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6876D99B1C5A87A90097332A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */,
 				680F24491C716636009F4EE8 /* LoginViewController.swift */,
 				6876D99A1C5A87A90097332A /* Main.storyboard */,
+				685A39DC1C99DF56002AE089 /* MessageTableViewCell.swift */,
 				680F24511C716926009F4EE8 /* MatchingViewController.swift */,
 				680F244D1C716875009F4EE8 /* MessagesViewController.swift */,
 				682D14841C76620600443B7D /* ProfileView.swift */,
@@ -415,6 +418,7 @@
 				687BD42E1C7E9E3A007C5F9B /* AccountCreationViewController.swift in Sources */,
 				680F24421C701A45009F4EE8 /* HLUser.swift in Sources */,
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
+				685A39DD1C99DF56002AE089 /* MessageTableViewCell.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
