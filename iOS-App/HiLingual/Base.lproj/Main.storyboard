@@ -199,7 +199,63 @@
                     <view key="view" contentMode="scaleToFill" id="X1a-mJ-Bwz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="507"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="CVV-FJ-KMT">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CVV-FJ-KMT" id="lv8-hY-eJm">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="b8X-fX-aB8">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b8X-fX-aB8" id="xxQ-eE-ebd">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="nBC-Zq-2jE" id="G2K-Vg-dga"/>
+                                    <outlet property="delegate" destination="nBC-Zq-2jE" id="tAV-Ed-O6U"/>
+                                </connections>
+                            </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ewk-KV-dOD">
+                                <rect key="frame" x="0.0" y="507" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" id="4eI-rR-BfZ">
+                                        <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="diM-in-DHS">
+                                            <rect key="frame" x="20" y="7" width="278" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </barButtonItem>
+                                    <barButtonItem title="Send" id="FtN-uc-MvX"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="FA3-AU-yTb"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Gnq-1d-QOI" secondAttribute="trailing" id="KPm-YE-xKa"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="bottom" secondItem="ewk-KV-dOD" secondAttribute="top" id="O7W-ZQ-amu"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leading" id="P3L-PW-Gfb"/>
+                            <constraint firstItem="dlm-en-KR7" firstAttribute="top" secondItem="ewk-KV-dOD" secondAttribute="bottom" id="VEh-5B-ac1"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ewk-KV-dOD" secondAttribute="trailing" constant="-20" id="gBb-s9-RYC"/>
+                            <constraint firstItem="ewk-KV-dOD" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leadingMargin" constant="-20" id="mGA-wb-yTq"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="top" secondItem="X1a-mJ-Bwz" secondAttribute="topMargin" id="yXs-4C-hI5"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="dRF-D6-eNj" appends="YES" id="wxT-Ep-ZZQ"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="ktS-gQ-9LD">
                         <barButtonItem key="rightBarButtonItem" title="Details" id="FPQ-fb-3tr">
@@ -210,10 +266,17 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="chatTableView" destination="Gnq-1d-QOI" id="GAO-lP-UUD"/>
+                        <outlet property="chatToolbar" destination="ewk-KV-dOD" id="ptS-6P-Tfp"/>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
+                        <outlet property="hideKeyboardGesture" destination="dRF-D6-eNj" id="8ac-ln-a44"/>
+                        <outlet property="textFieldBarButtonItem" destination="4eI-rR-BfZ" id="aFr-Tt-Tos"/>
+                        <outlet property="toolbarBottomConstraint" destination="VEh-5B-ac1" id="mCb-Wc-HCH"/>
+                        <outlet property="view" destination="X1a-mJ-Bwz" id="vzP-zQ-igO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="dRF-D6-eNj"/>
             </objects>
             <point key="canvasLocation" x="5591" y="-612"/>
         </scene>
@@ -741,9 +804,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eTR-Rc-7JK"/>
-        <segue reference="US8-Fg-o83"/>
-        <segue reference="uD0-O0-1tF"/>
         <segue reference="S8b-uI-wvn"/>
+        <segue reference="eTR-Rc-7JK"/>
+        <segue reference="uD0-O0-1tF"/>
+        <segue reference="3s2-qW-3mn"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -19,6 +19,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     var hiddenButtons = [Bool]()
     override func viewDidLoad() {
         loadSamples();
+        self.tabBarController?.tabBar.hidden = false
         // grab any requests from server
         //navigationItem.leftBarButtonItem = editButtonItem()
         //check to see if accept and decline need to be there
@@ -133,7 +134,10 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     
     }
-    
+    // i am sure there is a better way to do this but idk right now 💩
+    override func viewDidAppear(animated: Bool) {
+        self.tabBarController!.tabBar.hidden = false
+    }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = converstationTable.cellForRowAtIndexPath(indexPath)
         if(hiddenButtons[indexPath.row]){
