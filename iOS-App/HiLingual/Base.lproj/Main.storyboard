@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10115" systemVersion="15E64a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -200,25 +200,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="507"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="CVV-FJ-KMT">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="xPx-jD-MEk" customClass="ChatTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CVV-FJ-KMT" id="lv8-hY-eJm">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPx-jD-MEk" id="WZt-bm-o9v">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Test Message" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IoZ-9v-GCA">
+                                                    <rect key="frame" x="481" y="8" width="111" height="27.5"/>
+                                                    <color key="backgroundColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="0.45223599137931036" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="IoZ-9v-GCA" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" id="2Zs-eg-qgC"/>
+                                                <constraint firstItem="IoZ-9v-GCA" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="2lz-Qr-tJI"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="IoZ-9v-GCA" secondAttribute="bottom" id="Zps-3p-1le"/>
+                                            </constraints>
                                         </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="b8X-fX-aB8">
-                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b8X-fX-aB8" id="xxQ-eE-ebd">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="chatBubble" destination="IoZ-9v-GCA" id="aeg-d3-IfG"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -229,14 +237,16 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ewk-KV-dOD">
                                 <rect key="frame" x="0.0" y="507" width="600" height="44"/>
                                 <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="t70-EF-Vl2"/>
                                     <barButtonItem style="plain" id="4eI-rR-BfZ">
                                         <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="diM-in-DHS">
-                                            <rect key="frame" x="20" y="7" width="278" height="30"/>
+                                            <rect key="frame" x="98" y="7" width="278" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="8pi-ot-LQN"/>
                                     <barButtonItem title="Send" id="FtN-uc-MvX"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="FA3-AU-yTb"/>
                                 </items>
@@ -245,17 +255,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Gnq-1d-QOI" secondAttribute="trailing" id="KPm-YE-xKa"/>
-                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="bottom" secondItem="ewk-KV-dOD" secondAttribute="top" id="O7W-ZQ-amu"/>
-                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leading" id="P3L-PW-Gfb"/>
-                            <constraint firstItem="dlm-en-KR7" firstAttribute="top" secondItem="ewk-KV-dOD" secondAttribute="bottom" id="VEh-5B-ac1"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ewk-KV-dOD" secondAttribute="trailing" constant="-20" id="gBb-s9-RYC"/>
-                            <constraint firstItem="ewk-KV-dOD" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leadingMargin" constant="-20" id="mGA-wb-yTq"/>
-                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="top" secondItem="X1a-mJ-Bwz" secondAttribute="topMargin" id="yXs-4C-hI5"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="bottom" secondItem="ewk-KV-dOD" secondAttribute="top" id="1SY-8a-tz2"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="top" secondItem="X1a-mJ-Bwz" secondAttribute="top" id="ECL-5V-keN"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="trailing" secondItem="ewk-KV-dOD" secondAttribute="trailing" id="FEh-4S-ee1"/>
+                            <constraint firstItem="dlm-en-KR7" firstAttribute="top" secondItem="ewk-KV-dOD" secondAttribute="bottom" id="Qvb-ME-ZI2"/>
+                            <constraint firstItem="Gnq-1d-QOI" firstAttribute="leading" secondItem="ewk-KV-dOD" secondAttribute="leading" id="ZVC-FI-t8k"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ewk-KV-dOD" secondAttribute="trailing" constant="-20" id="fE8-pJ-y7Z"/>
+                            <constraint firstItem="ewk-KV-dOD" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leadingMargin" constant="-20" id="fPt-sI-k96"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="dRF-D6-eNj" appends="YES" id="wxT-Ep-ZZQ"/>
-                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="ktS-gQ-9LD">
                         <barButtonItem key="rightBarButtonItem" title="Details" id="FPQ-fb-3tr">
@@ -267,16 +274,16 @@
                     </navigationItem>
                     <connections>
                         <outlet property="chatTableView" destination="Gnq-1d-QOI" id="GAO-lP-UUD"/>
+                        <outlet property="chatTableViewConstraint" destination="1SY-8a-tz2" id="LJh-B6-crT"/>
                         <outlet property="chatToolbar" destination="ewk-KV-dOD" id="ptS-6P-Tfp"/>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
-                        <outlet property="hideKeyboardGesture" destination="dRF-D6-eNj" id="8ac-ln-a44"/>
+                        <outlet property="sendTextField" destination="diM-in-DHS" id="uBc-dQ-WU5"/>
                         <outlet property="textFieldBarButtonItem" destination="4eI-rR-BfZ" id="aFr-Tt-Tos"/>
-                        <outlet property="toolbarBottomConstraint" destination="VEh-5B-ac1" id="mCb-Wc-HCH"/>
+                        <outlet property="toolbarBottomConstraint" destination="Qvb-ME-ZI2" id="7b4-Hv-wlF"/>
                         <outlet property="view" destination="X1a-mJ-Bwz" id="vzP-zQ-igO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="dRF-D6-eNj"/>
             </objects>
             <point key="canvasLocation" x="5591" y="-612"/>
         </scene>
@@ -607,7 +614,7 @@
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
                                                                     <rect key="frame" x="0.0" y="51" width="70" height="26"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -804,9 +811,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="S8b-uI-wvn"/>
         <segue reference="eTR-Rc-7JK"/>
         <segue reference="uD0-O0-1tF"/>
         <segue reference="3s2-qW-3mn"/>
+        <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>
