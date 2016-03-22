@@ -10,14 +10,8 @@
 package com.example.hilingual.server;
 
 import com.example.hilingual.server.config.ServerConfig;
-import com.example.hilingual.server.dao.FacebookIntegrationDAO;
-import com.example.hilingual.server.dao.GoogleIntegrationDAO;
-import com.example.hilingual.server.dao.SessionDAO;
-import com.example.hilingual.server.dao.UserDAO;
-import com.example.hilingual.server.dao.impl.FacebookIntegrationDAOImpl;
-import com.example.hilingual.server.dao.impl.GoogleIntegrationDAOImpl;
-import com.example.hilingual.server.dao.impl.SessionDAOImpl;
-import com.example.hilingual.server.dao.impl.UserDAOImpl;
+import com.example.hilingual.server.dao.*;
+import com.example.hilingual.server.dao.impl.*;
 import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.FacebookGraphAPIService;
 import com.example.hilingual.server.service.GoogleAccountAPIService;
@@ -69,6 +63,9 @@ public class ServerModule extends AbstractModule {
                 in(Scopes.SINGLETON);
         bind(GoogleIntegrationDAO.class).
                 to(GoogleIntegrationDAOImpl.class).
+                in(Scopes.SINGLETON);
+        bind(DeviceTokenDAO.class).
+                to(DeviceTokenDAOImpl.class).
                 in(Scopes.SINGLETON);
 
         //  Services
