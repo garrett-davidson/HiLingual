@@ -12,7 +12,7 @@ public interface DeviceTokenDAO extends Managed {
 
     void revokeUserDeviceToken(long userId, String token);
 
-    void revokeAllUserDeviceTokens(long userId);
+    int revokeAllUserDeviceTokens(long userId);
 
     void truncate();
 
