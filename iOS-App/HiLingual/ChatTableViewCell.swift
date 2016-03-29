@@ -10,7 +10,7 @@ import UIKit
 
 class ChatTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var chatBubble: UITextField!
+    @IBOutlet weak var chatBubble: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
