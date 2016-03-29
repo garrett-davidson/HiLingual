@@ -17,6 +17,7 @@ import com.example.hilingual.server.dao.GoogleIntegrationDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.health.JedisHealthCheck;
+import com.example.hilingual.server.resources.AssetResource;
 import com.example.hilingual.server.resources.AuthResource;
 import com.example.hilingual.server.resources.UserResource;
 import com.example.hilingual.server.service.APNsService;
@@ -99,6 +100,7 @@ public class Main extends Application<ServerConfig> {
         JerseyEnvironment j = environment.jersey();
         j.register(create(AuthResource.class));
         j.register(create(UserResource.class));
+        j.register(create(AssetResource.class));
 
         //  Managed
         LOGGER.info("Creating managed objects");
