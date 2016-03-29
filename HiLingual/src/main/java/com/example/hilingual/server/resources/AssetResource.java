@@ -52,4 +52,25 @@ public class AssetResource {
                 resolve(assetId)).build();
     }
 
+    @GET
+    @Path("audio/{asset-id}")
+    public Response getAudio(@PathParam("asset-id") String assetId) throws URISyntaxException {
+        //  Redirect them to our "CDN"
+        return Response.temporaryRedirect(new URI(config.getAssetAccessBaseUrl()).
+                resolve("audio").
+                resolve(assetId)).build();
+    }
+
+    @POST
+    @Path("audio")
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    public Response uploadAudio(InputStream data) throws URISyntaxException, IOException {
+        String assetId = new BigInteger(130, random).toString(32);
+        java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
+        Files.copy(data, outPath, StandardCopyOption.REPLACE_EXISTING);
+        return Response.seeOther(new URI(config.getAssetAccessBaseUrl()).
+                resolve("audio").
+                resolve(assetId)).build();
+    }
+
 }
