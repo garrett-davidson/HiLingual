@@ -47,9 +47,9 @@ public class AssetResource {
         String assetId = new BigInteger(130, random).toString(32);
         java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "images", assetId);
         Files.copy(data, outPath, StandardCopyOption.REPLACE_EXISTING);
-        return Response.seeOther(new URI(config.getAssetAccessBaseUrl()).resolve(assetId)).build();
+        return Response.seeOther(new URI(config.getAssetAccessBaseUrl()).
+                resolve("images").
+                resolve(assetId)).build();
     }
-
-
 
 }
