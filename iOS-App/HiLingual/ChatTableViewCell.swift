@@ -11,7 +11,11 @@ import UIKit
 class ChatTableViewCell: UITableViewCell {
 
     @IBOutlet weak var chatBubble: UILabel!
+    @IBOutlet weak var leftConstraintMessage: NSLayoutConstraint!
+    @IBOutlet weak var rightConstraintMessage: NSLayoutConstraint!
     
+    @IBOutlet weak var rightConstraintMessageEqualOrLess: NSLayoutConstraint!
+    @IBOutlet weak var leftConstraintMessageequal: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
     }

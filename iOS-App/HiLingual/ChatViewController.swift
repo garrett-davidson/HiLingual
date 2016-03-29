@@ -14,6 +14,7 @@ import QuartzCore
 
 class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate{
     var user: HLUser!
+    var messageTest = [String]()
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
 
@@ -30,6 +31,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.title = user.name
         print(user.name)
         loadBorders()
+        loadMessages()
+        self.chatTableView.estimatedRowHeight = 40
+        self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
         self.chatTableViewConstraintInitialValue = chatTableViewConstraint.constant
@@ -116,20 +120,46 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        
+        
         let cellIdentity = "ChatTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
-        cell.chatBubble.text = "Test MessagesTest MessagesTest MessagesTest MessagesTest MessagesTest MessagesTest Messages"
+        let message = messageTest[indexPath.row]
+        
+        cell.chatBubble.text = message
         let color = UIColor.init(red: 0, green: 255, blue: 0, alpha: 0.5)
         
         cell.chatBubble.layer.backgroundColor = color.CGColor
         
         cell.chatBubble.layer.cornerRadius = 5
+        if indexPath.row % 2  == 0{ // change to userid
+            let color = UIColor.init(red: 0, green: 0, blue: 255, alpha: 0.5)
+            
+            cell.chatBubble.layer.backgroundColor = color.CGColor
+            
+            cell.removeConstraint(cell.leftConstraintMessageequal)
+            cell.removeConstraint(cell.rightConstraintMessageEqualOrLess)
+            cell.addConstraint(cell.rightConstraintMessage)
+            cell.addConstraint(cell.leftConstraintMessage)
+
+
+        }else{
+            cell.removeConstraint(cell.rightConstraintMessage)
+            cell.removeConstraint(cell.leftConstraintMessage)
+            cell.addConstraint(cell.leftConstraintMessageequal)
+            cell.addConstraint(cell.rightConstraintMessageEqualOrLess)
+
+        }
+ 
+        
         return cell
     }
     
+
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 30
+        return messageTest.count
     }
     func loadBorders() {
         sendUITextView.layer.borderWidth = 0.5
@@ -155,6 +185,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
         
 
+    }
+    func loadMessages(){
+        
+        messageTest += ["First Message", "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", " ","aadsfasdfasfafasfajfjidsijijjiafdsjisjifsdijsdfjifij", "asdfjfasjfiaijfijfijdfsjiafsijfasdi"]
     }
     
     

@@ -212,10 +212,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaC-ab-bmX">
-                                                    <rect key="frame" x="89" y="8" width="503" height="24"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="503" id="BoZ-fF-2cl"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="550" y="8" width="42" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -223,13 +220,25 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" id="0zU-rm-drI"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="81" id="Rzk-Al-dvm"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="Uny-62-uqj"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="BaC-ab-bmX" secondAttribute="bottom" constant="4" id="jSv-e8-jMA"/>
+                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="BEq-Wu-teg"/>
+                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-50" id="R9E-FC-GqF"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="BaC-ab-bmX" secondAttribute="bottom" id="RHe-76-zs7"/>
+                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="80" id="Rzk-Al-dvm"/>
+                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" id="x12-z9-CjD"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="R9E-FC-GqF"/>
+                                                    <exclude reference="x12-z9-CjD"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="chatBubble" destination="BaC-ab-bmX" id="L5d-3h-lpT"/>
+                                            <outlet property="leftConstraintMessage" destination="Rzk-Al-dvm" id="Acy-fF-drm"/>
+                                            <outlet property="leftConstraintMessageequal" destination="x12-z9-CjD" id="rvN-Bg-otN"/>
+                                            <outlet property="rightConstraintMessage" destination="0zU-rm-drI" id="MpD-gC-9pN"/>
+                                            <outlet property="rightConstraintMessageEqualOrLess" destination="R9E-FC-GqF" id="XFT-2B-jmy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -834,9 +843,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eTR-Rc-7JK"/>
-        <segue reference="uD0-O0-1tF"/>
         <segue reference="3s2-qW-3mn"/>
+        <segue reference="XeF-YT-wgH"/>
+        <segue reference="eTR-Rc-7JK"/>
         <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>
