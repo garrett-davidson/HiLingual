@@ -38,6 +38,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     @IBAction func sendMessage(sender: AnyObject) {
+        sendUITextView.scrollEnabled = false
         sendUITextView.text = ""
         //send message
         //add to table
@@ -67,9 +68,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func textViewDidChange(textView: UITextView) {
         
         //stop the view at top of screen somehow
- 
+        textView.reloadInputViews()
+        if textView.frame.height > 123 {
+            textView.scrollEnabled = true
+            //sendMessageView.frame.height = 140
+        }
+        //textView.sizeToFit()
+        //textView.layoutIfNeeded()
+        tableViewScrollToBottom(true)
  
     }
+    
     
     func keyboardWillShow(notification: NSNotification) {
         
@@ -131,11 +140,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableViewScrollToBottom(animated: Bool) {
         
-        let delay = 0.01 * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        //let delay = 0.01 * Double(NSEC_PER_SEC)
+        //let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
-        dispatch_after(time, dispatch_get_main_queue(), {
-        
+       // dispatch_after(time, dispatch_get_main_queue(), {
+        dispatch_async(dispatch_get_main_queue(), {
         let numberOfSections = self.chatTableView.numberOfSections
         let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
             

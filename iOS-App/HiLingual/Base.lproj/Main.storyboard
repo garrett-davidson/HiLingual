@@ -254,6 +254,9 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zTX-1h-jWh">
                                         <rect key="frame" x="8" y="8" width="530" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="wOT-p6-EMa"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <connections>
@@ -265,6 +268,7 @@
                                 <constraints>
                                     <constraint firstItem="zTX-1h-jWh" firstAttribute="leading" secondItem="jfL-rp-9j9" secondAttribute="leadingMargin" id="5Sq-Pq-FGo"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="zTX-1h-jWh" secondAttribute="bottom" id="8Qo-AU-nto"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="140" id="AQ4-WB-4jt"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="WyJ-Pn-tfP" secondAttribute="trailing" id="JgK-KH-8rJ"/>
                                     <constraint firstItem="zTX-1h-jWh" firstAttribute="top" secondItem="jfL-rp-9j9" secondAttribute="topMargin" id="Ocb-02-Ae0"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="WyJ-Pn-tfP" secondAttribute="bottom" id="ZmN-Ll-zf5"/>
