@@ -212,19 +212,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaC-ab-bmX">
-                                                    <rect key="frame" x="550" y="8" width="42" height="28"/>
+                                                    <rect key="frame" x="545" y="8" width="42" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" id="0zU-rm-drI"/>
+                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-5" id="0zU-rm-drI"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="BEq-Wu-teg"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-50" id="R9E-FC-GqF"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="BaC-ab-bmX" secondAttribute="bottom" id="RHe-76-zs7"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="80" id="Rzk-Al-dvm"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" id="x12-z9-CjD"/>
+                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="5" id="x12-z9-CjD"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -250,16 +250,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jfL-rp-9j9">
                                 <rect key="frame" x="0.0" y="501" width="600" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WyJ-Pn-tfP">
-                                        <rect key="frame" x="546" y="12" width="46" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="46" id="uA5-UG-pfb"/>
-                                        </constraints>
-                                        <state key="normal" title="Send"/>
-                                        <connections>
-                                            <action selector="sendMessage:" destination="nBC-Zq-2jE" eventType="touchUpInside" id="WVh-OL-ibe"/>
-                                        </connections>
-                                    </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zTX-1h-jWh">
                                         <rect key="frame" x="8" y="8" width="530" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -272,8 +262,20 @@
                                             <outlet property="delegate" destination="nBC-Zq-2jE" id="3zo-Sk-xCj"/>
                                         </connections>
                                     </textView>
+                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WyJ-Pn-tfP">
+                                        <rect key="frame" x="546" y="12" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="uA5-UG-pfb"/>
+                                        </constraints>
+                                        <color key="tintColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" title="Send"/>
+                                        <connections>
+                                            <action selector="sendMessage:" destination="nBC-Zq-2jE" eventType="touchUpInside" id="WVh-OL-ibe"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="zTX-1h-jWh" firstAttribute="leading" secondItem="jfL-rp-9j9" secondAttribute="leadingMargin" id="5Sq-Pq-FGo"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="zTX-1h-jWh" secondAttribute="bottom" id="8Qo-AU-nto"/>
@@ -309,6 +311,7 @@
                         <outlet property="chatTableView" destination="Gnq-1d-QOI" id="ssN-Zy-c3e"/>
                         <outlet property="chatTableViewConstraint" destination="3Q6-L4-svX" id="Zqq-SE-W0F"/>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
+                        <outlet property="sendButton" destination="WyJ-Pn-tfP" id="b6z-gL-6If"/>
                         <outlet property="sendMessageView" destination="jfL-rp-9j9" id="6qL-pB-qsZ"/>
                         <outlet property="sendUITextView" destination="zTX-1h-jWh" id="mCV-ha-J6T"/>
                         <outlet property="toolbarBottomConstraint" destination="mYe-gO-x09" id="paH-6b-o7I"/>

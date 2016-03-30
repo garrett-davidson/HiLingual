@@ -20,6 +20,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var sendUITextView: UITextView!
     
+    @IBOutlet weak var sendButton: UIButton!
     
     @IBOutlet weak var sendMessageView: UIView!
     
@@ -39,11 +40,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.chatTableViewConstraintInitialValue = chatTableViewConstraint.constant
         enableKeyboardHideOnTap()
         tableViewScrollToBottom(false)
+        
     }
     
     @IBAction func sendMessage(sender: AnyObject) {
         sendUITextView.scrollEnabled = false
+        messageTest += [sendUITextView.text]
         sendUITextView.text = ""
+        sendButton.userInteractionEnabled = false
+        sendButton.tintColor = UIColor.lightGrayColor()
+        chatTableView.reloadData()
+        tableViewScrollToBottom(false)
         //send message
         //add to table
         
@@ -73,12 +80,28 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         //stop the view at top of screen somehow
         textView.reloadInputViews()
+        if textView.text == "" {
+            textView.scrollEnabled = false
+            textView.sizeToFit()
+            textView.layoutIfNeeded()
+            sendButton.tintColor = UIColor.lightGrayColor()
+            sendButton.userInteractionEnabled = false
+        }else{
+            sendButton.tintColor = UIColor.blueColor()
+            sendButton.userInteractionEnabled = true
+        }
+        
         if textView.frame.height > 123 {
             textView.scrollEnabled = true
+
             //sendMessageView.frame.height = 140
+        }else{
+            textView.scrollEnabled = false
         }
-        //textView.sizeToFit()
-        //textView.layoutIfNeeded()
+        textView.reloadInputViews()
+        sendMessageView.reloadInputViews()
+        
+
         tableViewScrollToBottom(true)
  
     }
@@ -162,6 +185,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return messageTest.count
     }
     func loadBorders() {
+        let color = UIColor.init(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.7)
+
+        sendMessageView.backgroundColor = color
         sendUITextView.layer.borderWidth = 0.5
         sendUITextView.layer.cornerRadius = 5
         sendMessageView.layer.borderWidth = 0.5
@@ -188,7 +214,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     func loadMessages(){
         
-        messageTest += ["First Message", "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", " ","aadsfasdfasfafasfajfjidsijijjiafdsjisjifsdijsdfjifij", "asdfjfasjfiaijfijfijdfsjiafsijfasdi"]
+        messageTest += ["First Message", "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", " ","aadsfasdfasfafasfajfjidsijijjiafdsjisjifsdijsdfjifij", "asdfjfasjfiaijfijfijdfsjiafsijfasdi", "lets see", "more messages", "being weird" ]
     }
     
     
