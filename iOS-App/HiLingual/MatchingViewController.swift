@@ -163,7 +163,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             let sendMessageButton = UIButton(type: .System)
 
             sendMessageButton.setTitle("Send Message", forState: .Normal)
-            sendMessageButton.addTarget(self, action: "sendMessageButtonPressed:", forControlEvents: .TouchUpInside)
+            sendMessageButton.addTarget(self, action: #selector(MatchingViewController.sendMessageButtonPressed(_:)), forControlEvents: .TouchUpInside)
 
             profileViewCell.profileView.addSubview(sendMessageButton)
 
