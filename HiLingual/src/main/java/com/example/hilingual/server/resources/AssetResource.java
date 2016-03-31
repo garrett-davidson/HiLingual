@@ -61,6 +61,7 @@ public class AssetResource {
         String assetId = new BigInteger(130, random).toString(32);
         java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(),
                 "images", Long.toString(userId), assetId + ".png");
+        Files.createDirectories(outPath.getParent());
         Files.copy(data, outPath, StandardCopyOption.REPLACE_EXISTING);
         return Response.seeOther(getImageUrl(userId, assetId)).build();
     }
@@ -105,6 +106,7 @@ public class AssetResource {
         }
         String assetId = new BigInteger(130, random).toString(32);
         java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
+        Files.createDirectories(outPath.getParent());
         Files.copy(data, outPath, StandardCopyOption.REPLACE_EXISTING);
         return Response.seeOther(getAudioUrl(userId, assetId)).build();
     }
