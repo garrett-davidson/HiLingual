@@ -35,6 +35,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         enableKeyboardHideOnTap()
         tableViewScrollToBottom(false)
         
+        
+        //Code for bringing up audio scren
+       // let controller = AudioRecorderViewController()
+       // controller.audioRecorderDelegate = self
+        //presentViewController(controller, animated: true, completion: nil)
+        
     }
     
     @IBAction func details(sender: AnyObject) {

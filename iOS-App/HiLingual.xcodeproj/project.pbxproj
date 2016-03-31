@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4BC89A0812899C2EA9094DAD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B4BB672C9B413EC256F1DA /* libPods.a */; };
+		4CEEACF41CADD07A00A16DC6 /* AudioRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEEACF01CADD07A00A16DC6 /* AudioRecorderViewController.swift */; };
+		4CEEACF51CADD07A00A16DC6 /* AudioRecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CEEACF11CADD07A00A16DC6 /* AudioRecorderViewController.xib */; };
+		4CEEACF61CADD07A00A16DC6 /* PlayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CEEACF21CADD07A00A16DC6 /* PlayButton@2x.png */; };
+		4CEEACF71CADD07A00A16DC6 /* StopButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CEEACF31CADD07A00A16DC6 /* StopButton@2x.png */; };
 		680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F243F1C70194B009F4EE8 /* HLMessage.swift */; };
 		680F24421C701A45009F4EE8 /* HLUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24411C701A45009F4EE8 /* HLUser.swift */; };
 		680F24441C701A9B009F4EE8 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24431C701A9B009F4EE8 /* Languages.swift */; };
@@ -60,6 +64,10 @@
 
 /* Begin PBXFileReference section */
 		44B4BB672C9B413EC256F1DA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CEEACF01CADD07A00A16DC6 /* AudioRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderViewController.swift; sourceTree = "<group>"; };
+		4CEEACF11CADD07A00A16DC6 /* AudioRecorderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioRecorderViewController.xib; sourceTree = "<group>"; };
+		4CEEACF21CADD07A00A16DC6 /* PlayButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlayButton@2x.png"; sourceTree = "<group>"; };
+		4CEEACF31CADD07A00A16DC6 /* StopButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StopButton@2x.png"; sourceTree = "<group>"; };
 		680F243F1C70194B009F4EE8 /* HLMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLMessage.swift; sourceTree = "<group>"; };
 		680F24411C701A45009F4EE8 /* HLUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLUser.swift; sourceTree = "<group>"; };
 		680F24431C701A9B009F4EE8 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
@@ -157,6 +165,10 @@
 				687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */,
 				6876D9961C5A87A90097332A /* AppDelegate.swift */,
 				6876D99D1C5A87A90097332A /* Assets.xcassets */,
+				4CEEACF01CADD07A00A16DC6 /* AudioRecorderViewController.swift */,
+				4CEEACF11CADD07A00A16DC6 /* AudioRecorderViewController.xib */,
+				4CEEACF21CADD07A00A16DC6 /* PlayButton@2x.png */,
+				4CEEACF31CADD07A00A16DC6 /* StopButton@2x.png */,
 				680F24531C716997009F4EE8 /* ChatViewController.swift */,
 				72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */,
 				720F00291C76996200DA197E /* ConversationTableViewCell.swift */,
@@ -341,8 +353,11 @@
 				682D14831C765FDE00443B7D /* ProfileView.xib in Resources */,
 				6876D99E1C5A87A90097332A /* Assets.xcassets in Resources */,
 				6876D99C1C5A87A90097332A /* Main.storyboard in Resources */,
+				4CEEACF61CADD07A00A16DC6 /* PlayButton@2x.png in Resources */,
 				68E893D61C87686E00E7AA46 /* GoogleService-Info.plist in Resources */,
 				7220839B1CACB94000609446 /* AccessoryView.xib in Resources */,
+				4CEEACF71CADD07A00A16DC6 /* StopButton@2x.png in Resources */,
+				4CEEACF51CADD07A00A16DC6 /* AudioRecorderViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +445,7 @@
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
 				685A39DD1C99DF56002AE089 /* MessageTableViewCell.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
+				4CEEACF41CADD07A00A16DC6 /* AudioRecorderViewController.swift in Sources */,
 				7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
