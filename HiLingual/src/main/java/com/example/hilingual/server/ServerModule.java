@@ -67,6 +67,9 @@ public class ServerModule extends AbstractModule {
         bind(DeviceTokenDAO.class).
                 to(DeviceTokenDAOImpl.class).
                 in(Scopes.SINGLETON);
+        bind(ChatMessageDAO.class).
+                to(ChatMessageDAOImpl.class).
+                in(Scopes.SINGLETON);
 
         //  Services
         bind(FacebookGraphAPIService.class).
