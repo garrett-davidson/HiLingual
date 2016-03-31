@@ -10,6 +10,16 @@
 # Database connections, application tuning, etc
 ###############################################################################
 
+# General settings
+
+# Location of where assets will actually be served from
+# CHANGEME
+assetAccessBaseUrl: http://localhost:8080/assets
+
+# File path to where assets will be written to (local filesystem)
+# CHANGEME
+assetAccessPath: /var/www/assets
+
 # Facebook settings
 facebook:
   # The app ID from Facebook
