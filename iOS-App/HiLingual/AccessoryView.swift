@@ -36,8 +36,9 @@ class AccessoryView: UIView, UITextViewDelegate {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
-        let color = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.7)
+        let color = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7)
         view.backgroundColor = color
+        view.layer.borderWidth = 0.4
         textView.layer.borderWidth = 0.5
         textView.layer.cornerRadius = 5
     }

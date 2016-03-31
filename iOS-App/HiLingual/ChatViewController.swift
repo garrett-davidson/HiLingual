@@ -19,48 +19,24 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var chatTableView: UITableView!
 
     @IBOutlet weak var testView: UIView!
-    @IBOutlet weak var sendUITextView: UITextView!
-    
-    @IBOutlet weak var sendButton: UIButton!
-    
-    @IBOutlet weak var sendMessageView: UIView!
     
     @IBOutlet var chatTableViewConstraint: NSLayoutConstraint!
-    @IBOutlet var toolbarBottomConstraint: NSLayoutConstraint!
-    var toolbarBottomConstraintInitialValue: CGFloat?
     var chatTableViewConstraintInitialValue: CGFloat?
     
 
     override func viewDidLoad() {
-
-        
-
         self.title = user.name
         print(user.name)
-        loadBorders()
         loadMessages()
         self.chatTableView.estimatedRowHeight = 40
         self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
-        self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
         self.chatTableViewConstraintInitialValue = chatTableViewConstraint.constant
         enableKeyboardHideOnTap()
         tableViewScrollToBottom(false)
         
     }
     
-    @IBAction func sendMessage(sender: AnyObject) {
-        sendUITextView.scrollEnabled = false
-        messageTest += [sendUITextView.text]
-        sendUITextView.text = ""
-        sendButton.userInteractionEnabled = false
-        sendButton.tintColor = UIColor.lightGrayColor()
-        chatTableView.reloadData()
-        tableViewScrollToBottom(false)
-        //send message
-        //add to table
-        
-    }
     @IBAction func details(sender: AnyObject) {
         //load user profile
         
@@ -92,35 +68,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func textViewDidChange(textView: UITextView) {
-        
-        //stop the view at top of screen somehow
-        textView.reloadInputViews()
-        if textView.text == "" {
-            textView.scrollEnabled = false
-            textView.sizeToFit()
-            textView.layoutIfNeeded()
-            sendButton.tintColor = UIColor.lightGrayColor()
-            sendButton.userInteractionEnabled = false
-        }else{
-            sendButton.tintColor = UIColor.blueColor()
-            sendButton.userInteractionEnabled = true
-        }
-        
-        if textView.frame.height > 123 {
-            textView.scrollEnabled = true
-
-            //sendMessageView.frame.height = 140
-        }else{
-            textView.scrollEnabled = false
-            
-        }
-        textView.reloadInputViews()
-        sendMessageView.reloadInputViews()
-        let numLines = textView.contentSize.height / textView.font!.lineHeight;
-        if numLines < 6 {
-            textView.scrollEnabled = false
-        }
-        textView.reloadInputViews()
 
         tableViewScrollToBottom(true)
  
@@ -138,13 +85,14 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
 
         UIView.animateWithDuration(duration) { () -> Void in
-            
-            self.toolbarBottomConstraint.constant = keyboardFrame.size.height
-            self.chatTableViewConstraint.constant = -50
-            self.view.layoutIfNeeded()
+            var contentOffset = self.chatTableView.contentOffset
+            contentOffset.y = keyboardFrame.height
+            self.chatTableView.contentOffset = contentOffset
+            //self.chatTableViewConstraint.constant = -50
+            //self.view.layoutIfNeeded()
             
         }
-        tableViewScrollToBottom(true)
+        //tableViewScrollToBottom(true)
         
     }
     
@@ -154,7 +102,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         UIView.animateWithDuration(duration) { () -> Void in
             
-            self.toolbarBottomConstraint.constant = self.toolbarBottomConstraintInitialValue!
             self.chatTableViewConstraint.constant = self.chatTableViewConstraintInitialValue!
             self.view.layoutIfNeeded()
             
@@ -204,15 +151,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         return messageTest.count
     }
-    func loadBorders() {
-        let color = UIColor.init(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.7)
-
-        sendMessageView.backgroundColor = color
-        sendUITextView.layer.borderWidth = 0.5
-        sendUITextView.layer.cornerRadius = 5
-        sendMessageView.layer.borderWidth = 0.5
-        chatTableViewConstraint.constant = chatTableViewConstraint.constant - 50
-    }
     
     func tableViewScrollToBottom(animated: Bool) {
         
@@ -223,7 +161,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         dispatch_async(dispatch_get_main_queue(), {
         let numberOfSections = self.chatTableView.numberOfSections
         let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
-            
+        
         if numberOfRows > 0 {
             let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
             self.chatTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
