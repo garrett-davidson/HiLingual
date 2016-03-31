@@ -200,7 +200,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="501"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -221,14 +221,14 @@
                                             <constraints>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-5" id="0zU-rm-drI"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="BEq-Wu-teg"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-50" id="R9E-FC-GqF"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="BaC-ab-bmX" secondAttribute="bottom" id="RHe-76-zs7"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="80" id="Rzk-Al-dvm"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BaC-ab-bmX" secondAttribute="trailing" constant="50" id="rYa-zQ-es0"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="5" id="x12-z9-CjD"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="R9E-FC-GqF"/>
+                                                    <exclude reference="rYa-zQ-es0"/>
                                                     <exclude reference="x12-z9-CjD"/>
                                                 </mask>
                                             </variation>
@@ -238,7 +238,7 @@
                                             <outlet property="leftConstraintMessage" destination="Rzk-Al-dvm" id="Acy-fF-drm"/>
                                             <outlet property="leftConstraintMessageequal" destination="x12-z9-CjD" id="rvN-Bg-otN"/>
                                             <outlet property="rightConstraintMessage" destination="0zU-rm-drI" id="MpD-gC-9pN"/>
-                                            <outlet property="rightConstraintMessageEqualOrLess" destination="R9E-FC-GqF" id="XFT-2B-jmy"/>
+                                            <outlet property="rightConstraintMessageEqualOrLess" destination="rYa-zQ-es0" id="rrm-gM-zMs"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

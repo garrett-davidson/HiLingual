@@ -32,6 +32,8 @@
 		68E893D61C87686E00E7AA46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */; };
 		720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720F00291C76996200DA197E /* ConversationTableViewCell.swift */; };
 		720F002C1C7E3F3300DA197E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720F002B1C7E3F3300DA197E /* DetailViewController.swift */; };
+		7220839B1CACB94000609446 /* AccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7220839A1CACB93F00609446 /* AccessoryView.xib */; };
+		7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7220839C1CACBC0700609446 /* AccessoryView.swift */; };
 		7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */; };
 		72DAA67D1C9BA1F70093B51C /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */; };
 		72F621551C7F95D200A8A489 /* EditProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72F621541C7F95D200A8A489 /* EditProfileView.xib */; };
@@ -89,6 +91,8 @@
 		68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		720F00291C76996200DA197E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		720F002B1C7E3F3300DA197E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		7220839A1CACB93F00609446 /* AccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccessoryView.xib; sourceTree = "<group>"; };
+		7220839C1CACBC0700609446 /* AccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryView.swift; sourceTree = "<group>"; };
 		7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		72F621541C7F95D200A8A489 /* EditProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfileView.xib; sourceTree = "<group>"; };
@@ -174,6 +178,8 @@
 				680F24511C716926009F4EE8 /* MatchingViewController.swift */,
 				680F244D1C716875009F4EE8 /* MessagesViewController.swift */,
 				682D14841C76620600443B7D /* ProfileView.swift */,
+				7220839A1CACB93F00609446 /* AccessoryView.xib */,
+				7220839C1CACBC0700609446 /* AccessoryView.swift */,
 				682D14821C765FDE00443B7D /* ProfileView.xib */,
 				680F244F1C7168D6009F4EE8 /* ProfileViewController.swift */,
 				7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */,
@@ -336,6 +342,7 @@
 				6876D99E1C5A87A90097332A /* Assets.xcassets in Resources */,
 				6876D99C1C5A87A90097332A /* Main.storyboard in Resources */,
 				68E893D61C87686E00E7AA46 /* GoogleService-Info.plist in Resources */,
+				7220839B1CACB94000609446 /* AccessoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +430,7 @@
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
 				685A39DD1C99DF56002AE089 /* MessageTableViewCell.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
+				7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
 				720F002C1C7E3F3300DA197E /* DetailViewController.swift in Sources */,

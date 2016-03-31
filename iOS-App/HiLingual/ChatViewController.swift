@@ -28,7 +28,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var toolbarBottomConstraint: NSLayoutConstraint!
     var toolbarBottomConstraintInitialValue: CGFloat?
     var chatTableViewConstraintInitialValue: CGFloat?
+    
+
     override func viewDidLoad() {
+
+        
+
         self.title = user.name
         print(user.name)
         loadBorders()
@@ -69,6 +74,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
 
     }
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    override var inputAccessoryView: UIView? {
+        let adf = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        let aet = AccessoryView.init(decoder: nil, frame: CGRect(x: 0, y: 0, width: adf.frame.width, height: adf.frame.height))
+        adf.addSubview(aet)
+        return adf
+    }
     private func enableKeyboardHideOnTap(){
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
@@ -97,10 +111,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //sendMessageView.frame.height = 140
         }else{
             textView.scrollEnabled = false
+            
         }
         textView.reloadInputViews()
         sendMessageView.reloadInputViews()
-        
+        let numLines = textView.contentSize.height / textView.font!.lineHeight;
+        if numLines < 6 {
+            textView.scrollEnabled = false
+        }
+        textView.reloadInputViews()
 
         tableViewScrollToBottom(true)
  
@@ -150,13 +169,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message = messageTest[indexPath.row]
         
         cell.chatBubble.text = message
-        let color = UIColor.init(red: 0, green: 255, blue: 0, alpha: 0.5)
+        let color = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.5)
         
         cell.chatBubble.layer.backgroundColor = color.CGColor
         
         cell.chatBubble.layer.cornerRadius = 5
         if indexPath.row % 2  == 0{ // change to userid
-            let color = UIColor.init(red: 0, green: 0, blue: 255, alpha: 0.5)
+            let color = UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.5)
             
             cell.chatBubble.layer.backgroundColor = color.CGColor
             
