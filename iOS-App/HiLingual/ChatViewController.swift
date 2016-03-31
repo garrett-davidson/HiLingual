@@ -18,6 +18,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
 
+    @IBOutlet weak var testView: UIView!
     @IBOutlet weak var sendUITextView: UITextView!
     
     @IBOutlet weak var sendButton: UIButton!
@@ -78,10 +79,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return true
     }
     override var inputAccessoryView: UIView? {
-        let adf = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        let adf = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
         let aet = AccessoryView.init(decoder: nil, frame: CGRect(x: 0, y: 0, width: adf.frame.width, height: adf.frame.height))
         adf.addSubview(aet)
-        return adf
+        return testView
     }
     private func enableKeyboardHideOnTap(){
         
@@ -236,6 +237,4 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         messageTest += ["First Message", "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", " ","aadsfasdfasfafasfajfjidsijijjiafdsjisjifsdijsdfjifij", "asdfjfasjfiaijfijfijdfsjiafsijfasdi", "lets see", "more messages", "being weird" ]
     }
     
-    
-
 }

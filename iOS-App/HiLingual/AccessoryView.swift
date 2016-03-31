@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-class AccessoryView: UIView {
+class AccessoryView: UIView, UITextViewDelegate {
 
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -36,11 +36,44 @@ class AccessoryView: UIView {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
-        let color = UIColor.init(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.7)
+        let color = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.7)
         view.backgroundColor = color
         textView.layer.borderWidth = 0.5
         textView.layer.cornerRadius = 5
     }
+    
+    func textViewDidChange(textView: UITextView) {
+        
+        //stop the view at top of screen somehow
+        textView.reloadInputViews()
+        if textView.text == "" {
+            textView.scrollEnabled = false
+            textView.sizeToFit()
+            textView.layoutIfNeeded()
+            sendButton.tintColor = UIColor.lightGrayColor()
+            sendButton.userInteractionEnabled = false
+        }else{
+            sendButton.tintColor = UIColor.blueColor()
+            sendButton.userInteractionEnabled = true
+        }
+        textView.reloadInputViews()
+        let numLines = textView.contentSize.height / textView.font!.lineHeight;
+        if numLines > 5 {
+            textView.scrollEnabled = true
+        }else{
+            textView.scrollEnabled = false
+        }
+        textView.reloadInputViews()
+        
+        
+    }
+    
+    override func intrinsicContentSize() -> CGSize {
+        return CGSize(width: view.frame.width, height: textView.font!.lineHeight)
+        
+    }
+    
+    
     
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)

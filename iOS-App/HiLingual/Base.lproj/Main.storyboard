@@ -200,7 +200,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gnq-1d-QOI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="501"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -286,6 +286,9 @@
                                     <constraint firstItem="WyJ-Pn-tfP" firstAttribute="leading" secondItem="zTX-1h-jWh" secondAttribute="trailing" constant="8" symbolic="YES" id="uiG-vf-nWk"/>
                                 </constraints>
                             </view>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7n-91-J2A" customClass="AccessoryView" customModule="HiLingual" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -298,6 +301,11 @@
                             <constraint firstItem="Gnq-1d-QOI" firstAttribute="trailing" secondItem="jfL-rp-9j9" secondAttribute="trailing" id="p9S-ip-aAy"/>
                             <constraint firstItem="jfL-rp-9j9" firstAttribute="leading" secondItem="X1a-mJ-Bwz" secondAttribute="leadingMargin" constant="-20" id="qCC-n6-9aB"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="E7n-91-J2A"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="ktS-gQ-9LD">
                         <barButtonItem key="rightBarButtonItem" title="Details" id="FPQ-fb-3tr">
@@ -314,6 +322,7 @@
                         <outlet property="sendButton" destination="WyJ-Pn-tfP" id="b6z-gL-6If"/>
                         <outlet property="sendMessageView" destination="jfL-rp-9j9" id="6qL-pB-qsZ"/>
                         <outlet property="sendUITextView" destination="zTX-1h-jWh" id="mCV-ha-J6T"/>
+                        <outlet property="testView" destination="E7n-91-J2A" id="Xff-2g-AaA"/>
                         <outlet property="toolbarBottomConstraint" destination="mYe-gO-x09" id="paH-6b-o7I"/>
                         <outlet property="view" destination="X1a-mJ-Bwz" id="vzP-zQ-igO"/>
                     </connections>
