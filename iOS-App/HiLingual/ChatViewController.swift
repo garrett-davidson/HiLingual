@@ -76,7 +76,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func textViewDidChange(textView: UITextView) {
 
         tableViewScrollToBottom(true)
-        chatTableView.cont
  
     }
     
