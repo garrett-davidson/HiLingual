@@ -36,13 +36,25 @@ class AccessoryView: UIView, UITextViewDelegate {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
-        let color = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7)
-        view.backgroundColor = color
-        view.layer.borderWidth = 0.4
-        textView.layer.borderWidth = 0.5
-        textView.layer.cornerRadius = 5
+
+        loadTexetView()
     }
     
+    @IBAction func sendClicked(sender: AnyObject) {
+        
+        
+        
+    }
+    func textViewDidBeginEditing(textView: UITextView) {
+        textView.textColor = UIColor.blackColor()
+        textView.text = ""
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        if textView.text == "" {
+            textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
+            textView.text = "Message"
+        }
+    }
     func textViewDidChange(textView: UITextView) {
         
         //stop the view at top of screen somehow
@@ -74,6 +86,14 @@ class AccessoryView: UIView, UITextViewDelegate {
         
     }
     
+    func loadTexetView() {
+        view.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7)
+        view.layer.borderWidth = 0.4
+        textView.layer.borderWidth = 0.5
+        textView.layer.cornerRadius = 5
+        textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
+        textView.text = "Message"
+    }
     
     
     convenience required init?(coder aDecoder: NSCoder) {

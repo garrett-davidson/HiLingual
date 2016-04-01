@@ -10,28 +10,27 @@ import Foundation
 import UIKit
 import QuartzCore
 
-//Displays both the sent and received messages in a single chat
+//Displays both the sent and receivedvarssages in a single chat
 
 class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate{
     var user: HLUser!
     var messageTest = [String]()
+    var messages = [HLMessage]()
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
 
     @IBOutlet weak var testView: UIView!
     
-    @IBOutlet var chatTableViewConstraint: NSLayoutConstraint!
-    var chatTableViewConstraintInitialValue: CGFloat?
     
 
     override func viewDidLoad() {
         self.title = user.name
         print(user.name)
+        print(user.userId)
         loadMessages()
         self.chatTableView.estimatedRowHeight = 40
         self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
-        self.chatTableViewConstraintInitialValue = chatTableViewConstraint.constant
         enableKeyboardHideOnTap()
         tableViewScrollToBottom(false)
         
@@ -92,14 +91,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
 
         UIView.animateWithDuration(duration) { () -> Void in
-            var contentOffset = self.chatTableView.contentOffset
-            contentOffset.y = keyboardFrame.height
-            self.chatTableView.contentOffset = contentOffset
-            //self.chatTableViewConstraint.constant = -50
-            //self.view.layoutIfNeeded()
+            self.chatTableView.contentInset = UIEdgeInsetsMake((self.navigationController?.navigationBar.frame.height)! + 20, 0, keyboardFrame.height, 0)
+            self.view.layoutIfNeeded()
             
         }
-        //tableViewScrollToBottom(true)
+        
+        tableViewScrollToBottom(true)
         
     }
     
@@ -109,7 +106,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         UIView.animateWithDuration(duration) { () -> Void in
             
-            self.chatTableViewConstraint.constant = self.chatTableViewConstraintInitialValue!
+            self.chatTableView.contentInset = UIEdgeInsetsMake((self.navigationController?.navigationBar.frame.height)! + 20, 0, 0, 0);
             self.view.layoutIfNeeded()
             
         }
@@ -121,30 +118,25 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let cellIdentity = "ChatTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
-        let message = messageTest[indexPath.row]
+        let message = messages[indexPath.row].text
         
-        cell.chatBubble.text = message
-        let color = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.5)
-        
-        cell.chatBubble.layer.backgroundColor = color.CGColor
-        
-        cell.chatBubble.layer.cornerRadius = 5
-        if indexPath.row % 2  == 0{ // change to userid
-            let color = UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.5)
+
+        if messages[indexPath.row].senderID  ==  user.userId{ // change to userid
             
-            cell.chatBubble.layer.backgroundColor = color.CGColor
+            cell.chatBubbleRight.layer.backgroundColor = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+            cell.chatBubbleRight.text = message
+            cell.chatBubbleRight.hidden = false
             
-            cell.removeConstraint(cell.leftConstraintMessageequal)
-            cell.removeConstraint(cell.rightConstraintMessageEqualOrLess)
-            cell.addConstraint(cell.rightConstraintMessage)
-            cell.addConstraint(cell.leftConstraintMessage)
+            
+            
+            cell.chatBubbleRight.layer.cornerRadius = 5
 
 
         }else{
-            cell.removeConstraint(cell.rightConstraintMessage)
-            cell.removeConstraint(cell.leftConstraintMessage)
-            cell.addConstraint(cell.leftConstraintMessageequal)
-            cell.addConstraint(cell.rightConstraintMessageEqualOrLess)
+            cell.chatBubbleLeft.layer.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+            cell.chatBubbleLeft.text = message
+            cell.chatBubbleLeft.hidden = false
+            cell.chatBubbleLeft.layer.cornerRadius = 5
 
         }
  
@@ -156,15 +148,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return messageTest.count
+        return messages.count
     }
     
     func tableViewScrollToBottom(animated: Bool) {
-        
-        //let delay = 0.01 * Double(NSEC_PER_SEC)
-        //let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        
-       // dispatch_after(time, dispatch_get_main_queue(), {
+
         dispatch_async(dispatch_get_main_queue(), {
         let numberOfSections = self.chatTableView.numberOfSections
         let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
@@ -178,8 +166,14 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     }
     func loadMessages(){
+        let message1 = HLMessage(text: "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", senderID: 1, receiverID: 68)
+        let message2 = HLMessage(text: "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", senderID: 69, receiverID: 68)
+        let message3 = HLMessage(text: "HA Messages are working", senderID: 1, receiverID: 68)
+        let message4 = HLMessage(text: "lets see", senderID: 69, receiverID: 68)
+        let message5 = HLMessage(text: "HA Messages are working", senderID: 69, receiverID: 68)
         
-        messageTest += ["First Message", "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", " ","aadsfasdfasfafasfajfjidsijijjiafdsjisjifsdijsdfjifij", "asdfjfasjfiaijfijfijdfsjiafsijfasdi", "lets see", "more messages", "being weird" ]
+        messages = [message1,message2,message3, message4,message5]
+
     }
     
 }

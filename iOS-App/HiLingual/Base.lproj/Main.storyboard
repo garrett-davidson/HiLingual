@@ -211,33 +211,34 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaC-ab-bmX">
-                                                    <rect key="frame" x="545" y="8" width="42" height="28"/>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaC-ab-bmX">
+                                                    <rect key="frame" x="13" y="8" width="0.0" height="28"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlJ-BJ-mSC">
+                                                    <rect key="frame" x="587" y="8" width="0.0" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-5" id="0zU-rm-drI"/>
+                                                <constraint firstItem="LlJ-BJ-mSC" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="6mB-sh-r5P"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="BEq-Wu-teg"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="BaC-ab-bmX" secondAttribute="bottom" id="RHe-76-zs7"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="80" id="Rzk-Al-dvm"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BaC-ab-bmX" secondAttribute="trailing" constant="50" id="rYa-zQ-es0"/>
+                                                <constraint firstItem="LlJ-BJ-mSC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="80" id="Ufk-5q-LTA"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="LlJ-BJ-mSC" secondAttribute="bottom" id="WJf-Fd-O6C"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="LlJ-BJ-mSC" secondAttribute="trailing" constant="5" id="gzF-y9-lGx"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BaC-ab-bmX" secondAttribute="trailing" constant="80" id="rYa-zQ-es0"/>
                                                 <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="5" id="x12-z9-CjD"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="rYa-zQ-es0"/>
-                                                    <exclude reference="x12-z9-CjD"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="chatBubble" destination="BaC-ab-bmX" id="L5d-3h-lpT"/>
-                                            <outlet property="leftConstraintMessage" destination="Rzk-Al-dvm" id="Acy-fF-drm"/>
+                                            <outlet property="chatBubbleLeft" destination="BaC-ab-bmX" id="fNF-JE-sfe"/>
+                                            <outlet property="chatBubbleRight" destination="LlJ-BJ-mSC" id="8ws-b0-0UD"/>
                                             <outlet property="leftConstraintMessageequal" destination="x12-z9-CjD" id="rvN-Bg-otN"/>
-                                            <outlet property="rightConstraintMessage" destination="0zU-rm-drI" id="MpD-gC-9pN"/>
                                             <outlet property="rightConstraintMessageEqualOrLess" destination="rYa-zQ-es0" id="rrm-gM-zMs"/>
                                         </connections>
                                     </tableViewCell>
@@ -275,7 +276,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="chatTableView" destination="Gnq-1d-QOI" id="ssN-Zy-c3e"/>
-                        <outlet property="chatTableViewConstraint" destination="Xxc-Ms-3fa" id="um6-GJ-xFc"/>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
                         <outlet property="testView" destination="E7n-91-J2A" id="Xff-2g-AaA"/>
                         <outlet property="view" destination="X1a-mJ-Bwz" id="vzP-zQ-igO"/>
