@@ -174,6 +174,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             // Delete the row from the data source
             conversations.removeAtIndex(indexPath.row)
             hiddenButtons.removeAtIndex(indexPath.row)
+            HLUser.getCurrentUser().usersChattedWith.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             converstationTable.reloadData()
         }

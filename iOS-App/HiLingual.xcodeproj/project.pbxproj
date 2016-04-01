@@ -162,6 +162,8 @@
 		6876D9951C5A87A90097332A /* HiLingual */ = {
 			isa = PBXGroup;
 			children = (
+				7220839A1CACB93F00609446 /* AccessoryView.xib */,
+				7220839C1CACBC0700609446 /* AccessoryView.swift */,
 				687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */,
 				6876D9961C5A87A90097332A /* AppDelegate.swift */,
 				6876D99D1C5A87A90097332A /* Assets.xcassets */,
@@ -190,8 +192,6 @@
 				680F24511C716926009F4EE8 /* MatchingViewController.swift */,
 				680F244D1C716875009F4EE8 /* MessagesViewController.swift */,
 				682D14841C76620600443B7D /* ProfileView.swift */,
-				7220839A1CACB93F00609446 /* AccessoryView.xib */,
-				7220839C1CACBC0700609446 /* AccessoryView.swift */,
 				682D14821C765FDE00443B7D /* ProfileView.xib */,
 				680F244F1C7168D6009F4EE8 /* ProfileViewController.swift */,
 				7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */,
