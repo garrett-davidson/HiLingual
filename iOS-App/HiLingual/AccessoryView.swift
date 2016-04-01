@@ -12,7 +12,9 @@ import QuartzCore
 class AccessoryView: UIView, UITextViewDelegate {
 
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet var micTap: UITapGestureRecognizer!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet var mic: UIImageView!
     @IBOutlet var view: UIView!
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -21,6 +23,16 @@ class AccessoryView: UIView, UITextViewDelegate {
         // Drawing code
     }
     */
+    func viewDidLoad() {
+        //super.viewDidLoad()
+        micTap.addTarget(self, action: #selector(AccessoryView.tappedView))
+        mic.addGestureRecognizer(micTap)
+    }
+    
+    func tappedView(){
+        print("image tapped")
+    }
+    
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
@@ -42,6 +54,8 @@ class AccessoryView: UIView, UITextViewDelegate {
         textView.layer.borderWidth = 0.5
         textView.layer.cornerRadius = 5
     }
+    
+   
     
     func textViewDidChange(textView: UITextView) {
         
