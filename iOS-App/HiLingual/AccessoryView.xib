@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccessoryView" customModule="HiLingual" customModuleProvider="target">
             <connections>
+                <outlet property="micButton" destination="3b4-LC-oRi" id="pBt-2b-kJR"/>
                 <outlet property="sendButton" destination="PVk-FS-d4h" id="wHW-Lc-sYP"/>
                 <outlet property="textView" destination="8et-XY-PLa" id="b4b-r7-Q3j"/>
                 <outlet property="view" destination="iN0-l3-epB" id="m8s-ie-plz"/>
@@ -27,7 +28,7 @@
                         <outlet property="delegate" destination="-1" id="9BE-sL-Luu"/>
                     </connections>
                 </textView>
-                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PVk-FS-d4h">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PVk-FS-d4h">
                     <rect key="frame" x="546" y="562" width="46" height="30"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="46" id="ldU-Vp-i2V"/>
@@ -38,32 +39,32 @@
                         <action selector="sendClicked:" destination="-1" eventType="touchUpInside" id="f77-5y-SUi"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Microphone-128" translatesAutoresizingMaskIntoConstraints="NO" id="ob7-Ny-C7q">
-                    <rect key="frame" x="5" y="556" width="38" height="38"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b4-LC-oRi">
+                    <rect key="frame" x="5" y="555" width="39" height="38"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="38" id="GCN-2Y-Daf"/>
-                        <constraint firstAttribute="width" constant="38" id="rF8-SY-1oe"/>
+                        <constraint firstAttribute="height" constant="38" id="DrO-em-1NQ"/>
+                        <constraint firstAttribute="width" constant="39" id="eBO-yc-weM"/>
                     </constraints>
-                </imageView>
+                    <state key="normal" title="Button" image="Microphone-128"/>
+                    <connections>
+                        <action selector="tapMicButton:" destination="-1" eventType="touchUpInside" id="bV9-Qu-rd7"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="2P6-h0-Zpj"/>
-                <constraint firstItem="ob7-Ny-C7q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Axp-SN-BKa"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="JSd-cK-Bg4"/>
-                <constraint firstItem="ob7-Ny-C7q" firstAttribute="top" secondItem="PVk-FS-d4h" secondAttribute="top" constant="-6" id="OKv-ma-4Mz"/>
+                <constraint firstItem="3b4-LC-oRi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-3" id="LAW-Hf-e9N"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="SD2-o4-gFl"/>
+                <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="3b4-LC-oRi" secondAttribute="trailing" constant="5" id="Saa-jD-hNB"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="agE-Bc-aTZ"/>
-                <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="ob7-Ny-C7q" secondAttribute="trailing" constant="40" id="cbg-BD-u3X"/>
-                <constraint firstItem="ob7-Ny-C7q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="gUR-AD-4w5"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="hsP-tC-V7b"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="leading" secondItem="8et-XY-PLa" secondAttribute="trailing" id="o1f-vL-YEM"/>
-                <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="ob7-Ny-C7q" secondAttribute="trailing" constant="6" id="z6L-ab-MtH"/>
+                <constraint firstItem="3b4-LC-oRi" firstAttribute="bottom" secondItem="8et-XY-PLa" secondAttribute="bottom" constant="1" id="xcg-GF-1gl"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="agE-Bc-aTZ"/>
-                    <exclude reference="cbg-BD-u3X"/>
-                    <exclude reference="Axp-SN-BKa"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="203" y="343"/>

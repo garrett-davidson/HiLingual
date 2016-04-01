@@ -14,6 +14,7 @@ class AccessoryView: UIView, UITextViewDelegate {
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var view: UIView!
+    @IBOutlet var micButton: UIButton!
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -21,6 +22,7 @@ class AccessoryView: UIView, UITextViewDelegate {
         // Drawing code
     }
     */
+    
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
