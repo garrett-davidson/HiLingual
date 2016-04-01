@@ -12,10 +12,9 @@ import QuartzCore
 class AccessoryView: UIView, UITextViewDelegate {
 
     @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet var micTap: UITapGestureRecognizer!
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet var mic: UIImageView!
     @IBOutlet var view: UIView!
+    @IBOutlet var micButton: UIButton!
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -23,15 +22,6 @@ class AccessoryView: UIView, UITextViewDelegate {
         // Drawing code
     }
     */
-    func viewDidLoad() {
-        //super.viewDidLoad()
-        micTap.addTarget(self, action: #selector(AccessoryView.tappedView))
-        mic.addGestureRecognizer(micTap)
-    }
-    
-    func tappedView(){
-        print("image tapped")
-    }
     
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
@@ -56,6 +46,12 @@ class AccessoryView: UIView, UITextViewDelegate {
     }
     
    
+    @IBAction func tapMicButton(sender: UIButton) {
+        let controller = AudioRecorderViewController()
+        //controller.audioRecorderDelegate = self
+       // presentViewController(controller, animated: true, completion: nil)
+        print("tapped")
+    }
     
     func textViewDidChange(textView: UITextView) {
         
