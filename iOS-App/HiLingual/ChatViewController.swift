@@ -21,7 +21,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var testView: UIView!
     
-    
+    var selectedCell: ChatTableViewCell?
 
     override func viewDidLoad() {
         self.title = user.name
@@ -33,13 +33,39 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.tabBarController?.tabBar.hidden = true
         enableKeyboardHideOnTap()
         tableViewScrollToBottom(false)
-        
+
+        setupEditMenuButtons()
         
         //Code for bringing up audio scren
        // let controller = AudioRecorderViewController()
        // controller.audioRecorderDelegate = self
         //presentViewController(controller, animated: true, completion: nil)
         
+    }
+
+    func setupEditMenuButtons() {
+        let menuController = UIMenuController.sharedMenuController()
+
+        let editItem = UIMenuItem(title: "Edit", action: #selector(ChatViewController.testEdit))
+        menuController.menuItems = [editItem]
+    }
+
+    func testEdit() {
+        print("Edit")
+    }
+
+    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+        switch (action) {
+        case #selector(ChatViewController.testEdit):
+            if selectedCell != nil {
+                return canEditMessage()
+            }
+
+            return false
+
+        default:
+            return super.canPerformAction(action, withSender: sender)
+        }
     }
     
     @IBAction func details(sender: AnyObject) {
@@ -48,98 +74,93 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if segue.identifier == "detailsSegue"{
+        if segue.identifier == "detailsSegue" {
             let messageDetailViewController = segue.destinationViewController as! DetailViewController
             messageDetailViewController.user = user
             messageDetailViewController.hiddenName = true
-            
         }
-
     }
+
     override func canBecomeFirstResponder() -> Bool {
         return true
     }
+
+    func canEditMessage() -> Bool {
+        return !(testView as! AccessoryView).textView.isFirstResponder()
+    }
+
     override var inputAccessoryView: UIView? {
-        let adf = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
-        let aet = AccessoryView.init(decoder: nil, frame: CGRect(x: 0, y: 0, width: adf.frame.width, height: adf.frame.height))
-        adf.addSubview(aet)
         return testView
     }
+
     private func enableKeyboardHideOnTap(){
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        
     }
     
     func textViewDidChange(textView: UITextView) {
-
         tableViewScrollToBottom(true)
- 
     }
     
-    
-    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let menuController = UIMenuController.sharedMenuController()
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatTableViewCell {
+            selectedCell = cell
+            let rect = tableView.convertRect(cell.frame, toView: self.view)
+            menuController.setTargetRect(rect, inView: self.view)
+            menuController.setMenuVisible(true, animated: true)
+        }
+    }
+
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if touches.count == 1 {
+            let touch = touches.first!
+            if touch.locationInView(self.view).y > testView.frame.origin.y {
+                selectedCell = nil
+            }
+        }
+    }
+
     func keyboardWillShow(notification: NSNotification) {
-        
         let info = notification.userInfo!
-        
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
-        
 
         UIView.animateWithDuration(duration) { () -> Void in
             self.chatTableView.contentInset = UIEdgeInsetsMake((self.navigationController?.navigationBar.frame.height)! + 20, 0, keyboardFrame.height, 0)
             self.view.layoutIfNeeded()
-            
         }
         
         tableViewScrollToBottom(true)
-        
+        selectedCell = nil
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
         UIView.animateWithDuration(duration) { () -> Void in
-            
             self.chatTableView.contentInset = UIEdgeInsetsMake((self.navigationController?.navigationBar.frame.height)! + 20, 0, 0, 0);
             self.view.layoutIfNeeded()
-            
         }
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        
-        
         let cellIdentity = "ChatTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
         let message = messages[indexPath.row].text
-        
 
         if messages[indexPath.row].senderID  ==  user.userId{ // change to userid
-            
             cell.chatBubbleRight.layer.backgroundColor = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
             cell.chatBubbleRight.text = message
             cell.chatBubbleRight.hidden = false
-            
-            
-            
             cell.chatBubbleRight.layer.cornerRadius = 5
-
-
-        }else{
+        }
+        else {
             cell.chatBubbleLeft.layer.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
             cell.chatBubbleLeft.text = message
             cell.chatBubbleLeft.hidden = false
             cell.chatBubbleLeft.layer.cornerRadius = 5
-
         }
- 
         
         return cell
     }
@@ -147,23 +168,20 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return messages.count
     }
     
     func tableViewScrollToBottom(animated: Bool) {
 
         dispatch_async(dispatch_get_main_queue(), {
-        let numberOfSections = self.chatTableView.numberOfSections
-        let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
-        
-        if numberOfRows > 0 {
-            let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
-            self.chatTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
-        }
+            let numberOfSections = self.chatTableView.numberOfSections
+            let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
+            
+            if numberOfRows > 0 {
+                let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
+                self.chatTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
+            }
         })
-        
-
     }
     func loadMessages(){
         let message1 = HLMessage(text: "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", senderID: 1, receiverID: 68)
@@ -173,7 +191,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message5 = HLMessage(text: "HA Messages are working", senderID: 69, receiverID: 68)
         
         messages = [message1,message2,message3, message4,message5]
-
     }
     
 }
