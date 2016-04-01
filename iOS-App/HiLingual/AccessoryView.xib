@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8et-XY-PLa">
-                    <rect key="frame" x="49" y="8" width="497" height="584"/>
+                    <rect key="frame" x="41" y="8" width="505" height="584"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -40,10 +40,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b4-LC-oRi">
-                    <rect key="frame" x="5" y="555" width="39" height="38"/>
+                    <rect key="frame" x="8" y="564" width="25" height="25"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="38" id="DrO-em-1NQ"/>
-                        <constraint firstAttribute="width" constant="39" id="eBO-yc-weM"/>
+                        <constraint firstAttribute="height" constant="25" id="DrO-em-1NQ"/>
+                        <constraint firstAttribute="width" constant="25" id="eBO-yc-weM"/>
                     </constraints>
                     <state key="normal" title="Button" image="Microphone-128"/>
                     <connections>
@@ -53,14 +53,14 @@
             </subviews>
             <constraints>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="2P6-h0-Zpj"/>
+                <constraint firstItem="3b4-LC-oRi" firstAttribute="centerY" secondItem="PVk-FS-d4h" secondAttribute="centerY" id="9Ks-xH-l64"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="JSd-cK-Bg4"/>
-                <constraint firstItem="3b4-LC-oRi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-3" id="LAW-Hf-e9N"/>
+                <constraint firstItem="3b4-LC-oRi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="LAW-Hf-e9N"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="SD2-o4-gFl"/>
-                <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="3b4-LC-oRi" secondAttribute="trailing" constant="5" id="Saa-jD-hNB"/>
+                <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="3b4-LC-oRi" secondAttribute="trailing" constant="8" id="Saa-jD-hNB"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="agE-Bc-aTZ"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="hsP-tC-V7b"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="leading" secondItem="8et-XY-PLa" secondAttribute="trailing" id="o1f-vL-YEM"/>
-                <constraint firstItem="3b4-LC-oRi" firstAttribute="bottom" secondItem="8et-XY-PLa" secondAttribute="bottom" constant="1" id="xcg-GF-1gl"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">

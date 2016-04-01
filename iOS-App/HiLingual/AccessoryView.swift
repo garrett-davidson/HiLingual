@@ -42,6 +42,13 @@ class AccessoryView: UIView, UITextViewDelegate {
         loadTexetView()
     }
     
+   
+    @IBAction func tapMicButton(sender: UIButton) {
+        let controller = AudioRecorderViewController()
+        //controller.audioRecorderDelegate = self
+       // presentViewController(controller, animated: true, completion: nil)
+        print("tapped")
+    }
     @IBAction func sendClicked(sender: AnyObject) {
         
         
