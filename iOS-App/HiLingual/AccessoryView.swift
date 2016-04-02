@@ -8,13 +8,29 @@
 
 import UIKit
 import QuartzCore
+import AVFoundation
+
 
 class AccessoryView: UIView, UITextViewDelegate {
 
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var view: UIView!
+    @IBOutlet var recordingTimer: UILabel!
+    var origTime = 0.0
+    var curTime = 0.0
+    var isRecording = false;
+    var recordTimer: NSTimer!
+    
+    @IBOutlet var previewRecording: UIButton!
+    @IBOutlet var deleteRecording: UIButton!
     @IBOutlet var micButton: UIButton!
+    
+    
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -42,15 +58,78 @@ class AccessoryView: UIView, UITextViewDelegate {
         loadTexetView()
     }
     
-   
-    @IBAction func tapMicButton(sender: UIButton) {
-        let controller = AudioRecorderViewController()
-        //controller.audioRecorderDelegate = self
-       // presentViewController(controller, animated: true, completion: nil)
-        print("tapped")
-    }
-    @IBAction func sendClicked(sender: AnyObject) {
+    @IBAction func tapMicDown(sender: AnyObject) {
         
+        print("down");
+        
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try recordingSession.setActive(true)
+            recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
+                dispatch_async(dispatch_get_main_queue()) {
+                    return;
+                }
+                
+            }
+            
+            isRecording = true;
+            recordingTimer.hidden = false
+            previewRecording.hidden = true
+            deleteRecording.hidden = true
+            origTime =  CACurrentMediaTime();
+            textView.hidden = true
+            recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
+
+        } catch {
+            // failed to record!
+        }
+        
+        
+        
+    }
+    func updateLabel() {
+        curTime = CACurrentMediaTime();
+        recordingTimer.text = String(format:"%.1f", curTime-origTime)
+    }
+    
+    
+    @IBAction func tapMicUpOut(sender: AnyObject) {
+        recordingTimer.hidden = false
+        previewRecording.hidden = false
+        deleteRecording.hidden = false
+        recordTimer.invalidate()
+        print("up");
+    }
+    @IBAction func tapMicUpIn(sender: AnyObject) {
+        recordingTimer.hidden = false
+        previewRecording.hidden = false
+        deleteRecording.hidden = false
+        recordTimer.invalidate()
+        print("up");
+    }
+    
+    @IBAction func tapPreview(sender: AnyObject) {
+         print("preview");
+        
+    }
+    @IBAction func tapDelete(sender: AnyObject) {
+        textView.hidden = false;
+        recordingTimer.hidden = true
+        previewRecording.hidden = true
+        deleteRecording.hidden = true
+        isRecording = false;
+        print("delete");
+        
+    }
+    
+    
+    @IBAction func sendClicked(sender: AnyObject) {
+        if(isRecording == true){
+            //send recorded audio
+            return
+        }
         
         
     }
