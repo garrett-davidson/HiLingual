@@ -289,7 +289,25 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         toolBar.backgroundColor = .whiteColor()
         self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2
         self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2
+        /*
+        ToDo:
+        genderLabel.layer.borderWidth = 0.5
+        genderLabel.layer.borderColor = UIColor.grayColor().CGColor
+        genderLabel.layer.cornerRadius = 5
+        
+        ageLabel.layer.borderWidth = 0.5
+        ageLabel.layer.borderColor = UIColor.grayColor().CGColor
+        ageLabel.layer.cornerRadius = 5
+        languagesLearning.layer.borderWidth = 0.5
+        languagesLearning.layer.borderColor = UIColor.grayColor().CGColor
+        languagesLearning.layer.cornerRadius = 5
+        languagesSpeaks.layer.borderWidth = 0.5
+        languagesSpeaks.layer.borderColor = UIColor.grayColor().CGColor
+        languagesSpeaks.layer.cornerRadius = 5
+         */
+        
     }
+    
     
     func animationUp(){
 

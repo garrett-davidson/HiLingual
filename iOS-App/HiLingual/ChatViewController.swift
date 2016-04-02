@@ -14,6 +14,7 @@ import QuartzCore
 
 class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate{
     var user: HLUser!
+    var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
     var messages = [HLMessage]()
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
@@ -121,23 +122,18 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message = messages[indexPath.row].text
         
 
-        if messages[indexPath.row].senderID  ==  user.userId{ // change to userid
+        if messages[indexPath.row].senderID  ==  currentUser.userId {
             
-            cell.chatBubbleRight.layer.backgroundColor = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+            cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
             cell.chatBubbleRight.text = message
             cell.chatBubbleRight.hidden = false
-            
-            
-            
             cell.chatBubbleRight.layer.cornerRadius = 5
 
-
         }else{
-            cell.chatBubbleLeft.layer.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+            cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
             cell.chatBubbleLeft.text = message
             cell.chatBubbleLeft.hidden = false
             cell.chatBubbleLeft.layer.cornerRadius = 5
-
         }
  
         
@@ -166,9 +162,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     }
     func loadMessages(){
-        let message1 = HLMessage(text: "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", senderID: 1, receiverID: 68)
+        let message1 = HLMessage(text: "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", senderID: 5, receiverID: 68)
         let message2 = HLMessage(text: "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", senderID: 69, receiverID: 68)
-        let message3 = HLMessage(text: "HA Messages are working", senderID: 1, receiverID: 68)
+        let message3 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 68)
         let message4 = HLMessage(text: "lets see", senderID: 69, receiverID: 68)
         let message5 = HLMessage(text: "HA Messages are working", senderID: 69, receiverID: 68)
         

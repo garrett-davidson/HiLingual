@@ -55,8 +55,10 @@ class AccessoryView: UIView, UITextViewDelegate {
         
     }
     func textViewDidBeginEditing(textView: UITextView) {
-        textView.textColor = UIColor.blackColor()
-        textView.text = ""
+        if textView.text == "" || textView.text == "Message" {
+            textView.textColor = UIColor.blackColor()
+            textView.text = ""
+        }
     }
     func textViewDidEndEditing(textView: UITextView) {
         if textView.text == "" {
