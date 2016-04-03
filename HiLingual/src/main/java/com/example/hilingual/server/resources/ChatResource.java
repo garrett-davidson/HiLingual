@@ -206,9 +206,6 @@ public class ChatResource {
             throw new NotFoundException("Conversation not found");
         }
         Message[] messages = chatMessageDAO.getLatestMessages(authUserId, receiverId, beforeMsgId, limit);
-        if (messages == null) {
-            throw new NotFoundException("Conversation not found");
-        }
         return messages;
     }
 
