@@ -11,13 +11,17 @@ public interface ChatMessageDAO extends Managed {
 
     Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit);
 
-    void addMessage(Message message);
+    Message newMessage(long sender, long receiver, String content);
+
+    Message getMessage(long messageId);
 
     void addRequest(long requester, long recipient);
 
     void acceptRequest(long accepter, long requester);
 
     long[] getRequests(long userId);
+
+    Message editMessage(long messsageId, String editData);
 
     void truncate();
 
