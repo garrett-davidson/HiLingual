@@ -8,6 +8,9 @@ public class AudioData {
 
     private String audio;
 
+    public AudioData() {
+    }
+
     public AudioData(String audio) {
         this.audio = audio;
     }

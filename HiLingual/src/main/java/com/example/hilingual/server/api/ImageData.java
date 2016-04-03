@@ -8,6 +8,9 @@ public class ImageData {
 
     private String image;
 
+    public ImageData() {
+    }
+
     public ImageData(String image) {
         this.image = image;
     }
