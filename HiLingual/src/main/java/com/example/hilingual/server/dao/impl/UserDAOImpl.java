@@ -108,6 +108,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public User[] findMatches(User invoker) {
+        User[] results;
+        Set<User> usersList = new LinkedHashSet<>();
+        //  TODO do an actual real matching algorithm
+        //  Currently just grab the top 5 entries from the table
+        usersList.addAll(handle.createQuery("SELECT * FROM hl_users LIMIT 5")
+                .map(new UserMapper())
+                .list());
+        //convert the List to Array and return
+        results = new User[usersList.size()];
+        results = usersList.toArray(results);
+        return results;
+    }
+
+    @Override
     public void truncate() {
         handle.execute("TRUNCATE hl_users");
     }
