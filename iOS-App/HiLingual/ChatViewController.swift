@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import QuartzCore
 
-//Displays both the sent and receivedvarssages in a single chat
+//Displays both the sent and received messages in a single chat
 
 class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate{
     var user: HLUser!
@@ -151,27 +151,61 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        let cellIdentity = "ChatTableViewCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
-        let message = messages[indexPath.row].text
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let message = messages[indexPath.row]
 
-        if messages[indexPath.row].senderID  ==  currentUser.userId {
+        if message.editedText == nil {
+            let cellIdentity = "ChatTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
+
+
+            if messages[indexPath.row].senderID  ==  currentUser.userId {
+                cell.chatBubbleLeft.hidden = true
+
+                cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+                cell.chatBubbleRight.text = message.text
+                cell.chatBubbleRight.hidden = false
+                cell.chatBubbleRight.layer.cornerRadius = 5
+            }
+
+            else {
+                cell.chatBubbleRight.hidden = true
+
+                cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+                cell.chatBubbleLeft.text = message.text
+                cell.chatBubbleLeft.hidden = false
+                cell.chatBubbleLeft.layer.cornerRadius = 5
+            }
             
-            cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-            cell.chatBubbleRight.text = message
-            cell.chatBubbleRight.hidden = false
-            cell.chatBubbleRight.layer.cornerRadius = 5
+            return cell
         }
 
         else {
-            cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-            cell.chatBubbleLeft.text = message
-            cell.chatBubbleLeft.hidden = false
-            cell.chatBubbleLeft.layer.cornerRadius = 5
+            let cellIdentity = "ChatEditedTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
+
+            if messages[indexPath.row].senderID  ==  currentUser.userId {
+                cell.chatBubbleLeft.hidden = true
+
+                cell.chatBubbleRight.hidden = false
+                cell.chatBubbleRight.layer.cornerRadius = 5
+
+                cell.rightMessageLabel.text = message.text
+                cell.rightEditedMessageLabel.text = message.editedText
+            }
+
+            else {
+                cell.chatBubbleRight.hidden = true
+
+                cell.chatBubbleLeft.hidden = false
+                cell.chatBubbleLeft.layer.cornerRadius = 5
+
+                cell.leftMessageLabel.text = message.text
+                cell.leftEditedMessageLabel.text = message.editedText
+            }
+
+            return cell
         }
-        
-        return cell
     }
     
 
@@ -198,8 +232,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message3 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 68)
         let message4 = HLMessage(text: "lets see", senderID: 69, receiverID: 68)
         let message5 = HLMessage(text: "HA Messages are working", senderID: 69, receiverID: 68)
-        
-        messages = [message1,message2,message3, message4,message5]
+        let message6 = HLMessage(text: "Test Editedmessage 1", senderID: 5, receiverID: 69)
+        let message7 = HLMessage(text: "Test ediTed mesage2", senderID: 69, receiverID: 5)
+
+        message6.editedText = "Test edited message 1"
+        message7.editedText = "Test edited message 2"
+
+        messages = [message1, message2, message3, message4, message5, message6, message7]
     }
     
 }
