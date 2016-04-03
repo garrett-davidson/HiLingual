@@ -19,6 +19,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var view: UIView!
     @IBOutlet var recordingTimer: UILabel!
+    @IBOutlet weak var leftButton: UIButton!
+
     var origTime = 0.0
     var curTime = 0.0
     var isRecording = false;
@@ -26,14 +28,14 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     
     @IBOutlet var previewRecording: UIButton!
     @IBOutlet var deleteRecording: UIButton!
-    @IBOutlet var micButton: UIButton!
     
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
-    
-    
+
+    var isEditing = false
+
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -59,7 +61,26 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
 
-        loadTexetView()
+        loadTextView()
+    }
+
+    func didBegingEditing() {
+        isEditing = true
+
+        leftButton.setImage(UIImage(named: "shittyx"), forState: .Normal)
+        sendButton.setTitle("Save", forState: .Normal)
+
+        textViewDidChange(textView)
+    }
+
+    func didEndEditing() {
+        isEditing = false
+
+        leftButton.setImage(UIImage(named: "Microphone-128"), forState: .Normal)
+        sendButton.setTitle("Send", forState: .Normal)
+
+        textView.text = ""
+        textViewDidChange(textView)
     }
 
     func startRecording() {
@@ -91,12 +112,20 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         
         if success {
             print("recorded audio")
-        } else {
+        }
+
+        else {
             print("somethin fucked up rip")
         }
     }
     
     @IBAction func tapMicDown(sender: AnyObject) {
+        guard !isEditing else {
+            //We don't want to do anything on touch down if we're editing
+            return
+        }
+
+
         recordingTimer.text = "0.0"
         recordingSession = AVAudioSession.sharedInstance()
         
@@ -118,12 +147,14 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textView.hidden = true
             recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
 
-        } catch {
+        } catch let error as NSError {
             // failed to record!
+
+            //If something fails, it would be nice to know...
+            print("Recording failed: ", error)
         }
+
         startRecording()
-        
-        
     }
     func updateLabel() {
         curTime = CACurrentMediaTime();
@@ -132,18 +163,25 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     
     
     @IBAction func tapMicUpOut(sender: AnyObject) {
+        if isRecording {
+            finishRecording()
+        }
+    }
+    @IBAction func tapMicUpIn(sender: AnyObject) {
+        if isRecording {
+            finishRecording()
+        }
+        else if isEditing {
+            didEndEditing()
+        }
+    }
+
+    func finishRecording() {
         recordingTimer.hidden = false
         previewRecording.hidden = false
         deleteRecording.hidden = false
         recordTimer.invalidate()
         finishRecording(success: true)
-    }
-    @IBAction func tapMicUpIn(sender: AnyObject) {
-        recordingTimer.hidden = false
-        previewRecording.hidden = false
-        deleteRecording.hidden = false
-        recordTimer.invalidate()
-         finishRecording(success: true)
     }
     
     @IBAction func tapPreview(sender: AnyObject) {
@@ -152,8 +190,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
             audioPlayer.volume = 1;
             audioPlayer.play()
-        } catch {
-            
+        } catch let error as NSError {
+            print("Failed to preview recording: ", error)
         }
     }
     @IBAction func tapDelete(sender: AnyObject) {
@@ -162,30 +200,38 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         previewRecording.hidden = true
         deleteRecording.hidden = true
         isRecording = false;
-        
     }
     
     
     @IBAction func sendClicked(sender: AnyObject) {
-        if(isRecording == true){
-            //send recorded audio
-            return
+        if isRecording {
+            //TODO:
+            //Send recorded audio
         }
-        
-        
+        else if isEditing {
+            //TODO:
+            //Save edit
+        }
+        else {
+            //TODO:
+            //Send message
+        }
     }
+
     func textViewDidBeginEditing(textView: UITextView) {
+        textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message" {
-            textView.textColor = UIColor.blackColor()
             textView.text = ""
         }
     }
+
     func textViewDidEndEditing(textView: UITextView) {
         if textView.text == "" {
             textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
             textView.text = "Message"
         }
     }
+
     func textViewDidChange(textView: UITextView) {
         
         //stop the view at top of screen somehow
@@ -196,28 +242,32 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textView.layoutIfNeeded()
             sendButton.tintColor = UIColor.lightGrayColor()
             sendButton.userInteractionEnabled = false
-        }else{
+        }
+
+        else {
             sendButton.tintColor = UIColor.blueColor()
             sendButton.userInteractionEnabled = true
         }
+
         textView.reloadInputViews()
         let numLines = textView.contentSize.height / textView.font!.lineHeight;
+
         if numLines > 5 {
             textView.scrollEnabled = true
-        }else{
+        }
+
+        else {
             textView.scrollEnabled = false
         }
+
         textView.reloadInputViews()
-        
-        
     }
     
     override func intrinsicContentSize() -> CGSize {
         return CGSize(width: view.frame.width, height: textView.font!.lineHeight)
-        
     }
     
-    func loadTexetView() {
+    func loadTextView() {
         view.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7)
         view.layer.borderWidth = 0.4
         textView.layer.borderWidth = 0.5

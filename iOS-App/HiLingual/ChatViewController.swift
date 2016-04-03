@@ -48,17 +48,26 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()
 
-        let editItem = UIMenuItem(title: "Edit", action: #selector(ChatViewController.testEdit))
+        let editItem = UIMenuItem(title: "Edit", action: #selector(ChatViewController.editMessage))
         menuController.menuItems = [editItem]
     }
 
-    func testEdit() {
-        print("Edit")
+    func editMessage() {
+        let selectedMessage = messages[selectedCellIndex!]
+        if let editText = selectedMessage.editedText {
+            testView.textView.text = editText
+        }
+        else {
+            testView.textView.text = selectedMessage.text
+        }
+
+        testView.textView.becomeFirstResponder()
+        testView.didBegingEditing()
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
         switch (action) {
-        case #selector(ChatViewController.testEdit):
+        case #selector(ChatViewController.editMessage):
             return canEditMessage()
 
         default:
