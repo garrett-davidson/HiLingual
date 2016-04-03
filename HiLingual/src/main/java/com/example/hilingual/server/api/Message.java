@@ -1,23 +1,29 @@
 package com.example.hilingual.server.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class Message {
 
     private long id;
     private long timestamp;
+    private long sender;
+    private long receiver;
+    @NotEmpty
     private String content;
     private String editData;
 
-    public Message(long id, long timestamp, String content, String editData) {
+    public Message(long id, long timestamp, long sender, long receiver, String content, String editData) {
         this.id = id;
         this.timestamp = timestamp;
+        this.sender = sender;
+        this.receiver = receiver;
         this.content = content;
         this.editData = editData;
     }
 
-    public Message(String content) {
-        this(0, 0, content, null);
+    public Message(String content, long sender, long receiver) {
+        this(0, 0, sender, receiver, content, null);
     }
 
     public Message() {
@@ -61,5 +67,25 @@ public class Message {
     @JsonProperty
     public void setEditData(String editData) {
         this.editData = editData;
+    }
+
+    @JsonProperty
+    public long getSender() {
+        return sender;
+    }
+
+    @JsonProperty
+    public void setSender(long sender) {
+        this.sender = sender;
+    }
+
+    @JsonProperty
+    public long getReceiver() {
+        return receiver;
+    }
+
+    @JsonProperty
+    public void setReceiver(long receiver) {
+        this.receiver = receiver;
     }
 }
