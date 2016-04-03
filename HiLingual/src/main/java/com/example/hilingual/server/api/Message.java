@@ -6,16 +6,18 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Message {
 
     private long id;
-    private long timestamp;
+    private long sentTimestamp;
+    private long editTimestamp;
     private long sender;
     private long receiver;
     @NotEmpty
     private String content;
     private String editData;
 
-    public Message(long id, long timestamp, long sender, long receiver, String content, String editData) {
+    public Message(long id, long sentTimestamp, long editTimestamp, long sender, long receiver, String content, String editData) {
         this.id = id;
-        this.timestamp = timestamp;
+        this.sentTimestamp = sentTimestamp;
+        this.editTimestamp = editTimestamp;
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
@@ -23,7 +25,7 @@ public class Message {
     }
 
     public Message(String content, long sender, long receiver) {
-        this(0, 0, sender, receiver, content, null);
+        this(0, 0, 0, sender, receiver, content, null);
     }
 
     public Message() {
@@ -40,14 +42,18 @@ public class Message {
     }
 
     @JsonProperty
-    public long getTimestamp() {
-        return timestamp;
+    public long getSentTimestamp() {
+        return sentTimestamp;
     }
 
     @JsonProperty
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+    public void setSentTimestamp(long sentTimestamp) { this.sentTimestamp = sentTimestamp;}
+
+    @JsonProperty
+    public long getEditTimestamp() { return editTimestamp; }
+
+    @JsonProperty
+    public void setEditTimestamp(long editTimestamp) { this.editTimestamp = editTimestamp; }
 
     @JsonProperty
     public String getContent() {
