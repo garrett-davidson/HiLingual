@@ -21,9 +21,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
 
-    @IBOutlet weak var testView: UIView!
+    @IBOutlet weak var testView: AccessoryView!
     
-    var selectedCell: ChatTableViewCell?
+    var selectedCellIndex: Int?
 
     override func viewDidLoad() {
         self.title = user.name
@@ -84,7 +84,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func canEditMessage() -> Bool {
-        return !(testView as! AccessoryView).textView.isFirstResponder()
+        if selectedCellIndex != nil {
+            return messages[selectedCellIndex!].senderID  !=  currentUser.userId
+        }
+        return false
     }
 
     override var inputAccessoryView: UIView? {
@@ -103,8 +106,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let menuController = UIMenuController.sharedMenuController()
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatTableViewCell {
-            selectedCell = cell
-            let rect = tableView.convertRect(cell.frame, toView: self.view)
+            selectedCellIndex = indexPath.row
+            let rect = cell.convertRect(cell.chatBubbleLeft.frame, toView: self.view)
             menuController.setTargetRect(rect, inView: self.view)
             menuController.setMenuVisible(true, animated: true)
         }
@@ -147,6 +150,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         else {
             cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+            cell.chatBubbleLeft.text = message
             cell.chatBubbleLeft.hidden = false
             cell.chatBubbleLeft.layer.cornerRadius = 5
         }
@@ -172,7 +176,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         })
     }
-    func loadMessages(){
+    func loadMessages() {
         let message1 = HLMessage(text: "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", senderID: 5, receiverID: 68)
         let message2 = HLMessage(text: "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", senderID: 69, receiverID: 68)
         let message3 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 68)
