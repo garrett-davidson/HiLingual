@@ -1,19 +1,21 @@
 package com.example.hilingual.server.resources;
 
+import com.example.hilingual.server.api.AudioData;
+import com.example.hilingual.server.api.ImageData;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.google.inject.Inject;
 
 import javax.ws.rs.*;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Random;
 
 @Path("/asset")
@@ -44,10 +46,10 @@ public class AssetResource {
 
     @POST
     @Path("avatar/{user-id}")
-    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response uploadImage(@PathParam("user-id") long userId,
                                 @HeaderParam("Authorization") String hlat,
-                                InputStream data)
+                                ImageData data)
             throws URISyntaxException, IOException {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
@@ -62,7 +64,7 @@ public class AssetResource {
         java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(),
                 "images", Long.toString(userId), assetId + ".png");
         Files.createDirectories(outPath.getParent());
-        Files.copy(data, outPath, StandardCopyOption.REPLACE_EXISTING);
+        Files.write(outPath, data.toBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         return Response.seeOther(getImageUrl(userId, assetId)).build();
     }
 
@@ -90,10 +92,10 @@ public class AssetResource {
 
     @POST
     @Path("audio/{user-id}")
-    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response uploadAudio(@PathParam("user-id") long userId,
                                 @HeaderParam("Authorization") String hlat,
-                                InputStream data)
+                                AudioData data)
             throws URISyntaxException, IOException {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
@@ -107,7 +109,7 @@ public class AssetResource {
         String assetId = new BigInteger(130, random).toString(32);
         java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
         Files.createDirectories(outPath.getParent());
-        Files.copy(data, outPath, StandardCopyOption.REPLACE_EXISTING);
+        Files.write(outPath, data.toBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         return Response.seeOther(getAudioUrl(userId, assetId)).build();
     }
 
