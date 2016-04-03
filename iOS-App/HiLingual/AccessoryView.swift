@@ -8,13 +8,33 @@
 
 import UIKit
 import QuartzCore
+import AVFoundation
 
-class AccessoryView: UIView, UITextViewDelegate {
+public extension String {
+    var NS: NSString { return (self as NSString) }
+}
+class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
 
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var view: UIView!
+    @IBOutlet var recordingTimer: UILabel!
+    var origTime = 0.0
+    var curTime = 0.0
+    var isRecording = false;
+    var recordTimer: NSTimer!
+    
+    @IBOutlet var previewRecording: UIButton!
+    @IBOutlet var deleteRecording: UIButton!
     @IBOutlet var micButton: UIButton!
+    
+    
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer!
+    
+    
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -41,22 +61,124 @@ class AccessoryView: UIView, UITextViewDelegate {
 
         loadTexetView()
     }
-    
-   
-    @IBAction func tapMicButton(sender: UIButton) {
-        let controller = AudioRecorderViewController()
-        //controller.audioRecorderDelegate = self
-       // presentViewController(controller, animated: true, completion: nil)
-        print("tapped")
-    }
-    @IBAction func sendClicked(sender: AnyObject) {
+
+    func startRecording() {
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let audioURL = documentsURL.URLByAppendingPathComponent("recording.m4a")
         
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12000.0,
+            AVNumberOfChannelsKey: 1 as NSNumber,
+            AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+        ]
+        
+        do {
+            audioRecorder = try AVAudioRecorder(URL: audioURL, settings: settings)
+            audioRecorder.delegate = self
+            audioRecorder.record()
+        } catch {
+            finishRecording(success: false)
+        }
+    }
+    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
+        if !flag {
+            finishRecording(success: false)
+        }
+    }
+    func finishRecording(success success: Bool) {
+        audioRecorder.stop()
+        
+        if success {
+            print("recorded audio")
+        } else {
+            print("somethin fucked up rip")
+        }
+    }
+    
+    @IBAction func tapMicDown(sender: AnyObject) {
+        recordingTimer.text = "0.0"
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try recordingSession.setActive(true)
+            recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
+                dispatch_async(dispatch_get_main_queue()) {
+                    return;
+                }
+                
+            }
+            
+            isRecording = true;
+            recordingTimer.hidden = false
+            previewRecording.hidden = true
+            deleteRecording.hidden = true
+            origTime =  CACurrentMediaTime();
+            textView.hidden = true
+            recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
+
+        } catch {
+            // failed to record!
+        }
+        startRecording()
+        
+        
+    }
+    func updateLabel() {
+        curTime = CACurrentMediaTime();
+        recordingTimer.text = String(format:"%.1f", curTime-origTime)
+    }
+    
+    
+    @IBAction func tapMicUpOut(sender: AnyObject) {
+        recordingTimer.hidden = false
+        previewRecording.hidden = false
+        deleteRecording.hidden = false
+        recordTimer.invalidate()
+        finishRecording(success: true)
+    }
+    @IBAction func tapMicUpIn(sender: AnyObject) {
+        recordingTimer.hidden = false
+        previewRecording.hidden = false
+        deleteRecording.hidden = false
+        recordTimer.invalidate()
+         finishRecording(success: true)
+    }
+    
+    @IBAction func tapPreview(sender: AnyObject) {
+        do {
+            try audioPlayer = AVAudioPlayer(contentsOfURL: audioRecorder.url)
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
+            audioPlayer.volume = 1;
+            audioPlayer.play()
+        } catch {
+            
+        }
+    }
+    @IBAction func tapDelete(sender: AnyObject) {
+        textView.hidden = false;
+        recordingTimer.hidden = true
+        previewRecording.hidden = true
+        deleteRecording.hidden = true
+        isRecording = false;
+        
+    }
+    
+    
+    @IBAction func sendClicked(sender: AnyObject) {
+        if(isRecording == true){
+            //send recorded audio
+            return
+        }
         
         
     }
     func textViewDidBeginEditing(textView: UITextView) {
-        textView.textColor = UIColor.blackColor()
-        textView.text = ""
+        if textView.text == "" || textView.text == "Message" {
+            textView.textColor = UIColor.blackColor()
+            textView.text = ""
+        }
     }
     func textViewDidEndEditing(textView: UITextView) {
         if textView.text == "" {
@@ -108,4 +230,7 @@ class AccessoryView: UIView, UITextViewDelegate {
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }
+    
+    
 }
+
