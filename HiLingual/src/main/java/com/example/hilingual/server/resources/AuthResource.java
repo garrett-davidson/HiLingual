@@ -12,12 +12,10 @@ package com.example.hilingual.server.resources;
 import com.example.hilingual.server.api.AuthenticationRequest;
 import com.example.hilingual.server.api.AuthenticationResponse;
 import com.example.hilingual.server.api.User;
-import com.example.hilingual.server.dao.FacebookIntegrationDAO;
-import com.example.hilingual.server.dao.GoogleIntegrationDAO;
-import com.example.hilingual.server.dao.SessionDAO;
-import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.service.FacebookGraphAPIService;
 import com.example.hilingual.server.service.GoogleAccountAPIService;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 import javax.validation.Valid;
@@ -46,6 +44,7 @@ public class AuthResource {
     private final GoogleIntegrationDAO googleIntegrationDAO;
     private final FacebookGraphAPIService fbApiService;
     private final GoogleAccountAPIService googleApiService;
+    private final DeviceTokenDAO tokenDAO;
 
     @Inject
     public AuthResource(SessionDAO sessionDAO,
@@ -53,13 +52,15 @@ public class AuthResource {
                         FacebookIntegrationDAO facebookIntegrationDAO,
                         GoogleIntegrationDAO googleIntegrationDAO,
                         FacebookGraphAPIService fbApiService,
-                        GoogleAccountAPIService googleApiService) {
+                        GoogleAccountAPIService googleApiService,
+                        DeviceTokenDAO tokenDAO) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.facebookIntegrationDAO = facebookIntegrationDAO;
         this.googleIntegrationDAO = googleIntegrationDAO;
         this.fbApiService = fbApiService;
         this.googleApiService = googleApiService;
+        this.tokenDAO = tokenDAO;
     }
 
     @POST
@@ -92,6 +93,9 @@ public class AuthResource {
             throw new NotFoundException();
         }
         tokenSetter.accept(userId, authorityToken);
+        if (!Strings.isNullOrEmpty(body.getDeviceToken())) {
+            tokenDAO.addDeviceToken(userId, body.getDeviceToken());
+        }
         String sessionId = sessionDAO.newSession(userId);
         return new AuthenticationResponse(userId, sessionId);
     }
@@ -100,8 +104,12 @@ public class AuthResource {
     @POST
     @Path("{user-id}/logout")
     public Response logOut(@HeaderParam("Authorization") String hlat,
-                           @PathParam("user-id") long userId) {
+                           @PathParam("user-id") long userId,
+                           @QueryParam("device-token") @DefaultValue("") String deviceToken) {
         sessionDAO.revokeSession(SessionDAO.getSessionIdFromHLAT(hlat), userId);
+        if (!Strings.isNullOrEmpty(deviceToken)) {
+            tokenDAO.revokeUserDeviceToken(userId, deviceToken);
+        }
         return Response.noContent().build();
     }
 
