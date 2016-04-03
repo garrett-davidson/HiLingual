@@ -13,6 +13,48 @@ http = urllib3.PoolManager(
 	cert_reqs="CERT_REQUIRED",
 	ca_certs=certifi.where())
 
+
+
+# POST    /tasks/log-level (io.dropwizard.servlets.tasks.LogConfigurationTask)
+# POST    /tasks/gc (io.dropwizard.servlets.tasks.GarbageCollectionTask)
+# POST    /tasks/apns-test (com.example.hilingual.server.task.ApnsTestTask)
+# POST    /tasks/revoke-all-sessions (com.example.hilingual.server.task.RevokeAllSessionsTask)
+# POST    /tasks/truncate-databases (com.example.hilingual.server.task.TruncateTask)
+
+
+def adminActions():
+	url = 'http://gethilingual.com:8082/api/admin/tasks/'
+
+	while 1:
+
+		print("1) log-level\n2) gc\n3) apns-test\n4) revoke-all-sessions\n5) truncate-databases\n5) exit")
+		selection = input("Select task>");
+
+		if selection == "1":
+			url = url + "log-level"
+		elif selection == "2":
+			url = url + "gc"
+		elif selection == "3":
+			url = url + "apns-test"
+		elif selection == "4":
+			url = url + "revoke-all-sessions"
+		elif selection == "5":
+			url = url + "truncate-databases"
+		elif selection == "5":
+			pass
+		else:
+			print("Invalid selection")
+
+		print("Outgoing request to: " + url)
+
+		response = http.request('POST', url)
+		if response.status != 200:
+			print("Error: returned status code: " + str(response.status))
+
+	
+
+
+
 def searchUsers():
 	global responsebody
 	global userSessionId
@@ -264,7 +306,8 @@ def main():
 			success = login()
 		elif option == "2":
 			success = register()
-
+		elif option == "3":
+			adminActions()
 		if success == 1:
 			loggedin = 1
 			userview()
@@ -275,7 +318,7 @@ def main():
 
 
 def initview():
-	print("1:Login\n2:Register")
+	print("1:Login\n2:Register\n3:Admin Tasks")
 	decision = input("What would you like to do>")
 	return decision
 
