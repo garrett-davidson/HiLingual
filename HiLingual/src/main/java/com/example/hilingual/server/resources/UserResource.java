@@ -148,4 +148,17 @@ public class UserResource {
         //  TODO Validate/sanitize query
         return userDAO.findUsers(query, invoker);
     }
+
+    @GET
+    @Path("match")
+    public User[] getMatches(@HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User invoker = userDAO.getUser(authUserId);
+        return userDAO.findMatches(invoker);
+    }
 }
