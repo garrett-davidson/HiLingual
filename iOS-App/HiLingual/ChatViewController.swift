@@ -24,6 +24,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var testView: AccessoryView!
     
     var selectedCellIndex: Int?
+    var editingCellIndex: Int?
 
     override func viewDidLoad() {
         self.title = user.name
@@ -53,6 +54,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func editMessage() {
+        editingCellIndex = selectedCellIndex
+        
         let selectedMessage = messages[selectedCellIndex!]
         if let editText = selectedMessage.editedText {
             testView.textView.text = editText
@@ -66,13 +69,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
-        switch (action) {
-        case #selector(ChatViewController.editMessage):
-            return canEditMessage()
-
-        default:
-            return super.canPerformAction(action, withSender: sender)
+        if action == #selector(ChatViewController.editMessage) {
+            return selectedCellIndex != nil && canEditMessage()
         }
+
+        return super.canPerformAction(action, withSender: sender)
     }
     
     @IBAction func details(sender: AnyObject) {
@@ -106,6 +107,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private func enableKeyboardHideOnTap(){
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.menuWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
     }
     
     func textViewDidChange(textView: UITextView) {
@@ -120,6 +123,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             menuController.setTargetRect(rect, inView: self.view)
             menuController.setMenuVisible(true, animated: true)
         }
+    }
+
+    func menuWillHide(notification: NSNotification) {
+        selectedCellIndex = nil
     }
 
     func keyboardWillShow(notification: NSNotification) {
