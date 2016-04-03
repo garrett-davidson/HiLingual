@@ -13,7 +13,11 @@ public interface ChatMessageDAO extends Managed {
 
     void addMessage(Message message);
 
-    //  TODO others?
+    void addRequest(long requester, long recipient);
+
+    void acceptRequest(long accepter, long requester);
+
+    long[] getRequests(long userId);
 
     void truncate();
 
