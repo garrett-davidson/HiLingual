@@ -90,6 +90,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         audioRecorder.stop()
         
         if success {
+            sendButton.tintColor = UIColor.blueColor()
+            sendButton.userInteractionEnabled = true
             print("recorded audio")
         } else {
             print("somethin fucked up rip")
@@ -162,13 +164,33 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         previewRecording.hidden = true
         deleteRecording.hidden = true
         isRecording = false;
+        sendButton.tintColor = UIColor.lightGrayColor()
+        sendButton.userInteractionEnabled = false
+
         
     }
     
     
     @IBAction func sendClicked(sender: AnyObject) {
+       
         if(isRecording == true){
-            //send recorded audio
+             print("click")
+            let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
+            print("sent search")
+                let urlString = "https://gethilingual.com/api/asset/audio/{" + String(HLUser.getCurrentUser().userId) + "}"
+                let request = NSMutableURLRequest(URL: NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!)
+                request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+                //TODO: Use non-deprecated API
+                if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                    print(returnedData)
+                    if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                        print(returnString)
+                    }
+                   // uploadID = HLUser.fromJSON(returnedData)
+                   
+                }
+            
+
             return
         }
         
