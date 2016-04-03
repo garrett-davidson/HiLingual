@@ -17,6 +17,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
     var messages = [HLMessage]()
+
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
 
@@ -58,11 +59,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
         switch (action) {
         case #selector(ChatViewController.testEdit):
-            if selectedCell != nil {
-                return canEditMessage()
-            }
-
-            return false
+            return canEditMessage()
 
         default:
             return super.canPerformAction(action, withSender: sender)
@@ -113,15 +110,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
 
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if touches.count == 1 {
-            let touch = touches.first!
-            if touch.locationInView(self.view).y > testView.frame.origin.y {
-                selectedCell = nil
-            }
-        }
-    }
-
     func keyboardWillShow(notification: NSNotification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -133,7 +121,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         tableViewScrollToBottom(true)
-        selectedCell = nil
     }
     
     func keyboardWillHide(notification: NSNotification) {
@@ -150,15 +137,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
         let message = messages[indexPath.row].text
 
-        if messages[indexPath.row].senderID  ==  user.userId{ // change to userid
-            cell.chatBubbleRight.layer.backgroundColor = UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+        if messages[indexPath.row].senderID  ==  currentUser.userId {
+            
+            cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
             cell.chatBubbleRight.text = message
             cell.chatBubbleRight.hidden = false
             cell.chatBubbleRight.layer.cornerRadius = 5
         }
+
         else {
-            cell.chatBubbleLeft.layer.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-            cell.chatBubbleLeft.text = message
+            cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
             cell.chatBubbleLeft.hidden = false
             cell.chatBubbleLeft.layer.cornerRadius = 5
         }
