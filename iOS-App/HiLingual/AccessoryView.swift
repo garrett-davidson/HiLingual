@@ -35,6 +35,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     var audioPlayer: AVAudioPlayer!
 
     var isEditing = false
+    var chatViewController: ChatViewController?
 
     
     /*
@@ -81,6 +82,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
 
         textView.text = ""
         textViewDidChange(textView)
+
+        chatViewController?.editingCellIndex = nil
     }
 
     func startRecording() {
@@ -211,6 +214,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else if isEditing {
             //TODO:
             //Save edit
+            chatViewController?.saveMessageEdit(editedText: textView.text)
+            didEndEditing()
         }
         else {
             //TODO:

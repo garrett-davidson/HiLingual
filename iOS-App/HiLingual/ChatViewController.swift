@@ -25,6 +25,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var selectedCellIndex: Int?
     var editingCellIndex: Int?
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         self.title = user.name
@@ -38,12 +39,19 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableViewScrollToBottom(false)
 
         setupEditMenuButtons()
+
+        testView.chatViewController = self
         
         //Code for bringing up audio scren
        // let controller = AudioRecorderViewController()
        // controller.audioRecorderDelegate = self
         //presentViewController(controller, animated: true, completion: nil)
         
+    }
+
+    func saveMessageEdit(editedText editedText: String) {
+        messages[editingCellIndex!].editedText = editedText
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editingCellIndex!, inSection:0)], withRowAnimation: .Automatic)
     }
 
     func setupEditMenuButtons() {
@@ -116,8 +124,24 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+        guard messages[indexPath.row].senderID != currentUser.userId else {
+            return
+        }
+
+        guard editingCellIndex == nil else {
+            return
+        }
+
         let menuController = UIMenuController.sharedMenuController()
+
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatTableViewCell {
+            selectedCellIndex = indexPath.row
+            let rect = cell.convertRect(cell.chatBubbleLeft.frame, toView: self.view)
+            menuController.setTargetRect(rect, inView: self.view)
+            menuController.setMenuVisible(true, animated: true)
+        }
+        else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatEditedTableViewCell {
             selectedCellIndex = indexPath.row
             let rect = cell.convertRect(cell.chatBubbleLeft.frame, toView: self.view)
             menuController.setTargetRect(rect, inView: self.view)

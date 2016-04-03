@@ -365,6 +365,7 @@
                     <connections>
                         <outlet property="chatTableView" destination="Gnq-1d-QOI" id="ssN-Zy-c3e"/>
                         <outlet property="detailsProfile" destination="FPQ-fb-3tr" id="4kZ-Ly-qOd"/>
+                        <outlet property="tableView" destination="Gnq-1d-QOI" id="ezE-BT-2tQ"/>
                         <outlet property="testView" destination="E7n-91-J2A" id="Xff-2g-AaA"/>
                         <outlet property="view" destination="X1a-mJ-Bwz" id="vzP-zQ-igO"/>
                     </connections>
