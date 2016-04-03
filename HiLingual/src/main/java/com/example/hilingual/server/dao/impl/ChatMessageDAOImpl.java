@@ -2,15 +2,36 @@ package com.example.hilingual.server.dao.impl;
 
 import com.example.hilingual.server.api.Message;
 import com.example.hilingual.server.dao.ChatMessageDAO;
+import com.google.inject.Inject;
+import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class ChatMessageDAOImpl implements ChatMessageDAO {
 
     //  TODO
+    private final DBI dbi;
+    private Handle handle;
+    private static Logger LOGGER = Logger.getLogger(ChatMessageDAOImpl.class.getName());
 
+    @Inject
+    public ChatMessageDAOImpl(DBI dbi) { this.dbi = dbi;}
 
     @Override
     public void init() {
-
+        handle.execute("CREATE TABLE IF NOT EXISTS chat_messages(" +
+                "message_id BIGINT UNIQUE PRIMARY KEY, " +
+                "sent_timestamp TIMESTAMP, " +
+                "edit_timestamp TIMESTAMP, " +
+                "sender_id BIGINT, " +
+                "receiver_id BIGINT, " +
+                "message VARCHAR(500), " +
+                "edited_message VARCHAR(500))");
     }
 
     @Override
@@ -72,6 +93,9 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
     @Override
     public void start() throws Exception {
+        LOGGER.info("Opening DBI handle");
+        handle = dbi.open();
+        LOGGER.info("Init DAO");
         init();
     }
 
@@ -79,4 +103,28 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     public void stop() throws Exception {
 
     }
+
+    class MessageMapper implements ResultSetMapper<Message> {
+
+        @Override
+        public Message map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            Message message = new Message();
+            message.setId(r.getLong("message_id"));
+            message.setSentTimestamp(r.getDate("sent_date").getTime());
+            message.setEditTimestamp(r.getDate("edit_date").getTime());
+            message.setSender(r.getLong("sender_id"));
+            message.setReceiver(r.getLong("receiver_id"));
+            message.setContent(r.getString("message"));
+            message.setEditData(r.getString("edited_message"));
+
+            return message;
+        }
+
+
+
+
+    }
+
+
+
 }
