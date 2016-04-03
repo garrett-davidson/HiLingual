@@ -9,7 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccessoryView" customModule="HiLingual" customModuleProvider="target">
             <connections>
                 <outlet property="deleteRecording" destination="m9k-mK-rME" id="RBV-kv-UZ5"/>
-                <outlet property="micButton" destination="3b4-LC-oRi" id="pBt-2b-kJR"/>
+                <outlet property="leftButton" destination="3b4-LC-oRi" id="lSF-x5-yl3"/>
                 <outlet property="previewRecording" destination="obr-DO-y8s" id="T8M-md-6Se"/>
                 <outlet property="recordingTimer" destination="dC5-wN-qVh" id="kuF-so-dKx"/>
                 <outlet property="sendButton" destination="PVk-FS-d4h" id="wHW-Lc-sYP"/>
