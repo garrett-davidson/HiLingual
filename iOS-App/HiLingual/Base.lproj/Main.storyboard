@@ -898,9 +898,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="CBu-dd-MIT"/>
         <segue reference="E7P-wL-Y88"/>
         <segue reference="XeF-YT-wgH"/>
         <segue reference="3s2-qW-3mn"/>
-        <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>

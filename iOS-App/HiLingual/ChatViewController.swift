@@ -18,6 +18,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var messageTest = [String]()
     var messages = [HLMessage]()
 
+    var recipientId: Int64 = 12
+
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
 
@@ -52,6 +54,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func saveMessageEdit(editedText editedText: String) {
         messages[editingCellIndex!].editedText = editedText
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editingCellIndex!, inSection:0)], withRowAnimation: .Automatic)
+    }
+
+    func sendMessageWithText(text: String) {
+        let newMessage = HLMessage(text: text, senderID: currentUser.userId, receiverID: recipientId)
+        newMessage.send()
     }
 
     func setupEditMenuButtons() {

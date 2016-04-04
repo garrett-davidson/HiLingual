@@ -220,6 +220,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else {
             //TODO:
             //Send message
+            chatViewController!.sendMessageWithText(textView.text)
         }
     }
 
