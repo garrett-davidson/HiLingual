@@ -1,10 +1,13 @@
 package com.example.hilingual.server.dao.impl;
 
+import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.Message;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.UserChats;
 import com.example.hilingual.server.dao.ChatMessageDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindMessage;
+import com.example.hilingual.server.dao.impl.annotation.BindUser;
+import com.example.hilingual.server.dao.impl.annotation.BindUserChats;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -18,6 +21,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 
 public class ChatMessageDAOImpl implements ChatMessageDAO {
 
@@ -64,7 +68,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
         Message message = new Message();
-        u.insert(message);
+        u.insertmessage(message);
         return null;
     }
 
@@ -77,6 +81,26 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public void addRequest(long requester, long recipient) {
         //  Add a chat request from requester to recipient
+        //update the hl_chat_pending_requests table for recipient
+        UserChats uc = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
+                .bind("uid", String.valueOf(recipient))
+                .map(new RequestsMapper())
+                .first();
+
+        Set<Long> pendingChats = uc.getPendingChats();
+        pendingChats.add(requester);
+        uc.setPendingChats(pendingChats);
+        u.updaterequests(uc);
+
+        //update the hl_users table for requester
+        User user = handle.createQuery("SELECT * FROM hl_users WHERE user_id = :uid")
+                .bind("uid", requester)
+                .map(new UserMapper())
+                .first();
+
+        user.addusersChattedWith(recipient);
+        u.updateuser(user);
+
     }
 
     @Override
@@ -88,12 +112,14 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public Set<Long> getRequests(long userId) {
         //  Get pending requests
-        List<UserChats> ucList = new ArrayList<UserChats>();
-        ucList = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
+        UserChats uc = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
                 .bind("uid", String.valueOf(userId))
                 .map(new RequestsMapper())
-                .list();
-        return ucList.get(0).getPendingChats();
+                .first();
+        if (uc == null) {
+            return new HashSet<Long>();
+        }
+        return uc.getPendingChats();
     }
 
     @Override
@@ -152,6 +178,32 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         }
     }
 
+    class UserMapper implements ResultSetMapper<User> {
+
+        @Override
+        public User map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            User user = new User();
+            user.setUserId(r.getLong("user_id"));
+            user.setName(r.getString("user_name"));
+            user.setDisplayName(r.getString("display_name"));
+            user.setBio(r.getString("bio"));
+            user.setGender(Gender.valueOf(r.getString("gender")));
+            user.setBirthdate(r.getDate("birth_date").getTime());
+            user.setImageURL(r.getURL("image_url"));
+            String usersChattedWith = r.getString("users_chatted_with");
+            user.setUsersChattedWith(stringToSet(usersChattedWith, Long::parseLong));
+            String blockedUsers = r.getString("blocked_users");
+            user.setBlockedUsers(stringToSet(blockedUsers, Long::parseLong));
+            String knownLanguages = r.getString("known_languages");
+            user.setKnownLanguages(stringToSet(knownLanguages, Function.identity()));
+            String learningLanguages = r.getString("learning_languages");
+            user.setLearningLanguages(stringToSet(learningLanguages, Function.identity()));
+            user.setProfileSet(r.getBoolean("profile_set"));
+
+            return user;
+        }
+    }
+
     public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
         return set.stream().
                 map(toStringer).
@@ -170,6 +222,16 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
     public static interface Update {
         @SqlUpdate("insert into hl_chat_messages (message_id, sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message) values (:message_id, :sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message)")
-        void insert(@BindMessage Message message);
+        void insertmessage(@BindMessage Message message);
+
+        @SqlUpdate("update hl_chat_messages set message_id = :massage_id, sent_timestamp = :sent_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message where message_id = :message_id")
+        int updatemessage(@BindMessage Message message);
+
+        @SqlUpdate("update hl_chat_pending_requests set user_id = :user_id, pending_chat_users = :pending_chat_users where user_id = :user_id")
+        void updaterequests(@BindUserChats UserChats uc);
+
+        @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")
+        int updateuser(@BindUser User user);
+
     }
 }
