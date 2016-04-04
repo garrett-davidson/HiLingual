@@ -18,7 +18,7 @@ enum Gender: Int {
 }
 
 class HLUser: NSObject, NSCoding {
-    let userId: Int64
+    var userId: Int64
     var name: String?
     var displayName: String?
     var knownLanguages: [Languages]
@@ -159,9 +159,8 @@ class HLUser: NSObject, NSCoding {
         //TODO: Implement creating a loggin in to server user
         //That way this doesn't have to be hard-coded
         if let userJSONData = self.toJSON() {
-            let testSessionId = "k9ike03ko65fkh0ih51163o4a6"
             let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session!.sessionId]
             request.HTTPMethod = "PATCH"
             request.HTTPBody = userJSONData
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
@@ -214,6 +213,10 @@ class HLUser: NSObject, NSCoding {
         return session
     }
 
+    func setSession(session: HLUserSession?) {
+        self.session = session
+    }
+
     @objc func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(NSNumber(longLong: userId), forKey: "UUID")
         aCoder.encodeObject(name, forKey: "name")
@@ -224,7 +227,10 @@ class HLUser: NSObject, NSCoding {
         aCoder.encodeObject(profilePicture, forKey: "profilePicture")
         aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
         aCoder.encodeObject(usersChattedWith, forKey: "usersChattedWith")
-        aCoder.encodeObject(session, forKey: "session")
+
+        if session != nil {
+            aCoder.encodeObject(session!, forKey: "session")
+        }
 
         var learningLanguagesStrings = [String]()
         for lang in learningLanguages {

@@ -68,7 +68,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
-        didLoginWithSession(HLUserSession(sessionId: "", authority: .Facebook, authorityAccountId: "", authorityToken: ""))
+        didLoginWithSession(HLUserSession(userId: 0, sessionId: "", authority: .Facebook, authorityAccountId: "", authorityToken: ""))
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -92,7 +92,44 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
     func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
         viewController.dismissViewControllerAnimated(true, completion: nil)
-        didLoginWithSession(HLUserSession(sessionId: "", authority: .Google, authorityAccountId: "", authorityToken: ""))
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = "POST"
+
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            //TODO: Fix this 💩
+            //Lazy race condition fix
+            while signIn.currentUser == nil {
+                sleep(1)
+            }
+
+
+            let bodyDict = ["authority": "GOOGLE",
+                            "authorityAccountId": signIn.currentUser.userID,
+                            "authorityToken": signIn.currentUser.authentication.idToken,
+                            "deviceToken": (UIApplication.sharedApplication().delegate! as! AppDelegate).apnsToken!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                        self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: .Google, authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                    }
+                    else {
+                        print("Couldn't parse return value")
+                    }
+                }
+                else {
+                    print("Returned data is not a string")
+                }
+            }
+
+        })
     }
 
     func didLoginWithSession(session: HLUserSession) {
