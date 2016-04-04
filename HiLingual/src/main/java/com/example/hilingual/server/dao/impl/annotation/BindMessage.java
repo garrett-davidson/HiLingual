@@ -21,7 +21,7 @@ import java.lang.annotation.*;
 import java.sql.Timestamp;
 
 
-@BindingAnnotation(BindUser.BindUserFactory.class)
+@BindingAnnotation(BindMessage.BindMessageFactory.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
 public @interface BindMessage {
