@@ -28,18 +28,19 @@ class HLMessage {
     }
 
     func send() -> Bool {
-        let testSessionId = "k9ike03ko65fkh0ih51163o4a6"
-
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(receiverID)/message")!)
-        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
-        request.HTTPMethod = "POST"
+        if let session = HLUser.getCurrentUser().getSession() {
 
-        request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
 
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-            print(returnedData)
-            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                print(returnString)
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
             }
         }
 
