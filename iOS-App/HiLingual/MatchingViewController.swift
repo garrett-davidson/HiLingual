@@ -62,7 +62,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
                 }
-                searchResults = HLUser.fromJSON(returnedData)
+                searchResults = HLUser.fromJSONArray(returnedData)
                 for _ in 0..<searchResults.count {
                     
                     requests += [true]
