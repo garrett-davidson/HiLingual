@@ -191,7 +191,7 @@ public class UserDAOImpl implements UserDAO {
         @SqlUpdate("delete from hl_users where id = :user_id")
         void deleteByName(@Bind long id);
 
-        @SqlQuery("SELECT LAST_INSERT_ID()")
+        @SqlQuery("SELECT LAST_INSERT_ID() from hl_users")
         int getLastInsertId();
     }
 }
