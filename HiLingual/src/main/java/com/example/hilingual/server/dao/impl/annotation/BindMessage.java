@@ -37,13 +37,15 @@ public @interface BindMessage {
 
                     q.bind("message_id", arg.getId());
                     Long  sentts =  arg.getSentTimestamp();
-                    if (sentts.equals(0)) {
+                    System.out.println("Send Timestamp: " + sentts);
+                    if (sentts == 0) {
                         q.bindNull("sent_timestamp", JDBCType.TIMESTAMP.getVendorTypeNumber());
                     } else {
                         q.bind("sent_timestamp", new Timestamp(arg.getSentTimestamp()));
                     }
                     Long  editts =  arg.getEditTimestamp();
-                    if (editts.equals(0)) {
+                    System.out.println("Edit timestamp: " + editts);
+                    if (editts == 0) {
                         q.bindNull("edit_timestamp", JDBCType.TIMESTAMP.getVendorTypeNumber());
                     } else {
                         q.bind("edit_timestamp", new Timestamp(arg.getEditTimestamp()));
