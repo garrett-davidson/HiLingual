@@ -18,6 +18,7 @@ import org.skife.jdbi.v2.sqlobject.BinderFactory;
 import org.skife.jdbi.v2.sqlobject.BindingAnnotation;
 
 import java.lang.annotation.*;
+import java.sql.JDBCType;
 import java.sql.Timestamp;
 
 
@@ -35,8 +36,16 @@ public @interface BindMessage {
                 public void bind(SQLStatement<?> q, BindMessage bind, Message arg) {
 
                     q.bind("message_id", arg.getId());
-                    q.bind("sent_timestamp", new Timestamp(arg.getSentTimestamp()));
-                    q.bind("edit_timestamp", new Timestamp(arg.getEditTimestamp()));
+                    if (arg.getSentTimestamp() == 0) {
+                        q.bindNull("sent_timestamp", JDBCType.TIMESTAMP.getVendorTypeNumber());
+                    } else {
+                        q.bind("sent_timestamp", new Timestamp(arg.getSentTimestamp()));
+                    }
+                    if (arg.getEditTimestamp() == 0) {
+                        q.bindNull("edit_timestamp", JDBCType.TIMESTAMP.getVendorTypeNumber());
+                    } else {
+                        q.bind("edit_timestamp", new Timestamp(arg.getEditTimestamp()));
+                    }
                     q.bind("sender_id", arg.getSender());
                     q.bind("receiver_id", arg.getReceiver());
                     q.bind("message", arg.getContent());
