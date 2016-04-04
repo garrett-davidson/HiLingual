@@ -20,7 +20,6 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     var searchResults = [HLUser]()
 
     var matches = [HLUser]()
-    var requests = [Bool]()
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
         searchTable.hidden = false
@@ -62,13 +61,36 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
                     print(returnString)
                 }
                 searchResults = HLUser.fromJSONArray(returnedData)
-                for _ in 0..<searchResults.count {
-                    
-                    requests += [true]
-                }
             }
             searchTable.reloadData()
         }
+    }
+
+    func sendRequestToUser(userId: Int64) {
+        var resp: NSURLResponse?
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(userId)/")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
+                if let response = resp as? NSHTTPURLResponse {
+                    if response.statusCode == 204 {
+                        print("Sent request")
+                        return
+                    }
+                }
+
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+
+            }
+        }
+        
+        print("Failed to send request")
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -80,26 +102,13 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
     
     @IBAction func sendRequest(sender: UIButton) {
+        //From search bar
+
+
         let index = sender.tag
-        
-        
-        if (requests[index]){
-            sender.setTitle("Cancel", forState: .Normal)
-            requests[index] = false
-            searchTable.reloadData()
-            print("sent")
-            HLUser.getCurrentUser().usersChattedWith.append(searchResults[index])
-            //send request to user
-        }else{
-            sender.setTitle("Send Request", forState: .Normal)
-            searchTable.reloadData()
-            requests[index] = true
-            print("cancel")
-            //send cancel
-        }
-        //sender.hidden = true
-        //sender.userInteractionEnabled = false
-        
+
+//        sender.setTitle("Send Request", forState: .Normal)
+        sendRequestToUser(searchResults[index].userId)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -153,30 +162,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
     func sendMessageButtonPressed(sender: AnyObject) {
 
-        var resp: NSURLResponse?
-
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(matches[sender.tag].userId)/")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "POST"
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
-                if let response = resp as? NSHTTPURLResponse {
-                    if response.statusCode == 204 {
-                        print("Sent request")
-                        return
-                    }
-                }
-
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                }
-
-            }
-        }
-
-        print("Failed to send request")
+        sendRequestToUser(matches[sender.tag].userId)
     }
 
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
