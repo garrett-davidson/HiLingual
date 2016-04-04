@@ -29,7 +29,7 @@ class HLUserSession: NSObject, NSCoding {
     }
 
     @objc required init?(coder aDecoder: NSCoder) {
-        self.userId = aDecoder.decodeObjectForKey("userId") as! Int64
+        self.userId = (aDecoder.decodeObjectForKey("userId") as! NSNumber).longLongValue
         self.sessionId = aDecoder.decodeObjectForKey("sessionId") as! String
         self.authority = LoginAuthority(rawValue:aDecoder.decodeObjectForKey("authority") as! String)!
         self.authorityAccountId = aDecoder.decodeObjectForKey("authorityAccountId") as! String

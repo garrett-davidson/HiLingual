@@ -12,11 +12,11 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
+class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     @IBOutlet weak var googleSignInButton: GIDSignInButton!
 
     override func viewDidLoad() {
-        GIDSignIn.sharedInstance().signOut()
+//        GIDSignIn.sharedInstance().signOut()
     }
 
     override func viewDidAppear(animated:Bool) {
@@ -24,13 +24,17 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
 
         GIDSignIn.sharedInstance().uiDelegate = self
-//        GIDSignIn.sharedInstance().signInSilently()
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().signInSilently()
 
+        checkSignedIn()
+    }
 
+    func checkSignedIn() {
         //Use guard if it wouldn't make sense to continue a method if a condition is false
         //Guard will guarantee a condition is true
         //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
-        guard FBSDKAccessToken.currentAccessToken() != nil else {
+        guard FBSDKAccessToken.currentAccessToken() != nil || GIDSignIn.sharedInstance().currentUser != nil else {
             print("Need to log in")
             let loginButton = FBSDKLoginButton()
             loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
@@ -40,10 +44,10 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             return
         }
 
-      if let user = HLUser.getCurrentUser() {
-           // if let _ = user.getSession() {
-                self.performSegueWithIdentifier("previousLogin", sender: self)
-           // }
+        if let user = HLUser.getCurrentUser() {
+            // if let _ = user.getSession() {
+            self.performSegueWithIdentifier("previousLogin", sender: self)
+            // }
         }
 
         print("ViewDidLoadHere")
@@ -52,10 +56,12 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         loginButton.center = self.view.center
         loginButton.delegate = self
         self.view.addSubview(loginButton)
-        
-        GIDSignIn.sharedInstance().uiDelegate = self
-//        GIDSignIn.sharedInstance().signInSilently()
     }
+
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+        checkSignedIn()
+    }
+
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         guard error == nil else {
             //If you know that an optional is not nil, you should force unwrap it when you print it
