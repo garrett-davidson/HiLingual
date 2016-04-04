@@ -114,35 +114,43 @@ public class ChatResource {
     @Path("/{requester-id}/accept")
     public void accept(@HeaderParam("Authorization") String hlat, @PathParam("requester-id") long requesterId) {
         //  Check auth
+        System.out.println("Starting accept...");
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long accepterId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, accepterId)) {
             throw new NotAuthorizedException("Bad session token");
         }
+        System.out.println("User has session");
         User accepter = userDAO.getUser(accepterId);
         User requester = userDAO.getUser(requesterId);
         if (requester == null) {
+            System.out.println("Requester was null");
             throw new NotFoundException("No such requester");
         }
-        //  Ignore requests that already exist
-        if (requester.getUsersChattedWith().contains(accepterId)) {
+        //  Ignore requests where accepter already accepted requester
+        if (accepter.getUsersChattedWith().contains(requesterId)) {
+            System.out.println("Requester already exists in accepter users chatted with");
             return;
         }
         //  Check that they were requested
-        Set<Long> requests = chatMessageDAO.getRequests(requesterId);
+        Set<Long> requests = chatMessageDAO.getRequests(accepterId);
         boolean found = false;
         for (long request : requests) {
-            if (request == accepterId) {
+            if (request == requesterId) {
                 found = true;
                 break;
             }
         }
         if (!found) {
+            System.out.println("Requester was not found in accepter requests");
             throw new NotFoundException("Request " + requesterId + " not found");
         }
+
         accepter.getUsersChattedWith().add(requesterId);
         requester.getUsersChattedWith().add(accepterId);
+        System.out.println("Going to accpet request");
         chatMessageDAO.acceptRequest(accepterId, requesterId);
+        System.out.println("Accepted request");
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
         sendNotification(requesterId, String.format("<LOCALIZE ME>%s has accepted your conversation request.",
