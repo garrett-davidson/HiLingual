@@ -15,6 +15,8 @@ public class UserChats {
         this.currentChats = currentChats;
         this.pendingChats = pendingChats;
     }
+    public UserChats() {
+    }
 
     @JsonProperty
     public long getUserId() {
