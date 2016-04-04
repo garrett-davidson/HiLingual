@@ -74,9 +74,34 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
-        didLoginWithSession(HLUserSession(userId: 0, sessionId: "", authority: .Facebook, authorityAccountId: "", authorityToken: ""))
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = "POST"
+        let bodyDict = ["authority": "FACEBOOK",
+                        "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
+                        "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString,
+                        "deviceToken": (UIApplication.sharedApplication().delegate! as! AppDelegate).apnsToken!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]
+
+        request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
+
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            print(returnedData)
+            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                print(returnString)
+                if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                    self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: .Facebook, authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                }
+                else {
+                    print("Couldn't parse return value")
+                }
+            }
+            else {
+                print("Returned data is not a string")
+            }
+        }
     }
-    
+
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
     }
