@@ -37,6 +37,8 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
         //Create a new HLUser user with the information from this view
         //Be sure to call user.save() !!
 
+        editProfileView.user.setSession(session)
+        editProfileView.user.userId = session!.userId
         editProfileView.user.save()
 
         performSegueWithIdentifier("DoneEditing", sender: self)
@@ -167,7 +169,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
         //Lazy way to fix race condition
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             while GIDSignIn.sharedInstance().currentUser == nil {
-                sleep(100)
+                sleep(1)
             }
 
             let googleUser = GIDSignIn.sharedInstance().currentUser

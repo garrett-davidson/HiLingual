@@ -14,9 +14,16 @@ import UIKit
 
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var converstationTable: UITableView!
-    var conversations = HLUser.getCurrentUser().usersChattedWith
     var messages = [HLMessage]()
-    var hiddenButtons = [Bool]()
+
+    let currentUser = HLUser.getCurrentUser()
+
+    var hasPendingChats: Bool {
+        get {
+            return currentUser.pendingChats.count > 0
+        }
+    }
+
     override func viewDidLoad() {
         loadSamples();
         self.tabBarController?.tabBar.hidden = false
@@ -30,11 +37,20 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return hasPendingChats ? 2 : 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversations.count
+        switch section {
+        case 0:
+            return hasPendingChats ? currentUser.pendingChats.count : currentUser.usersChattedWith2.count
+
+        case 1:
+            return currentUser.pendingChats.count
+        default:
+            print("Invalid section number")
+            return 0
+        }
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -43,52 +59,91 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         refreshTableView()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/me")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + (HLUser.getCurrentUser().getSession()?.sessionId)!]
+        request.HTTPMethod = "GET"
+
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            print(returnedData)
+            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                print(returnString)
+
+                if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                    if let pendingChats = ret["pendingChats"] as? [Int] {
+                        HLUser.getCurrentUser().pendingChats = pendingChats.map({ (i) -> Int64 in
+                            Int64(i)
+                        })
+                    }
+
+                    if let acceptedChats = ret["currentChats"] as? [Int] {
+                        HLUser.getCurrentUser().usersChattedWith2 = acceptedChats.map({ (i) -> Int64 in
+                            Int64(i)
+                        })
+                    }
+                }
+            }
+        }
+
+        converstationTable.reloadData()
+    }
+
     func refreshTableView() {
-        conversations = HLUser.getCurrentUser().usersChattedWith
-
-        //TODO: Actually check the server
-        hiddenButtons = conversations.map({ (user) -> Bool in
-            false
-        })
-
         self.converstationTable.reloadData()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellIdentity = "ConversationTableViewCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
-        let user = conversations[indexPath.row]
-        let hidden = hiddenButtons[indexPath.row]
-        //Should it be displayname or name?
-        if(hidden){
+
+        //Accepted chat
+        if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
+            let cellIdentity = "ConversationTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
+
+            let user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])!
+
             cell.name.text = user.name
-        }else{
-            cell.name.text = user.displayName
-        }
-        cell.profilePicture.layer.masksToBounds = false
-        cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
-        cell.profilePicture.clipsToBounds = true
-        cell.profilePicture.image = user.profilePicture
-        cell.acceptButton.tag = indexPath.row
-        cell.declineButton.tag = indexPath.row
-        cell.declineButton.hidden = hidden
-        cell.acceptButton.hidden = hidden
-        //Mark: Fills the view
-        if (hidden){
+            cell.profilePicture.layer.masksToBounds = false
+            cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
+            cell.profilePicture.clipsToBounds = true
+            cell.profilePicture.image = user.profilePicture
+            cell.acceptButton.tag = indexPath.row
+            cell.declineButton.tag = indexPath.row
+            cell.declineButton.hidden = true
+            cell.acceptButton.hidden = true
+
+
             cell.date.text = "Yesterday"
             cell.lastMessage.text = "This is an already accepted request"
-        }else{
+            return cell
+        }
+
+        //Pending chats
+        else {
+            let cellIdentity = "ConversationTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
+            //Should it be displayname or name?
+            let user = HLUser.getUserById(currentUser.pendingChats[indexPath.row])!
+            cell.name.text = user.name
+            cell.profilePicture.layer.masksToBounds = false
+            cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
+            cell.profilePicture.clipsToBounds = true
+            cell.profilePicture.image = user.profilePicture
+            cell.acceptButton.tag = indexPath.row
+            cell.declineButton.tag = indexPath.row
+            cell.declineButton.hidden = false
+            cell.acceptButton.hidden = false
+            //Mark: Fills the view
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             cell.date.text = ""
             cell.lastMessage.text = ""
-            
+            return cell
         }
-        return cell
     }
+
     @IBAction func accept(sender: UIButton) {
         //send accept to server
         let index = sender.tag
-        hiddenButtons[index] = true
+        currentUser.usersChattedWith2.append(currentUser.pendingChats.removeAtIndex(index))
         converstationTable.reloadData()
         
     }
@@ -96,8 +151,9 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         sender.hidden = true
         let index = sender.tag
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
-        hiddenButtons.removeAtIndex(index)
-        conversations.removeAtIndex(index)
+
+        currentUser.pendingChats.removeAtIndex(index)
+
         HLUser.getCurrentUser().usersChattedWith.removeAtIndex(index)
         converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
         converstationTable.reloadData()
@@ -116,7 +172,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = conversations[indexPath.row]
+                messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])
                 //Once messages is complete I can use that
                 
             }
@@ -129,7 +185,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = conversations[indexPath.row]
+                messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])
                 //Once messages is complete I can use that
                 
             }
@@ -139,7 +195,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = converstationTable.cellForRowAtIndexPath(indexPath)
-        if(hiddenButtons[indexPath.row]){
+        if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
             self.performSegueWithIdentifier("SegueToMessages", sender: cell)
             print("ACCEPTED")
         }
@@ -171,8 +227,15 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            conversations.removeAtIndex(indexPath.row)
-            hiddenButtons.removeAtIndex(indexPath.row)
+
+            if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
+                currentUser.usersChattedWith2.removeAtIndex(indexPath.row)
+            }
+
+            else {
+                currentUser.pendingChats.removeAtIndex(indexPath.row)
+            }
+
             HLUser.getCurrentUser().usersChattedWith.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             converstationTable.reloadData()

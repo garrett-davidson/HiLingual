@@ -18,7 +18,7 @@ enum Gender: Int {
 }
 
 class HLUser: NSObject, NSCoding {
-    let userId: Int64
+    var userId: Int64
     var name: String?
     var displayName: String?
     var knownLanguages: [Languages]
@@ -30,6 +30,9 @@ class HLUser: NSObject, NSCoding {
 
     var blockedUsers: [HLUser]?
     var usersChattedWith: [HLUser]
+    var usersChattedWith2: [Int64]
+
+    var pendingChats: [Int64]
 
     var age: Int? {
         get {
@@ -55,6 +58,8 @@ class HLUser: NSObject, NSCoding {
         self.profilePicture = profilePicture
 
         self.usersChattedWith = []
+        self.usersChattedWith2 = []
+        self.pendingChats = []
     }
 
     @objc required init?(coder aDecoder: NSCoder) {
@@ -72,6 +77,26 @@ class HLUser: NSObject, NSCoding {
         self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as? UIImage
         self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
         self.usersChattedWith = (aDecoder.decodeObjectForKey("usersChattedWith") as! [HLUser])
+
+        if let chatted2 = (aDecoder.decodeObjectForKey("usersChattedWith2") as? [NSNumber]) {
+            self.usersChattedWith2 = chatted2.map({ (num) -> Int64 in
+                return num.longLongValue
+            })
+        }
+        else {
+            self.usersChattedWith2 = []
+        }
+
+        if let pending = (aDecoder.decodeObjectForKey("pendingChats") as? [NSNumber]) {
+            self.pendingChats = pending.map({ (num) -> Int64 in
+                return num.longLongValue
+            })
+        }
+
+        else {
+            self.pendingChats = []
+        }
+
         self.session = aDecoder.decodeObjectForKey("session") as? HLUserSession
 
         learningLanguages = [Languages]()
@@ -99,50 +124,79 @@ class HLUser: NSObject, NSCoding {
         return currentUser
     }
 
-    static func fromJSON(jsonData: NSData) -> [HLUser] {
+    static func getUserById(id: Int64) -> HLUser? {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(id)")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + HLUser.currentUser!.session!.sessionId]
+        request.HTTPMethod = "GET"
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            print(returnedData)
+            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                print(returnString)
+                return HLUser.fromJSON(returnedData)
+            }
+        }
+
+        return nil
+    }
+
+    static func fromDict(userDict: NSDictionary) -> HLUser {
+        let userId = (userDict["userId"] as! NSNumber).longLongValue
+        let displayName = userDict["displayName"] as! String
+
+        //                    let gender = userDict["gender"]
+        //TODO: Fix this
+        let gender = Gender.Female
+
+        //Not important
+        let blockedUsers = userDict["blockedUsers"]
+
+
+        let bio = userDict["bio"] as! String
+
+        //Not important
+        let usersChattedWith = userDict["usersChattedWith"]
+
+        let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
+        let birthday = NSDate(timeIntervalSince1970: birthdayNumber)
+        //TODO: ^^ This doesn't quite work
+
+        //TODO: Load this image
+        let imageURL = userDict["imageURL"]
+
+        let knownLanguagesStrings = userDict["knownLanguages"] as! [String]
+        let learningLanguagesStrings = userDict["learningLanguages"] as! [String]
+
+        let knownLanguages = knownLanguagesStrings.map({ (languageString) -> Languages in
+            Languages(rawValue: languageString)!
+        })
+
+        let learningLanguages = learningLanguagesStrings.map({ (languageString) -> Languages in
+            Languages(rawValue: languageString)!
+        })
+
+
+
+        let name = userDict["name"] as! String
+
+        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe"))
+    }
+
+    static func fromJSON(jsonData: NSData) -> HLUser? {
+        if let obj = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) {
+            if let userDict = obj as? NSDictionary {
+                return(fromDict(userDict))
+            }
+        }
+
+        return nil
+    }
+
+    static func fromJSONArray(jsonData: NSData) -> [HLUser] {
         var userArray = [HLUser]()
         if let obj = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) {
             if let array = obj as? [NSDictionary] {
                 for userDict in array {
-                    let userId = (userDict["userId"] as! NSNumber).longLongValue
-                    let displayName = userDict["displayName"] as! String
-
-//                    let gender = userDict["gender"]
-                    //TODO: Fix this
-                    let gender = Gender.Female
-
-                    //Not important
-                    let blockedUsers = userDict["blockedUsers"]
-
-
-                    let bio = userDict["bio"] as! String
-
-                    //Not important
-                    let usersChattedWith = userDict["usersChattedWith"]
-
-                    let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
-                    let birthday = NSDate(timeIntervalSince1970: birthdayNumber)
-                    //TODO: ^^ This doesn't quite work
-
-                    //TODO: Load this image
-                    let imageURL = userDict["imageURL"]
-
-                    let knownLanguagesStrings = userDict["knownLanguages"] as! [String]
-                    let learningLanguagesStrings = userDict["learningLanguages"] as! [String]
-
-                    let knownLanguages = knownLanguagesStrings.map({ (languageString) -> Languages in
-                        Languages(rawValue: languageString)!
-                    })
-
-                    let learningLanguages = learningLanguagesStrings.map({ (languageString) -> Languages in
-                        Languages(rawValue: languageString)!
-                    })
-
-
-
-                    let name = userDict["name"] as! String
-
-                    userArray.append(HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe")))
+                    userArray.append(fromDict(userDict))
                 }
             }
         }
@@ -159,9 +213,8 @@ class HLUser: NSObject, NSCoding {
         //TODO: Implement creating a loggin in to server user
         //That way this doesn't have to be hard-coded
         if let userJSONData = self.toJSON() {
-            let testSessionId = "k9ike03ko65fkh0ih51163o4a6"
             let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session!.sessionId]
             request.HTTPMethod = "PATCH"
             request.HTTPBody = userJSONData
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
@@ -214,6 +267,10 @@ class HLUser: NSObject, NSCoding {
         return session
     }
 
+    func setSession(session: HLUserSession?) {
+        self.session = session
+    }
+
     @objc func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(NSNumber(longLong: userId), forKey: "UUID")
         aCoder.encodeObject(name, forKey: "name")
@@ -224,7 +281,20 @@ class HLUser: NSObject, NSCoding {
         aCoder.encodeObject(profilePicture, forKey: "profilePicture")
         aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
         aCoder.encodeObject(usersChattedWith, forKey: "usersChattedWith")
-        aCoder.encodeObject(session, forKey: "session")
+
+        let chatted2 = usersChattedWith2.map { (i) -> NSNumber in
+            return NSNumber(longLong: i)
+        }
+        aCoder.encodeObject(chatted2, forKey: "usersChattedWith2")
+
+        let pending = pendingChats.map { (i) -> NSNumber in
+            return NSNumber(longLong: i)
+        }
+        aCoder.encodeObject(pending, forKey: "pendingChats")
+
+        if session != nil {
+            aCoder.encodeObject(session!, forKey: "session")
+        }
 
         var learningLanguagesStrings = [String]()
         for lang in learningLanguages {

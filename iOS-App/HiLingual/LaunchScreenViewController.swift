@@ -12,11 +12,11 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
+class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     @IBOutlet weak var googleSignInButton: GIDSignInButton!
 
     override func viewDidLoad() {
-        GIDSignIn.sharedInstance().signOut()
+//        GIDSignIn.sharedInstance().signOut()
     }
 
     override func viewDidAppear(animated:Bool) {
@@ -24,13 +24,17 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
 
         GIDSignIn.sharedInstance().uiDelegate = self
-//        GIDSignIn.sharedInstance().signInSilently()
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().signInSilently()
 
+        checkSignedIn()
+    }
 
+    func checkSignedIn() {
         //Use guard if it wouldn't make sense to continue a method if a condition is false
         //Guard will guarantee a condition is true
         //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
-        guard FBSDKAccessToken.currentAccessToken() != nil else {
+        guard FBSDKAccessToken.currentAccessToken() != nil || GIDSignIn.sharedInstance().currentUser != nil else {
             print("Need to log in")
             let loginButton = FBSDKLoginButton()
             loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
@@ -40,10 +44,10 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             return
         }
 
-      if let user = HLUser.getCurrentUser() {
-           // if let _ = user.getSession() {
-                self.performSegueWithIdentifier("previousLogin", sender: self)
-           // }
+        if let user = HLUser.getCurrentUser() {
+            // if let _ = user.getSession() {
+            self.performSegueWithIdentifier("previousLogin", sender: self)
+            // }
         }
 
         print("ViewDidLoadHere")
@@ -52,10 +56,12 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         loginButton.center = self.view.center
         loginButton.delegate = self
         self.view.addSubview(loginButton)
-        
-        GIDSignIn.sharedInstance().uiDelegate = self
-//        GIDSignIn.sharedInstance().signInSilently()
     }
+
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+        checkSignedIn()
+    }
+
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         guard error == nil else {
             //If you know that an optional is not nil, you should force unwrap it when you print it
@@ -68,9 +74,34 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
-        didLoginWithSession(HLUserSession(sessionId: "", authority: .Facebook, authorityAccountId: "", authorityToken: ""))
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = "POST"
+        let bodyDict = ["authority": "FACEBOOK",
+                        "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
+                        "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString,
+                        "deviceToken": (UIApplication.sharedApplication().delegate! as! AppDelegate).apnsToken!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]
+
+        request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
+
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            print(returnedData)
+            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                print(returnString)
+                if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                    self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: .Facebook, authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                }
+                else {
+                    print("Couldn't parse return value")
+                }
+            }
+            else {
+                print("Returned data is not a string")
+            }
+        }
     }
-    
+
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
     }
@@ -92,7 +123,44 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
     func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
         viewController.dismissViewControllerAnimated(true, completion: nil)
-        didLoginWithSession(HLUserSession(sessionId: "", authority: .Google, authorityAccountId: "", authorityToken: ""))
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = "POST"
+
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            //TODO: Fix this 💩
+            //Lazy race condition fix
+            while signIn.currentUser == nil {
+                sleep(1)
+            }
+
+
+            let bodyDict = ["authority": "GOOGLE",
+                            "authorityAccountId": signIn.currentUser.userID,
+                            "authorityToken": signIn.currentUser.authentication.idToken,
+                            "deviceToken": (UIApplication.sharedApplication().delegate! as! AppDelegate).apnsToken!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                        self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: .Google, authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                    }
+                    else {
+                        print("Couldn't parse return value")
+                    }
+                }
+                else {
+                    print("Returned data is not a string")
+                }
+            }
+
+        })
     }
 
     func didLoginWithSession(session: HLUserSession) {

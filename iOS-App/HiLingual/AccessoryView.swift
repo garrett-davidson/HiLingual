@@ -21,10 +21,12 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBOutlet var recordingTimer: UILabel!
     @IBOutlet weak var leftButton: UIButton!
 
+
     var origTime = 0.0
     var curTime = 0.0
     var isRecording = false;
     var recordTimer: NSTimer!
+    var curURL: NSURL!
     
     @IBOutlet var previewRecording: UIButton!
     @IBOutlet var deleteRecording: UIButton!
@@ -88,7 +90,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
 
     func startRecording() {
         let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let audioURL = documentsURL.URLByAppendingPathComponent("recording.m4a")
+        let audioURL = documentsURL.URLByAppendingPathComponent(String(CACurrentMediaTime()))
+        curURL = audioURL
         
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -114,6 +117,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         audioRecorder.stop()
         
         if success {
+            sendButton.tintColor = UIColor.blueColor()
+            sendButton.userInteractionEnabled = true
             print("recorded audio")
         }
 
@@ -170,6 +175,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             finishRecording()
         }
     }
+    @IBAction func tapMicCancel(sender: AnyObject) {
+        if isRecording {
+            finishRecording()
+        }
+    }
     @IBAction func tapMicUpIn(sender: AnyObject) {
         if isRecording {
             finishRecording()
@@ -203,13 +213,48 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         previewRecording.hidden = true
         deleteRecording.hidden = true
         isRecording = false;
+        sendButton.tintColor = UIColor.lightGrayColor()
+        sendButton.userInteractionEnabled = false
+
+        
     }
     
     
     @IBAction func sendClicked(sender: AnyObject) {
-        if isRecording {
-            //TODO:
-            //Send recorded audio
+       var data: NSData? = nil
+        if isRecording{
+             print("click")
+            let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
+            print("sent voice")
+            let urlString = "https://gethilingual.com/api/asset/audio/5"
+            let request = NSMutableURLRequest( URL: NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!)
+            request.HTTPMethod = "POST"
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+            data = NSData(contentsOfURL: curURL)
+            
+            let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            
+            let bodyDict = NSDictionary(dictionary: ["audio": dataString])
+            
+            let body = try? NSJSONSerialization.dataWithJSONObject(bodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            
+            
+            request.HTTPBody = body!
+                //TODO: Use non-deprecated API
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+               
+            }
+            
+            else {
+                print("Empty response")
+            }
+            
+
+            return
         }
         else if isEditing {
             //TODO:
@@ -220,6 +265,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else {
             //TODO:
             //Send message
+            chatViewController!.sendMessageWithText(textView.text)
         }
     }
 

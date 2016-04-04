@@ -15,6 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     var window: UIWindow?
     var registrationOptions: [String: NSObject]?
 
+    var apnsToken: NSData?
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
@@ -51,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData ) {
         let string = deviceToken.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
         print(deviceToken)
+        apnsToken = deviceToken
         print(string)
 //        print("Notification token: \(deviceToken.base64EncodedStringWithOptions(NSB))")
         // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
@@ -81,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         }
 
         GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().signInSilently()
 
         return true
     }
