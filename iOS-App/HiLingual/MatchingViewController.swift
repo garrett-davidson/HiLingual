@@ -152,8 +152,31 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
 
     func sendMessageButtonPressed(sender: AnyObject) {
-        HLUser.getCurrentUser().usersChattedWith.append(matches[sender.tag])
-        print("Send message button pressed")
+
+        var resp: NSURLResponse?
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(matches[sender.tag].userId)/")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
+                if let response = resp as? NSHTTPURLResponse {
+                    if response.statusCode == 204 {
+                        print("Sent request")
+                        return
+                    }
+                }
+
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+
+            }
+        }
+
+        print("Failed to send request")
     }
 
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
