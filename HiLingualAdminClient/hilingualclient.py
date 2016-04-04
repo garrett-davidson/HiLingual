@@ -22,6 +22,47 @@ http = urllib3.PoolManager(
 # POST    /tasks/truncate-databases (com.example.hilingual.server.task.TruncateTask)
 
 
+def acceptChatRequest():
+	global responsebody
+	global userSessionId
+	global userId
+
+	url = 'https://gethilingual.com/api/chat/'
+	auth_param = "HLAT " + userSessionId
+
+	requestuserid = input("Enter the userid of the user you want to accept chat request: ")
+
+	url = url + requestuserid + "/accept"
+
+	response = http.request('POST', url, headers={'Authorization':auth_param})
+	
+	if response.status != 204:
+		print("Error: returned status code: " + str(response.status))
+	else:
+		print("Request success")
+
+
+def requestToChatWithUser():
+	global responsebody
+	global userSessionId
+	global userId
+
+	url = 'https://gethilingual.com/api/chat/'
+	auth_param = "HLAT " + userSessionId
+
+	requestuserid = input("Enter the userid of the user you want to request to chat: ")
+
+	url = url + str(requestuserid)
+
+	response = http.request('POST', url, headers={'Authorization':auth_param})
+	
+	if response.status != 204:
+		print("Error: returned status code: " + str(response.status))
+	else:
+		print("Request success")
+
+
+
 def messagesMe():
 	global responsebody
 	global userSessionId
@@ -53,12 +94,16 @@ def messagesPortal():
 	print("\nMessages Portal")
 
 	while 1:
-		print("1)ME\n2)Exit")
+		print("1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Exit")
 		selection = input("Select task>")
 
 		if selection == "1":
 			messagesMe()
 		elif selection == "2":
+			requestToChatWithUser()
+		elif selection == "3":
+			acceptChatRequest()
+		else:
 			return
 
 
