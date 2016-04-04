@@ -9,6 +9,7 @@ import com.example.hilingual.server.dao.impl.annotation.BindMessage;
 import com.example.hilingual.server.dao.impl.annotation.BindUser;
 import com.example.hilingual.server.dao.impl.annotation.BindUserChats;
 import com.google.inject.Inject;
+import org.skife.jdbi.cglib.util.ParallelSorter;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
@@ -17,6 +18,7 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -38,7 +40,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     public void init() {
         u = handle.attach(Update.class);
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_messages(" +
-                "message_id BIGINT UNIQUE PRIMARY KEY, " +
+                "message_id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT, " +
                 "sent_timestamp TIMESTAMP, " +
                 "edit_timestamp TIMESTAMP, " +
                 "sender_id BIGINT, " +
@@ -54,6 +56,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public Message[] getLatestMessages(long participantA, long participantB, int limit) {
         //  Convenience method
+
         return getLatestMessages(participantA, participantB, 0, limit);
     }
 
@@ -69,8 +72,17 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
         Message message = new Message();
+        System.out.println("New message: " + content);
+        message.setContent(content);
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        int maxid = u.getLastMessageId() + 1;
+        message.setId(maxid);
+        message.setSentTimestamp(System.currentTimeMillis());
+        message.setEditTimestamp(0);
+        System.out.println("Attempting to insert " + message.getId() + " into table");
         u.insertmessage(message);
-        return null;
+        return message;
     }
 
     @Override
@@ -121,7 +133,9 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 .bind("uid", String.valueOf(accepter))
                 .map(new RequestsMapper())
                 .first();
+        System.out.println("Accepting request");
         if (uc != null) {
+            System.out.println("Query returned NON-NULL UserChats object");
             Set<Long> pendingset = uc.getPendingChats();
             pendingset.remove(requester);
             if (pendingset.isEmpty()) {
@@ -267,6 +281,9 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
         @SqlUpdate("delete from hl_chat_pending_requests where user_id = :user_id")
         void removerequests(@BindUserChats UserChats uc);
+
+        @SqlUpdate("SELECT max(message_id) from hl_chat_messages")
+        int getLastMessageId();
 
     }
 }

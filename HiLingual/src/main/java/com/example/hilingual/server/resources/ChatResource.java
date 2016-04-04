@@ -163,6 +163,7 @@ public class ChatResource {
     public Message newMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId,
                               @Valid Message message) throws IOException, URISyntaxException {
         //  Check auth
+        System.out.println("New message");
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long senderId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, senderId)) {
@@ -171,12 +172,15 @@ public class ChatResource {
         User sender = userDAO.getUser(senderId);
         User reciever = userDAO.getUser(receiverId);
         if (reciever == null) {
+            System.out.println("Reciever user does not exist");
             throw new NotFoundException("No such receiver");
         }
         if (!sender.getUsersChattedWith().contains(receiverId)) {
+            System.out.println("Reciever not in senders chatted with list");
             throw new ForbiddenException("This user is not a conversation partner");
         }
         if (message.getAudio() != null) {
+            System.out.println("Audio message");
             String assetId = new BigInteger(130, random).toString(32);
             java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
             Files.createDirectories(outPath.getParent());
@@ -189,6 +193,7 @@ public class ChatResource {
             return ret;
         } else {
             //  New messages only have content field set
+            System.out.println("New text message");
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a message.",
                     sender.getDisplayName()));
