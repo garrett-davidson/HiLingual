@@ -88,7 +88,7 @@ public class UserDAOImpl implements UserDAO {
         u.insert(user);
         int lastId = u.getLastInsertId();
         user.setUserId(lastId);
-        updateUser(user);
+        //updateUser(user);
         return user;
     }
 

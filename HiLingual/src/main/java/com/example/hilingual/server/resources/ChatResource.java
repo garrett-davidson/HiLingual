@@ -74,9 +74,10 @@ public class ChatResource {
         if (user == null) {
             throw new NotFoundException("This session is not associated with any user account");
         }
-        long[] chats = user.getUsersChattedWith().stream().mapToLong(Long::longValue).toArray();
-        long[] pending = chatMessageDAO.getRequests(user.getUserId());
-        return new UserChats(chats, pending);
+
+        Set<Long> chats = user.getUsersChattedWith();
+        Set<Long> pending = chatMessageDAO.getRequests(user.getUserId());
+        return new UserChats(user.getUserId(), chats, pending);
     }
 
     @POST
@@ -94,7 +95,7 @@ public class ChatResource {
             throw new NotFoundException("No such receiverId");
         }
         //  Ignore requests that already exist
-        long[] req = chatMessageDAO.getRequests(receiverId);
+        Set<Long> req = chatMessageDAO.getRequests(receiverId);
         for (long l : req) {
             if (l == requesterId) {
                 return;
@@ -128,7 +129,7 @@ public class ChatResource {
             return;
         }
         //  Check that they were requested
-        long[] requests = chatMessageDAO.getRequests(requesterId);
+        Set<Long> requests = chatMessageDAO.getRequests(requesterId);
         boolean found = false;
         for (long request : requests) {
             if (request == accepterId) {
@@ -259,7 +260,7 @@ public class ChatResource {
             return;
         }
         tokens.stream().
-                forEach(token ->  apnsService.sendNotification(token, builtBody));
+                forEach(token -> apnsService.sendNotification(token, builtBody));
     }
 
 }

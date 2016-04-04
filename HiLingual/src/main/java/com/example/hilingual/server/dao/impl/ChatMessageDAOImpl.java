@@ -2,15 +2,22 @@ package com.example.hilingual.server.dao.impl;
 
 import com.example.hilingual.server.api.Message;
 import com.example.hilingual.server.dao.ChatMessageDAO;
+import com.example.hilingual.server.dao.impl.annotation.BindMessage;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ChatMessageDAOImpl implements ChatMessageDAO {
 
@@ -18,13 +25,14 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     private final DBI dbi;
     private Handle handle;
     private static Logger LOGGER = Logger.getLogger(ChatMessageDAOImpl.class.getName());
+    private Update u;
 
     @Inject
     public ChatMessageDAOImpl(DBI dbi) { this.dbi = dbi;}
 
     @Override
     public void init() {
-        handle.execute("CREATE TABLE IF NOT EXISTS chat_messages(" +
+        handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_messages(" +
                 "message_id BIGINT UNIQUE PRIMARY KEY, " +
                 "sent_timestamp TIMESTAMP, " +
                 "edit_timestamp TIMESTAMP, " +
@@ -32,6 +40,10 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 "receiver_id BIGINT, " +
                 "message VARCHAR(500), " +
                 "edited_message VARCHAR(500))");
+
+        handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
+                "user_id BIGINT, " +
+                "pending_chat_users LONGTEXT");
     }
 
     @Override
@@ -51,6 +63,8 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     public Message newMessage(long sender, long receiver, String content) {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
+        Message message = new Message();
+        u.insert(message);
         return null;
     }
 
@@ -72,9 +86,9 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     @Override
-    public long[] getRequests(long userId) {
+    public Set<Long> getRequests(long userId) {
         //  Get pending requests
-        return new long[0];
+        return new HashSet<Long>();
     }
 
     @Override
@@ -88,7 +102,8 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public void truncate() {
         //  Truncate message and request tables
-
+        handle.execute("TRUNCATE hl_chat_messages");
+        handle.execute("TRUNCATE hl_chat_pending_requests");
     }
 
     @Override
@@ -119,12 +134,26 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
             return message;
         }
-
-
-
-
     }
 
+    public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
+        return set.stream().
+                map(toStringer).
+                collect(Collectors.joining(","));
+    }
 
+    public static <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
+        Set<T> set = new HashSet<>();
+        StringTokenizer tokenizer = new StringTokenizer(input, ",");
+        while (tokenizer.hasMoreTokens()) {
+            T t = fromStringer.apply(tokenizer.nextToken());
+            set.add(t);
+        }
+        return set;
+    }
 
+    public static interface Update {
+        @SqlUpdate("insert into hl_chat_messages (message_id, sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message) values (:message_id, :sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message)")
+        void insert(@BindMessage Message message);
+    }
 }

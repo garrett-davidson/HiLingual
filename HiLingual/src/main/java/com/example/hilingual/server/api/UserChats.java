@@ -2,33 +2,49 @@ package com.example.hilingual.server.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Set;
+
 public class UserChats {
 
-    private long[] currentChats;
-    private long[] pendingChats;
+    private long userId;
+    private Set<Long> currentChats;
+    private Set<Long> pendingChats;
 
-    public UserChats(long[] currentChats, long[] pendingChats) {
+    public UserChats(long userId, Set<Long> currentChats, Set<Long> pendingChats) {
+        this.userId = userId;
         this.currentChats = currentChats;
         this.pendingChats = pendingChats;
     }
 
     @JsonProperty
-    public long[] getCurrentChats() {
+    public long getUserId() {
+        return userId;
+    }
+
+    @JsonProperty
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    @JsonProperty
+    public Set<Long> getCurrentChats() {
         return currentChats;
     }
 
     @JsonProperty
-    public void setCurrentChats(long[] currentChats) {
+    public void setCurrentChats(Set<Long> currentChats) {
         this.currentChats = currentChats;
     }
 
     @JsonProperty
-    public long[] getPendingChats() {
+    public Set<Long> getPendingChats() {
         return pendingChats;
     }
 
     @JsonProperty
-    public void setPendingChats(long[] pendingChats) {
+    public void setPendingChats(Set<Long> pendingChats) {
         this.pendingChats = pendingChats;
     }
+
+
 }

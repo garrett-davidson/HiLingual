@@ -3,6 +3,8 @@ package com.example.hilingual.server.dao;
 import com.example.hilingual.server.api.Message;
 import io.dropwizard.lifecycle.Managed;
 
+import java.util.Set;
+
 public interface ChatMessageDAO extends Managed {
 
     void init();
@@ -19,7 +21,7 @@ public interface ChatMessageDAO extends Managed {
 
     void acceptRequest(long accepter, long requester);
 
-    long[] getRequests(long userId);
+    Set<Long> getRequests(long userId);
 
     Message editMessage(long messsageId, String editData);
 
