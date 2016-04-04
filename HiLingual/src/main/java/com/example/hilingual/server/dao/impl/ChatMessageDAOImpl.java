@@ -1,6 +1,8 @@
 package com.example.hilingual.server.dao.impl;
 
 import com.example.hilingual.server.api.Message;
+import com.example.hilingual.server.api.User;
+import com.example.hilingual.server.api.UserChats;
 import com.example.hilingual.server.dao.ChatMessageDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindMessage;
 import com.google.inject.Inject;
@@ -12,9 +14,7 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -88,7 +88,12 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public Set<Long> getRequests(long userId) {
         //  Get pending requests
-        return new HashSet<Long>();
+        List<UserChats> ucList = new ArrayList<UserChats>();
+        ucList = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
+                .bind("uid", String.valueOf(userId))
+                .map(new RequestsMapper())
+                .list();
+        return ucList.get(0).getPendingChats();
     }
 
     @Override
@@ -133,6 +138,17 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             message.setEditData(r.getString("edited_message"));
 
             return message;
+        }
+    }
+
+    class RequestsMapper implements ResultSetMapper<UserChats> {
+        @Override
+        public UserChats map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            UserChats uc = new UserChats();
+            uc.setUserId(r.getLong("user_id"));
+            String pendingChats = r.getString("pending_chat_users");
+            uc.setPendingChats(stringToSet(pendingChats, Long::parseLong));
+            return uc;
         }
     }
 
