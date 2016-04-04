@@ -3,6 +3,7 @@ package com.example.hilingual.server.resources;
 import com.example.hilingual.server.api.Message;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.UserChats;
+import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.ChatMessageDAO;
 import com.example.hilingual.server.dao.DeviceTokenDAO;
 import com.example.hilingual.server.dao.SessionDAO;
@@ -15,7 +16,17 @@ import io.dropwizard.jersey.PATCH;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Random;
 import java.util.Set;
+
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
 @Path("/chat")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,15 +39,24 @@ public class ChatResource {
     private final ChatMessageDAO chatMessageDAO;
     private final APNsService apnsService;
     private final DeviceTokenDAO deviceTokenDAO;
+    private final ServerConfig config;
+    private final Random random;
 
     @Inject
     public ChatResource(SessionDAO sessionDAO, UserDAO userDAO, ChatMessageDAO chatMessageDAO,
-                        APNsService apnsService, DeviceTokenDAO deviceTokenDAO) {
+                        APNsService apnsService, DeviceTokenDAO deviceTokenDAO, ServerConfig config) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.chatMessageDAO = chatMessageDAO;
         this.apnsService = apnsService;
         this.deviceTokenDAO = deviceTokenDAO;
+        this.config = config;
+
+
+        random = new Random();
+        //  Force secure seeding
+        byte[] temp = new byte[128];
+        random.nextBytes(temp);
     }
 
     //  TODO
@@ -132,7 +152,7 @@ public class ChatResource {
     @POST
     @Path("/{receiver-id}/message")
     public Message newMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId,
-                              @Valid Message message) {
+                              @Valid Message message) throws IOException, URISyntaxException {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long senderId = sessionDAO.getSessionOwner(sessionId);
@@ -147,11 +167,31 @@ public class ChatResource {
         if (!sender.getUsersChattedWith().contains(receiverId)) {
             throw new ForbiddenException("This user is not a conversation partner");
         }
-        //  New messages only have content field set
-        Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
-        sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a message.",
-                sender.getDisplayName()));
-        return ret;
+        if (message.getAudio() != null) {
+            String assetId = new BigInteger(130, random).toString(32);
+            java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
+            Files.createDirectories(outPath.getParent());
+            Files.write(outPath, message.audioDataToBytes(), CREATE, TRUNCATE_EXISTING);
+            URI uri = getAudioUrl(senderId, assetId);
+            //  New messages only have content field set
+            Message ret = chatMessageDAO.newMessage(senderId, receiverId, uri.toASCIIString());
+            sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a voice clip.",
+                    sender.getDisplayName()));
+            return ret;
+        } else {
+            //  New messages only have content field set
+            Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
+            sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a message.",
+                    sender.getDisplayName()));
+            return ret;
+        }
+    }
+
+    private URI getAudioUrl(long userId, String assetId) throws URISyntaxException {
+        return new URI(config.getAssetAccessBaseUrl()).
+                resolve("audio").
+                resolve(Long.toString(userId)).
+                resolve(assetId);
     }
 
     @PATCH
