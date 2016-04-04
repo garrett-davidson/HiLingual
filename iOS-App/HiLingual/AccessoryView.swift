@@ -273,6 +273,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message" {
             textView.text = ""
+            textView.scrollEnabled = false
         }
     }
 

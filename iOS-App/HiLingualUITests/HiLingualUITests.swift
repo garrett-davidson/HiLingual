@@ -96,5 +96,21 @@ class HiLingualUITests: XCTestCase {
         
         
     }
+    func testTextViewHeight() {
+        
+        let app = XCUIApplication()
+        app.tables.staticTexts["This is an already accepted request"].tap()
+        
+        let element = app.childrenMatchingType(.Window).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
+        element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+        element.childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+        app.menuItems["Paste"].tap()
+        
+        let sendButton = app.buttons["Send"]
+        sendButton.tap()
+        sendButton.tap()
+        
+        
+    }
     
 }
