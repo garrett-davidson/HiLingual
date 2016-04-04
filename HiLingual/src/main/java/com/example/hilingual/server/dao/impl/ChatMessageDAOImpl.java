@@ -76,7 +76,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         message.setContent(content);
         message.setSender(sender);
         message.setReceiver(receiver);
-        int maxid = u.getLastMessageId() + 1;
+        int maxid = u.getLastMessageId();
         message.setId(maxid);
         message.setSentTimestamp(System.currentTimeMillis());
         message.setEditTimestamp(0);
@@ -282,7 +282,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         @SqlUpdate("delete from hl_chat_pending_requests where user_id = :user_id")
         void removerequests(@BindUserChats UserChats uc);
 
-        @SqlUpdate("SELECT max(message_id) from hl_chat_messages")
+        @SqlUpdate("SELECT LAST_INSERT_ID() from hl_chat_messages")
         int getLastMessageId();
 
     }
