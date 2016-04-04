@@ -18,10 +18,9 @@ import org.skife.jdbi.v2.sqlobject.BindingAnnotation;
 import static com.example.hilingual.server.dao.impl.ChatMessageDAOImpl.setToString;
 
 import java.lang.annotation.*;
-import java.util.function.Function;
 
 
-@BindingAnnotation(BindUser.BindUserFactory.class)
+@BindingAnnotation(BindUserChats.BindUserChatsFactory.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
 public @interface BindUserChats {
