@@ -171,6 +171,7 @@ public class ChatResource {
         }
         User sender = userDAO.getUser(senderId);
         User reciever = userDAO.getUser(receiverId);
+        System.out.println("User has session");
         if (reciever == null) {
             System.out.println("Reciever user does not exist");
             throw new NotFoundException("No such receiver");
@@ -217,6 +218,7 @@ public class ChatResource {
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long editorId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, editorId)) {
+
             throw new NotAuthorizedException("Bad session token");
         }
         User editor = userDAO.getUser(editorId);
@@ -250,11 +252,13 @@ public class ChatResource {
                                  @QueryParam("limit") @DefaultValue("50") int limit,
                                  @QueryParam("before") @DefaultValue("0") long beforeMsgId) {
         //  Check auth
+        System.out.println("New message");
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, authUserId)) {
             throw new NotAuthorizedException("Bad session token");
         }
+        System.out.println("User has session");
         User me = userDAO.getUser(authUserId);
         if (!me.getUsersChattedWith().contains(receiverId)) {
             throw new NotFoundException("Conversation not found");
