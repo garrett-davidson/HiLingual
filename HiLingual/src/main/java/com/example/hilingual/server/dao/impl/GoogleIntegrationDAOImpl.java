@@ -50,7 +50,7 @@ public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
 
     @Override
     public void setUserIdForGoogleAccountId(long userId, String accountId) {
-        handle.update("INSERT INTO hl_google_data (user_id, account_id) VALUES (?, ?)",
+        handle.update("INSERT INTO hl_google_data (account_id, user_id) VALUES (?, ?)",
                 accountId, userId);
     }
 
