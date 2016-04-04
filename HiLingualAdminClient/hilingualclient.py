@@ -22,6 +22,31 @@ http = urllib3.PoolManager(
 # POST    /tasks/truncate-databases (com.example.hilingual.server.task.TruncateTask)
 
 
+def sendMessage():
+	global responsebody
+	global userSessionId
+	global userId
+
+	auth_param = "HLAT " + userSessionId
+	url = 'https://gethilingual.com/api/chat/'
+
+	requestuserid = input("Enter the userid of the user you want to send a message: ")
+	url = url + str(requestuserid) + "/message"
+	message = input("Enter message: ")
+
+	bodydic = {"message":message}
+	bodyjson = json.dumps(bodydic)
+
+	response = http.request('POST', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=bodyjson)
+
+	if response.status != 200:
+		print("Error: returned status code: " + str(response.status))
+	else:
+		print("Message sent!\n")
+
+
+
+
 def acceptChatRequest():
 	global responsebody
 	global userSessionId
@@ -94,7 +119,7 @@ def messagesPortal():
 	print("\nMessages Portal")
 
 	while 1:
-		print("1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Exit")
+		print("1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Send message\n5)Exit")
 		selection = input("Select task>")
 
 		if selection == "1":
@@ -103,6 +128,8 @@ def messagesPortal():
 			requestToChatWithUser()
 		elif selection == "3":
 			acceptChatRequest()
+		elif selection == "4":
+			sendMessage()
 		else:
 			return
 
