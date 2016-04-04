@@ -50,6 +50,7 @@
                     </constraints>
                     <state key="normal" title="Button" image="Microphone-128"/>
                     <connections>
+                        <action selector="tapMicCancel:" destination="-1" eventType="touchCancel" id="zvn-xx-UU6"/>
                         <action selector="tapMicDown:" destination="-1" eventType="touchDown" id="LDY-nH-QxR"/>
                         <action selector="tapMicUpIn:" destination="-1" eventType="touchUpInside" id="Qaw-GS-LAR"/>
                         <action selector="tapMicUpOut:" destination="-1" eventType="touchUpOutside" id="pBP-vk-oBF"/>

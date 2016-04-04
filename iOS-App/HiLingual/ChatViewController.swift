@@ -22,8 +22,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var chatTableView: UITableView!
 
     @IBOutlet weak var testView: AccessoryView!
-    
     var selectedCellIndex: Int?
+    
+    
+    var curPlayingMessage: UIButton?
+    var isPlayingMessage = false
+    
     var editingCellIndex: Int?
     @IBOutlet weak var tableView: UITableView!
 
@@ -159,8 +163,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
         UIView.animateWithDuration(duration) { () -> Void in
-            self.chatTableView.contentInset = UIEdgeInsetsMake((self.navigationController?.navigationBar.frame.height)! + 20, 0, keyboardFrame.height, 0)
-            self.view.layoutIfNeeded()
+            if let height = self.navigationController?.navigationBar.frame.height {
+                self.chatTableView.contentInset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.height, 0)
+                self.view.layoutIfNeeded()
+            }
+            
         }
         
         tableViewScrollToBottom(true)
@@ -170,41 +177,88 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
         UIView.animateWithDuration(duration) { () -> Void in
-            self.chatTableView.contentInset = UIEdgeInsetsMake((self.navigationController?.navigationBar.frame.height)! + 20, 0, 0, 0);
-            self.view.layoutIfNeeded()
+            if let height = self.navigationController?.navigationBar.frame.height {
+                self.chatTableView.contentInset = UIEdgeInsetsMake(height + 20, 0, 0, 0);
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-
-        if message.editedText == nil {
+        
+        if (message.text.rangeOfString("audio://") != nil)  {
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
-
-
+            
+            
             if messages[indexPath.row].senderID  ==  currentUser.userId {
+                let button = cell.button
+               // cell.chatBubbleLeft
+                if(isPlayingMessage){
+                    button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                }else{
+                    button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                }
+                button.frame = CGRectMake(view.frame.size.width-45, 0, 30, 30)
+                button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                button.tag = indexPath.row
+                
                 cell.chatBubbleLeft.hidden = true
-
+                
                 cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-                cell.chatBubbleRight.text = message.text
-                cell.chatBubbleRight.hidden = false
+                
+               // cell.chatBubbleRight.text = message.text
+                cell.chatBubbleRight.hidden = true
                 cell.chatBubbleRight.layer.cornerRadius = 5
             }
-
+                
             else {
-                cell.chatBubbleRight.hidden = true
+                let button = cell.button
+                // cell.chatBubbleLeft
+                button.frame = CGRectMake(15, 0, 30, 30)
+                if(isPlayingMessage){
+                    button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                }else{
+                    button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                }
+                button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                
 
+                cell.chatBubbleRight.hidden = true
+                
                 cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-                cell.chatBubbleLeft.text = message.text
-                cell.chatBubbleLeft.hidden = false
+               // cell.chatBubbleLeft.text = message.text
+                cell.chatBubbleLeft.hidden = true
                 cell.chatBubbleLeft.layer.cornerRadius = 5
             }
             
             return cell
-        }
-
-        else {
+        }else if message.editedText == nil {
+            let cellIdentity = "ChatTableViewCell"
+                let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
+                
+                
+                if messages[indexPath.row].senderID  ==  currentUser.userId {
+                    cell.chatBubbleLeft.hidden = true
+                    
+                    cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+                    cell.chatBubbleRight.text = message.text
+                    cell.chatBubbleRight.hidden = false
+                    cell.chatBubbleRight.layer.cornerRadius = 5
+                }
+                    
+                else {
+                    cell.chatBubbleRight.hidden = true
+                    
+                    cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+                    cell.chatBubbleLeft.text = message.text
+                    cell.chatBubbleLeft.hidden = false
+                    cell.chatBubbleLeft.layer.cornerRadius = 5
+                }
+                
+                return cell
+        }else {
             let cellIdentity = "ChatEditedTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
 
@@ -231,7 +285,25 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
     }
-    
+    func tapPlayButton(sender: UIButton) {
+        if(isPlayingMessage == true){
+            sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            isPlayingMessage = false;
+        }else{
+            var urlstring: String = messages[sender.tag].text
+            let startIndex = urlstring.startIndex.advancedBy(8)
+            urlstring = "http://" + urlstring.substringFromIndex(startIndex)
+            let recordURL = NSURL(string: urlstring)
+            isPlayingMessage = true;
+            sender.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            
+
+            //get message from server
+            
+            print(recordURL)
+
+        }
+    }
 
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -255,14 +327,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message2 = HLMessage(text: "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", senderID: 69, receiverID: 68)
         let message3 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 68)
         let message4 = HLMessage(text: "lets see", senderID: 69, receiverID: 68)
-        let message5 = HLMessage(text: "HA Messages are working", senderID: 69, receiverID: 68)
-        let message6 = HLMessage(text: "Test Editedmessage 1", senderID: 5, receiverID: 69)
+        let message5 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 69)
+        let message6 = HLMessage(text: "Test Editedmessage 1", senderID: 1, receiverID: 69)
         let message7 = HLMessage(text: "Test ediTed mesage2", senderID: 69, receiverID: 5)
+        let message8 = HLMessage(text: "audio://blahblah", senderID: 1, receiverID: 69)
 
         message6.editedText = "Test edited message 1"
         message7.editedText = "Test edited message 2"
 
-        messages = [message1, message2, message3, message4, message5, message6, message7]
+        messages = [message1, message2, message3, message4, message5, message6, message7,message8]
     }
     
 }
