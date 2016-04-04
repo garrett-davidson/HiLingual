@@ -43,7 +43,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
                 "user_id BIGINT, " +
-                "pending_chat_users LONGTEXT");
+                "pending_chat_users LONGTEXT)");
     }
 
     @Override
