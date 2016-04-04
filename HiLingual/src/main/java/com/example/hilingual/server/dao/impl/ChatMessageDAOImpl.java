@@ -56,15 +56,39 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public Message[] getLatestMessages(long participantA, long participantB, int limit) {
         //  Convenience method
+        List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages WHERE " +
+                "(receiver_id = :receiver_id AND sender_id = :sender_id) " +
+                "OR (receiver_id = :sender_id AND sender_id = :receiver_id) LIMIT :num")
+                .bind("num", limit)
+                .bind("receiver_id", participantA)
+                .bind("sender_id", participantB)
+                .map(new MessageMapper())
+                .list();
 
-        return getLatestMessages(participantA, participantB, 0, limit);
+        Message[] messagesArray = new Message[returnedMessages.size()];
+        messagesArray = returnedMessages.toArray(messagesArray);
+
+        return messagesArray;
     }
 
     @Override
     public Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit) {
         //  Get the n=limit messages before beforeMessageId between A and B
         //  if beforeMessageId is 0, then we get the most recent n=limit messages.
-        return new Message[0];
+        List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
+                "(receiver_id = :receiver_id AND sender_id = :sender_id) " +
+                "OR (receiver_id = :sender_id AND sender_id = :receiver_id) AND message_id > :message_id LIMIT :num")
+                .bind("num", limit)
+                .bind("receiver_id", participantA)
+                .bind("sender_id", participantB)
+                .bind("message_id", limit)
+                .map(new MessageMapper())
+                .list();
+
+        Message[] messagesArray = new Message[returnedMessages.size()];
+        messagesArray = returnedMessages.toArray(messagesArray);
+
+        return messagesArray;
     }
 
     @Override
@@ -76,12 +100,11 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         message.setContent(content);
         message.setSender(sender);
         message.setReceiver(receiver);
-        int maxid = u.getLastMessageId();
-        message.setId(maxid);
         message.setSentTimestamp(System.currentTimeMillis());
         message.setEditTimestamp(0);
-        System.out.println("Attempting to insert " + message.getId() + " into table");
         u.insertmessage(message);
+        int maxid = u.getLastMessageId();
+        message.setId(maxid);
         return message;
     }
 
@@ -199,8 +222,8 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         public Message map(int index, ResultSet r, StatementContext ctx) throws SQLException {
             Message message = new Message();
             message.setId(r.getLong("message_id"));
-            message.setSentTimestamp(r.getDate("sent_date").getTime());
-            message.setEditTimestamp(r.getDate("edit_date").getTime());
+            message.setSentTimestamp(r.getDate("sent_timestamp").getTime());
+            message.setEditTimestamp(r.getDate("edit_timestamp").getTime());
             message.setSender(r.getLong("sender_id"));
             message.setReceiver(r.getLong("receiver_id"));
             message.setContent(r.getString("message"));
