@@ -46,7 +46,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             return hasPendingChats ? currentUser.pendingChats.count : currentUser.usersChattedWith2.count
 
         case 1:
-            return currentUser.pendingChats.count
+            return currentUser.usersChattedWith2.count
         default:
             print("Invalid section number")
             return 0
@@ -186,6 +186,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
                 messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])
+                messageDetailViewController.recipientId = currentUser.usersChattedWith2[indexPath.row]
                 //Once messages is complete I can use that
                 
             }

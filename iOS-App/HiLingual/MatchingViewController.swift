@@ -50,12 +50,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         //Mark: Send to the server
         //whatever users that are received go into users
         //fill requests with true for each user
-        let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
         print("sent search")
         if let text = searchBar.text {
             let urlString = "https://gethilingual.com/api/user/search?query=" + text
             let request = NSMutableURLRequest(URL: NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + HLUser.getCurrentUser().getSession()!.sessionId]
             //TODO: Use non-deprecated API
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
@@ -118,27 +117,33 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         cell.languagesSpeaks.text! = "  Speaks: " + user.knownLanguages.toList()
         return cell
     }
-    
-    func loadSampleUser(){
-        let photo = UIImage(named: "cantaloupe")!
-        let user = HLUser(userId: 1, name: "Bob John", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
-        let user1 = HLUser(userId: 1, name: "Noah is a BadAss", displayName: "bob.john.24", knownLanguages: [Languages.English], learningLanguages: [Languages.Arabic], bio: "NOTHING", gender: Gender.Male, birthdate: NSDate(), profilePicture: photo)
-        searchResults += [user,user1,HLUser.generateTestUser()]
-        requests += [true,true,true]
-        
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-//        loadSampleUser()
-        generateTestMatches(5)
+
         carousel.bounceDistance = 0.1;
         carousel.decelerationRate = 0.2;
         carousel.reloadData()
     }
 
-    func generateTestMatches(count: Int) {
-        for _ in 0..<count {
-            matches.append(HLUser.generateTestUser())
+    override func viewDidAppear(animated: Bool) {
+        loadMatches()
+    }
+
+    func loadMatches() {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/match")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "GET"
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    matches = HLUser.fromJSONArray(returnedData)
+                    carousel.reloadData()
+                }
+            }
         }
     }
 
