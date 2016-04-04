@@ -22,6 +22,27 @@ http = urllib3.PoolManager(
 # POST    /tasks/truncate-databases (com.example.hilingual.server.task.TruncateTask)
 
 
+def receiveMessages():
+	global responsebody
+	global userSessionId
+	global userId
+
+	auth_param = "HLAT " + userSessionId
+
+	otheruser = input("Enter id of other user: ")
+
+	url = 'https://gethilingual.com/api/chat/' + str(otheruser) + "/message"
+
+
+	response = http.request('GET', url, headers={'Authorization':auth_param})
+
+	responsebody = response.data.decode('utf-8')
+	parsed_search_responsebody = json.loads(responsebody)
+
+	print(parsed_search_responsebody)
+
+
+
 def sendMessage():
 	global responsebody
 	global userSessionId
@@ -34,13 +55,16 @@ def sendMessage():
 	url = url + str(requestuserid) + "/message"
 	message = input("Enter message: ")
 
-	bodydic = {"message":message}
-	bodyjson = json.dumps(bodydic)
+	bodydic = "{\"content\": \""+ message + "\"}"
+	print(bodydic)
 
-	response = http.request('POST', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=bodyjson)
+	response = http.request('POST', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=bodydic)
 
 	if response.status != 200:
 		print("Error: returned status code: " + str(response.status))
+		responsebody = response.data.decode('utf-8')
+		parsed_me_responsebody = json.loads(responsebody)
+		print(parsed_me_responsebody)
 	else:
 		print("Message sent!\n")
 
@@ -63,6 +87,7 @@ def acceptChatRequest():
 	
 	if response.status != 204:
 		print("Error: returned status code: " + str(response.status))
+
 	else:
 		print("Request success")
 
@@ -119,7 +144,7 @@ def messagesPortal():
 	print("\nMessages Portal")
 
 	while 1:
-		print("1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Send message\n5)Exit")
+		print("1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Send message\n5)Receive Messages\n6)Exit")
 		selection = input("Select task>")
 
 		if selection == "1":
@@ -130,6 +155,8 @@ def messagesPortal():
 			acceptChatRequest()
 		elif selection == "4":
 			sendMessage()
+		elif selection == "5":
+			receiveMessages()
 		else:
 			return
 
@@ -371,7 +398,11 @@ def login():
 
 	url = 'https://gethilingual.com/api/auth/login'
 
-	authority = input("What is the name of the authorization authority:")
+	authority = input("What is the name of the authorization authority:\n    1)Facebook\n    2)Google")
+	if authority == "1":
+		authority = "FACEBOOK"
+	elif authority == "2":
+		authority = "GOOGLE"
 	authorityAccountId = input("Enter authority account id:")
 	authorityToken = input("Enter authority token:")
 
@@ -412,7 +443,19 @@ def register():
 	data = data + authorityToken + '"}'
 
 
-	response = requests.get(url, data=data)
+	response = http.request('POST', url, headers={'Content-Type':'application/json'}, body=data)
+	responsebody = response.data.decode("utf-8")
+	if response.status != 200:
+		print("error")
+		print(responsebody)
+		return 0
+	print(responsebody)
+	parsed_login_responsebody = json.loads(responsebody)
+	userSessionId = parsed_login_responsebody["sessionId"]
+	userId = parsed_login_responsebody["userId"]
+	print("SessionID: " + userSessionId)
+	print("UserID: " + str(userId))
+	return 1
 
 def main():
 	global loggedin
