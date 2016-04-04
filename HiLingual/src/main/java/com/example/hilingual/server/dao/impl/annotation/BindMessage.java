@@ -36,12 +36,14 @@ public @interface BindMessage {
                 public void bind(SQLStatement<?> q, BindMessage bind, Message arg) {
 
                     q.bind("message_id", arg.getId());
-                    if (arg.getSentTimestamp() == 0) {
+                    Long  sentts =  arg.getSentTimestamp();
+                    if (sentts.equals(0)) {
                         q.bindNull("sent_timestamp", JDBCType.TIMESTAMP.getVendorTypeNumber());
                     } else {
                         q.bind("sent_timestamp", new Timestamp(arg.getSentTimestamp()));
                     }
-                    if (arg.getEditTimestamp() == 0) {
+                    Long  editts =  arg.getEditTimestamp();
+                    if (editts.equals(0)) {
                         q.bindNull("edit_timestamp", JDBCType.TIMESTAMP.getVendorTypeNumber());
                     } else {
                         q.bind("edit_timestamp", new Timestamp(arg.getEditTimestamp()));
