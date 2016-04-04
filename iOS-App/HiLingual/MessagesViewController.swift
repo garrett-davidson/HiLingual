@@ -88,7 +88,22 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         
-        converstationTable.reloadData()    }
+        converstationTable.reloadData()
+    }
+
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if numberOfSectionsInTableView(tableView) < 2 {
+            return nil
+        }
+
+        if section == 1 || section == 0 && !hasPendingChats {
+            return "Current chats"
+        }
+
+        else {
+            return "Pending chats"
+        }
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
@@ -186,7 +201,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])
+                messageDetailViewController.user = HLUser.getUserById(currentUser.pendingChats[indexPath.row])
                 //Once messages is complete I can use that
                 
             }
