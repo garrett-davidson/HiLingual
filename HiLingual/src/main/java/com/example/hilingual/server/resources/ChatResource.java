@@ -142,7 +142,7 @@ public class ChatResource {
         }
         accepter.getUsersChattedWith().add(requesterId);
         requester.getUsersChattedWith().add(accepterId);
-        chatMessageDAO.acceptRequest(requesterId, accepterId);
+        chatMessageDAO.acceptRequest(accepterId, requesterId);
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
         sendNotification(requesterId, String.format("<LOCALIZE ME>%s has accepted your conversation request.",
