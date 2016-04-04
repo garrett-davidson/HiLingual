@@ -20,8 +20,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBOutlet var view: UIView!
     @IBOutlet var recordingTimer: UILabel!
     @IBOutlet weak var leftButton: UIButton!
+    
+    
 
-
+    var textViewTested = false
     var origTime = 0.0
     var curTime = 0.0
     var isRecording = false;
@@ -83,6 +85,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         sendButton.setTitle("Send", forState: .Normal)
 
         textView.text = ""
+        textView.scrollEnabled = false
         textViewDidChange(textView)
 
         chatViewController?.editingCellIndex = nil
@@ -273,6 +276,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message" {
             textView.text = ""
+            textView.scrollEnabled = false
         }
     }
 
@@ -311,7 +315,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textView.scrollEnabled = false
         }
 
-        textView.reloadInputViews()
+        if textView.text == "" && textViewTested == false{
+            textViewTested = true
+            textViewDidChange(textView)
+        }
+        textViewTested = false
     }
     
     override func intrinsicContentSize() -> CGSize {
