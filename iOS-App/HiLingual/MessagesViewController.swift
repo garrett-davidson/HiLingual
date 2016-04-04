@@ -25,7 +25,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     override func viewDidLoad() {
-        loadSamples();
         self.tabBarController?.tabBar.hidden = false
         // grab any requests from server
         //navigationItem.leftBarButtonItem = editButtonItem()
@@ -60,6 +59,10 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     override func viewDidAppear(animated: Bool) {
+        refreshTableView()
+    }
+
+    func refreshTableView() {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/me")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + (HLUser.getCurrentUser().getSession()?.sessionId)!]
         request.HTTPMethod = "GET"
@@ -84,13 +87,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
-
-        converstationTable.reloadData()
-    }
-
-    func refreshTableView() {
-        self.converstationTable.reloadData()
-    }
+        
+        converstationTable.reloadData()    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
@@ -146,35 +144,28 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
         let acceptedUser = currentUser.pendingChats[index]
 
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/me")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(acceptedUser)/accept")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + (HLUser.getCurrentUser().getSession()?.sessionId)!]
-        request.HTTPMethod = "GET"
+        request.HTTPMethod = "POST"
 
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+        var resp: NSURLResponse?
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
+            if let response = resp as? NSHTTPURLResponse {
+                if response.statusCode == 204 {
+                    print("Accepted request")
+                    refreshTableView()
+                    return
+                }
+            }
+
             print(returnedData)
             if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                 print(returnString)
-
-                if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
-                    if let pendingChats = ret["pendingChats"] as? [Int] {
-                        HLUser.getCurrentUser().pendingChats = pendingChats.map({ (i) -> Int64 in
-                            Int64(i)
-                        })
-                    }
-
-                    if let acceptedChats = ret["currentChats"] as? [Int] {
-                        HLUser.getCurrentUser().usersChattedWith2 = acceptedChats.map({ (i) -> Int64 in
-                            Int64(i)
-                        })
-                    }
-                }
             }
+
         }
 
-//        let acceptedUser = currentUser.pendingChats.removeAtIndex(index)
-//        currentUser.usersChattedWith2.append(acceptedUser)
-
-        converstationTable.reloadData()
+        print("Failed to accept request")
     }
     @IBAction func decline(sender: UIButton) {
         sender.hidden = true
@@ -187,12 +178,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
         converstationTable.reloadData()
         //send decline to server
-    }
-    
-    func loadSamples(){
-//        conversations += [HLUser.generateTestUser(),HLUser.generateTestUser(),HLUser.generateTestUser() ]
-//        hiddenButtons += [false,true,false]
-
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
