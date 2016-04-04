@@ -36,6 +36,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
     @Override
     public void init() {
+        u = handle.attach(Update.class);
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_messages(" +
                 "message_id BIGINT UNIQUE PRIMARY KEY, " +
                 "sent_timestamp TIMESTAMP, " +
@@ -82,30 +83,58 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     public void addRequest(long requester, long recipient) {
         //  Add a chat request from requester to recipient
         //update the hl_chat_pending_requests table for recipient
-        UserChats uc = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
-                .bind("uid", String.valueOf(recipient))
+        UserChats uc = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uidp")
+                .bind("uidp", String.valueOf(recipient))
                 .map(new RequestsMapper())
                 .first();
 
-        Set<Long> pendingChats = uc.getPendingChats();
-        pendingChats.add(requester);
-        uc.setPendingChats(pendingChats);
-        u.updaterequests(uc);
+        if (uc == null) {
+            Set<Long> tempSet = new HashSet<Long>();
+            tempSet.add(requester);
+            UserChats newentry = new UserChats(recipient, new HashSet<Long>(), tempSet);
+            u.insertrequest(newentry);
+        } else {
+            Set<Long> pendingChats = uc.getPendingChats();
+            pendingChats.add(requester);
+            uc.setPendingChats(pendingChats);
+            u.updaterequests(uc);
+        }
+        LOGGER.info("DONE");
+
 
         //update the hl_users table for requester
-        User user = handle.createQuery("SELECT * FROM hl_users WHERE user_id = :uid")
-                .bind("uid", requester)
+        User user = handle.createQuery("SELECT * FROM hl_users WHERE user_id = :uidq")
+                .bind("uidq", String.valueOf(requester))
                 .map(new UserMapper())
                 .first();
 
         user.addusersChattedWith(recipient);
         u.updateuser(user);
 
+
     }
 
     @Override
     public void acceptRequest(long accepter, long requester) {
         //  Accept a chat request to accepter from requester
+        UserChats uc = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
+                .bind("uid", String.valueOf(accepter))
+                .map(new RequestsMapper())
+                .first();
+        if (uc != null) {
+            Set<Long> pendingset = uc.getPendingChats();
+            pendingset.remove(requester);
+            if (pendingset.isEmpty()) {
+                u.removerequests(uc);
+            } else {
+                uc.setPendingChats(pendingset);
+                u.updaterequests(uc);
+            }
+        } else {
+            //error
+        }
+
+
 
     }
 
@@ -230,8 +259,14 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         @SqlUpdate("update hl_chat_pending_requests set user_id = :user_id, pending_chat_users = :pending_chat_users where user_id = :user_id")
         void updaterequests(@BindUserChats UserChats uc);
 
+        @SqlUpdate("insert into hl_chat_pending_requests (user_id, pending_chat_users) values (:user_id, :pending_chat_users)")
+        void insertrequest(@BindUserChats UserChats uc);
+
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")
         int updateuser(@BindUser User user);
+
+        @SqlUpdate("delete from hl_chat_pending_requests where user_id = :user_id")
+        void removerequests(@BindUserChats UserChats uc);
 
     }
 }
