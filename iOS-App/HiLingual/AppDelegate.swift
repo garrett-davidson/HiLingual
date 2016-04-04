@@ -41,6 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         //        }
     }
 
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        print("Received remote notification")
+        print(userInfo)
+    }
+
     func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
