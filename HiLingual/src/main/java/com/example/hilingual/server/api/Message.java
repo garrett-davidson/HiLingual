@@ -1,7 +1,8 @@
 package com.example.hilingual.server.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.Base64;
 
 public class Message {
 
@@ -10,22 +11,25 @@ public class Message {
     private long editTimestamp;
     private long sender;
     private long receiver;
-    @NotEmpty
     private String content;
+    private String audio;
+    private String audioUrl;
+
     private String editData;
 
-    public Message(long id, long sentTimestamp, long editTimestamp, long sender, long receiver, String content, String editData) {
+    public Message(long id, long sentTimestamp, long editTimestamp, long sender, long receiver, String content, String audio, String editData) {
         this.id = id;
         this.sentTimestamp = sentTimestamp;
         this.editTimestamp = editTimestamp;
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
+        this.audio = audio;
         this.editData = editData;
     }
 
     public Message(String content, long sender, long receiver) {
-        this(0, 0, 0, sender, receiver, content, null);
+        this(0, 0, 0, sender, receiver, content, null, null);
     }
 
     public Message() {
@@ -93,5 +97,19 @@ public class Message {
     @JsonProperty
     public void setReceiver(long receiver) {
         this.receiver = receiver;
+    }
+
+    @JsonProperty
+    public String getAudio() {
+        return audio;
+    }
+
+    @JsonProperty
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
+
+    public byte[] audioDataToBytes() {
+        return Base64.getDecoder().decode(audio);
     }
 }

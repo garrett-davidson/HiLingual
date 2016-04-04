@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
@@ -38,9 +39,13 @@ public class GoogleIntegrationDAOImpl implements GoogleIntegrationDAO {
 
     @Override
     public long getUserIdFromGoogleAccountId(String accountId) {
-        return handle.createQuery("SELECT user_id FROM hl_google_data WHERE account_id = :aid").
+        Map<String, Object> ret = handle.createQuery("SELECT user_id FROM hl_google_data WHERE account_id = :aid").
                 bind("aid", accountId).
-                first(long.class);
+                first();
+        if (ret == null) {
+            return 0;
+        }
+        return (Long) ret.get("user_id");
     }
 
     @Override
