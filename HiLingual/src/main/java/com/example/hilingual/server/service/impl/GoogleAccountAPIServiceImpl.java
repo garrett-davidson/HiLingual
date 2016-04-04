@@ -31,25 +31,30 @@ public class GoogleAccountAPIServiceImpl implements GoogleAccountAPIService {
     @Override
     public boolean isValidGoogleSession(String accountId, String token) {
         Map<String, Object> queryParams = new LinkedHashMap<>();
-        queryParams.put("access_token", token);
+        queryParams.put("id_token", token);
         try {
-            HttpResponse<JsonNode> response = Unirest.get("https://www.googleapis.com/oauth2/v1/tokeninfo").
+            HttpResponse<JsonNode> response = Unirest.get("https://www.googleapis.com/oauth2/v3/tokeninfo").
                     header(HTTP.CONTENT_TYPE, MediaType.APPLICATION_JSON).
                     queryString(queryParams).
                     asJson();
             if (response.getStatus() != 200) {
+                LOGGER.info("Google returned non-200 response code " + response.getStatus() +
+                        ", " + response.getStatusText());
                 throw new UnirestException("Google returned non-200 response code " + response.getStatus() +
                         ", " + response.getStatusText());
+
             }
             JSONObject val = response.getBody().getObject();
             if (val.has("error")) {
+                LOGGER.info("Error: " + val.getString("error") + ", " +
+                        val.getString("error_description"));
                 throw new UnirestException("Error: " + val.getString("error") + ", " +
                         val.getString("error_description"));
             }
-            return val.getString("user_id").equals(accountId);
+            return val.getString("sub").equals(accountId);
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Failed to contact Facebook", e);
-            throw new InternalServerErrorException("Failed to contact Facebook", e);
+            LOGGER.log(Level.WARNING, "Failed to contact Google", e);
+            throw new InternalServerErrorException("Failed to contact Google", e);
         }
     }
 }
