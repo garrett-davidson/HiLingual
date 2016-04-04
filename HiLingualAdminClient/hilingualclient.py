@@ -22,13 +22,58 @@ http = urllib3.PoolManager(
 # POST    /tasks/truncate-databases (com.example.hilingual.server.task.TruncateTask)
 
 
+def messagesMe():
+	global responsebody
+	global userSessionId
+	global userId
+
+	url = 'https://gethilingual.com/api/chat/me'
+
+	auth_param = "HLAT " + userSessionId
+
+	response = http.request('GET', url, headers={'Authorization':auth_param})
+	if response.status != 200:
+		print("Error: returned status code: " + str(response.status))
+
+
+	responsebody = response.data.decode('utf-8')
+	parsed_me_responsebody = json.loads(responsebody)
+
+	print("status: " + str(response.status))
+
+	print(parsed_me_responsebody)
+
+
+def messagesPortal():
+	global responsebody
+	global userSessionId
+	global userId
+
+	url = 'https://gethilingual.com/api/chat'
+	print("\nMessages Portal")
+
+	while 1:
+		print("1)ME\n2)Exit")
+		selection = input("Select task>")
+
+		if selection == "1":
+			messagesMe()
+		elif selection == "2":
+			return
+
+
+
+
+
+
+
 def adminActions():
 	url = 'http://gethilingual.com:8082/api/admin/tasks/'
 
 	while 1:
 
 		print("1) log-level\n2) gc\n3) apns-test\n4) revoke-all-sessions\n5) truncate-databases\n5) exit")
-		selection = input("Select task>");
+		selection = input("Select task>")
 
 		if selection == "1":
 			url = url + "log-level"
@@ -225,7 +270,7 @@ def getProfileInfo():
 def userview():
 	print("LOGIN SUCCESS")
 	while 1:
-		print("1:Get My Profile Info\n2:Get Another user profile info\n3:Update profile\n4:Search users\n5:Logout")
+		print("1:Get My Profile Info\n2:Get Another user profile info\n3:Update profile\n4:Search users\n5:Messages Portal\n6:Logout")
 		decision = input("What would you like to do>")
 		if decision == "1":
 			returned = getProfileInfo()
@@ -240,8 +285,10 @@ def userview():
 		elif decision == "4":
 			returned = searchUsers()
 			printUsersInfoSearch(returned)
-
 		elif decision == "5":
+			messagesPortal()
+
+		elif decision == "6":
 			logout()
 
 def login():
