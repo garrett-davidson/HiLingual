@@ -54,6 +54,7 @@ public @interface BindMessage {
                     q.bind("receiver_id", arg.getReceiver());
                     q.bind("message", arg.getContent());
                     q.bind("edited_message", arg.getEditData());
+                    q.bind("audio", arg.getAudio());
 
                 }
             };
