@@ -210,7 +210,7 @@ public class ChatResource {
     @PATCH
     @Path("/{receiver-id}/message/{message-id}")
     public Message editMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId,
-                               @PathParam("messasge-id") long msg,
+                               @PathParam("message-id") long msg,
                                Message message) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
