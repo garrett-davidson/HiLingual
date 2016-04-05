@@ -76,7 +76,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         getUserInfo()
         var response: NSURLResponse?
         
-        requestFromServer("https://gethilingual.com/api/auth/register", authority: "FACEBOOK")
+        requestFromServer("https://gethilingual.com/api/auth/register", authority: "FACEBOOK", signIn: nil)
         /*
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json"]
@@ -151,7 +151,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
     func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
         viewController.dismissViewControllerAnimated(true, completion: nil)
-        requestFromServer("https://gethilingual.com/api/auth/register", authority: "GOOGLE")
+        requestFromServer("https://gethilingual.com/api/auth/register", authority: "GOOGLE", signIn: signIn)
         /*
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json"]
@@ -196,17 +196,27 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     func didLoginWithSession(session: HLUserSession) {
         self.performSegueWithIdentifier("InitialLogin", sender: session)
     }
-    func requestFromServer(url: String,authority: String){
+    func requestFromServer(url: String,authority: String, signIn: GIDSignIn!){
         var response: NSURLResponse?
+        var bodyDict = ["authority": "GOOGLE",
+                    "authorityAccountId": signIn.currentUser.userID,
+                    "authorityToken": signIn.currentUser.authentication.idToken]
+        if authority == "FACEBOOK" {
+            bodyDict = ["authority": "FACEBOOK",
+                            "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
+                            "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
+        }
+        if authority == "GOOGLE" {
+            bodyDict = ["authority": "GOOGLE",
+                            "authorityAccountId": signIn.currentUser.userID,
+                            "authorityToken": signIn.currentUser.authentication.idToken]
         
+        }
         
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json"]
         request.HTTPMethod = "POST"
         
-        var bodyDict = ["authority": authority,
-                        "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
-                        "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
         
         if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
             let tokenString = deviceToken.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
@@ -220,7 +230,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
             if let response2 = response as? NSHTTPURLResponse {
                 if response2.statusCode == 403 && url == "https://gethilingual.com/api/auth/register"  {
-                    requestFromServer("https://gethilingual.com/api/auth/login", authority: authority)
+                    requestFromServer("https://gethilingual.com/api/auth/login", authority: authority, signIn: signIn)
                 }else{
                     print(returnedData)
                     if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
