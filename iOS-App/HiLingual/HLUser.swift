@@ -203,8 +203,26 @@ class HLUser: NSObject, NSCoding {
     func save() {
         //This should only be called on the current user
         HLUser.currentUser = self
-        var imageData = UIImagePNGRepresentation(HLUser.getCurrentUser().profilePicture!)
-        //let base64String = imageData!.base64EncodedStringWithOptions(.allZeros)
+        let imageData = UIImagePNGRepresentation(HLUser.getCurrentUser().profilePicture!)
+        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+       /* let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+            
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
+            
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+            
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    if let message = HLMessage.fromJSON(returnedData) {
+                        return message
+                    }
+                }
+            }
+        }*/
 
         
         
