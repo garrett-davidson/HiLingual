@@ -93,6 +93,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("Sent message")
             print(message)
         }
+        
+        loadMessages2()
+
     }
 
     func setupEditMenuButtons() {
@@ -236,73 +239,54 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             
+            let button = cell.button
+            button.hidden = false
             
-            if messages[indexPath.row].senderID  ==  currentUser.userId {
-                let button = cell.button
-               // cell.chatBubbleLeft
-                if(isPlayingMessage){
-                    button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-                }else{
-                    button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-                }
-                button.frame = CGRectMake(view.frame.size.width-45, 0, 30, 30)
-                button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                button.tag = indexPath.row
-                
-                cell.chatBubbleLeft.hidden = true
-                
-                cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-                
-               // cell.chatBubbleRight.text = message.text
-                cell.chatBubbleRight.hidden = true
-                cell.chatBubbleRight.layer.cornerRadius = 5
+            if(isPlayingMessage){
+                button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            }else{
+                button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
-                
+            button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            button.tag = indexPath.row
+            
+            cell.chatBubbleLeft.hidden = true
+            cell.chatBubbleRight.hidden = true
+            button.translatesAutoresizingMaskIntoConstraints = true
+            if messages[indexPath.row].senderID  ==  currentUser.userId {
+                button.frame = CGRectMake(view.frame.size.width-45, 0, 30, 30)
+            }
             else {
-                let button = cell.button
-                // cell.chatBubbleLeft
                 button.frame = CGRectMake(15, 0, 30, 30)
-                if(isPlayingMessage){
-                    button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-                }else{
-                    button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-                }
-                button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                
-
-                cell.chatBubbleRight.hidden = true
-                
-                cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-               // cell.chatBubbleLeft.text = message.text
-                cell.chatBubbleLeft.hidden = true
-                cell.chatBubbleLeft.layer.cornerRadius = 5
             }
             
             return cell
         }else if message.editedText == nil {
             let cellIdentity = "ChatTableViewCell"
-                let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
+            
+            
+            if messages[indexPath.row].senderID  ==  currentUser.userId {
+                cell.chatBubbleLeft.hidden = true
                 
+                cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+                cell.chatBubbleRight.text = message.text
+                cell.chatBubbleRight.hidden = false
+                cell.chatBubbleRight.layer.cornerRadius = 5
+            }
                 
-                if messages[indexPath.row].senderID  ==  currentUser.userId {
-                    cell.chatBubbleLeft.hidden = true
-                    
-                    cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-                    cell.chatBubbleRight.text = message.text
-                    cell.chatBubbleRight.hidden = false
-                    cell.chatBubbleRight.layer.cornerRadius = 5
-                }
-                    
-                else {
-                    cell.chatBubbleRight.hidden = true
-                    
-                    cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-                    cell.chatBubbleLeft.text = message.text
-                    cell.chatBubbleLeft.hidden = false
-                    cell.chatBubbleLeft.layer.cornerRadius = 5
-                }
+            else {
+                cell.chatBubbleRight.hidden = true
                 
-                return cell
+                cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+                cell.chatBubbleLeft.text = message.text
+                cell.chatBubbleLeft.hidden = false
+                cell.chatBubbleLeft.layer.cornerRadius = 5
+            }
+        
+            cell.button.hidden = true
+            
+            return cell
         }else {
             let cellIdentity = "ChatEditedTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
@@ -368,6 +352,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
             isPlayingMessage = true;
             sender.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            
             print("playing message")
         }
     }
