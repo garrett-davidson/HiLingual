@@ -136,6 +136,36 @@ class HiLingualUITests: XCTestCase {
         
         
     }
+    func playbuttonsGetSmallerForSomeReasonFuckMe(){
+        
+        let app = XCUIApplication()
+        let chatbubblerightlabelStaticText = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(14).staticTexts["ChatBubbleRightLabel"]
+        chatbubblerightlabelStaticText.pressForDuration(0.7);
+        chatbubblerightlabelStaticText.tap()
+        chatbubblerightlabelStaticText.tap()
+        
+        let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
+        let textView = element.childrenMatchingType(.TextView).element
+        textView.tap()
+        textView.tap()
+        app.menuItems["Paste"].tap()
+        
+        let returnButton = app.buttons["Return"]
+        returnButton.tap()
+        element.childrenMatchingType(.TextView).element
+        returnButton.tap()
+        element.childrenMatchingType(.TextView).element
+        returnButton.tap()
+        element.childrenMatchingType(.TextView).element
+        returnButton.tap()
+        element.childrenMatchingType(.TextView).element
+        returnButton.tap()
+        element.childrenMatchingType(.TextView).element
+        returnButton.tap()
+        element.childrenMatchingType(.TextView).element
+        app.buttons["Send"].tap()
+        
+    }
     
     
 }
