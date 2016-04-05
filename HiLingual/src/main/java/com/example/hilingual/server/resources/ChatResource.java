@@ -229,7 +229,7 @@ public class ChatResource {
             throw new NotFoundException("Message " + msg + " not found");
         }
         //  These are backwards because the editor of a message edits the message the sender sent (aka not your own)
-        if (messageToEdit.getSender() == receiverId) {
+        if (messageToEdit.getSender() != receiverId) {
             throw new ForbiddenException("You cannot edit your own message");
         }
         if (messageToEdit.getReceiver() != editorId) {
