@@ -114,7 +114,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         Message mess = handle.createQuery("SELECT * FROM hl_chat_messages where message_id = :message_id")
                 .bind("message_id", messageId)
                 .map(new MessageMapper())
-                .first()
+                .first();
         return mess;
     }
 
