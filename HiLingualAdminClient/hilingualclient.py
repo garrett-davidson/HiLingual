@@ -4,6 +4,7 @@ import sys
 import urllib3
 import certifi
 import json
+import ast
 
 userSessionId = ""
 userId = ""
@@ -21,6 +22,49 @@ http = urllib3.PoolManager(
 # POST    /tasks/revoke-all-sessions (com.example.hilingual.server.task.RevokeAllSessionsTask)
 # POST    /tasks/truncate-databases (com.example.hilingual.server.task.TruncateTask)
 
+def showChats():
+	global userinfo
+
+	chatuserids = str(userinfo['usersChattedWith'])[1:-1].split()
+
+
+	print("\nCurrent chats with:")
+
+	for i in chatuserids:
+		tempdict = getOtherProfileInfo(int(i))
+		print(str(i) + " " + str(tempdict['displayName']))
+
+
+
+
+
+def editMessage():
+	global responsebody
+	global userSessionId
+	global userId
+
+	messageId = input("Enter the id of the message you would like to edit: ")
+
+	auth_param = "HLAT " + userSessionId
+	url = 'https://gethilingual.com/api/chat/' + str(userId) + "/message/" + str(messageId)
+
+	editdata = input("Enter edit: ")
+
+	data = "{\"id\":\"" + str(messageId) + "\",\"editData\":\"" + str(editdata) + "\"}"
+
+	response = http.request('PATCH', url, headers={'Authorization':auth_param, 'Content-Type':'application/json'}, body=data)
+
+	if response.status != 200:
+		print("Error: returned status code: " + str(response.status))
+		responsebody = response.data.decode('utf-8')
+		parsed_me_responsebody = json.loads(responsebody)
+		print(parsed_me_responsebody)
+	else:
+		print("Edit sent!\n")
+
+
+
+
 
 def receiveMessages():
 	global responsebody
@@ -36,10 +80,46 @@ def receiveMessages():
 
 	response = http.request('GET', url, headers={'Authorization':auth_param})
 
+	
+
 	responsebody = response.data.decode('utf-8')
 	parsed_search_responsebody = json.loads(responsebody)
 
-	print(parsed_search_responsebody)
+	#get information about other user in chat
+	otheruserparsed = getOtherProfileInfo(otheruser)
+	otherusername = str(otheruserparsed['displayName'])
+
+	print("\n\nChat between you and " + str(otherusername))
+
+
+	count = 0
+	for i in parsed_search_responsebody:
+		tempdict = ast.literal_eval(str(i))
+		addfrom = ""
+		addto = ""
+		frompad = ""
+		if tempdict['sender'] == userId:
+			addfrom = " (you)"
+			frompad = "          "
+		elif tempdict['sender'] == int(otheruser):
+			addfrom = " (" + otherusername + ")"
+		if tempdict['receiver'] == userId:
+			addto = " (you)"
+		elif tempdict['receiver'] == int(otheruser):
+			addto = " (" + otherusername +  ")"
+
+		print("----------- Message " + str(count) +" -----------")
+		print(str(frompad) + "Message ID: " + str(tempdict['id']))
+		print(str(frompad) + "From: " + str(tempdict['sender']) + addfrom)
+		print(str(frompad) + "To: " + str(tempdict['receiver']) + addto)
+		print(str(frompad) + "Time: " + str(tempdict['sentTimestamp']))
+		print(str(frompad) + "Message:")
+		print(str(frompad) + tempdict['content'])
+		print()
+
+		count += 1
+
+
 
 
 
@@ -144,7 +224,7 @@ def messagesPortal():
 	print("\nMessages Portal")
 
 	while 1:
-		print("1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Send message\n5)Receive Messages\n6)Exit")
+		print("\n\n1)ME\n2)Request to Chat With User\n3)Accept Chat Request\n4)Send message\n5)Receive Messages\n6)Edit Message\n7)Show current chats\n8)Exit")
 		selection = input("Select task>")
 
 		if selection == "1":
@@ -157,6 +237,10 @@ def messagesPortal():
 			sendMessage()
 		elif selection == "5":
 			receiveMessages()
+		elif selection == "6":
+			editMessage()
+		elif selection == "7":
+			showChats()
 		else:
 			return
 
@@ -341,9 +425,9 @@ def getOtherProfileInfo(thisid):
 		return {}
 
 	responsebody = response.data.decode('utf-8')
-	parsed_login_responsebody = json.loads(responsebody)
+	parsed_user_responsebody = json.loads(responsebody)
 
-	return parsed_login_responsebody
+	return parsed_user_responsebody
 
 def getProfileInfo():
 	global responsebody
@@ -367,9 +451,12 @@ def getProfileInfo():
 	return parsed_login_responsebody
 
 def userview():
-	print("LOGIN SUCCESS")
+	global userinfo
+	userinfo = getProfileInfo()
+
+	print("\n\nLOGIN SUCCESS")
 	while 1:
-		print("1:Get My Profile Info\n2:Get Another user profile info\n3:Update profile\n4:Search users\n5:Messages Portal\n6:Logout")
+		print("\n\n1:Get My Profile Info\n2:Get Another user profile info\n3:Update profile\n4:Search users\n5:Messages Portal\n6:Logout")
 		decision = input("What would you like to do>")
 		if decision == "1":
 			returned = getProfileInfo()
@@ -398,7 +485,7 @@ def login():
 
 	url = 'https://gethilingual.com/api/auth/login'
 
-	authority = input("What is the name of the authorization authority:\n    1)Facebook\n    2)Google")
+	authority = input("What is the name of the authorization authority:\n    1)Facebook\n    2)Google\n>")
 	if authority == "1":
 		authority = "FACEBOOK"
 	elif authority == "2":
@@ -480,7 +567,7 @@ def main():
 
 
 def initview():
-	print("1:Login\n2:Register\n3:Admin Tasks")
+	print("\n\n1:Login\n2:Register\n3:Admin Tasks")
 	decision = input("What would you like to do>")
 	return decision
 
