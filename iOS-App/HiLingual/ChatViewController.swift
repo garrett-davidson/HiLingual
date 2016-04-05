@@ -86,7 +86,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func editMessage() {
         editingCellIndex = selectedCellIndex
+        
         testView.textView.becomeFirstResponder()
+        testView.didBegingEditing()
         let selectedMessage = messages[selectedCellIndex!]
         if let editText = selectedMessage.editedText {
             testView.textView.text = editText
@@ -94,9 +96,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             testView.textView.text = selectedMessage.text
         }
-        testView.didBegingEditing()
-
         testView.textViewDidChange(testView.textView)
+        testView.textTestchange()
+        //testView.textViewDidChange(testView.textView)
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {

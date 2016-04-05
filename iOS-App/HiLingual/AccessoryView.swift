@@ -255,7 +255,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message" {
             textView.text = ""
-            textView.scrollEnabled = false
+            //textView.scrollEnabled = false
         }
     }
 
@@ -263,9 +263,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         if textView.text == "" {
             textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
             textView.text = "Message"
+            textView.scrollEnabled = false
+
         }
     }
-
     func textViewDidChange(textView: UITextView) {
         
         //stop the view at top of screen somehow
@@ -299,6 +300,19 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textViewDidChange(textView)
         }
         textViewTested = false
+    }
+    
+    func textTestchange(){
+        let numLines = textView.contentSize.height / textView.font!.lineHeight;
+        //(textView.text as NSString).sizeWithAttributes(<#T##attrs: [String : AnyObject]?##[String : AnyObject]?#>)
+        if numLines > 5 {
+            textView.scrollEnabled = true
+        }
+            
+        else {
+            textView.scrollEnabled = false
+        }
+        
     }
     
     override func intrinsicContentSize() -> CGSize {

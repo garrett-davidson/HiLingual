@@ -26,6 +26,7 @@
                     <rect key="frame" x="45" y="0.0" width="501" height="592"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="BRK-N5-X2z"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="110" id="D0H-lB-hoH"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
