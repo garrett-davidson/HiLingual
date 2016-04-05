@@ -9,17 +9,19 @@ import com.example.hilingual.server.dao.impl.annotation.BindMessage;
 import com.example.hilingual.server.dao.impl.annotation.BindUser;
 import com.example.hilingual.server.dao.impl.annotation.BindUserChats;
 import com.google.inject.Inject;
-import org.skife.jdbi.cglib.util.ParallelSorter;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -301,7 +303,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     public static interface Update {
-        @SqlUpdate("insert into hl_chat_messages (message_id, sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message) values (:message_id, :sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message)")
+        @SqlUpdate("insert into hl_chat_messages (sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message) values (:sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message)")
         void insertmessage(@BindMessage Message message);
 
         @SqlUpdate("update hl_chat_messages set message_id = :massage_id, sent_timestamp = :sent_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message where message_id = :message_id")
@@ -319,7 +321,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         @SqlUpdate("delete from hl_chat_pending_requests where user_id = :user_id")
         void removerequests(@BindUserChats UserChats uc);
 
-        @SqlUpdate("SELECT LAST_INSERT_ID() from hl_chat_messages")
+        @SqlQuery("SELECT LAST_INSERT_ID()")
         int getLastMessageId();
 
     }

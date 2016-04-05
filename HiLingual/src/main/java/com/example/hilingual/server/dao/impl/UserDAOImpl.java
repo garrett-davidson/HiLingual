@@ -182,7 +182,7 @@ public class UserDAOImpl implements UserDAO {
 
     public static interface Update {
 
-        @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
+        @SqlUpdate("insert into hl_users (user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
         void insert(@BindUser User user);
 
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")
@@ -191,7 +191,7 @@ public class UserDAOImpl implements UserDAO {
         @SqlUpdate("delete from hl_users where id = :user_id")
         void deleteByName(@Bind long id);
 
-        @SqlQuery("SELECT LAST_INSERT_ID() from hl_users")
+        @SqlQuery("SELECT LAST_INSERT_ID()")
         int getLastInsertId();
     }
 }
