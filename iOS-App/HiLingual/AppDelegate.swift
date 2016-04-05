@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     var window: UIWindow?
     var registrationOptions: [String: NSObject]?
 
-    var apnsToken: NSData?
+    var apnsToken: String?
 
     enum NotificationTypes: String {
         case newMessage = "NEW_MESSAGE"
@@ -67,10 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     }
 
     func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData ) {
-        let string = deviceToken.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
         print(deviceToken)
-        apnsToken = deviceToken
-        print(string)
+        apnsToken = "\(deviceToken)"
 //        print("Notification token: \(deviceToken.base64EncodedStringWithOptions(NSB))")
         // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
         let instanceIDConfig = GGLInstanceIDConfig.defaultConfig()

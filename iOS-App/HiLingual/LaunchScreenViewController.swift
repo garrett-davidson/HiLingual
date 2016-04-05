@@ -139,8 +139,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             
             
             if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
-                let tokenString = deviceToken.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-                bodyDict["deviceToken"] = tokenString
+                bodyDict["deviceToken"] = deviceToken
             }
             
             
