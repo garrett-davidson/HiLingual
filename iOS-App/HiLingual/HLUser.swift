@@ -211,22 +211,22 @@ class HLUser: NSObject, NSCoding {
         
         let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
         let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-            
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "POST"
-            
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
-            
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                }
-            }
-        }
-        
+//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
+//        if let session = HLUser.getCurrentUser().getSession() {
+//            
+//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+//            request.HTTPMethod = "POST"
+//            
+//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
+//            
+//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+//                print(returnedData)
+//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+//                    print(returnString)
+//                }
+//            }
+//        }
+
 
         
         

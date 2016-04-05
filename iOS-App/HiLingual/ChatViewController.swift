@@ -99,7 +99,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let menuController = UIMenuController.sharedMenuController()
 
         let editItem = UIMenuItem(title: "Edit", action: #selector(ChatViewController.editMessage))
-        menuController.menuItems = [editItem]
+        let translateItem = UIMenuItem(title: "Translate", action: #selector(ChatViewController.translateMessage))
+
+        menuController.menuItems = [editItem, translateItem]
+    }
+
+    func translateMessage() {
+        print("Translate this message")
     }
 
     func editMessage() {
