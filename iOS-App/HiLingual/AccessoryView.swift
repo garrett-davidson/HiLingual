@@ -242,6 +242,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else {
             if chatViewController!.sendMessageWithText(textView.text) {
                 textView.text = ""
+                textViewDidChange(textView)
             }
         }
     }

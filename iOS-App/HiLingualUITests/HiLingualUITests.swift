@@ -117,16 +117,25 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(2).staticTexts["LastMessageLabel"].tap()
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(4).staticTexts["LastMessageLabel"].tap()
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).staticTexts["ChatBubbleLeftLabel"].tap()
         app.menuItems["Edit"].tap()
         app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.Button).matchingIdentifier("Button").elementBoundByIndex(0).tap()
         
         
-        let textView = XCUIApplication().otherElements["TestView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+        
+        let textView = XCUIApplication().otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
         XCTAssert(textView.frame.size.height > 2)
         
         
     }
+    func testLongMessageSend(){
+        
+        
+        
+        
+        
+    }
+    
     
 }
