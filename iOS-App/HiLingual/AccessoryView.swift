@@ -229,13 +229,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         if isRecording{
             print("sent voice")
             data = NSData(contentsOfURL: curURL)
-            
-            let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-            
-        
-            
-            let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
-            newMessage.send(true)
+
+            HLMessage.sendVoiceMessageWithData(data!, receiverID: recipientId)
             
             tapDelete(sender)
             

@@ -19,7 +19,10 @@ class HLMessage {
     let senderID: Int64
     let receiverID: Int64
 
-    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64) {
+    let audioURL: NSURL?
+
+
+    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, audioURLString: String?=nil) {
         self.messageUUID = UUID
         self.sentTimestamp = sentTimestamp
 
@@ -36,6 +39,13 @@ class HLMessage {
         self.editedText = editedText
         self.senderID = senderID
         self.receiverID = receiverID
+
+        if audioURLString != nil {
+            self.audioURL = NSURL(string: audioURLString!)
+        }
+        else {
+            self.audioURL = nil
+        }
     }
 
     init(text: String, senderID: Int64, receiverID: Int64) {
@@ -45,29 +55,48 @@ class HLMessage {
         self.editedText = nil
         self.senderID = senderID
         self.receiverID = receiverID
+        self.audioURL = nil
+    }
+
+    static func sendVoiceMessageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(receiverID)/message")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["data": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]), options: NSJSONWritingOptions(rawValue: 0))
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    if let message = HLMessage.fromJSON(returnedData) {
+                        return message
+                    }
+                }
+            }
+        }
+        
+        return nil
     }
 
     static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(receiverID)/message")!)
         if let session = HLUser.getCurrentUser().getSession() {
-        
 
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "POST"
-            if(isVoice){
-                request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["audio": text]), options: NSJSONWritingOptions(rawValue: 0))
-            }else{
-                request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
-            }
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
-
                     if let message = HLMessage.fromJSON(returnedData) {
                         return message
                     }
-
                 }
             }
         }
@@ -83,21 +112,35 @@ class HLMessage {
                 if let sentTime = (ret["sentTimestamp"] as? NSNumber)?.doubleValue {
                     let sentTimestamp = NSDate(timeIntervalSince1970: sentTime / 1000)
 
-                    if let text = ret["content"] as? String {
-                        if let senderId = (ret["sender"] as? NSNumber)?.longLongValue {
-                            if let editTime = (ret["editTimestamp"] as? NSNumber)?.doubleValue {
-                                let editTimestamp: NSDate?
-                                if editTime != 0 {
-                                    editTimestamp = NSDate(timeIntervalSince1970: editTime / 1000)
-                                }
+                    if let senderId = (ret["sender"] as? NSNumber)?.longLongValue {
+                        if let editTime = (ret["editTimestamp"] as? NSNumber)?.doubleValue {
+                            let editTimestamp: NSDate?
+                            if editTime != 0 {
+                                editTimestamp = NSDate(timeIntervalSince1970: editTime / 1000)
+                            }
 
+                            else {
+                                editTimestamp = nil
+                            }
+
+                            let editText = ret["editData"] as? String
+
+                            if let text = ret["content"] as? String {
+
+                                let audioURLString: String?
+                                if let audio = ret["audio"] as? String {
+                                    if audio == "" {
+                                        audioURLString = nil
+                                    }
+                                    else {
+                                        audioURLString = audio
+                                    }
+                                }
                                 else {
-                                    editTimestamp = nil
+                                    audioURLString = nil
                                 }
 
-                                let editText = ret["editData"] as? String
-
-                                return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId)
+                                return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, audioURLString: audioURLString)
                             }
                         }
                     }
