@@ -126,7 +126,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
             cell.date.text = "Yesterday"
-            cell.lastMessage.text = "THIS NEEDS TO BE A LONG ASS MESSAGE SO I CAN SEE HOW THE WORKS WRAP AROUND THE THE END OF THE LINES PLEASE BE LONG ENOUGH TO TEST THIS"
+            cell.lastMessage.text = ""
             return cell
         }
 

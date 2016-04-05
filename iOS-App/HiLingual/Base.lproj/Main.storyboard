@@ -720,7 +720,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AYh-JO-9h2">
-                                                    <rect key="frame" x="8" y="8" width="584" height="76"/>
+                                                    <rect key="frame" x="8" y="8" width="584" height="77"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hvv-XV-Jgu">
                                                             <rect key="frame" x="0.0" y="11" width="55" height="55"/>
@@ -731,25 +731,25 @@
                                                                 <constraint firstAttribute="width" secondItem="hvv-XV-Jgu" secondAttribute="height" multiplier="1:1" id="pL3-gZ-phz"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PgP-2a-Phw">
-                                                            <rect key="frame" x="55" y="0.0" width="437" height="76"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PgP-2a-Phw">
+                                                            <rect key="frame" x="55" y="8" width="437" height="62"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzu-Zh-LvB">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="45" height="26"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzu-Zh-LvB">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="45" height="21"/>
                                                                     <accessibility key="accessibilityConfiguration" label="SearchResultNameLabel"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Learning:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1of-ER-rhA">
-                                                                    <rect key="frame" x="0.0" y="26" width="71" height="25"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1of-ER-rhA">
+                                                                    <rect key="frame" x="0.0" y="21" width="71" height="21"/>
                                                                     <accessibility key="accessibilityConfiguration" label="SearchResultLanguageLearningLabel"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
-                                                                    <rect key="frame" x="0.0" y="51" width="70" height="26"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
+                                                                    <rect key="frame" x="0.0" y="41" width="70" height="21"/>
                                                                     <accessibility key="accessibilityConfiguration" label="SearchResultLanguageSpeakingLabel"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -757,13 +757,12 @@
                                                                 </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="Xd6-Dl-92U" firstAttribute="height" secondItem="1of-ER-rhA" secondAttribute="height" id="5ZT-mn-pbt"/>
-                                                                <constraint firstItem="1of-ER-rhA" firstAttribute="height" secondItem="Kzu-Zh-LvB" secondAttribute="height" id="XQl-PZ-owI"/>
-                                                                <constraint firstItem="1of-ER-rhA" firstAttribute="leading" secondItem="PgP-2a-Phw" secondAttribute="leading" id="n1D-8h-lgj"/>
+                                                                <constraint firstItem="Kzu-Zh-LvB" firstAttribute="height" secondItem="1of-ER-rhA" secondAttribute="height" id="4ft-d5-SB3"/>
+                                                                <constraint firstItem="1of-ER-rhA" firstAttribute="height" secondItem="Xd6-Dl-92U" secondAttribute="height" id="MVf-5J-d8W"/>
                                                             </constraints>
                                                         </stackView>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPl-gv-Ufh">
-                                                            <rect key="frame" x="492" y="23" width="92" height="30"/>
+                                                            <rect key="frame" x="492" y="24" width="92" height="30"/>
                                                             <accessibility key="accessibilityConfiguration" label="SearchResultSendRequestButton"/>
                                                             <state key="normal" title="Send request"/>
                                                             <connections>
@@ -774,13 +773,10 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="AYh-JO-9h2" firstAttribute="leading" secondItem="UwA-Ps-fig" secondAttribute="leadingMargin" id="0BO-dH-Iqn"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="PgP-2a-Phw" secondAttribute="bottom" constant="-0.5" id="FeY-Z5-DuG"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="AYh-JO-9h2" secondAttribute="trailing" id="I1Z-t6-h6y"/>
-                                                <constraint firstItem="AYh-JO-9h2" firstAttribute="top" secondItem="UwA-Ps-fig" secondAttribute="topMargin" id="YBH-Pf-KRs"/>
-                                                <constraint firstAttribute="topMargin" secondItem="PgP-2a-Phw" secondAttribute="top" id="c4x-xl-dDl"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="AYh-JO-9h2" secondAttribute="bottom" id="cpB-B1-VyV"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="AYh-JO-9h2" secondAttribute="bottom" id="kAP-3f-tCf"/>
+                                                <constraint firstItem="AYh-JO-9h2" firstAttribute="top" secondItem="UwA-Ps-fig" secondAttribute="topMargin" id="kxp-1B-16e"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="AYh-JO-9h2" secondAttribute="bottom" id="sqe-QY-2d3"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="AYh-JO-9h2" secondAttribute="trailing" id="z4N-0m-sWc"/>
+                                                <constraint firstItem="AYh-JO-9h2" firstAttribute="leading" secondItem="UwA-Ps-fig" secondAttribute="leadingMargin" id="zK8-4S-3xN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" label="SearchResultCell"/>
