@@ -111,7 +111,11 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public Message getMessage(long messageId) {
         //  Get a specific message, or null if it does not exist
-        return null;
+        Message mess = handle.createQuery("SELECT * FROM hl_chat_messages where message_id = :message_id")
+                .bind("message_id", messageId)
+                .map(new MessageMapper())
+                .first()
+        return mess;
     }
 
     @Override
@@ -189,11 +193,20 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     @Override
-    public Message editMessage(long messsageId, String editData) {
+    public Message editMessage(long messageId, String editData) {
         //  Update the specified message with the given editData.
         //  Return the message in full with the edit data
         //  Return null if no such message exists
-        return null;
+        Message mess = handle.createQuery("SELECT * FROM hl_chat_messages where message_id = :message_id")
+                .bind("message_id", messageId)
+                .map(new MessageMapper())
+                .first();
+
+        mess.setEditData(editData);
+        mess.setEditTimestamp(System.currentTimeMillis());
+        u.updatemessage(mess);
+
+        return mess;
     }
 
     @Override
