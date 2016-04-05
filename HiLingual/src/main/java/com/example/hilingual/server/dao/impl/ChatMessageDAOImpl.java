@@ -245,7 +245,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             message.setReceiver(r.getLong("receiver_id"));
             message.setContent(r.getString("message"));
             message.setEditData(r.getString("edited_message"));
-
+            message.setAudio(r.getString("audio"));
             return message;
         }
     }
