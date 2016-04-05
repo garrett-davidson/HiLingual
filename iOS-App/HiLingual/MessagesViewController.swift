@@ -42,10 +42,10 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return hasPendingChats ? currentUser.pendingChats.count : currentUser.usersChattedWith2.count
+            return hasPendingChats ? currentUser.pendingChats.count : currentUser.usersChattedWith.count
 
         case 1:
-            return currentUser.usersChattedWith2.count
+            return currentUser.usersChattedWith.count
         default:
             print("Invalid section number")
             return 0
@@ -80,7 +80,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
 
                     if let acceptedChats = ret["currentChats"] as? [Int] {
-                        HLUser.getCurrentUser().usersChattedWith2 = acceptedChats.map({ (i) -> Int64 in
+                        HLUser.getCurrentUser().usersChattedWith = acceptedChats.map({ (i) -> Int64 in
                             Int64(i)
                         })
                     }
@@ -112,7 +112,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cellIdentity = "ConversationTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
-            let user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])!
+            let user = HLUser.getUserById(currentUser.usersChattedWith[indexPath.row])!
 
             cell.name.text = user.name
             cell.profilePicture.layer.masksToBounds = false
@@ -126,7 +126,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
             cell.date.text = "Yesterday"
-            cell.lastMessage.text = "This is an already accepted request"
+            cell.lastMessage.text = ""
             return cell
         }
 
@@ -189,7 +189,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
         currentUser.pendingChats.removeAtIndex(index)
 
-        HLUser.getCurrentUser().usersChattedWith.removeAtIndex(index)
         converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
         converstationTable.reloadData()
         //send decline to server
@@ -214,8 +213,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith2[indexPath.row])
-                messageDetailViewController.recipientId = currentUser.usersChattedWith2[indexPath.row]
+                messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith[indexPath.row])
+                messageDetailViewController.recipientId = currentUser.usersChattedWith[indexPath.row]
                 //Once messages is complete I can use that
                 
             }
@@ -259,14 +258,13 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             // Delete the row from the data source
 
             if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
-                currentUser.usersChattedWith2.removeAtIndex(indexPath.row)
+                currentUser.usersChattedWith.removeAtIndex(indexPath.row)
             }
 
             else {
                 currentUser.pendingChats.removeAtIndex(indexPath.row)
             }
 
-            HLUser.getCurrentUser().usersChattedWith.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             converstationTable.reloadData()
         }

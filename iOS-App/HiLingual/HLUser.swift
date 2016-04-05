@@ -29,8 +29,7 @@ class HLUser: NSObject, NSCoding {
     var profilePicture: UIImage?
 
     var blockedUsers: [HLUser]?
-    var usersChattedWith: [HLUser]
-    var usersChattedWith2: [Int64]
+    var usersChattedWith: [Int64]
 
     var pendingChats: [Int64]
 
@@ -45,7 +44,6 @@ class HLUser: NSObject, NSCoding {
 
     private var session: HLUserSession?
 
-
     init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
         self.userId = userId
         self.name = name
@@ -58,7 +56,6 @@ class HLUser: NSObject, NSCoding {
         self.profilePicture = profilePicture
 
         self.usersChattedWith = []
-        self.usersChattedWith2 = []
         self.pendingChats = []
     }
 
@@ -76,15 +73,14 @@ class HLUser: NSObject, NSCoding {
         self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
         self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as? UIImage
         self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
-        self.usersChattedWith = (aDecoder.decodeObjectForKey("usersChattedWith") as! [HLUser])
 
         if let chatted2 = (aDecoder.decodeObjectForKey("usersChattedWith2") as? [NSNumber]) {
-            self.usersChattedWith2 = chatted2.map({ (num) -> Int64 in
+            self.usersChattedWith = chatted2.map({ (num) -> Int64 in
                 return num.longLongValue
             })
         }
         else {
-            self.usersChattedWith2 = []
+            self.usersChattedWith = []
         }
 
         if let pending = (aDecoder.decodeObjectForKey("pendingChats") as? [NSNumber]) {
@@ -284,9 +280,8 @@ class HLUser: NSObject, NSCoding {
         aCoder.encodeObject(birthdate, forKey: "birthdate")
         aCoder.encodeObject(profilePicture, forKey: "profilePicture")
         aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
-        aCoder.encodeObject(usersChattedWith, forKey: "usersChattedWith")
 
-        let chatted2 = usersChattedWith2.map { (i) -> NSNumber in
+        let chatted2 = usersChattedWith.map { (i) -> NSNumber in
             return NSNumber(longLong: i)
         }
         aCoder.encodeObject(chatted2, forKey: "usersChattedWith2")
