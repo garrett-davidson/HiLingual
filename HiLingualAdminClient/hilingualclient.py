@@ -6,6 +6,7 @@ import certifi
 import json
 import ast
 import signal
+from datetime import datetime
 
 userSessionId = ""
 userId = ""
@@ -112,13 +113,19 @@ def receiveMessages():
 		elif tempdict['receiver'] == int(otheruser):
 			addto = " (" + otherusername +  ")"
 
+
+
 		print("----------- Message " + str(count) +" -----------")
 		print(str(frompad) + "Message ID: " + str(tempdict['id']))
 		print(str(frompad) + "From: " + str(tempdict['sender']) + addfrom)
 		print(str(frompad) + "To: " + str(tempdict['receiver']) + addto)
-		print(str(frompad) + "Time: " + str(tempdict['sentTimestamp']))
+		print(str(frompad) + "Time: " + datetime.fromtimestamp(int(tempdict['sentTimestamp']) / 1000).strftime('%Y-%m-%d %H:%M:%S'))
 		print(str(frompad) + "Message:")
 		print(str(frompad) + tempdict['content'])
+		if tempdict['editData'] is not None:
+			print(str(frompad) + "Edit Time: " + datetime.fromtimestamp(int(tempdict['editTimestamp']) / 1000).strftime('%Y-%m-%d %H:%M:%S'))
+			print(str(frompad) + "Edit:")
+			print(str(frompad) + tempdict['editData'])
 		print()
 
 		count += 1
@@ -146,11 +153,14 @@ def sendMessage():
 
 	if response.status != 200:
 		print("Error: returned status code: " + str(response.status))
-		responsebody = response.data.decode('utf-8')
-		parsed_me_responsebody = json.loads(responsebody)
-		print(parsed_me_responsebody)
+		
 	else:
 		print("Message sent!\n")
+
+	responsebody = response.data.decode('utf-8')
+	parsed_me_responsebody = json.loads(responsebody)
+	print(parsed_me_responsebody)
+
 
 
 
