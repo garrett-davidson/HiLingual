@@ -5,6 +5,7 @@ import urllib3
 import certifi
 import json
 import ast
+import signal
 
 userSessionId = ""
 userId = ""
@@ -14,7 +15,10 @@ http = urllib3.PoolManager(
 	cert_reqs="CERT_REQUIRED",
 	ca_certs=certifi.where())
 
-
+def signal_handler(signal, frame):
+	print("\nLogging out and quitting")
+	logout()
+	sys.exit(0)
 
 # POST    /tasks/log-level (io.dropwizard.servlets.tasks.LogConfigurationTask)
 # POST    /tasks/gc (io.dropwizard.servlets.tasks.GarbageCollectionTask)
@@ -575,6 +579,7 @@ def initview():
 
 
 try:
+	signal.signal(signal.SIGINT, signal_handler)
 	main()
 	# for debugging
 	# login()
