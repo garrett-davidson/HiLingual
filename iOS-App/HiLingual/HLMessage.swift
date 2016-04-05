@@ -104,53 +104,66 @@ class HLMessage {
         return nil
     }
 
-    static func fromJSON(messageData: NSData) -> HLMessage? {
-        if let ret = (try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
-            //{"id":-1,"sentTimestamp":1459872650307,"editTimestamp":0,"sender":15,"receiver":13,"content":"Asdf","audio":null,"editData":null}
+    static func fromJSONArray(messageData: NSData) -> [HLMessage] {
+        var messageArray = [HLMessage]()
 
-            if let uuid = (ret["id"] as? NSNumber)?.longLongValue {
-                if let sentTime = (ret["sentTimestamp"] as? NSNumber)?.doubleValue {
-                    let sentTimestamp = NSDate(timeIntervalSince1970: sentTime / 1000)
+        if let obj = try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0)) {
+            if let array = obj as? [NSDictionary] {
+                for messageDict in array {
+                    messageArray.append(fromDict(messageDict)!)
+                }
+            }
+        }
 
-                    if let senderId = (ret["sender"] as? NSNumber)?.longLongValue {
-                        if let editTime = (ret["editTimestamp"] as? NSNumber)?.doubleValue {
-                            let editTimestamp: NSDate?
-                            if editTime != 0 {
-                                editTimestamp = NSDate(timeIntervalSince1970: editTime / 1000)
-                            }
+        return messageArray
+    }
 
-                            else {
-                                editTimestamp = nil
-                            }
+    static func fromDict(messageDict: NSDictionary) -> HLMessage? {
+        if let uuid = (messageDict["id"] as? NSNumber)?.longLongValue {
+            if let sentTime = (messageDict["sentTimestamp"] as? NSNumber)?.doubleValue {
+                let sentTimestamp = NSDate(timeIntervalSince1970: sentTime / 1000)
 
-                            let editText = ret["editData"] as? String
+                if let senderId = (messageDict["sender"] as? NSNumber)?.longLongValue {
+                    if let editTime = (messageDict["editTimestamp"] as? NSNumber)?.doubleValue {
+                        let editTimestamp: NSDate?
+                        if editTime != 0 {
+                            editTimestamp = NSDate(timeIntervalSince1970: editTime / 1000)
+                        }
 
-                            if let text = ret["content"] as? String {
+                        else {
+                            editTimestamp = nil
+                        }
 
-                                let audioURLString: String?
-                                if let audio = ret["audio"] as? String {
-                                    if audio == "" {
-                                        audioURLString = nil
-                                    }
-                                    else {
-                                        audioURLString = audio
-                                    }
-                                }
-                                else {
+                        let editText = messageDict["editData"] as? String
+
+                        if let text = messageDict["content"] as? String {
+
+                            let audioURLString: String?
+                            if let audio = messageDict["audio"] as? String {
+                                if audio == "" {
                                     audioURLString = nil
                                 }
-
-                                return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, audioURLString: audioURLString)
+                                else {
+                                    audioURLString = audio
+                                }
                             }
+                            else {
+                                audioURLString = nil
+                            }
+
+                            return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, audioURLString: audioURLString)
                         }
                     }
                 }
             }
+        }
 
-            else {
-                print("Couldn't create message from JSON")
-                print(ret)
-            }
+        return nil
+    }
+
+    static func fromJSON(messageData: NSData) -> HLMessage? {
+        if let ret = (try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+            return fromDict(ret)
         }
         else {
             print("Couldn't parse return value")

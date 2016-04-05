@@ -17,6 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
 
     var apnsToken: NSData?
 
+    enum NotificationTypes: String {
+        case newMessage = "NEW_MESSAGE"
+        case editedMessage = "EDITED_MESSAGE"
+        case requestReceived = "REQUEST_RECEIVED"
+        case requestAccepted = "REQUEST_ACCEPTED"
+    }
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
@@ -44,6 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         print("Received remote notification")
         print(userInfo)
+
+        if let typeString = userInfo["type"] as? String {
+            NSNotificationCenter.defaultCenter().postNotificationName(typeString, object: nil)
+        }
     }
 
     func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

@@ -20,8 +20,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var messages = [HLMessage]()
 
     var audioPlayer: AVAudioPlayer!
-    
-    var recipientId: Int64 = 12
+
+    //This is not hard coding
+    //This variable is set by another view when this view comes on screen
+    var recipientId: Int64 = -1
 
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
@@ -40,7 +42,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.title = user.name
         print(user.name)
         print(user.userId)
-        loadMessages()
+        loadMessages2()
         self.chatTableView.estimatedRowHeight = 40
         self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
@@ -50,6 +52,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setupEditMenuButtons()
 
         testView.chatViewController = self
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.handleNewMessageNotification(_:)), name: AppDelegate.NotificationTypes.newMessage.rawValue, object: nil)
         
         //Code for bringing up audio scren
        // let controller = AudioRecorderViewController()
@@ -58,16 +62,30 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
 
+    func handleNewMessageNotification(notification: NSNotification) {
+        didReceiveMessage()
+    }
+
+    func didReceiveMessage() {
+        loadMessages2()
+    }
+
     func saveMessageEdit(editedText editedText: String) {
         messages[editingCellIndex!].editedText = editedText
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editingCellIndex!, inSection:0)], withRowAnimation: .Automatic)
     }
 
-    func sendMessageWithText(text: String) {
+    func sendMessageWithText(text: String) -> Bool {
         if let message = HLMessage.sendMessageWithText(text, receiverID: recipientId) {
             print("Sent message")
-            print(message)
+            print(message.text)
+
+            loadMessages2()
+
+            return true
         }
+
+        return false
     }
 
     func setupEditMenuButtons() {
@@ -369,5 +387,27 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         messages = [message1, message2, message3, message4, message5, message6, message7,message8]
     }
-    
+
+    func loadMessages2() {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(recipientId)/message")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "GET"
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    messages = HLMessage.fromJSONArray(returnedData)
+                    tableView.reloadData()
+
+                    return
+                }
+            }
+        }
+        
+        print("Unable to load messages from server")
+
+    }
 }

@@ -246,7 +246,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             //TODO:
             //Send message
             print("here")
-            chatViewController!.sendMessageWithText(textView.text)
+            if chatViewController!.sendMessageWithText(textView.text) {
+                textView.text = ""
+            }
         }
     }
 
