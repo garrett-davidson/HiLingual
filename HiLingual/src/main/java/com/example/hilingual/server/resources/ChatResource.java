@@ -197,8 +197,8 @@ public class ChatResource {
             //  New messages only have content field set
             System.out.println("New text message");
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
-            sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a message.",
-                    sender.getDisplayName()), NotificationType.NEW_MESSAGE);
+            sendNotification(receiverId, String.format("%s: %s",
+                    sender.getDisplayName(), message.getContent()), NotificationType.NEW_MESSAGE);
             return ret;
         }
     }
@@ -238,8 +238,8 @@ public class ChatResource {
         }
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(messageIdToEdit, message.getEditData());
-        sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s edited a message.",
-                editor.getDisplayName()), NotificationType.EDITED_MESSAGE);
+        sendNotification(receiverId, String.format("%s edited: %s",
+                editor.getDisplayName(), editedMessage.getEditData()), NotificationType.EDITED_MESSAGE);
         return editedMessage;
     }
 
