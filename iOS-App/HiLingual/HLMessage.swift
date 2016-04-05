@@ -27,15 +27,18 @@ class HLMessage {
         self.receiverID = receiverID
     }
 
-    func send() -> Bool {
+    func send(isVoice: Bool) -> Bool {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(receiverID)/message")!)
         if let session = HLUser.getCurrentUser().getSession() {
+        
 
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "POST"
-
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
-
+            if(isVoice){
+                request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["audio": text]), options: NSJSONWritingOptions(rawValue: 0))
+            }else{
+                request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+            }
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
@@ -46,4 +49,5 @@ class HLMessage {
 
         return false
     }
+    
 }
