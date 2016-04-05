@@ -190,7 +190,7 @@ public class ChatResource {
             URI uri = getAudioUrl(senderId, assetId);
             //  New messages only have content field set
             Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
-            sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a voice clip.",
+            sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a voice clip.",
                     sender.getDisplayName()), NotificationType.NEW_MESSAGE);
             return ret;
         } else {
@@ -204,10 +204,7 @@ public class ChatResource {
     }
 
     private URI getAudioUrl(long userId, String assetId) throws URISyntaxException {
-        return new URI(config.getAssetAccessBaseUrl()).
-                resolve("audio").
-                resolve(Long.toString(userId)).
-                resolve(assetId);
+        return new URI(config.getAssetAccessBaseUrl() + "/audio/" + assetId);
     }
 
     @PATCH
