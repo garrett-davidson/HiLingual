@@ -44,7 +44,6 @@ class HLUser: NSObject, NSCoding {
 
     private var session: HLUserSession?
 
-
     init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
         self.userId = userId
         self.name = name

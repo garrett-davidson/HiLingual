@@ -126,7 +126,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
             cell.date.text = "Yesterday"
-            cell.lastMessage.text = "This is an already accepted request"
+            cell.lastMessage.text = ""
             return cell
         }
 

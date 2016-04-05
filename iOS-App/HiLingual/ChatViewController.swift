@@ -61,8 +61,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func sendMessageWithText(text: String) {
-        let newMessage = HLMessage(text: text, senderID: currentUser.userId, receiverID: recipientId)
-        newMessage.send()
+        if let message = HLMessage.sendMessageWithText(text, receiverID: recipientId) {
+            print("Sent message")
+            print(message)
+        }
     }
 
     func setupEditMenuButtons() {
