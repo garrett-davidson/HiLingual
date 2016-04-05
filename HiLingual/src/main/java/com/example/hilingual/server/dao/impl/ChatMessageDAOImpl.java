@@ -279,7 +279,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         @SqlUpdate("insert into hl_chat_messages (sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message) values (:sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message)")
         void insertmessage(@BindMessage Message message);
 
-        @SqlUpdate("update hl_chat_messages set message_id = :message_id, sent_timestamp = :sent_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message where message_id = :message_id")
+        @SqlUpdate("update hl_chat_messages set message_id = :message_id, sent_timestamp = :sent_timestamp, edit_timestamp = :edit_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message where message_id = :message_id")
         int updatemessage(@BindMessage Message message);
 
         @SqlUpdate("update hl_chat_pending_requests set user_id = :user_id, pending_chat_users = :pending_chat_users where user_id = :user_id")
