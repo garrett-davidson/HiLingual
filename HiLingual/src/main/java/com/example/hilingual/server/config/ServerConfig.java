@@ -42,6 +42,9 @@ public class ServerConfig extends Configuration {
     @NotEmpty
     private String assetAccessPath;
 
+    @Valid
+    private MsftTranslateConfig msftTranslateConfig;
+
     @JsonProperty("sqlDb")
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -112,5 +115,15 @@ public class ServerConfig extends Configuration {
     @JsonProperty
     public void setAssetAccessPath(String assetAccessPath) {
         this.assetAccessPath = assetAccessPath;
+    }
+
+    @JsonProperty("msftTranslate")
+    public MsftTranslateConfig getMsftTranslateConfig() {
+        return msftTranslateConfig;
+    }
+
+    @JsonProperty("msftTranslate")
+    public void setMsftTranslateConfig(MsftTranslateConfig msftTranslateConfig) {
+        this.msftTranslateConfig = msftTranslateConfig;
     }
 }

@@ -20,6 +20,15 @@ assetAccessBaseUrl: http://localhost:8080/assets
 # CHANGEME
 assetAccessPath: /var/www/assets
 
+# Microsoft Translate settings
+msftTranslate:
+  # The client ID from Microsoft
+  # CHANGEME
+  clientId: 0
+  # The client secret from Microsoft
+  # CHANGEME
+  clientSecret: 0
+
 # Facebook settings
 facebook:
   # The app ID from Facebook
