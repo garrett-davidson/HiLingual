@@ -43,7 +43,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.title = user.name
         print(user.name)
         print(user.userId)
-        loadMessages2()
+        loadMessages()
         self.chatTableView.estimatedRowHeight = 40
         self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
@@ -55,6 +55,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         testView.chatViewController = self
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.handleNewMessageNotification(_:)), name: AppDelegate.NotificationTypes.newMessage.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.handleEditedMessageNotification(_:)), name: AppDelegate.NotificationTypes.editedMessage.rawValue, object: nil)
         
         //Code for bringing up audio scren
        // let controller = AudioRecorderViewController()
@@ -63,12 +64,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
 
+    func handleEditedMessageNotification(notification: NSNotification) {
+        didReceiveMessage()
+    }
+
     func handleNewMessageNotification(notification: NSNotification) {
         didReceiveMessage()
     }
 
     func didReceiveMessage() {
-        loadMessages2()
+        loadMessages()
     }
 
     func saveMessageEdit(editedText editedText: String) {
@@ -81,7 +86,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print("Sent message")
             print(message.text)
 
-            loadMessages2()
+            loadMessages()
 
             return true
         }
@@ -95,7 +100,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print(message)
         }
         
-        loadMessages2()
+        loadMessages()
 
     }
 
@@ -391,23 +396,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         })
     }
+
     func loadMessages() {
-        let message1 = HLMessage(text: "Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH", senderID: 5, receiverID: 68)
-        let message2 = HLMessage(text: "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", senderID: 69, receiverID: 68)
-        let message3 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 68)
-        let message4 = HLMessage(text: "lets see", senderID: 69, receiverID: 68)
-        let message5 = HLMessage(text: "HA Messages are working", senderID: 5, receiverID: 69)
-        let message6 = HLMessage(text: "Test Editedmessage 1", senderID: 1, receiverID: 69)
-        let message7 = HLMessage(text: "Test ediTed mesage2", senderID: 69, receiverID: 5)
-        let message8 = HLMessage(text: "audio://blahblah", senderID: 1, receiverID: 69)
-
-        message6.editedText = "Test edited message 1"
-        message7.editedText = "Test edited message 2"
-
-        messages = [message1, message2, message3, message4, message5, message6, message7,message8]
-    }
-
-    func loadMessages2() {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(recipientId)/message")!)
         if let session = HLUser.getCurrentUser().getSession() {
 
