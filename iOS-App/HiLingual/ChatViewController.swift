@@ -54,12 +54,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         testView.chatViewController = self
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.handleNewMessageNotification(_:)), name: AppDelegate.NotificationTypes.newMessage.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.handleEditedMessageNotification(_:)), name: AppDelegate.NotificationTypes.editedMessage.rawValue, object: nil)
         
         //Code for bringing up audio scren
        // let controller = AudioRecorderViewController()
        // controller.audioRecorderDelegate = self
         //presentViewController(controller, animated: true, completion: nil)
         
+    }
+
+    func handleEditedMessageNotification(notification: NSNotification) {
+        didReceiveMessage()
     }
 
     func handleNewMessageNotification(notification: NSNotification) {
