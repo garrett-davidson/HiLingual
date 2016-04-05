@@ -203,26 +203,26 @@ class HLUser: NSObject, NSCoding {
     func save() {
         //This should only be called on the current user
         HLUser.currentUser = self
-        let imageData = UIImagePNGRepresentation(HLUser.getCurrentUser().profilePicture!)
+        var size = CGSize(width: 150, height: 150)
+        
+        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
         let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-       /* let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
         if let session = HLUser.getCurrentUser().getSession() {
             
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "POST"
             
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
             
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
-                    if let message = HLMessage.fromJSON(returnedData) {
-                        return message
-                    }
                 }
             }
-        }*/
+        }
+        
 
         
         
@@ -245,6 +245,18 @@ class HLUser: NSObject, NSCoding {
                 }
             }
         }
+    }
+    func scaleImage(image: UIImage, toSize newSize: CGSize) -> (UIImage) {
+        let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetInterpolationQuality(context, .High)
+        let flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
+        CGContextConcatCTM(context, flipVertical)
+        CGContextDrawImage(context, newRect, image.CGImage)
+        let newImage = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
+        UIGraphicsEndImageContext()
+        return newImage
     }
 
     func toJSON() -> NSData? {
