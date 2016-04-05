@@ -13,7 +13,6 @@ public class Message {
     private long receiver;
     private String content;
     private String audio;
-    private String audioUrl;
 
     private String editData;
 

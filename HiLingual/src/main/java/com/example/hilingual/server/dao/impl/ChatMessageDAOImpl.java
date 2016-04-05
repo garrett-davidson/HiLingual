@@ -94,12 +94,13 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     @Override
-    public Message newMessage(long sender, long receiver, String content) {
+    public Message newMessage(long sender, long receiver, String content, String audioUrl) {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
         Message message = new Message();
         System.out.println("New message: " + content);
         message.setContent(content);
+        message.setAudio(audioUrl);
         message.setSender(sender);
         message.setReceiver(receiver);
         message.setSentTimestamp(System.currentTimeMillis());

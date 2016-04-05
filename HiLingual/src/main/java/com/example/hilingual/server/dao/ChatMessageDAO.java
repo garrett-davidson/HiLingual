@@ -13,7 +13,15 @@ public interface ChatMessageDAO extends Managed {
 
     Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit);
 
-    Message newMessage(long sender, long receiver, String content);
+    default Message newMessage(long sender, long receiver, String content) {
+        return newMessage(sender, receiver, content, "");
+    }
+
+    default Message newAudioMessage(long sender, long receiver, String audioUrl) {
+        return newMessage(sender, receiver, "", audioUrl);
+    }
+
+    Message newMessage(long sender, long receiver, String content, String audioUrl);
 
     Message getMessage(long messageId);
 

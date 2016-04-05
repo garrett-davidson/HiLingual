@@ -189,7 +189,7 @@ public class ChatResource {
             Files.write(outPath, message.audioDataToBytes(), CREATE, TRUNCATE_EXISTING);
             URI uri = getAudioUrl(senderId, assetId);
             //  New messages only have content field set
-            Message ret = chatMessageDAO.newMessage(senderId, receiverId, uri.toASCIIString());
+            Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
             sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a voice clip.",
                     sender.getDisplayName()), NotificationType.NEW_MESSAGE);
             return ret;
