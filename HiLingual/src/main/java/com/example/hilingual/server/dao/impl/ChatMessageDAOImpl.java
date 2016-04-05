@@ -1,6 +1,5 @@
 package com.example.hilingual.server.dao.impl;
 
-import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.Message;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.UserChats;
@@ -147,7 +146,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         //update the hl_users table for requester
         User user = handle.createQuery("SELECT * FROM hl_users WHERE user_id = :uidq")
                 .bind("uidq", String.valueOf(requester))
-                .map(new UserMapper())
+                .map(new UserDAOImpl.UserMapper())
                 .first();
 
         user.addusersChattedWith(recipient);
@@ -257,32 +256,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             String pendingChats = r.getString("pending_chat_users");
             uc.setPendingChats(stringToSet(pendingChats, Long::parseLong));
             return uc;
-        }
-    }
-
-    class UserMapper implements ResultSetMapper<User> {
-
-        @Override
-        public User map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-            User user = new User();
-            user.setUserId(r.getLong("user_id"));
-            user.setName(r.getString("user_name"));
-            user.setDisplayName(r.getString("display_name"));
-            user.setBio(r.getString("bio"));
-            user.setGender(Gender.valueOf(r.getString("gender")));
-            user.setBirthdate(r.getDate("birth_date").getTime());
-            user.setImageURL(r.getURL("image_url"));
-            String usersChattedWith = r.getString("users_chatted_with");
-            user.setUsersChattedWith(stringToSet(usersChattedWith, Long::parseLong));
-            String blockedUsers = r.getString("blocked_users");
-            user.setBlockedUsers(stringToSet(blockedUsers, Long::parseLong));
-            String knownLanguages = r.getString("known_languages");
-            user.setKnownLanguages(stringToSet(knownLanguages, Function.identity()));
-            String learningLanguages = r.getString("learning_languages");
-            user.setLearningLanguages(stringToSet(learningLanguages, Function.identity()));
-            user.setProfileSet(r.getBoolean("profile_set"));
-
-            return user;
         }
     }
 

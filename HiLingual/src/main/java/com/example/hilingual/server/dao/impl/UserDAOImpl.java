@@ -138,7 +138,7 @@ public class UserDAOImpl implements UserDAO {
         handle.close();
     }
 
-    class UserMapper implements ResultSetMapper<User> {
+    public static class UserMapper implements ResultSetMapper<User> {
 
         @Override
         public User map(int index, ResultSet r, StatementContext ctx) throws SQLException {
