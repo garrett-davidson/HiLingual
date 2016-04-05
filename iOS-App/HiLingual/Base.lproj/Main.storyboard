@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -87,46 +87,44 @@
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Message" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsD-GD-Ptj">
-                                                    <rect key="frame" x="88" y="37" width="479" height="35"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Recent Message" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsD-GD-Ptj">
+                                                    <rect key="frame" x="82" y="32.5" width="477" height="39.5"/>
                                                     <accessibility key="accessibilityConfiguration" label="LastMessageLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastMessage" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jtj-uA-qSk">
-                                                    <rect key="frame" x="484" y="8" width="75" height="15"/>
+                                                    <rect key="frame" x="489" y="8" width="69.5" height="13.5"/>
                                                     <accessibility key="accessibilityConfiguration" label="LastMessageDateLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J8t-oZ-gwa">
-                                                    <rect key="frame" x="88" y="8" width="369" height="21"/>
-                                                    <accessibility key="accessibilityConfiguration" label="NameLabel"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gC5-m3-3gT">
-                                                    <rect key="frame" x="399" y="37" width="51" height="30"/>
-                                                    <accessibility key="accessibilityConfiguration" label="AcceptButton"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="51" id="BPs-De-FSj"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Accept"/>
-                                                    <connections>
-                                                        <action selector="accept:" destination="WMC-dk-gVI" eventType="touchUpInside" id="f0h-V9-kQ1"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAO-Cy-IOV">
-                                                    <rect key="frame" x="470" y="37" width="52" height="30"/>
-                                                    <accessibility key="accessibilityConfiguration" label="DeclineButton"/>
-                                                    <state key="normal" title="Decline"/>
-                                                    <connections>
-                                                        <action selector="decline:" destination="WMC-dk-gVI" eventType="touchUpInside" id="WYZ-Gh-7kA"/>
-                                                    </connections>
-                                                </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="w23-lp-SXl">
+                                                    <rect key="frame" x="227" y="41" width="114" height="30"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gC5-m3-3gT">
+                                                            <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
+                                                            <accessibility key="accessibilityConfiguration" label="AcceptButton"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="51" id="BPs-De-FSj"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Accept"/>
+                                                            <connections>
+                                                                <action selector="accept:" destination="WMC-dk-gVI" eventType="touchUpInside" id="f0h-V9-kQ1"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAO-Cy-IOV">
+                                                            <rect key="frame" x="62" y="0.0" width="52" height="30"/>
+                                                            <accessibility key="accessibilityConfiguration" label="DeclineButton"/>
+                                                            <state key="normal" title="Decline"/>
+                                                            <connections>
+                                                                <action selector="decline:" destination="WMC-dk-gVI" eventType="touchUpInside" id="WYZ-Gh-7kA"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IUP-Vd-aa4">
                                                     <rect key="frame" x="8" y="8" width="64" height="64"/>
                                                     <accessibility key="accessibilityConfiguration" label="ProfilePictureImageView"/>
@@ -136,30 +134,29 @@
                                                         <constraint firstAttribute="height" constant="64" id="xcD-wm-n13"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J8t-oZ-gwa">
+                                                    <rect key="frame" x="82" y="8" width="399" height="19.5"/>
+                                                    <accessibility key="accessibilityConfiguration" label="NameLabel"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="baseline" secondItem="gC5-m3-3gT" secondAttribute="baseline" id="0uh-iz-bgU"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="IUP-Vd-aa4" secondAttribute="bottom" id="4NI-aC-krn"/>
-                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="trailing" secondItem="Bl9-2e-fTH" secondAttribute="trailingMargin" id="59T-zn-sFF"/>
-                                                <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="DsD-GD-Ptj" secondAttribute="leading" id="8K2-Nl-6OY"/>
-                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="centerY" secondItem="IUP-Vd-aa4" secondAttribute="centerY" constant="12" id="Fr0-05-6Oj"/>
-                                                <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="16" id="GsN-ox-3Md"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="nAO-Cy-IOV" secondAttribute="trailing" constant="37" id="KhE-XD-3HR"/>
-                                                <constraint firstItem="DsD-GD-Ptj" firstAttribute="top" secondItem="J8t-oZ-gwa" secondAttribute="bottom" constant="8" symbolic="YES" id="NMw-t1-uPB"/>
-                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="leading" secondItem="J8t-oZ-gwa" secondAttribute="trailing" constant="13" id="O1J-5u-Xix"/>
-                                                <constraint firstAttribute="trailing" secondItem="DsD-GD-Ptj" secondAttribute="trailing" id="O3G-9n-flc"/>
-                                                <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="16" id="Ojd-54-Pn7"/>
-                                                <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="16" id="PrV-3v-CE3"/>
-                                                <constraint firstItem="DsD-GD-Ptj" firstAttribute="top" secondItem="nAO-Cy-IOV" secondAttribute="top" id="UYD-nA-S0Y"/>
-                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="top" secondItem="jtj-uA-qSk" secondAttribute="bottom" constant="14" id="WHm-PY-1Cr"/>
-                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="WgF-g1-avJ"/>
-                                                <constraint firstItem="nAO-Cy-IOV" firstAttribute="leading" secondItem="gC5-m3-3gT" secondAttribute="trailing" constant="20" id="XI4-ae-KQk"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="nAO-Cy-IOV" secondAttribute="bottom" constant="5" id="a8x-GQ-1KD"/>
-                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="leading" secondItem="J8t-oZ-gwa" secondAttribute="trailing" constant="27" id="dIv-aU-A4a"/>
-                                                <constraint firstAttribute="topMargin" secondItem="J8t-oZ-gwa" secondAttribute="top" id="gMy-N6-C29"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="DsD-GD-Ptj" secondAttribute="bottom" constant="-0.5" id="jwN-cP-cPg"/>
-                                                <constraint firstItem="IUP-Vd-aa4" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="mC8-E4-ASc"/>
-                                                <constraint firstItem="IUP-Vd-aa4" firstAttribute="leading" secondItem="Bl9-2e-fTH" secondAttribute="leadingMargin" id="zNL-Fv-Hhg"/>
+                                                <constraint firstItem="DsD-GD-Ptj" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="10" id="3sy-Xy-HRi"/>
+                                                <constraint firstItem="J8t-oZ-gwa" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="7eT-Nu-lCf"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="IUP-Vd-aa4" secondAttribute="bottom" id="AYX-vf-P6I"/>
+                                                <constraint firstItem="IUP-Vd-aa4" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="FXM-89-W4W"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="DsD-GD-Ptj" secondAttribute="trailing" id="H2i-DT-Oge"/>
+                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="trailing" secondItem="Bl9-2e-fTH" secondAttribute="trailingMargin" id="LfB-VN-kWW"/>
+                                                <constraint firstItem="IUP-Vd-aa4" firstAttribute="leading" secondItem="Bl9-2e-fTH" secondAttribute="leadingMargin" id="Pfi-ds-Qcp"/>
+                                                <constraint firstItem="DsD-GD-Ptj" firstAttribute="top" secondItem="J8t-oZ-gwa" secondAttribute="bottom" constant="5" id="RMy-wH-NJd"/>
+                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="leading" secondItem="J8t-oZ-gwa" secondAttribute="trailing" constant="8" id="SwD-kW-img"/>
+                                                <constraint firstItem="w23-lp-SXl" firstAttribute="centerX" secondItem="Bl9-2e-fTH" secondAttribute="centerX" id="THU-UV-6mE"/>
+                                                <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="10" id="e3z-Z4-nSN"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="DsD-GD-Ptj" secondAttribute="bottom" id="gNr-q6-YOf"/>
+                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="mQS-t4-klX"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="w23-lp-SXl" secondAttribute="bottom" id="pSU-JJ-h5s"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" label="ConversationTableViewCell"/>
