@@ -68,7 +68,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
     func sendRequestToUser(userId: Int64) {
         var resp: NSURLResponse?
-
+        
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(userId)/")!)
         if let session = HLUser.getCurrentUser().getSession() {
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
@@ -106,7 +106,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
 
         let index = sender.tag
-
+        sender.hidden = true
 //        sender.setTitle("Send Request", forState: .Normal)
         sendRequestToUser(searchResults[index].userId)
     }
@@ -129,7 +129,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.searchTable.estimatedRowHeight = 40
+        self.searchTable.rowHeight = UITableViewAutomaticDimension
         carousel.bounceDistance = 0.1;
         carousel.decelerationRate = 0.2;
         carousel.reloadData()
