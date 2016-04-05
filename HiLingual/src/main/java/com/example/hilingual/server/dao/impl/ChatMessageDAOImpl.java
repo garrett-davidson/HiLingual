@@ -47,7 +47,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 "sender_id BIGINT, " +
                 "receiver_id BIGINT, " +
                 "message VARCHAR(500), " +
-                "edited_message VARCHAR(500)" +
+                "edited_message VARCHAR(500), " +
                 "audio VARCHAR(500))");
 
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
@@ -239,8 +239,8 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         public Message map(int index, ResultSet r, StatementContext ctx) throws SQLException {
             Message message = new Message();
             message.setId(r.getLong("message_id"));
-            message.setSentTimestamp(r.getDate("sent_timestamp").getTime());
-            message.setEditTimestamp(r.getDate("edit_timestamp").getTime());
+            message.setSentTimestamp(r.getTimestamp("sent_timestamp").getTime());
+            message.setEditTimestamp(r.getTimestamp("edit_timestamp").getTime());
             message.setSender(r.getLong("sender_id"));
             message.setReceiver(r.getLong("receiver_id"));
             message.setContent(r.getString("message"));
