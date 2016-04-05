@@ -20,8 +20,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBOutlet var view: UIView!
     @IBOutlet var recordingTimer: UILabel!
     @IBOutlet weak var leftButton: UIButton!
-    
-    var recipientId: Int64 = 12
 
     var textViewTested = false
     var origTime = 0.0
@@ -229,9 +227,12 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         if isRecording{
             print("sent voice")
             data = NSData(contentsOfURL: curURL)
-
-            HLMessage.sendVoiceMessageWithData(data!, receiverID: recipientId)
             
+            let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            
+          // let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
+            
+            chatViewController!.sendVoiceMessageWithData(data!)
             tapDelete(sender)
             
             return
@@ -256,7 +257,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message" {
             textView.text = ""
-            textView.scrollEnabled = false
+            //textView.scrollEnabled = false
         }
     }
 
@@ -264,9 +265,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         if textView.text == "" {
             textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
             textView.text = "Message"
+            textView.scrollEnabled = false
+
         }
     }
-
     func textViewDidChange(textView: UITextView) {
         
         //stop the view at top of screen somehow
@@ -300,6 +302,19 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textViewDidChange(textView)
         }
         textViewTested = false
+    }
+    
+    func textTestchange(){
+        let numLines = textView.contentSize.height / textView.font!.lineHeight;
+        //(textView.text as NSString).sizeWithAttributes(<#T##attrs: [String : AnyObject]?##[String : AnyObject]?#>)
+        if numLines > 5 {
+            textView.scrollEnabled = true
+        }
+            
+        else {
+            textView.scrollEnabled = false
+        }
+        
     }
     
     override func intrinsicContentSize() -> CGSize {

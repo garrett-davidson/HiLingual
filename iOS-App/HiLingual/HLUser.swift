@@ -119,10 +119,10 @@ class HLUser: NSObject, NSCoding {
 
         return currentUser
     }
-
-    static func getUserById(id: Int64) -> HLUser? {
+    
+    static func getUserById(id: Int64, session: HLUserSession) -> HLUser? {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(id)")!)
-        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + HLUser.currentUser!.session!.sessionId]
+        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
         request.HTTPMethod = "GET"
         if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
             print(returnedData)
@@ -131,8 +131,12 @@ class HLUser: NSObject, NSCoding {
                 return HLUser.fromJSON(returnedData)
             }
         }
-
+        
         return nil
+    }
+
+    static func getUserById(id: Int64) -> HLUser? {
+        return getUserById(id, session: HLUser.getCurrentUser().session!)
     }
 
     static func fromDict(userDict: NSDictionary) -> HLUser {
@@ -203,16 +207,18 @@ class HLUser: NSObject, NSCoding {
     func save() {
         //This should only be called on the current user
         HLUser.currentUser = self
-        let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
-        NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
-
-        //TODO: Implement creating a loggin in to server user
-        //That way this doesn't have to be hard-coded
-        if let userJSONData = self.toJSON() {
-            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session!.sessionId]
-            request.HTTPMethod = "PATCH"
-            request.HTTPBody = userJSONData
+        var size = CGSize(width: 150, height: 150)
+        
+        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
+        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+            
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
+            
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
+            
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
@@ -220,6 +226,41 @@ class HLUser: NSObject, NSCoding {
                 }
             }
         }
+        
+
+        
+        
+        
+
+        let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
+        NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
+//
+//        //TODO: Implement creating a loggin in to server user
+//        //That way this doesn't have to be hard-coded
+//        if let userJSONData = self.toJSON() {
+//            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
+//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session!.sessionId]
+//            request.HTTPMethod = "PATCH"
+//            request.HTTPBody = userJSONData
+//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+//                print(returnedData)
+//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+//                    print(returnString)
+//                }
+//            }
+//        }
+    }
+    func scaleImage(image: UIImage, toSize newSize: CGSize) -> (UIImage) {
+        let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetInterpolationQuality(context, .High)
+        let flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
+        CGContextConcatCTM(context, flipVertical)
+        CGContextDrawImage(context, newRect, image.CGImage)
+        let newImage = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
+        UIGraphicsEndImageContext()
+        return newImage
     }
 
     func toJSON() -> NSData? {

@@ -87,6 +87,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         return false
     }
+    
+    func sendVoiceMessageWithData(data: NSData) {
+        if let message = HLMessage.sendVoiceMessageWithData(data, receiverID: recipientId) {
+            print("Sent message")
+            print(message)
+        }
+    }
 
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()
@@ -97,7 +104,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func editMessage() {
         editingCellIndex = selectedCellIndex
+        
         testView.textView.becomeFirstResponder()
+        testView.didBegingEditing()
         let selectedMessage = messages[selectedCellIndex!]
         if let editText = selectedMessage.editedText {
             testView.textView.text = editText
@@ -105,9 +114,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             testView.textView.text = selectedMessage.text
         }
-        testView.didBegingEditing()
-
         testView.textViewDidChange(testView.textView)
+        testView.textTestchange()
+        //testView.textViewDidChange(testView.textView)
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
@@ -340,6 +349,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let audioURL = documentsURL.URLByAppendingPathComponent(String(deviceURL))
             //NEED TO CHECK IF THIS DOC LOOKUP FAILED, MEANS FILE WAS NOT DOWNLOADED
+            
+            
             do {
                 try audioPlayer = AVAudioPlayer(contentsOfURL: audioURL)
                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)

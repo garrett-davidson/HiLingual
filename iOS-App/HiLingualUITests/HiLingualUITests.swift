@@ -109,19 +109,24 @@ class HiLingualUITests: XCTestCase {
         let sendButton = app.buttons["Send"]
         sendButton.tap()
         sendButton.tap()
-   //     XCTAssert(textView.frame.size.height < 110)
+//     XCTAssert(textView.frame.size.height < 110)
         
     }
     
     func testEditingLongMessage() {
+        
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        tablesQuery.staticTexts["This is an already accepted request"].tap()
-        tablesQuery.staticTexts["Long ass message incoming HAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAHHAHAHAHAAHAHAHAHAAHAHAHAHHAAHAHAHAHAHAH"].tap()
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(2).staticTexts["LastMessageLabel"].tap()
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
         app.menuItems["Edit"].tap()
+        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.Button).matchingIdentifier("Button").elementBoundByIndex(0).tap()
+        
         
         let textView = XCUIApplication().otherElements["TestView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
         XCTAssert(textView.frame.size.height > 2)
+        
+        
     }
     
 }
