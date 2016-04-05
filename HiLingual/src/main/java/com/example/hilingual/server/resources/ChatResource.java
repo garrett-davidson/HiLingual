@@ -1,6 +1,7 @@
 package com.example.hilingual.server.resources;
 
 import com.example.hilingual.server.api.Message;
+import com.example.hilingual.server.api.NotificationType;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.UserChats;
 import com.example.hilingual.server.config.ServerConfig;
@@ -107,7 +108,7 @@ public class ChatResource {
         }
         chatMessageDAO.addRequest(requesterId, receiverId);
         sendNotification(receiverId, String.format("<LOCALIZE ME> %s wants to start a conversation with you!",
-                requester.getDisplayName()));
+                requester.getDisplayName()), NotificationType.REQUEST_RECEIVED);
     }
 
     @POST
@@ -154,7 +155,7 @@ public class ChatResource {
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
         sendNotification(requesterId, String.format("<LOCALIZE ME>%s has accepted your conversation request.",
-                accepter.getDisplayName()));
+                accepter.getDisplayName()), NotificationType.REQUEST_ACCEPTED);
     }
 
 
@@ -190,14 +191,14 @@ public class ChatResource {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, uri.toASCIIString());
             sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a voice clip.",
-                    sender.getDisplayName()));
+                    sender.getDisplayName()), NotificationType.NEW_MESSAGE);
             return ret;
         } else {
             //  New messages only have content field set
             System.out.println("New text message");
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s sent you a message.",
-                    sender.getDisplayName()));
+                    sender.getDisplayName()), NotificationType.NEW_MESSAGE);
             return ret;
         }
     }
@@ -241,7 +242,7 @@ public class ChatResource {
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(messageIdToEdit, message.getEditData());
         sendNotification(receiverId, String.format("<LOCALIZE ME><TODO SHOW CONTENT>%s edited a message.",
-                editor.getDisplayName()));
+                editor.getDisplayName()), NotificationType.EDITED_MESSAGE);
         return editedMessage;
     }
 
@@ -267,10 +268,13 @@ public class ChatResource {
         return messages;
     }
 
-    private void sendNotification(long user, String body) {
+
+
+    private void sendNotification(long user, String body, NotificationType type) {
         String builtBody = new ApnsPayloadBuilder().
                 setAlertTitle("HiLingual Chat").
                 setAlertBody(body).
+                addCustomProperty("type", type.name()).
                 buildWithDefaultMaximumLength();
         Set<String> tokens = deviceTokenDAO.getUserDeviceTokens(user);
         if (tokens == null) {
