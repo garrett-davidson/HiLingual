@@ -320,6 +320,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let audioURL = documentsURL.URLByAppendingPathComponent(String(deviceURL))
             //NEED TO CHECK IF THIS DOC LOOKUP FAILED, MEANS FILE WAS NOT DOWNLOADED
+            
+            
             do {
                 try audioPlayer = AVAudioPlayer(contentsOfURL: audioURL)
                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)

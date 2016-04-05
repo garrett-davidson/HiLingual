@@ -232,8 +232,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             
             let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
             
-        
-            
             let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
             newMessage.send(true)
             

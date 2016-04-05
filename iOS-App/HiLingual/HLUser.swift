@@ -207,6 +207,10 @@ class HLUser: NSObject, NSCoding {
     func save() {
         //This should only be called on the current user
         HLUser.currentUser = self
+        var imageData = UIImagePNGRepresentation(HLUser.getCurrentUser().profilePicture!)
+        //let base64String = imageData!.base64EncodedStringWithOptions(.allZeros)
+
+
         let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
         NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
 
