@@ -413,6 +413,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     messages = HLMessage.fromJSONArray(returnedData)
                     tableView.reloadData()
 
+                    tableViewScrollToBottom(true)
                     return
                 }
             }
