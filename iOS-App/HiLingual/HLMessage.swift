@@ -13,7 +13,16 @@ class HLMessage {
     let sentTimestamp: NSDate
     var editedTimestamp: NSDate?
     let text: String
-    var editedText: String?
+    var editedText: String? {
+
+//        get {
+//            return editedText
+//        }
+
+        didSet {
+            saveMessageEdit()
+        }
+    }
     //TODO: Add hide flags
 
     let senderID: Int64
@@ -21,6 +30,26 @@ class HLMessage {
 
     let audioURL: NSURL?
 
+    func saveMessageEdit() {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(senderID)/message/\(messageUUID!)")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "PATCH"
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["editData" : editedText!]), options: NSJSONWritingOptions(rawValue: 0))
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                    return
+                }
+            }
+        }
+        
+        print("Failed to edit message")
+    }
 
     init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, audioURLString: String?=nil) {
         self.messageUUID = UUID

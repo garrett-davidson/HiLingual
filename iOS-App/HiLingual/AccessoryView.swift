@@ -228,10 +228,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             print("sent voice")
             data = NSData(contentsOfURL: curURL)
             
-            let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-            
-          // let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
-            
             chatViewController!.sendVoiceMessageWithData(data!)
             tapDelete(sender)
             
@@ -240,13 +236,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else if isEditing {
             //TODO:
             //Save edit
-            chatViewController?.saveMessageEdit(editedText: textView.text)
+            chatViewController!.saveMessageEdit(editedText: textView.text)
             didEndEditing()
         }
         else {
-            //TODO:
-            //Send message
-            print("here")
             if chatViewController!.sendMessageWithText(textView.text) {
                 textView.text = ""
             }
