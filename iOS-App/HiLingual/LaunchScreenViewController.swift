@@ -74,18 +74,44 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
+        var response: NSURLResponse?
+        
 
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json"]
         request.HTTPMethod = "POST"
-        let bodyDict = ["authority": "FACEBOOK",
+        
+        var bodyDict = ["authority": "FACEBOOK",
                         "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
-                        "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString,
-                        "deviceToken": (UIApplication.sharedApplication().delegate! as! AppDelegate).apnsToken!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]
+                        "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
+        
+        if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
+            let tokenString = deviceToken.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            bodyDict["deviceToken"] = tokenString
+        }
+        
+        
 
         request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
 
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
+            if let response2 = response as? NSHTTPURLResponse {
+                if response2.statusCode == 403 {
+                    let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/login")!)
+                    request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+                    request.HTTPMethod = "POST"
+                    
+                    var bodyDict = ["authority": "FACEBOOK",
+                                    "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
+                                    "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
+                    
+                    if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
+                        let tokenString = deviceToken.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+                        bodyDict["deviceToken"] = tokenString
+                    }
+                    
+                }
+            }
             print(returnedData)
             if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                 print(returnString)
