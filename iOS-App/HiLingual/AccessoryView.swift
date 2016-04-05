@@ -21,7 +21,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBOutlet var recordingTimer: UILabel!
     @IBOutlet weak var leftButton: UIButton!
     
-    
+    var recipientId: Int64 = 12
 
     var textViewTested = false
     var origTime = 0.0
@@ -136,7 +136,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             return
         }
 
-
         recordingTimer.text = "0.0"
         recordingSession = AVAudioSession.sharedInstance()
         
@@ -156,6 +155,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             deleteRecording.hidden = true
             origTime =  CACurrentMediaTime();
             textView.hidden = true
+            textView.editable = false;
             recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
 
         } catch let error as NSError {
@@ -212,6 +212,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     }
     @IBAction func tapDelete(sender: AnyObject) {
         textView.hidden = false;
+        textView.editable = true;
         recordingTimer.hidden = true
         previewRecording.hidden = true
         deleteRecording.hidden = true
@@ -226,37 +227,18 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBAction func sendClicked(sender: AnyObject) {
        var data: NSData? = nil
         if isRecording{
-             print("click")
-            let testSessionId = "o8g8a0nlpmg09g6ph4mu72380"
             print("sent voice")
-            let urlString = "https://gethilingual.com/api/asset/audio/5"
-            let request = NSMutableURLRequest( URL: NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!)
-            request.HTTPMethod = "POST"
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + testSessionId]
             data = NSData(contentsOfURL: curURL)
             
             let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
             
-            let bodyDict = NSDictionary(dictionary: ["audio": dataString])
+        
             
-            let body = try? NSJSONSerialization.dataWithJSONObject(bodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
+            newMessage.send(true)
             
+            tapDelete(sender)
             
-            request.HTTPBody = body!
-                //TODO: Use non-deprecated API
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                }
-               
-            }
-            
-            else {
-                print("Empty response")
-            }
-            
-
             return
         }
         else if isEditing {
@@ -268,6 +250,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else {
             //TODO:
             //Send message
+            print("here")
             chatViewController!.sendMessageWithText(textView.text)
         }
     }

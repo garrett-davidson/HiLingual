@@ -9,15 +9,18 @@
 import Foundation
 import UIKit
 import QuartzCore
+import AVFoundation
 
 //Displays both the sent and received messages in a single chat
 
-class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate{
+class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate{
     var user: HLUser!
     var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
     var messages = [HLMessage]()
 
+    var audioPlayer: AVAudioPlayer!
+    
     var recipientId: Int64 = 12
 
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
@@ -294,23 +297,43 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
     }
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer,
+                                       successfully flag: Bool){
+        curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+        isPlayingMessage = false;
+        print("ended")
+    }
     func tapPlayButton(sender: UIButton) {
         if(isPlayingMessage == true){
-            sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            isPlayingMessage = false;
+            if(sender == curPlayingMessage){
+                sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                isPlayingMessage = false;
+                audioPlayer.stop();
+                print("stopped")
+            }else{
+                curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                audioPlayer.stop();
+                isPlayingMessage = false;
+                print("stopped")
+                tapPlayButton(sender)
+            }
         }else{
-            var urlstring: String = messages[sender.tag].text
-            let startIndex = urlstring.startIndex.advancedBy(8)
-            urlstring = "http://" + urlstring.substringFromIndex(startIndex)
-            let recordURL = NSURL(string: urlstring)
+            let deviceURL = messages[sender.tag].messageUUID
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let audioURL = documentsURL.URLByAppendingPathComponent(String(deviceURL))
+            //NEED TO CHECK IF THIS DOC LOOKUP FAILED, MEANS FILE WAS NOT DOWNLOADED
+            do {
+                try audioPlayer = AVAudioPlayer(contentsOfURL: audioURL)
+                try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
+                audioPlayer.volume = 1;
+                audioPlayer.play()
+            } catch let error as NSError {
+                print("Failed to preview recording: ", error)
+            }
+        
             isPlayingMessage = true;
             sender.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            
-
-            //get message from server
-            
-            print(recordURL)
-
+            print("playing message")
         }
     }
 
