@@ -76,7 +76,8 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         getUserInfo()
         var response: NSURLResponse?
         
-
+        requestFromServer("https://gethilingual.com/api/auth/register", authority: "FACEBOOK")
+        /*
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json"]
         request.HTTPMethod = "POST"
@@ -101,15 +102,15 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                     request.allHTTPHeaderFields = ["Content-Type": "application/json"]
                     request.HTTPMethod = "POST"
                     
-                    var bodyDict = ["authority": "FACEBOOK",
+                    var bodyDict1 = ["authority": "FACEBOOK",
                                     "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
                                     "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
                     
                     if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
                         let tokenString = deviceToken.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-                        bodyDict["deviceToken"] = tokenString
+                        bodyDict1["deviceToken"] = tokenString
                     }
-                    
+                    request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict1), options: NSJSONWritingOptions(rawValue: 0))
                 }
             }
             print(returnedData)
@@ -126,6 +127,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                 print("Returned data is not a string")
             }
         }
+         */
     }
 
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -149,7 +151,8 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
     func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
         viewController.dismissViewControllerAnimated(true, completion: nil)
-
+        requestFromServer("https://gethilingual.com/api/auth/register", authority: "GOOGLE")
+        /*
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/auth/register")!)
         request.allHTTPHeaderFields = ["Content-Type": "application/json"]
         request.HTTPMethod = "POST"
@@ -187,12 +190,55 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             }
 
         })
+         */
     }
 
     func didLoginWithSession(session: HLUserSession) {
         self.performSegueWithIdentifier("InitialLogin", sender: session)
     }
-
+    func requestFromServer(url: String,authority: String){
+        var response: NSURLResponse?
+        
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = "POST"
+        
+        var bodyDict = ["authority": authority,
+                        "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
+                        "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
+        
+        if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
+            let tokenString = deviceToken.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            bodyDict["deviceToken"] = tokenString
+        }
+        
+        
+        
+        request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
+        
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
+            if let response2 = response as? NSHTTPURLResponse {
+                if response2.statusCode == 403 && url == "https://gethilingual.com/api/auth/register"  {
+                    requestFromServer("https://gethilingual.com/api/auth/login", authority: authority)
+                }else{
+                    print(returnedData)
+                    if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                        print(returnString)
+                        if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                            self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: .Facebook,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                        } else {
+                            print("Couldn't parse return value")
+                        }
+                    } else {
+                        print("Returned data is not a string")
+                    }
+                }
+            }
+        }
+        
+        
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destNav = segue.destinationViewController as? UINavigationController {
             if let dest = destNav.topViewController as? AccountCreationViewController {
