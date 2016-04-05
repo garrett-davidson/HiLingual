@@ -69,6 +69,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             print(message)
         }
     }
+    
+    func sendVoiceMessageWithData(data: NSData) {
+        if let message = HLMessage.sendVoiceMessageWithData(data, receiverID: recipientId) {
+            print("Sent message")
+            print(message)
+        }
+    }
 
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()

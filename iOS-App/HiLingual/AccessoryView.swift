@@ -20,8 +20,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     @IBOutlet var view: UIView!
     @IBOutlet var recordingTimer: UILabel!
     @IBOutlet weak var leftButton: UIButton!
-    
-    var recipientId: Int64 = 12
 
     var textViewTested = false
     var origTime = 0.0
@@ -232,9 +230,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             
             let dataString = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
             
-            let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
-            newMessage.send(true)
+          // let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
             
+            chatViewController!.sendVoiceMessageWithData(data!)
             tapDelete(sender)
             
             return

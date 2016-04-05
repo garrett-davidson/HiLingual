@@ -206,6 +206,9 @@ class HLUser: NSObject, NSCoding {
         var imageData = UIImagePNGRepresentation(HLUser.getCurrentUser().profilePicture!)
         //let base64String = imageData!.base64EncodedStringWithOptions(.allZeros)
 
+        
+        
+        
 
         let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
         NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
