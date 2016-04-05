@@ -136,7 +136,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             return
         }
 
-
         recordingTimer.text = "0.0"
         recordingSession = AVAudioSession.sharedInstance()
         
@@ -156,6 +155,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             deleteRecording.hidden = true
             origTime =  CACurrentMediaTime();
             textView.hidden = true
+            textView.editable = false;
             recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
 
         } catch let error as NSError {
@@ -212,6 +212,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     }
     @IBAction func tapDelete(sender: AnyObject) {
         textView.hidden = false;
+        textView.editable = true;
         recordingTimer.hidden = true
         previewRecording.hidden = true
         deleteRecording.hidden = true
@@ -235,6 +236,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             
             let newMessage = HLMessage(text: dataString, senderID: HLUser.getCurrentUser().userId, receiverID: recipientId)
             newMessage.send(true)
+            
+            tapDelete(sender)
             
             return
         }
