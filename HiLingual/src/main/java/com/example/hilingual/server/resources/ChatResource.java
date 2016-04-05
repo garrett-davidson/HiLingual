@@ -224,10 +224,9 @@ public class ChatResource {
         if (receiver == null) {
             throw new NotFoundException("No such receiver");
         }
-        long messageIdToEdit = message.getId();
-        Message messageToEdit = chatMessageDAO.getMessage(messageIdToEdit);
+        Message messageToEdit = chatMessageDAO.getMessage(msg);
         if (messageToEdit == null) {
-            throw new NotFoundException("Message " + messageIdToEdit + " not found");
+            throw new NotFoundException("Message " + msg + " not found");
         }
         //  These are backwards because the editor of a message edits the message the sender sent (aka not your own)
         if (messageToEdit.getSender() == receiverId) {
@@ -237,7 +236,7 @@ public class ChatResource {
             throw new ForbiddenException("You cannot edit a message that's not for you");
         }
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
-        Message editedMessage = chatMessageDAO.editMessage(messageIdToEdit, message.getEditData());
+        Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
         sendNotification(receiverId, String.format("%s edited: %s",
                 editor.getDisplayName(), editedMessage.getEditData()), NotificationType.EDITED_MESSAGE);
         return editedMessage;
