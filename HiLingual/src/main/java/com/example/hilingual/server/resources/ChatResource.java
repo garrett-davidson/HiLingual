@@ -1,15 +1,13 @@
 package com.example.hilingual.server.resources;
 
-import com.example.hilingual.server.api.Message;
-import com.example.hilingual.server.api.NotificationType;
-import com.example.hilingual.server.api.User;
-import com.example.hilingual.server.api.UserChats;
+import com.example.hilingual.server.api.*;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.ChatMessageDAO;
 import com.example.hilingual.server.dao.DeviceTokenDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.service.APNsService;
+import com.example.hilingual.server.service.MsftTranslateService;
 import com.google.inject.Inject;
 import com.relayrides.pushy.apns.util.ApnsPayloadBuilder;
 import io.dropwizard.jersey.PATCH;
@@ -23,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
@@ -40,17 +39,20 @@ public class ChatResource {
     private final ChatMessageDAO chatMessageDAO;
     private final APNsService apnsService;
     private final DeviceTokenDAO deviceTokenDAO;
+    private final MsftTranslateService translateService;
     private final ServerConfig config;
     private final Random random;
 
     @Inject
     public ChatResource(SessionDAO sessionDAO, UserDAO userDAO, ChatMessageDAO chatMessageDAO,
-                        APNsService apnsService, DeviceTokenDAO deviceTokenDAO, ServerConfig config) {
+                        APNsService apnsService, DeviceTokenDAO deviceTokenDAO,
+                        MsftTranslateService translateService, ServerConfig config) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.chatMessageDAO = chatMessageDAO;
         this.apnsService = apnsService;
         this.deviceTokenDAO = deviceTokenDAO;
+        this.translateService = translateService;
         this.config = config;
 
 
@@ -264,6 +266,31 @@ public class ChatResource {
         return messages;
     }
 
+    @GET
+    @Path("/{receiver-id}/message/{message-id}/translate")
+    public TranslationResponse getTranslation(@HeaderParam("Authorization") String hlat,
+                                              @PathParam("receiver-id") long receiverId,
+                                              @PathParam("message-id") long msgId,
+                                              @QueryParam("to") @DefaultValue("en") String toLanguage) {
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        //  TODO Verify that the user is in a chat with this person
+
+        Message message = chatMessageDAO.getMessage(msgId);
+        if (message == null) {
+            throw new NotFoundException("Message " + msgId + " not found");
+        }
+
+        Locale locale = Locale.forLanguageTag(toLanguage);
+        String translated = translateService.translate(message.getContent(), locale);
+
+        TranslationResponse response = new TranslationResponse(translated, msgId);
+
+        return response;
+    }
 
 
     private void sendNotification(long user, String body, NotificationType type) {

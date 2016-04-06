@@ -2,8 +2,6 @@ package com.example.hilingual.server.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Locale;
-
 public class TranslationResponse {
 
     private String translatedContent;
@@ -12,7 +10,7 @@ public class TranslationResponse {
     public TranslationResponse() {
     }
 
-    public TranslationResponse(Locale to, String translatedContent, long parentMessageId) {
+    public TranslationResponse(String translatedContent, long parentMessageId) {
         this.translatedContent = translatedContent;
         this.parentMessageId = parentMessageId;
     }
