@@ -102,7 +102,26 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         loadMessages()
 
     }
+    /*
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
 
+        var size: CGFloat = 0
+        let text = messages[indexPath.row].text
+        size += (text as NSString).boundingRectWithSize(CGSizeMake(view.frame.width - 101, CGFloat.max), options: [.UsesLineFragmentOrigin, .UsesFontLeading], attributes: nil, context: nil).height
+        
+        
+        if let editText = messages[indexPath.row].editedText {
+            size += (editText as NSString).boundingRectWithSize(CGSizeMake(view.frame.width - 101, CGFloat.max), options: [.UsesLineFragmentOrigin, .UsesFontLeading], attributes: nil, context: nil).height
+
+        }
+        return size
+    }
+    
+    func heightForcell(cell: UITableViewCell) -> CGFloat {
+        
+        return cell.frame.height
+    }
+     */
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()
 
@@ -236,6 +255,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
+    //MARK:CELL ROW
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
@@ -256,6 +276,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             button.tag = indexPath.row
             
             cell.chatBubbleLeft.hidden = true
+            cell.chatBubbleLeft.text = ""
+            cell.chatBubbleLeft.text = ""
             cell.chatBubbleRight.hidden = true
             button.translatesAutoresizingMaskIntoConstraints = true
             if messages[indexPath.row].senderID  ==  currentUser.userId {
@@ -273,6 +295,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
+                cell.chatBubbleLeft.text = ""
                 
                 cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
                 cell.chatBubbleRight.text = message.text
@@ -282,6 +305,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
             else {
                 cell.chatBubbleRight.hidden = true
+                cell.chatBubbleRight.text = ""
                 
                 cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
                 cell.chatBubbleLeft.text = message.text
@@ -298,7 +322,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
-
+                cell.leftMessageLabel.text = ""
+                cell.leftEditedMessageLabel.text = ""
+                cell.chatBubbleLeft.frame.size.height = 0
                 cell.chatBubbleRight.hidden = false
                 cell.chatBubbleRight.layer.cornerRadius = 5
 
@@ -308,7 +334,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             else {
                 cell.chatBubbleRight.hidden = true
-
+                cell.rightMessageLabel.text = ""
+                cell.rightEditedMessageLabel.text = ""
                 cell.chatBubbleLeft.hidden = false
                 cell.chatBubbleLeft.layer.cornerRadius = 5
 
