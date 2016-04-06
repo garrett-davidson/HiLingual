@@ -381,22 +381,50 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func loadMessages() {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(recipientId)/message")!)
+        let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
+        if let storedMessages = NSKeyedUnarchiver.unarchiveObjectWithFile(chatURL.path!) as? [HLMessage] {
+            messages = storedMessages
+        }
+
+        var urlString = "https://gethilingual.com/api/chat/\(recipientId)/message"
+
+        if messages.count > 0 {
+            urlString += "?before=\(messages.last!.messageUUID!)"
+        }
+
+        let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
+
         if let session = HLUser.getCurrentUser().getSession() {
 
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "GET"
 
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            var response: NSURLResponse?
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
-                    messages = HLMessage.fromJSONArray(returnedData)
+                    messages += HLMessage.fromJSONArray(returnedData)
+
+                    if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
+                        //Succeeded in writing to file
+                        print("Wrote message cache to disk")
+                    }
+
+                    else {
+                        print("Failed to write chat cache")
+                    }
+
                     tableView.reloadData()
 
                     tableViewScrollToBottom(true)
                     return
                 }
+            }
+
+            if response != nil {
+                print(response!)
             }
         }
         
