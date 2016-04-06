@@ -103,7 +103,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         loadMessages()
 
     }
-
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()
 
@@ -237,6 +236,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
+    //MARK:CELL ROW
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
@@ -257,6 +257,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             button.tag = indexPath.row
             
             cell.chatBubbleLeft.hidden = true
+            cell.chatBubbleLeft.text = ""
+            cell.chatBubbleRight.text = ""
             cell.chatBubbleRight.hidden = true
             button.translatesAutoresizingMaskIntoConstraints = true
             if messages[indexPath.row].senderID  ==  currentUser.userId {
@@ -274,6 +276,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
+                cell.chatBubbleLeft.text = ""
                 
                 cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
                 cell.chatBubbleRight.text = message.text
@@ -283,6 +286,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
             else {
                 cell.chatBubbleRight.hidden = true
+                cell.chatBubbleRight.text = ""
                 
                 cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
                 cell.chatBubbleLeft.text = message.text
@@ -299,7 +303,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
-
+                cell.leftMessageLabel.text = ""
+                cell.leftEditedMessageLabel.text = ""
+                cell.chatBubbleLeft.frame.size.height = 0
                 cell.chatBubbleRight.hidden = false
                 cell.chatBubbleRight.layer.cornerRadius = 5
 
@@ -309,7 +315,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             else {
                 cell.chatBubbleRight.hidden = true
-
+                cell.rightMessageLabel.text = ""
+                cell.rightEditedMessageLabel.text = ""
                 cell.chatBubbleLeft.hidden = false
                 cell.chatBubbleLeft.layer.cornerRadius = 5
 
@@ -398,22 +405,50 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func loadMessages() {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(recipientId)/message")!)
+        let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
+        if let storedMessages = NSKeyedUnarchiver.unarchiveObjectWithFile(chatURL.path!) as? [HLMessage] {
+            messages = storedMessages
+        }
+
+        var urlString = "https://gethilingual.com/api/chat/\(recipientId)/message"
+
+        if messages.count > 0 {
+            urlString += "?before=\(messages.last!.messageUUID!)"
+        }
+
+        let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
+
         if let session = HLUser.getCurrentUser().getSession() {
 
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "GET"
 
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            var response: NSURLResponse?
+
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
-                    messages = HLMessage.fromJSONArray(returnedData)
+                    messages += HLMessage.fromJSONArray(returnedData)
+
+                    if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
+                        //Succeeded in writing to file
+                        print("Wrote message cache to disk")
+                    }
+
+                    else {
+                        print("Failed to write chat cache")
+                    }
+
                     tableView.reloadData()
 
                     tableViewScrollToBottom(true)
                     return
                 }
+            }
+
+            if response != nil {
+                print(response!)
             }
         }
         
