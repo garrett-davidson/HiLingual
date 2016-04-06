@@ -103,26 +103,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         loadMessages()
 
     }
-    /*
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-
-        var size: CGFloat = 0
-        let text = messages[indexPath.row].text
-        size += (text as NSString).boundingRectWithSize(CGSizeMake(view.frame.width - 101, CGFloat.max), options: [.UsesLineFragmentOrigin, .UsesFontLeading], attributes: nil, context: nil).height
-        
-        
-        if let editText = messages[indexPath.row].editedText {
-            size += (editText as NSString).boundingRectWithSize(CGSizeMake(view.frame.width - 101, CGFloat.max), options: [.UsesLineFragmentOrigin, .UsesFontLeading], attributes: nil, context: nil).height
-
-        }
-        return size
-    }
-    
-    func heightForcell(cell: UITableViewCell) -> CGFloat {
-        
-        return cell.frame.height
-    }
-     */
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()
 
@@ -278,7 +258,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             cell.chatBubbleLeft.hidden = true
             cell.chatBubbleLeft.text = ""
-            cell.chatBubbleLeft.text = ""
+            cell.chatBubbleRight.text = ""
             cell.chatBubbleRight.hidden = true
             button.translatesAutoresizingMaskIntoConstraints = true
             if messages[indexPath.row].senderID  ==  currentUser.userId {
