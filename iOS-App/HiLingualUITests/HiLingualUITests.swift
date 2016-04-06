@@ -356,4 +356,29 @@ class HiLingualUITests: XCTestCase {
         
     }
     
+    func testMessagesProfileViewNoCrash(){
+        
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
+        
+        let nathanOhlsonNavigationBar = app.navigationBars["Nathan Ohlson"]
+        nathanOhlsonNavigationBar.buttons["Details"].tap()
+        nathanOhlsonNavigationBar.buttons["Nathan Ohlson"].tap()
+        nathanOhlsonNavigationBar.buttons["Messages"].tap()
+        
+    }
+    
+    func testDeleteConversation() {
+        
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(3).staticTexts["LastMessageLabel"].swipeLeft()
+        app.tables.buttons["Delete"].tap()
+        
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Profile"].tap()
+        tabBarsQuery.buttons["Messages"].tap()
+        XCTAssert(app.tables
+            .childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count == 3)
+        
+    }
 }
