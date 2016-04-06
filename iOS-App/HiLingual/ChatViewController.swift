@@ -13,13 +13,14 @@ import AVFoundation
 
 //Displays both the sent and received messages in a single chat
 
-class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate{
+class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate{
     var user: HLUser!
     var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
     var messages = [HLMessage]()
 
     var audioPlayer: AVAudioPlayer!
+    var recordingSession: AVAudioSession!
 
     //This is not hard coding
     //This variable is set by another view when this view comes on screen
@@ -319,49 +320,65 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
     }
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer,
-                                       successfully flag: Bool){
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
-        print("ended")
     }
     func tapPlayButton(sender: UIButton) {
         if(isPlayingMessage == true){
             if(sender == curPlayingMessage){
                 sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
                 isPlayingMessage = false;
-                audioPlayer.stop();
-                print("stopped")
+                audioPlayer.stop()
             }else{
                 curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-                audioPlayer.stop();
+                audioPlayer.stop()
                 isPlayingMessage = false;
-                print("stopped")
                 tapPlayButton(sender)
             }
         }else{
-            let deviceURL = messages[sender.tag].messageUUID
+            let deviceURL = messages[sender.tag].messageUUID!
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-            let audioURL = documentsURL.URLByAppendingPathComponent(String(deviceURL))
-            //NEED TO CHECK IF THIS DOC LOOKUP FAILED, MEANS FILE WAS NOT DOWNLOADED
-            
-            
+            let audioURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).m4a")
+            recordingSession = AVAudioSession.sharedInstance()
             do {
+                try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+                try recordingSession.setActive(true)
                 try audioPlayer = AVAudioPlayer(contentsOfURL: audioURL)
+                audioPlayer.delegate = self
                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
                 audioPlayer.volume = 1;
+                curPlayingMessage = sender
                 audioPlayer.play()
-            } catch let error as NSError {
-                print("Failed to preview recording: ", error)
+            } catch let error as NSError{
+                print("Downloading audio...",error);
+                loadFileSync(messages[sender.tag].audioURL!,writeTo: audioURL, completion:{(audioURL:String, error:NSError!) in
+                    print("downloaded to: \(audioURL)")
+                })
+                tapPlayButton(sender)
             }
-        
             isPlayingMessage = true;
             sender.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            
-            print("playing message")
         }
     }
-
+    
+    func loadFileSync(url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
+        //let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        let destinationUrl = writeTo
+        if NSFileManager().fileExistsAtPath(destinationUrl.path!) {
+            completion(path: destinationUrl.path!, error:nil)
+        } else if let dataFromURL = NSData(contentsOfURL: url){
+            if dataFromURL.writeToURL(destinationUrl, atomically: true) {
+                completion(path: destinationUrl.path!, error:nil)
+            } else {
+                let error = NSError(domain:"Error saving file", code:1001, userInfo:nil)
+                completion(path: destinationUrl.path!, error:error)
+            }
+        } else {
+            let error = NSError(domain:"Error downloading file", code:1002, userInfo:nil)
+            completion(path: destinationUrl.path!, error:error)
+        }
+    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
