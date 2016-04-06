@@ -27,9 +27,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     var isRecording = false;
     var recordTimer: NSTimer!
     var curURL: NSURL!
+    var lines: CGFloat = 0
     
     @IBOutlet var previewRecording: UIButton!
     @IBOutlet var deleteRecording: UIButton!
+    
     
     
     var recordingSession: AVAudioSession!
@@ -290,7 +292,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else {
             textView.scrollEnabled = false
         }
-
+        if lines != numLines {
+            lines = numLines
+            chatViewController?.tableViewScrollToBottom(true)
+            
+        }
         if textView.text == "" && textViewTested == false{
             textViewTested = true
             textViewDidChange(textView)
