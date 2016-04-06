@@ -418,7 +418,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         if messages.count > 0 {
 //            urlString += "?before=\(messages.last!.messageUUID!)"
-            urlString += "?before=\(0)"
+            urlString += "?before=\(0)&limit=10000"
         }
 
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
@@ -434,7 +434,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
-                    messages += HLMessage.fromJSONArray(returnedData)
+//                    messages += HLMessage.fromJSONArray(returnedData)
+                    messages = HLMessage.fromJSONArray(returnedData)
 
                     if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
                         //Succeeded in writing to file
