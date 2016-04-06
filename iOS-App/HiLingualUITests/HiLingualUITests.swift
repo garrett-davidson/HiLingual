@@ -167,5 +167,81 @@ class HiLingualUITests: XCTestCase {
         
     }
     
+    //Test bio
+    func testEditName() {
+        
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        let profileButton = tabBarsQuery.buttons["Profile"]
+        profileButton.tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let displayNameTextField = app.textFields["Display Name"]
+        displayNameTextField.tap()
+        displayNameTextField.pressForDuration(1.3);
+        app.menuItems["Select All"].tap()
+        
+        let deleteKey = app.keys["delete"]
+        deleteKey.tap()
+        
+        app.keys["n"].tap()
+        app.keys["a"].tap()
+        app.keys["m"].tap()
+        app.keys["e"].tap()
+        app.textFields["Display Name"]
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        tabBarsQuery.buttons["Messages"].tap()
+        profileButton.tap()
+
+        
+        
+        let text1 = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
+        XCTAssert(text1.label == "name")
+    }
     
+    func testSetttingSwitchsDontCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        app.navigationBars["HiLingual.ProfileView"].buttons["Settings"].tap()
+        
+        let tablesQuery = app.tables
+        let settingswitchSwitch = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("SettingsCell").elementBoundByIndex(0).switches["SettingSwitch"]
+        settingswitchSwitch.tap()
+        settingswitchSwitch.tap()
+        
+        let settingswitchSwitch2 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("SettingsCell").elementBoundByIndex(1).switches["SettingSwitch"]
+        settingswitchSwitch2.tap()
+        settingswitchSwitch2.tap()
+        
+        let settingswitchSwitch3 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("SettingsCell").elementBoundByIndex(2).switches["SettingSwitch"]
+        settingswitchSwitch3.tap()
+        settingswitchSwitch3.tap()
+        
+        let settingswitchSwitch4 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("SettingsCell").elementBoundByIndex(3).switches["SettingSwitch"]
+        settingswitchSwitch4.tap()
+        settingswitchSwitch4.tap()
+        app.navigationBars["HiLingual.SettingsView"].buttons["Done"].tap()
+        
+    }
+    
+    func testSendSimpleMessage() {
+        
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
+        
+        let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
+        element.childrenMatchingType(.TextView).element.tap()
+        element.childrenMatchingType(.TextView).element
+        app.keys["H"].tap()
+        app.keys["e"].tap()
+        app.keys["l"].tap()
+        app.keys["l"].tap()
+        app.keys["o"].tap()
+        app.buttons["Send"].tap()
+        app.navigationBars["Nathan Ohlson"].buttons["Messages"].tap()
+        
+    }
 }
