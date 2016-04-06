@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.XML;
 
 
 import javax.ws.rs.core.MediaType;
@@ -50,7 +51,8 @@ public class MsftTranslateServiceImpl implements MsftTranslateService {
                     queryString(queryParams).
                     header("Authorization", getAuthHeaderValue()).
                     asString();
-            return ret.getBody();
+            String body = ret.getBody();
+            return XML.toJSONObject(body).getString("string");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
