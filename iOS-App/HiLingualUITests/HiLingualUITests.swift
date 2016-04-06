@@ -381,4 +381,51 @@ class HiLingualUITests: XCTestCase {
             .childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count == 3)
         
     }
+    
+    func testSendMessageButton() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Matching"].tap()
+        
+        let carouselElement = app.otherElements["Carousel"]
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        
+    }
+    
+    func testEditsSave() {
+        
+        let app = XCUIApplication()
+        let tablesQuery = app.tables
+        let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
+        lastmessagelabelStaticText.tap()
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).staticTexts["ChatBubbleLeftLabel"].tap()
+        app.menuItems["Edit"].tap()
+        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+        app.menuItems["Select"].tap()
+        
+        let deleteKey = app.keys["delete"]
+        deleteKey.tap()
+        deleteKey.tap()
+        app.buttons["Save"].tap()
+        app.navigationBars["Noah Maxey"].buttons["Messages"].tap()
+        
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Profile"].tap()
+        tabBarsQuery.buttons["Messages"].tap()
+        lastmessagelabelStaticText.tap()
+        
+        
+        //You should be able to tap on the second edit. But it does not show up. 
+        XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").elementBoundByIndex(2).tap()
+        
+        
+    
+    }
 }
