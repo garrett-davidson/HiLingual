@@ -76,26 +76,6 @@ class HiLingualUITests: XCTestCase {
         
         
     }
-    func testSettingTab() {
-        
-        let app = XCUIApplication()
-        app.tabBars.buttons["Profile"].tap()
-        app.navigationBars["HiLingual.ProfileView"].buttons["Settings"].tap()
-        
-        let tablesQuery2 = app.tables
-        let showGenderSwitch = tablesQuery2.switches["Show Gender"]
-        showGenderSwitch.tap()
-        showGenderSwitch.tap()
-        showGenderSwitch.tap()
-        
-        let tablesQuery = tablesQuery2
-        tablesQuery.switches["Show Age"].tap()
-        tablesQuery.switches["Show Profile in Matching"].tap()
-        tablesQuery.switches["Display Full Name"].tap()
-        app.navigationBars["HiLingual.SettingsView"].buttons["Done"].tap()
-        
-        
-    }
     func testTextViewHeight() {
         
         let app = XCUIApplication()
@@ -168,37 +148,32 @@ class HiLingualUITests: XCTestCase {
     }
     
     //Test bio
-    func testEditName() {
+    func testEditNameNoCrash() {
         
         let app = XCUIApplication()
-        let tabBarsQuery = app.tabBars
-        let profileButton = tabBarsQuery.buttons["Profile"]
-        profileButton.tap()
+        app.tabBars.buttons["Profile"].tap()
         
         let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
         hilingualProfileviewNavigationBar.buttons["Edit"].tap()
         
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
-        displayNameTextField.pressForDuration(1.3);
-        app.menuItems["Select All"].tap()
+        displayNameTextField.pressForDuration(0.7);
         
-        let deleteKey = app.keys["delete"]
+        let app2 = app
+        app2.menuItems["Select All"].tap()
+        
+        let deleteKey = app2.keys["delete"]
         deleteKey.tap()
         
         app.keys["n"].tap()
         app.keys["a"].tap()
         app.keys["m"].tap()
         app.keys["e"].tap()
-        app.textFields["Display Name"]
+        
+        app2.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
-        tabBarsQuery.buttons["Messages"].tap()
-        profileButton.tap()
-
         
-        
-        let text1 = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
-        XCTAssert(text1.label == "name")
     }
     
     func testSetttingSwitchsDontCrash() {
@@ -244,4 +219,141 @@ class HiLingualUITests: XCTestCase {
         app.navigationBars["Nathan Ohlson"].buttons["Messages"].tap()
         
     }
+    
+    func testEditGenderNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let app2 = app
+        app2.otherElements["EditProfile"].staticTexts["Female"].tap()
+        app2.pickerWheels["Female"].tap()
+        app2.toolbars.buttons["Done"].tap()
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+    }
+    
+    func testEditAgeNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
+        
+        let app2 = app
+        app2.otherElements["EditProfile"].staticTexts["100"].tap()
+        app2.pickerWheels["100"].swipeDown()
+        app2.toolbars.buttons["Done"].tap()
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+    }
+    
+    func testEditBioNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let textView = app.otherElements["EditProfile"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+        textView.tap()
+        textView.pressForDuration(0.9);
+        
+        let app2 = app
+        app2.menuItems["Select All"].tap()
+        
+        let deleteKey = app2.keys["delete"]
+        deleteKey.tap()
+        
+        textView.typeText("new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio")
+        
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+    }
+    
+    func testEditSpeaksNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
+        app.otherElements["EditProfile"].staticTexts["Speaks: Mandarin, Russian, English"].tap()
+        
+        let tablesQuery = app.tables
+        let languagecellCell = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(0)
+        languagecellCell.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell2 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(1)
+        languagecellCell2.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell2.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell3 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(2)
+        languagecellCell3.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell3.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell4 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(3)
+        languagecellCell4.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell4.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell5 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(4)
+        languagecellCell5.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell5.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell6 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(5)
+        languagecellCell6.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell6.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell7 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(6)
+        languagecellCell7.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell7.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        app.navigationBars["HiLingual.LanguageSelectionTableView"].buttons["Done"].tap()
+        
+        
+    }
+    
+    func testEditLearningNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
+        app.otherElements["EditProfile"].staticTexts["Learning: Mandarin"].tap()
+        
+        let tablesQuery = app.tables
+        let languagecellCell = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(0)
+        languagecellCell.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell2 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(1)
+        languagecellCell2.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell2.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell3 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(2)
+        languagecellCell3.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell3.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell4 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(3)
+        languagecellCell4.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell4.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell5 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(4)
+        languagecellCell5.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell5.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell6 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(5)
+        languagecellCell6.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell6.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        
+        let languagecellCell7 = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(6)
+        languagecellCell7.staticTexts["LanguageTitleLabel"].tap()
+        languagecellCell7.childrenMatchingType(.StaticText).matchingIdentifier("LanguageTitleLabel").elementBoundByIndex(0).tap()
+        app.navigationBars["HiLingual.LanguageSelectionTableView"].buttons["Done"].tap()
+        
+        
+    }
+    
 }
