@@ -425,7 +425,24 @@ class HiLingualUITests: XCTestCase {
         //You should be able to tap on the second edit. But it does not show up. 
         XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").elementBoundByIndex(2).tap()
         
-        
+    }
     
+    func testEditMessageWithNoChanges() {
+        
+        let app = XCUIApplication()
+        let tablesQuery = app.tables
+        let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
+        lastmessagelabelStaticText.tap()
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(6).staticTexts["ChatBubbleLeftLabel"].tap()
+        app.menuItems["Edit"].tap()
+        app.buttons["Save"].tap()
+        app.navigationBars["Noah Maxey"].buttons["Messages"].tap()
+        
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Profile"].tap()
+        tabBarsQuery.buttons["Messages"].tap()
+        lastmessagelabelStaticText.tap()
+        
+        XCTAssert(      XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").allElementsBoundByIndex.count == 1)
     }
 }
