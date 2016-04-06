@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HLMessage {
+class HLMessage: NSObject, NSCoding {
     let messageUUID: Int64?
     let sentTimestamp: NSDate
     var editedTimestamp: NSDate?
@@ -29,6 +29,49 @@ class HLMessage {
     let receiverID: Int64
 
     let audioURL: NSURL?
+
+    required init?(coder aDecoder: NSCoder) {
+        messageUUID = aDecoder.decodeInt64ForKey("uuid")
+        sentTimestamp = aDecoder.decodeObjectForKey("sentTimestamp") as! NSDate
+
+        if let editStamp = aDecoder.decodeObjectForKey("editedTimestamp") as? NSDate {
+            editedTimestamp = editStamp
+        }
+        else {
+            editedTimestamp = nil
+        }
+
+        text = aDecoder.decodeObjectForKey("text") as! String
+
+        if let eText = aDecoder.decodeObjectForKey("editedText") as? String {
+            editedText = eText
+        }
+
+        else {
+            editedText = nil
+        }
+
+        senderID = aDecoder.decodeInt64ForKey("senderID")
+        receiverID = aDecoder.decodeInt64ForKey("receiverID")
+
+        if let audio = aDecoder.decodeObjectForKey("audioURL") as? NSURL {
+            audioURL = audio
+        }
+        else {
+            audioURL = nil
+        }
+    }
+
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeInt64(messageUUID!, forKey: "uuid")
+        aCoder.encodeObject(sentTimestamp, forKey: "sentTimestamp")
+        aCoder.encodeObject(editedTimestamp, forKey: "editedTimestamp")
+        aCoder.encodeObject(text, forKey: "text")
+        aCoder.encodeObject(editedText, forKey: "editedText")
+        aCoder.encodeInt64(senderID, forKey: "senderID")
+        aCoder.encodeInt64(receiverID, forKey: "receiverID")
+        aCoder.encodeObject(audioURL, forKey: "audioURL")
+    }
 
     func saveMessageEdit() {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(senderID)/message/\(messageUUID!)")!)
