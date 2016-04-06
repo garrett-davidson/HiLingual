@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONObject;
 import org.json.XML;
 
 
@@ -52,7 +53,9 @@ public class MsftTranslateServiceImpl implements MsftTranslateService {
                     header("Authorization", getAuthHeaderValue()).
                     asString();
             String body = ret.getBody();
-            return XML.toJSONObject(body).getString("string");
+            JSONObject jso = XML.toJSONObject(body);
+            
+            return jso.getJSONObject("string").getString("content");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
