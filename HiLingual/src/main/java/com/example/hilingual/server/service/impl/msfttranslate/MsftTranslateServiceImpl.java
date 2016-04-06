@@ -4,12 +4,14 @@ import com.example.hilingual.server.config.MsftTranslateConfig;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.service.MsftTranslateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.HttpHeaders;
 import com.google.inject.Inject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -44,6 +46,7 @@ public class MsftTranslateServiceImpl implements MsftTranslateService {
             queryParams.put("contentType", "text/plain");
             queryParams.put("category", "general");
             HttpResponse<String> ret = Unirest.get("http://api.microsofttranslator.com/V2/Http.svc/Translate").
+                    header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
                     queryString(queryParams).
                     header("Authorization", getAuthHeaderValue()).
                     asString();
