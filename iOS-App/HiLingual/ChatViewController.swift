@@ -18,6 +18,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
     var messages = [HLMessage]()
+    var scroll = 0
 
     var audioPlayer: AVAudioPlayer!
     var recordingSession: AVAudioSession!
@@ -222,8 +223,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
         }
-        
-        tableViewScrollToBottom(true)
+        if scroll < 2{
+            scroll += 1
+            tableViewScrollToBottom(true)
+        }
     }
     
     func keyboardWillHide(notification: NSNotification) {
@@ -235,6 +238,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.view.layoutIfNeeded()
             }
         }
+        scroll = 0
     }
     //MARK:CELL ROW
     
@@ -442,7 +446,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
                     tableView.reloadData()
 
-                    tableViewScrollToBottom(true)
+                    tableViewScrollToBottom(false)
                     return
                 }
             }
