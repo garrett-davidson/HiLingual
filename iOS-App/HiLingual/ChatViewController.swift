@@ -417,7 +417,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var urlString = "https://gethilingual.com/api/chat/\(recipientId)/message"
 
         if messages.count > 0 {
-            urlString += "?before=\(messages.last!.messageUUID!)"
+//            urlString += "?before=\(messages.last!.messageUUID!)"
+            urlString += "?before=\(0)"
         }
 
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
