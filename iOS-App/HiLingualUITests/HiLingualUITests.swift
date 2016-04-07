@@ -104,6 +104,8 @@ class HiLingualUITests: XCTestCase {
         
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
+        app.typeText("oldName")
+        displayNameTextField.tap()
         displayNameTextField.pressForDuration(0.7);
 
         app.menuItems["Select All"].tap()
@@ -116,6 +118,68 @@ class HiLingualUITests: XCTestCase {
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
+    }
+    
+    func testEditNamePlainTextSave() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let displayNameTextField = app.textFields["Display Name"]
+        displayNameTextField.tap()
+        app.typeText("oldName")
+        displayNameTextField.tap()
+        displayNameTextField.pressForDuration(0.7);
+        
+        app.menuItems["Select All"].tap()
+        
+        let deleteKey = app.keys["delete"]
+        deleteKey.tap()
+        
+        app.typeText("name")
+        
+        app.textFields["Display Name"]
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+        
+        let tabBarsQuery = XCUIApplication().tabBars
+        tabBarsQuery.buttons["Matching"].tap()
+        tabBarsQuery.buttons["Profile"].tap()
+
+        XCTAssert(app.textFields["name"].exists);
+    }
+    
+    func testEditNameUnicodeTextSave() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        
+        let displayNameTextField = app.textFields["Display Name"]
+        displayNameTextField.tap()
+        app.typeText("oldName")
+        displayNameTextField.tap()
+        displayNameTextField.pressForDuration(0.7);
+        
+        app.menuItems["Select All"].tap()
+        
+        let deleteKey = app.keys["delete"]
+        deleteKey.tap()
+        
+        app.typeText("😳🐻🇹🇭")
+        
+        app.textFields["Display Name"]
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        
+        
+        let tabBarsQuery = XCUIApplication().tabBars
+        tabBarsQuery.buttons["Matching"].tap()
+        tabBarsQuery.buttons["Profile"].tap()
+        
+        XCTAssert(app.textFields["😳🐻🇹🇭"].exists);
     }
     
     func testSetttingSwitchsDontCrash() {
@@ -197,7 +261,7 @@ class HiLingualUITests: XCTestCase {
         app2.toolbars.buttons["Done"].tap()
     }
     
-    func testEditBioNoCrash() {
+    func testEditBioPlainTextNoCrash() {
         
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
@@ -218,6 +282,49 @@ class HiLingualUITests: XCTestCase {
         
         textView.typeText("new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio")
         app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
+        app.tabBars.buttons["Messages"].tap()
+        app.tabBars.buttons["Profile"].tap()
+        
+        
+        let profileviewElement = XCUIApplication().otherElements["ProfileView"]
+        let biotextviewTextView = profileviewElement.textViews["BioTextView"]
+        biotextviewTextView.tap()
+        biotextviewTextView.tap()
+        profileviewElement.staticTexts["BioLabel"].tap()
+        
+        
+        var text: String = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].value! as! String
+
+        XCTAssert(text == "new blog post bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio");
+        
+    }
+    
+    func testEditBioUnicodeTextNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Profile"].tap()
+        app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
+        
+        let textView = app.otherElements["EditProfile"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+        textView.tap()
+        
+        textView.typeText("bio")
+        
+        textView.tap()
+        textView.pressForDuration(0.9);
+        
+        app.menuItems["Select All"].tap()
+        
+        let deleteKey = app.keys["delete"]
+        deleteKey.tap()
+        
+        textView.typeText("😂♥️😂😆😀😳😆😆🙉😊😩😍😑😝😁😁😅😖🎈😱🙃😗😭😆🍜🍯🍲🍇🍝🍇🍌🍟🍕🍌🍲🍓🍓♣️⬜️♠️🔹🃏⬛️📣⬜️🔸♥️🔷♣️🍜🖱🏚💻🏡⌨🏤🖨🏦🖨🏡🏡💻🏚🖨🖨🖱😁🦀🍜🍜🍍🍑🍲🍲🍅🍛🍅🍜🍇🌯🍉🍜🍅🍲🍞🇾🇪🇹🇻🇪🇭🇹🇰🇪🇭🇹🇰🇺🇿🇹🇼🇺🇾🇹🇼🇼🇫🇹🇼🇻🇺🇹🇴🌭🎽🏹🎽🏒🎽🏅🏉🚵🏻🎽⛳️🎽🎱🏆🏐🏆🏐🏆🏆🏐🏆🏐🏆🏉🎽🏉🏅🎱🏅🎱🏅🎱🎽🏊⛳️🏅🏏🎱🎗🎱🏵🦀🦀🍛🍛🍍🍙🍉⛳️🎱🍻🏒🍷🏉🍺🏀🍻⚾️☕️🏑🍸🍸🏂🍸🏂😝😞😝😕😌😠😊🙄👿👽😥👻😢😹😻😱😸😢💀😲🤖🤐🤖😥👽😨🤖🤖😨🤖😢🤖")
+        app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
+        app.tabBars.buttons["Messages"].tap()
+        app.tabBars.buttons["Profile"].tap()
+        
+        var text: String = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].value! as! String
+        XCTAssert(text == "😂♥️😂😆😀😳😆😆🙉😊😩😍😑😝😁😁😅😖🎈😱🙃😗😭😆🍜🍯🍲🍇🍝🍇🍌🍟🍕🍌🍲🍓🍓♣️⬜️♠️🔹🃏⬛️📣⬜️🔸♥️🔷♣️🍜🖱🏚💻🏡⌨🏤🖨🏦🖨🏡🏡💻🏚🖨🖨🖱😁🦀🍜🍜🍍🍑🍲🍲🍅🍛🍅🍜🍇🌯🍉🍜🍅🍲🍞🇾🇪🇹🇻🇪🇭🇹🇰🇪🇭🇹🇰🇺🇿🇹🇼🇺🇾🇹🇼🇼🇫🇹🇼🇻🇺🇹🇴🌭🎽🏹🎽🏒🎽🏅🏉🚵🏻🎽⛳️🎽🎱🏆🏐🏆🏐🏆🏆🏐🏆🏐🏆🏉🎽🏉🏅🎱🏅🎱🏅🎱🎽🏊⛳️🏅🏏🎱🎗🎱🏵🦀🦀🍛🍛🍍🍙🍉⛳️🎱🍻🏒🍷🏉🍺🏀🍻⚾️☕️🏑🍸🍸🏂🍸🏂😝😞😝😕😌😠😊🙄👿👽😥👻😢😹😻😱😸😢💀😲🤖🤐🤖😥👽😨🤖🤖😨🤖😢🤖");
         
     }
     
@@ -426,4 +533,51 @@ class HiLingualUITests: XCTestCase {
         let lastMessage = cells.elementBoundByIndex(cells.count-1)
         XCTAssert(lastMessage.staticTexts["ChatBubbleRightLabel"].label == "😘")
     }
+    func testMatchingSendMessageRequestNoCrash() {
+        
+        let app = XCUIApplication()
+        app.tabBars.buttons["Matching"].tap()
+        
+        let carouselElement = app.otherElements["Carousel"]
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+        carouselElement.tap()
+    }
+    
+    func testSearch() {
+        
+//        let app = app2
+//        app.tabBars.buttons["Matching"].tap()
+//        app.otherElements["View"].childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.SearchField).element.tap()
+//        
+//        let app2 = app
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        
+//        let searchButton = app2.buttons["Search"]
+//        searchButton.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        
+//        let deleteKey = app2.keys["delete"]
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        searchButton.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        searchButton.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+
+    }
+    
 }
