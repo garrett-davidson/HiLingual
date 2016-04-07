@@ -30,29 +30,22 @@ class HLMessage: NSObject, NSCoding {
 
     let audioURL: NSURL?
 
+    var translatedText: String?
+
     required init?(coder aDecoder: NSCoder) {
         messageUUID = aDecoder.decodeInt64ForKey("uuid")
         sentTimestamp = aDecoder.decodeObjectForKey("sentTimestamp") as! NSDate
 
-        if let editStamp = aDecoder.decodeObjectForKey("editedTimestamp") as? NSDate {
-            editedTimestamp = editStamp
-        }
-        else {
-            editedTimestamp = nil
-        }
+        editedTimestamp = aDecoder.decodeObjectForKey("editedTimestamp") as? NSDate
 
         text = aDecoder.decodeObjectForKey("text") as! String
 
-        if let eText = aDecoder.decodeObjectForKey("editedText") as? String {
-            editedText = eText
-        }
-
-        else {
-            editedText = nil
-        }
+        editedText = aDecoder.decodeObjectForKey("editedText") as? String
 
         senderID = aDecoder.decodeInt64ForKey("senderID")
         receiverID = aDecoder.decodeInt64ForKey("receiverID")
+
+        translatedText = aDecoder.decodeObjectForKey("translatedText") as? String
 
         if let audio = aDecoder.decodeObjectForKey("audioURL") as? NSURL {
             audioURL = audio
@@ -71,6 +64,7 @@ class HLMessage: NSObject, NSCoding {
         aCoder.encodeInt64(senderID, forKey: "senderID")
         aCoder.encodeInt64(receiverID, forKey: "receiverID")
         aCoder.encodeObject(audioURL, forKey: "audioURL")
+        aCoder.encodeObject(translatedText, forKey: "translatedText")
     }
 
     func saveMessageEdit() {
@@ -94,7 +88,7 @@ class HLMessage: NSObject, NSCoding {
         print("Failed to edit message")
     }
 
-    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, audioURLString: String?=nil) {
+    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, audioURLString: String?=nil) {
         self.messageUUID = UUID
         self.sentTimestamp = sentTimestamp
 
@@ -111,6 +105,7 @@ class HLMessage: NSObject, NSCoding {
         self.editedText = editedText
         self.senderID = senderID
         self.receiverID = receiverID
+        self.translatedText = translatedText
 
         if audioURLString != nil {
             self.audioURL = NSURL(string: audioURLString!)
@@ -127,6 +122,7 @@ class HLMessage: NSObject, NSCoding {
         self.editedText = nil
         self.senderID = senderID
         self.receiverID = receiverID
+        self.translatedText = nil
         self.audioURL = nil
     }
 
@@ -223,7 +219,7 @@ class HLMessage: NSObject, NSCoding {
                                 audioURLString = nil
                             }
 
-                            return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, audioURLString: audioURLString)
+                            return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, translatedText: nil, audioURLString: audioURLString)
                         }
                     }
                 }
