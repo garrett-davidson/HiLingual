@@ -147,7 +147,7 @@ class HiLingualUITests: XCTestCase {
     func testSendSimpleMessageNoCrash() {
         
         let app = XCUIApplication()
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
@@ -306,7 +306,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
 
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
         
         let navigationBar = app.navigationBars.elementBoundByIndex(0)
         navigationBar.buttons["Details"].tap()
@@ -319,7 +319,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let numConversationBeforeDelete = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].swipeLeft()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).swipeLeft()
         app.tables.buttons["Delete"].tap()
         
         let tabBarsQuery = app.tabBars
@@ -350,9 +350,9 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
+        let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0)
         lastmessagelabelStaticText.tap()
-        
+
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
         tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
@@ -409,5 +409,21 @@ class HiLingualUITests: XCTestCase {
         let tablesQuery = XCUIApplication().tables
         tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(4).staticTexts["LastMessageLabel"].tap()
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).buttons["PlaybackButton"].frame == CGRectMake(15, 0, 30, 30))
+    }
+
+    func testUnicodeMessage() {
+        
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
+
+        let inputTextView = app.textViews["InputTextView"]
+        inputTextView.tap()
+        inputTextView.typeText("😘")
+
+        app.buttons["SendButton"].tap()
+
+        let cells = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell")
+        let lastMessage = cells.elementBoundByIndex(cells.count-1)
+        XCTAssert(lastMessage.staticTexts["ChatBubbleRightLabel"].label == "😘")
     }
 }
