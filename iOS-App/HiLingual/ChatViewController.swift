@@ -120,47 +120,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message = messages[selectedCellIndex!]
 
         if message.translatedText == nil {
-
-            retrieveTranslation: do {
-
-                let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(message.receiverID)/message/\(message.messageUUID!)/translate")!)
-
-                if let session = HLUser.getCurrentUser().getSession() {
-
-                    request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-                    request.HTTPMethod = "GET"
-
-                    var response: NSURLResponse?
-
-                    if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
-                        print(returnedData)
-                        if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                            print(returnString)
-
-                            if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
-                                if let translation = ret["translatedContent"] as? String {
-                                    message.translatedText = translation
-                                }
-                            }
-
-                            else {
-                                print("Couldn't parse return dictionary")
-                            }
-
-                            break retrieveTranslation
-                        }
-
-                        print("Response not a string")
-                    }
-
-                    else {
-                        print("Could not send request")
-                    }
-                    
-                    if response != nil {
-                        print(response!)
-                    }
-                }
+            if let translatedText = HLServer.getTranslationForMessage(message, fromLanguage: nil) {
+                message.translatedText = translatedText
             }
         }
 

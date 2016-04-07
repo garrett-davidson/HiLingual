@@ -72,27 +72,35 @@ class HLMessage: NSObject, NSCoding {
     }
 
     func saveMessageEdit() {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(senderID)/message/\(messageUUID!)")!)
-        if let session = HLUser.getCurrentUser().getSession() {
+//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(senderID)/message/\(messageUUID!)")!)
+//        if let session = HLUser.getCurrentUser().getSession() {
+//
+//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+//            request.HTTPMethod = "PATCH"
+//
+//            let encodedEdit = editedText!.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+//
+//
+//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["editData" : encodedEdit]), options: NSJSONWritingOptions(rawValue: 0))
+//
+//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+//                print(returnedData)
+//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+//                    print(returnString)
+//                    return
+//                }
+//            }
+//        }
+//
+//        print("Failed to edit message")
 
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "PATCH"
-
-            let encodedEdit = editedText!.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-
-
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["editData" : encodedEdit]), options: NSJSONWritingOptions(rawValue: 0))
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                    return
-                }
-            }
+        if HLServer.saveEdit(editedText!, forMessage: self) {
+            print("Saved edit")
         }
-        
-        print("Failed to edit message")
+
+        else {
+            print("Failed to save edit to server")
+        }
     }
 
     init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil) {
