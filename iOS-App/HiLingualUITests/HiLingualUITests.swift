@@ -196,7 +196,7 @@ class HiLingualUITests: XCTestCase {
         
     }
     
-    func testSendSimpleMessage() {
+    func testSendSimpleMessageNoCrash() {
         
         let app = XCUIApplication()
         app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
@@ -210,7 +210,6 @@ class HiLingualUITests: XCTestCase {
         app.keys["l"].tap()
         app.keys["o"].tap()
         app.buttons["Send"].tap()
-        app.navigationBars["Nathan Ohlson"].buttons["Messages"].tap()
         
     }
     
@@ -223,10 +222,17 @@ class HiLingualUITests: XCTestCase {
         hilingualProfileviewNavigationBar.buttons["Edit"].tap()
         
         let app2 = app
-        app2.otherElements["EditProfile"].staticTexts["Female"].tap()
-        app2.pickerWheels["Female"].tap()
-        app2.toolbars.buttons["Done"].tap()
-        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        if app2.otherElements["EditProfile"].staticTexts["Female"].exists {
+            app2.otherElements["EditProfile"].staticTexts["Female"].tap()
+            app2.pickerWheels["Female"].swipeUp()
+            app2.toolbars.buttons["Done"].tap()
+        } else {
+            app2.otherElements["EditProfile"].staticTexts["Male"].tap()
+            app2.pickerWheels["Male"].swipeDown()
+            app2.toolbars.buttons["Done"].tap()
+        }
+        
+        
         
     }
     
@@ -240,11 +246,26 @@ class HiLingualUITests: XCTestCase {
         app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
         
         let app2 = app
-        app2.otherElements["EditProfile"].staticTexts["100"].tap()
-        app2.pickerWheels["100"].swipeDown()
+        var j: UInt = 1
+        var ageElement: XCUIElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(0)
+        for _ in 0...app2.otherElements["EditProfile"].staticTexts.count {
+            if ageElement.label == "Age:" {
+                j += 1
+                ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
+                break;
+            }
+            j += 1
+            ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
+        }
+        ageElement.tap()
+        let text = ageElement.label
+        if text == "13" {
+            app2.pickerWheels[text].swipeUp()
+        } else {
+            app2.pickerWheels[text].swipeDown()
+        }
         app2.toolbars.buttons["Done"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
-        
     }
     
     func testEditBioNoCrash() {
