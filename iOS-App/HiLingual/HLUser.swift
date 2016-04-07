@@ -208,9 +208,9 @@ class HLUser: NSObject, NSCoding {
         //This should only be called on the current user
         HLUser.currentUser = self
         var size = CGSize(width: 150, height: 150)
-        
-        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
-        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+//        
+//        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
+//        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
 //        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
 //        if let session = HLUser.getCurrentUser().getSession() {
 //            
@@ -226,10 +226,10 @@ class HLUser: NSObject, NSCoding {
 //                }
 //            }
 //        }
-
-
-        
-        
+//
+//
+//        
+//        
         
 
         let userData = NSKeyedArchiver.archivedDataWithRootObject(self)

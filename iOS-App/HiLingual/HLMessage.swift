@@ -162,7 +162,9 @@ class HLMessage: NSObject, NSCoding {
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "POST"
 
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+            let encodedString = text.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": encodedString]), options: NSJSONWritingOptions(rawValue: 0))
 
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
@@ -210,7 +212,9 @@ class HLMessage: NSObject, NSCoding {
 
                         let editText = messageDict["editData"] as? String
 
-                        if let text = messageDict["content"] as? String {
+                        if let encodedText = messageDict["content"] as? String {
+
+                            let text = NSString(data: NSData(base64EncodedString: encodedText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String
 
                             let audioURLString: String?
                             if let audio = messageDict["audio"] as? String {
