@@ -287,9 +287,9 @@ public class ChatResource {
         }
 
         Locale locale = Locale.forLanguageTag(toLanguage);
-        String translated = translateService.translate(message.getContent(), locale);
+        String translated = translateService.translate(base64Decode(message.getContent()), locale);
 
-        TranslationResponse response = new TranslationResponse(translated, msgId);
+        TranslationResponse response = new TranslationResponse(base64Encode(translated), msgId);
 
         return response;
     }
@@ -311,5 +311,9 @@ public class ChatResource {
 
     private String base64Decode(String base64) {
         return new String(Base64.getDecoder().decode(base64), StandardCharsets.UTF_8);
+    }
+
+    private String base64Encode(String text) {
+        return Base64.getEncoder().encodeToString(text.getBytes(StandardCharsets.UTF_8));
     }
 }
