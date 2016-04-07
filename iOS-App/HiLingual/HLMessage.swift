@@ -72,27 +72,6 @@ class HLMessage: NSObject, NSCoding {
     }
 
     func saveMessageEdit() {
-//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(senderID)/message/\(messageUUID!)")!)
-//        if let session = HLUser.getCurrentUser().getSession() {
-//
-//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-//            request.HTTPMethod = "PATCH"
-//
-//            let encodedEdit = editedText!.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-//
-//
-//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["editData" : encodedEdit]), options: NSJSONWritingOptions(rawValue: 0))
-//
-//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-//                print(returnedData)
-//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-//                    print(returnString)
-//                    return
-//                }
-//            }
-//        }
-//
-//        print("Failed to edit message")
 
         if HLServer.saveEdit(editedText!, forMessage: self) {
             print("Saved edit")
@@ -141,29 +120,6 @@ class HLMessage: NSObject, NSCoding {
         self.translatedText = nil
         self.showTranslation = false
         self.audioURL = nil
-    }
-
-    static func sendVoiceMessageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(receiverID)/message")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "POST"
-
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["audio": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]), options: NSJSONWritingOptions(rawValue: 0))
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                    if let message = HLMessage.fromJSON(returnedData) {
-                        return message
-                    }
-                }
-            }
-        }
-        
-        return nil
     }
 
     static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {

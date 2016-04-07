@@ -162,4 +162,13 @@ class HLServer {
 
         return nil
     }
+
+    static func sendVoiceMessageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
+
+        if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["audio": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
+            return HLMessage.fromDict(messageDict[0])
+        }
+        
+        return nil
+    }
 }

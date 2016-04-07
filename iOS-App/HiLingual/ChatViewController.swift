@@ -98,7 +98,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func sendVoiceMessageWithData(data: NSData) {
-        if let message = HLMessage.sendVoiceMessageWithData(data, receiverID: recipientId) {
+        if let message = HLServer.sendVoiceMessageWithData(data, receiverID: recipientId) {
             print("Sent message")
             print(message)
         }
