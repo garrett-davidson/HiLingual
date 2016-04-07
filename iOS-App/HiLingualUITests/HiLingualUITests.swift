@@ -293,10 +293,9 @@ class HiLingualUITests: XCTestCase {
         profileviewElement.staticTexts["BioLabel"].tap()
         
         
-        var text: String = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].label
-        
-        print(text)
-        XCTAssert(text == "new blog new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio");
+        var text: String = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].value! as! String
+
+        XCTAssert(text == "new blog post bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio");
         
     }
     
@@ -323,7 +322,9 @@ class HiLingualUITests: XCTestCase {
         app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
         app.tabBars.buttons["Messages"].tap()
         app.tabBars.buttons["Profile"].tap()
-        XCTAssert(app.textFields["😂♥️😂😆😀😳😆😆🙉😊😩😍😑😝😁😁😅😖🎈😱🙃😗😭😆🍜🍯🍲🍇🍝🍇🍌🍟🍕🍌🍲🍓🍓♣️⬜️♠️🔹🃏⬛️📣⬜️🔸♥️🔷♣️🍜🖱🏚💻🏡⌨🏤🖨🏦🖨🏡🏡💻🏚🖨🖨🖱😁🦀🍜🍜🍍🍑🍲🍲🍅🍛🍅🍜🍇🌯🍉🍜🍅🍲🍞🇾🇪🇹🇻🇪🇭🇹🇰🇪🇭🇹🇰🇺🇿🇹🇼🇺🇾🇹🇼🇼🇫🇹🇼🇻🇺🇹🇴🌭🎽🏹🎽🏒🎽🏅🏉🚵🏻🎽⛳️🎽🎱🏆🏐🏆🏐🏆🏆🏐🏆🏐🏆🏉🎽🏉🏅🎱🏅🎱🏅🎱🎽🏊⛳️🏅🏏🎱🎗🎱🏵🦀🦀🍛🍛🍍🍙🍉⛳️🎱🍻🏒🍷🏉🍺🏀🍻⚾️☕️🏑🍸🍸🏂🍸🏂😝😞😝😕😌😠😊🙄👿👽😥👻😢😹😻😱😸😢💀😲🤖🤐🤖😥👽😨🤖🤖😨🤖😢🤖"].exists);
+        
+        var text: String = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].value! as! String
+        XCTAssert(text == "😂♥️😂😆😀😳😆😆🙉😊😩😍😑😝😁😁😅😖🎈😱🙃😗😭😆🍜🍯🍲🍇🍝🍇🍌🍟🍕🍌🍲🍓🍓♣️⬜️♠️🔹🃏⬛️📣⬜️🔸♥️🔷♣️🍜🖱🏚💻🏡⌨🏤🖨🏦🖨🏡🏡💻🏚🖨🖨🖱😁🦀🍜🍜🍍🍑🍲🍲🍅🍛🍅🍜🍇🌯🍉🍜🍅🍲🍞🇾🇪🇹🇻🇪🇭🇹🇰🇪🇭🇹🇰🇺🇿🇹🇼🇺🇾🇹🇼🇼🇫🇹🇼🇻🇺🇹🇴🌭🎽🏹🎽🏒🎽🏅🏉🚵🏻🎽⛳️🎽🎱🏆🏐🏆🏐🏆🏆🏐🏆🏐🏆🏉🎽🏉🏅🎱🏅🎱🏅🎱🎽🏊⛳️🏅🏏🎱🎗🎱🏵🦀🦀🍛🍛🍍🍙🍉⛳️🎱🍻🏒🍷🏉🍺🏀🍻⚾️☕️🏑🍸🍸🏂🍸🏂😝😞😝😕😌😠😊🙄👿👽😥👻😢😹😻😱😸😢💀😲🤖🤐🤖😥👽😨🤖🤖😨🤖😢🤖");
         
     }
     
@@ -542,6 +543,41 @@ class HiLingualUITests: XCTestCase {
         carouselElement.tap()
         carouselElement.tap()
         carouselElement.tap()
+    }
+    
+    func testSearch() {
+        
+//        let app = app2
+//        app.tabBars.buttons["Matching"].tap()
+//        app.otherElements["View"].childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.SearchField).element.tap()
+//        
+//        let app2 = app
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        
+//        let searchButton = app2.buttons["Search"]
+//        searchButton.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        
+//        let deleteKey = app2.keys["delete"]
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        searchButton.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        searchButton.tap()
+//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+//        deleteKey.tap()
+
     }
     
 }
