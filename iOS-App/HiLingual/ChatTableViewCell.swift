@@ -15,12 +15,4 @@ class ChatTableViewCell: UITableViewCell {
     @IBOutlet weak var rightConstraintMessageEqualOrLess: NSLayoutConstraint!
     @IBOutlet weak var leftConstraintMessageequal: NSLayoutConstraint!
     @IBOutlet var button: UIButton!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
 }

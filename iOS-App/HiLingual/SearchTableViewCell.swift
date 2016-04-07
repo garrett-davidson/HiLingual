@@ -14,12 +14,4 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var languagesSpeaks: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var sendRequestButton: UIButton!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
 }
