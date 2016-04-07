@@ -155,7 +155,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             deleteRecording.hidden = true
             origTime =  CACurrentMediaTime();
             textView.hidden = true
-            textView.editable = false;
+            //textView.editable = false;
             recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
 
         } catch let error as NSError {
@@ -260,7 +260,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message" {
             textView.text = ""
+            
             //textView.scrollEnabled = false
+            
         }
     }
 
@@ -269,6 +271,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
             textView.text = "Message"
             textView.scrollEnabled = false
+            leftButton.hidden = false
 
         }
     }
@@ -282,13 +285,25 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             textView.layoutIfNeeded()
             sendButton.tintColor = UIColor.lightGrayColor()
             sendButton.userInteractionEnabled = false
+            leftButton.hidden = false
         }
 
         else {
             sendButton.tintColor = UIColor.blueColor()
             sendButton.userInteractionEnabled = true
+            leftButton.hidden = true
         }
-
+        if isRecording {
+            finishRecording()
+            textView.hidden = false;
+            textView.editable = true;
+            recordingTimer.hidden = true
+            previewRecording.hidden = true
+            deleteRecording.hidden = true
+            isRecording = false;
+            sendButton.tintColor = UIColor.lightGrayColor()
+            sendButton.userInteractionEnabled = false
+        }
         textView.reloadInputViews()
         let numLines = textView.contentSize.height / textView.font!.lineHeight;
 
@@ -301,7 +316,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         }
         if lines != numLines {
             lines = numLines
-            chatViewController?.tableViewScrollToBottom(true)
+            chatViewController?.tableViewScrollToBottom(false)
             
         }
         if textView.text == "" && textViewTested == false{

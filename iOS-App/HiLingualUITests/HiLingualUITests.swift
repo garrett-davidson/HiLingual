@@ -147,7 +147,7 @@ class HiLingualUITests: XCTestCase {
     func testSendSimpleMessageNoCrash() {
         
         let app = XCUIApplication()
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
@@ -174,16 +174,27 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
-        
-        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
-        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
-
-        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
-        
-        app.otherElements["EditProfile"].staticTexts["AgeSelectionLabel"].tap()
-        app.pickers["PickerView"].swipeDown()
-        app.toolbars.buttons["Done"].tap()
-        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
+        let app2 = app
+        var j: UInt = 1
+        var ageElement: XCUIElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(0)
+        for _ in 0...app2.otherElements["EditProfile"].staticTexts.count {
+            if ageElement.label == "Age:" {
+                j += 1
+                ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
+                break;
+            }
+            j += 1
+            ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
+        }
+        ageElement.tap()
+        let text = ageElement.label
+        if text == "13" {
+            app2.pickerWheels[text].swipeUp()
+        } else {
+            app2.pickerWheels[text].swipeDown()
+        }
+        app2.toolbars.buttons["Done"].tap()
     }
     
     func testEditBioNoCrash() {
@@ -192,29 +203,11 @@ class HiLingualUITests: XCTestCase {
         app.tabBars.buttons["Profile"].tap()
         app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
 
-//        let app2 = app
-//        var j: UInt = 1
-//        var ageElement: XCUIElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(0)
-//
-//        for _ in 0...app2.otherElements["EditProfile"].staticTexts.count {
-//            if ageElement.label == "Age:" {
-//                j += 1
-//                ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
-//                break;
-//            }
-//            j += 1
-//            ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
-//        }
-//        ageElement.tap()
-//        let text = ageElement.label
-//        if text == "13" {
-//            app2.pickerWheels[text].swipeUp()
-//        } else {
-//            app2.pickerWheels[text].swipeDown()
-//        }
-//        app2.toolbars.buttons["Done"].tap()
-
         let textView = app.otherElements["EditProfile"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+        textView.tap()
+        
+        textView.typeText("bio")
+        
         textView.tap()
         textView.pressForDuration(0.9);
         
@@ -224,6 +217,8 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         textView.typeText("new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio")
+        app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
+        
     }
     
     func testEditSpeaksNoCrash() {
@@ -311,7 +306,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
 
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
         
         let navigationBar = app.navigationBars.elementBoundByIndex(0)
         navigationBar.buttons["Details"].tap()
@@ -324,7 +319,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let numConversationBeforeDelete = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].swipeLeft()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).swipeLeft()
         app.tables.buttons["Delete"].tap()
         
         let tabBarsQuery = app.tabBars
@@ -355,9 +350,9 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
+        let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0)
         lastmessagelabelStaticText.tap()
-        
+
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
         tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
@@ -414,5 +409,21 @@ class HiLingualUITests: XCTestCase {
         let tablesQuery = XCUIApplication().tables
         tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(4).staticTexts["LastMessageLabel"].tap()
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).buttons["PlaybackButton"].frame == CGRectMake(15, 0, 30, 30))
+    }
+
+    func testUnicodeMessage() {
+        
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
+
+        let inputTextView = app.textViews["InputTextView"]
+        inputTextView.tap()
+        inputTextView.typeText("😘")
+
+        app.buttons["SendButton"].tap()
+
+        let cells = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell")
+        let lastMessage = cells.elementBoundByIndex(cells.count-1)
+        XCTAssert(lastMessage.staticTexts["ChatBubbleRightLabel"].label == "😘")
     }
 }
