@@ -29,6 +29,7 @@
             <subviews>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fl-0e-YAL">
                     <rect key="frame" x="8" y="191" width="359" height="20.5"/>
+                    <accessibility key="accessibilityConfiguration" identifier="SpeaksLabel"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -39,6 +40,7 @@
                 </label>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCJ-CG-M0J">
                     <rect key="frame" x="8" y="220" width="359" height="20.5"/>
+                    <accessibility key="accessibilityConfiguration" identifier="LearningLabel"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,6 +52,7 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" text="Bio text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-Qw-TZ1">
                     <rect key="frame" x="0.0" y="277" width="375" height="389.5"/>
                     <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="BioTextView"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
@@ -59,6 +62,7 @@
                 <pickerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuJ-H6-jyd">
                     <rect key="frame" x="0.0" y="700" width="375" height="216"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="PickerView"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="VGX-HU-goR"/>
                         <outlet property="delegate" destination="-1" id="8gq-yj-gu0"/>
@@ -78,6 +82,7 @@
                 </toolbar>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bio:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bMO-ri-N1e">
                     <rect key="frame" x="8" y="248" width="359" height="20.5"/>
+                    <accessibility key="accessibilityConfiguration" identifier="BioLabel"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -87,6 +92,7 @@
                     <subviews>
                         <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prR-kc-wq2">
                             <rect key="frame" x="0.0" y="0.0" width="175.5" height="175.5"/>
+                            <accessibility key="accessibilityConfiguration" identifier="ProfileImage"/>
                             <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="prR-kc-wq2" secondAttribute="height" multiplier="1:1" id="I9m-Ih-f6X"/>
@@ -100,18 +106,21 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="751" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvm-3o-omc">
                                     <rect key="frame" x="0.0" y="0.0" width="45" height="20.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="NameLabel"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKJ-ua-Xsy">
                                     <rect key="frame" x="0.0" y="28" width="110" height="20.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="DisplayNameLabel"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Display Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2x-fg-pw2">
                                     <rect key="frame" x="0.0" y="57" width="175.5" height="30"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="DisplayNameField"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <connections>
@@ -125,12 +134,14 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fwc-fh-aKk">
                                             <rect key="frame" x="0.0" y="0.0" width="66" height="20.5"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="GenderLabel"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Gender" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EP1-OT-Q5T">
                                             <rect key="frame" x="66" y="0.0" width="109.5" height="20.5"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="GenderSelectionLabel"/>
                                             <gestureRecognizers/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -146,12 +157,14 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKn-yi-esB">
                                             <rect key="frame" x="0.0" y="0.0" width="35" height="20.5"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="AgeLabel"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" contentMode="left" verticalHuggingPriority="251" text="Age" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thM-fQ-h5b">
                                             <rect key="frame" x="35" y="0.0" width="140.5" height="20.5"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="AgeSelectionLabel"/>
                                             <gestureRecognizers/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -184,6 +197,7 @@
                 </stackView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <accessibility key="accessibilityConfiguration" identifier="EditProfileView"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="4Fl-0e-YAL" firstAttribute="top" secondItem="0Lt-LS-xOJ" secondAttribute="bottom" constant="8" symbolic="YES" id="1UL-fn-LBM"/>

@@ -41,6 +41,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         self.title = user.name
         print(user.name)
         print(user.userId)
@@ -355,7 +357,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.layer.cornerRadius = 5
             }
         
-            cell.button.hidden = true
             
             return cell
         }else {
