@@ -374,26 +374,27 @@ class HiLingualUITests: XCTestCase {
     func testMessagesProfileViewNoCrash(){
         
         let app = XCUIApplication()
+
         app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
         
-        let nathanOhlsonNavigationBar = app.navigationBars["Nathan Ohlson"]
-        nathanOhlsonNavigationBar.buttons["Details"].tap()
-        nathanOhlsonNavigationBar.buttons["Nathan Ohlson"].tap()
-        nathanOhlsonNavigationBar.buttons["Messages"].tap()
+        let navigationBar = app.navigationBars.elementBoundByIndex(0)
+        navigationBar.buttons["Details"].tap()
+        navigationBar.buttons.elementBoundByIndex(0).tap()
+        navigationBar.buttons["Messages"].tap()
         
     }
     
     func testDeleteConversation() {
         
         let app = XCUIApplication()
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(3).staticTexts["LastMessageLabel"].swipeLeft()
+        let numConversationBeforeDelete = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].swipeLeft()
         app.tables.buttons["Delete"].tap()
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Profile"].tap()
         tabBarsQuery.buttons["Messages"].tap()
-        XCTAssert(app.tables
-            .childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count == 3)
+    XCTAssert(app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count == numConversationBeforeDelete - 1)
         
     }
     
@@ -420,16 +421,19 @@ class HiLingualUITests: XCTestCase {
         let tablesQuery = app.tables
         let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
         lastmessagelabelStaticText.tap()
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).staticTexts["ChatBubbleLeftLabel"].tap()
+        
+        let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
+        
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
         app.menuItems["Edit"].tap()
+    
         app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
         app.menuItems["Select"].tap()
         
-        let deleteKey = app.keys["delete"]
-        deleteKey.tap()
-        deleteKey.tap()
+        app.keys["j"]
+
         app.buttons["Save"].tap()
-        app.navigationBars["Noah Maxey"].buttons["Messages"].tap()
+        app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Profile"].tap()
@@ -437,28 +441,36 @@ class HiLingualUITests: XCTestCase {
         lastmessagelabelStaticText.tap()
         
         
-        //You should be able to tap on the second edit. But it does not show up. 
-        XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").elementBoundByIndex(2).tap()
+        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit + 1)
         
     }
     
     func testEditMessageWithNoChanges() {
-        
         let app = XCUIApplication()
         let tablesQuery = app.tables
         let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
         lastmessagelabelStaticText.tap()
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(6).staticTexts["ChatBubbleLeftLabel"].tap()
+        
+        let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
+        
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
         app.menuItems["Edit"].tap()
+        
+        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+        app.menuItems["Select"].tap()
+        
+        app.keys["j"]
+        
         app.buttons["Save"].tap()
-        app.navigationBars["Noah Maxey"].buttons["Messages"].tap()
+        app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Profile"].tap()
         tabBarsQuery.buttons["Messages"].tap()
         lastmessagelabelStaticText.tap()
         
-        XCTAssert(      XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").allElementsBoundByIndex.count == 1)
+        
+        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit)
     }
     
     func testAudioMessagePlayButtonNotShowingCorrectly() {
@@ -466,6 +478,5 @@ class HiLingualUITests: XCTestCase {
         let tablesQuery = XCUIApplication().tables
         tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(4).staticTexts["LastMessageLabel"].tap()
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).buttons["PlaybackButton"].frame == CGRectMake(15, 0, 30, 30))
-        
     }
 }
