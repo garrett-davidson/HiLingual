@@ -114,7 +114,63 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func translateMessage() {
-        print("Translate this message")
+
+        let message = messages[selectedCellIndex!]
+
+        if message.translatedText == nil {
+
+            retrieveTranslation: do {
+
+                let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(message.receiverID)/message/\(message.messageUUID!)/translate")!)
+
+                if let session = HLUser.getCurrentUser().getSession() {
+
+                    request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+                    request.HTTPMethod = "GET"
+
+                    var response: NSURLResponse?
+
+                    if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
+                        print(returnedData)
+                        if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                            print(returnString)
+
+                            if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                                if let translation = ret["translatedContent"] as? String {
+                                    message.translatedText = translation
+                                }
+                            }
+
+                            else {
+                                print("Couldn't parse return dictionary")
+                            }
+
+                            break retrieveTranslation
+                        }
+
+                        print("Response not a string")
+                    }
+
+                    else {
+                        print("Could not send request")
+                    }
+                    
+                    if response != nil {
+                        print(response!)
+                    }
+                }
+            }
+        }
+
+        if message.translatedText != nil {
+            message.showTranslation = !message.showTranslation
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: selectedCellIndex!, inSection: 0)], withRowAnimation: .Automatic)
+            selectedCellIndex = nil
+        }
+
+        else {
+            print("Cannot translate message")
+        }
     }
 
     func editMessage() {
@@ -283,7 +339,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.text = ""
                 
                 cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-                cell.chatBubbleRight.text = message.text
+                cell.chatBubbleRight.text = message.showTranslation ? message.translatedText! : message.text
                 cell.chatBubbleRight.hidden = false
                 cell.chatBubbleRight.layer.cornerRadius = 5
             }
@@ -293,7 +349,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleRight.text = ""
                 
                 cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-                cell.chatBubbleLeft.text = message.text
+                cell.chatBubbleLeft.text = message.showTranslation ? message.translatedText! : message.text
                 cell.chatBubbleLeft.hidden = false
                 cell.chatBubbleLeft.layer.cornerRadius = 5
             }
@@ -313,7 +369,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleRight.hidden = false
                 cell.chatBubbleRight.layer.cornerRadius = 5
 
-                cell.rightMessageLabel.text = message.text
+                cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
                 cell.rightEditedMessageLabel.text = message.editedText
             }
 
@@ -324,7 +380,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.hidden = false
                 cell.chatBubbleLeft.layer.cornerRadius = 5
 
-                cell.leftMessageLabel.text = message.text
+                cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
                 cell.leftEditedMessageLabel.text = message.editedText
             }
 
