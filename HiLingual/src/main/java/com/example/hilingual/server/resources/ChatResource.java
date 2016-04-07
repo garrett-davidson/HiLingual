@@ -19,8 +19,10 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
@@ -29,7 +31,7 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
 @Path("/chat")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
 @Consumes(MediaType.APPLICATION_JSON)
 public class ChatResource {
 
@@ -198,7 +200,7 @@ public class ChatResource {
         } else {
             //  New messages only have content field set
             System.out.println("New text message");
-            Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
+            Message ret = chatMessageDAO.newMessage(senderId, receiverId, base64Decode(message.getContent()));
             sendNotification(receiverId, String.format("%s: %s",
                     sender.getDisplayName(), message.getContent()), NotificationType.NEW_MESSAGE);
             return ret;
@@ -240,7 +242,7 @@ public class ChatResource {
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
         sendNotification(receiverId, String.format("%s edited: %s",
-                editor.getDisplayName(), editedMessage.getEditData()), NotificationType.EDITED_MESSAGE);
+                editor.getDisplayName(), base64Decode(editedMessage.getEditData())), NotificationType.EDITED_MESSAGE);
         return editedMessage;
     }
 
@@ -307,4 +309,7 @@ public class ChatResource {
                 forEach(token -> apnsService.sendNotification(token, builtBody));
     }
 
+    private String base64Decode(String base64) {
+        return new String(Base64.getDecoder().decode(base64), StandardCharsets.UTF_8);
+    }
 }
