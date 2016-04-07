@@ -435,51 +435,33 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             messages = storedMessages
         }
 
-        var urlString = "https://gethilingual.com/api/chat/\(recipientId)/message"
-
+        let mostRecentCached: Int64
         if messages.count > 0 {
-//            urlString += "?before=\(messages.last!.messageUUID!)"
-            urlString += "?before=\(0)&limit=10000"
+//            mostRecentCached = messages.last!.messageUUID
+            mostRecentCached = 0
         }
 
-        let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
+        else {
+            mostRecentCached = 0
+        }
 
-        if let session = HLUser.getCurrentUser().getSession() {
+        if let retrievedMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: mostRecentCached, max: 10000) {
+            messages = retrievedMessages
+            tableView.reloadData()
+            tableViewScrollToBottom(false)
 
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "GET"
-
-            var response: NSURLResponse?
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-//                    messages += HLMessage.fromJSONArray(returnedData)
-                    messages = HLMessage.fromJSONArray(returnedData)
-
-                    if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
-                        //Succeeded in writing to file
-                        print("Wrote message cache to disk")
-                    }
-
-                    else {
-                        print("Failed to write chat cache")
-                    }
-
-                    tableView.reloadData()
-
-                    tableViewScrollToBottom(false)
-                    return
-                }
+            if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
+                //Succeeded in writing to file
+                print("Wrote message cache to disk")
             }
 
-            if response != nil {
-                print(response!)
+            else {
+                print("Failed to write chat cache")
             }
         }
-        
-        print("Unable to load messages from server")
 
+        else {
+            print("Failed to retrieve messsages from server")
+        }
     }
 }

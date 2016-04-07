@@ -13,7 +13,7 @@ class HLServer {
 
     static let apiBase = "https://gethilingual.com/api/"
 
-    static func sendRequest(request: NSURLRequest) -> NSDictionary? {
+    static func sendRequest(request: NSURLRequest) -> [NSDictionary]? {
         var resp: NSURLResponse?
 
         if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
@@ -24,12 +24,16 @@ class HLServer {
                     switch response.statusCode {
                     case 200..<300:
                         if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                            return [ret]
+                        }
+
+                        else if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? [NSDictionary] {
                             return ret
                         }
 
                         else {
                             //We succeeded but the result was empty
-                            return NSDictionary()
+                            return [NSDictionary()]
                         }
 
                     case 300..<400:
@@ -71,7 +75,7 @@ class HLServer {
         return nil
     }
 
-    static func sendRequestToEndpoint(endpoint: String, method: String, withDictionary dict: Dictionary<String, AnyObject>?, authenticated: Bool=true) -> NSDictionary? {
+    static func sendRequestToEndpoint(endpoint: String, method: String, withDictionary dict: Dictionary<String, AnyObject>?, authenticated: Bool=true) -> [NSDictionary]? {
         let request = NSMutableURLRequest(URL: NSURL(string: apiBase + endpoint)!)
 
         var headerFields = ["Content-Type": "application/json"]
@@ -99,7 +103,7 @@ class HLServer {
         return sendRequest(request)
     }
 
-    static func sendGETRequestToEndpoint(endpoint: String, withParameterString parameters: String?=nil, authenticated: Bool=true) -> NSDictionary? {
+    static func sendGETRequestToEndpoint(endpoint: String, withParameterString parameters: String?=nil, authenticated: Bool=true) -> [NSDictionary]? {
         var urlString = apiBase + endpoint
 
         if parameters != nil {
@@ -131,7 +135,7 @@ class HLServer {
     static func getTranslationForMessage(message: HLMessage, fromLanguage: String?, toLangauge: String="en-US") -> String? {
 
         if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate") {
-            return ret["translatedContent"] as? String
+            return ret[0]["translatedContent"] as? String
         }
 
         return nil
@@ -145,5 +149,17 @@ class HLServer {
         }
 
         return false
+    }
+
+    static func retrieveMessageFromUser(user:Int64, sinceLastMessageId lastMessageId: Int64=0, max: Int64=50) -> [HLMessage]? {
+
+        if let messagesDicts = sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(lastMessageId)&limit=\(max)") {
+
+            return messagesDicts.map({ (messageDict) -> HLMessage in
+                return HLMessage.fromDict(messageDict)!
+            })
+        }
+
+        return nil
     }
 }
