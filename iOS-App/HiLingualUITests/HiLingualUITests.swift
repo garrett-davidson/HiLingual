@@ -204,7 +204,6 @@ class HiLingualUITests: XCTestCase {
         
         XCTAssert(app.textFields["😳🐻🇹🇭"].exists);
     }
-    
     func testSetttingSwitchsDontCrash() {
         
         let app = XCUIApplication()
@@ -580,41 +579,89 @@ class HiLingualUITests: XCTestCase {
         carouselElement.tap()
         carouselElement.tap()
     }
+
     
     func testSearch() {
         
-//        let app = app2
-//        app.tabBars.buttons["Matching"].tap()
-//        app.otherElements["View"].childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.SearchField).element.tap()
-//        
-//        let app2 = app
-//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
-//        
-//        let searchButton = app2.buttons["Search"]
-//        searchButton.tap()
- //
-//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
-//        
-//        let deleteKey = app2.keys["delete"]
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
-//        searchButton.tap()
-//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
-//        searchButton.tap()
-//        app2.searchFields.containingType(.Button, identifier:"Clear text").element
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        deleteKey.tap()
-//        deleteKey.tap()
+        let app = XCUIApplication()
+        let deleteKey = app.keys["delete"]
+        let searchButton = app.buttons["Search"]
+        app.tabBars.buttons["Matching"].tap()
+        let searchElement = app.otherElements["View"].childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.SearchField).element
+        searchElement.tap()
 
+        searchElement.typeText("H")
+        if XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.count > 0 {
+            XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.elementBoundByIndex(0).tap()
+        }
+        searchButton.tap()
+        deleteKey.tap()
+        
+        searchElement.typeText("Jjjj")
+        if XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.count > 0 {
+            XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.elementBoundByIndex(0).tap()
+        }
+        searchButton.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        
+        searchElement.typeText("Garr")
+        if XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.count > 0 {
+            XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.elementBoundByIndex(0).tap()
+        }
+        searchButton.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        
+        searchElement.typeText("Lol")
+        if XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.count > 0 {
+            XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(1).buttons.elementBoundByIndex(0).tap()
+        }
+        searchButton.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        deleteKey.tap()
     }
     
+    func testEditButtonNotShowInTypingMessage() {
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
+        //XCUIApplication().tables.staticTexts["Noah Maxey"].tap()
+        
+        let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
+        element.childrenMatchingType(.TextView).element.tap()
+        app.textViews["InputTextView"].tap()
+        sleep(1)
+        XCTAssert(!app.menuItems["Edit"].exists)
+    }
+    
+    func testTranslateButtonNotShowInTypingMessage() {
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
+        
+        let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
+        element.childrenMatchingType(.TextView).element.tap()
+        app.textViews["InputTextView"].tap()
+        sleep(1)
+        XCTAssert(!app.menuItems["Translate"].exists)
+    }
+    
+    func testPasteButtonCanShowInTypingMessage() {
+        let app = XCUIApplication()
+        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).tap()
+        
+        let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
+        element.childrenMatchingType(.TextView).element.tap()
+        app.textViews["InputTextView"].tap()
+        sleep(1)
+        if app.menuItems["Paste"].exists {
+            XCTAssert(app.menuItems["Paste"].enabled)
+        } else {
+            XCTAssert(!app.menuItems["Paste"].enabled)
+        }
+    }
 }
