@@ -78,7 +78,10 @@ class HLMessage: NSObject, NSCoding {
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "PATCH"
 
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["editData" : editedText!]), options: NSJSONWritingOptions(rawValue: 0))
+            let encodedEdit = editedText!.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["editData" : encodedEdit]), options: NSJSONWritingOptions(rawValue: 0))
 
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
@@ -162,7 +165,9 @@ class HLMessage: NSObject, NSCoding {
             request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
             request.HTTPMethod = "POST"
 
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": text]), options: NSJSONWritingOptions(rawValue: 0))
+            let encodedString = text.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": encodedString]), options: NSJSONWritingOptions(rawValue: 0))
 
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
                 print(returnedData)
@@ -208,9 +213,18 @@ class HLMessage: NSObject, NSCoding {
                             editTimestamp = nil
                         }
 
-                        let editText = messageDict["editData"] as? String
+                        let editText: String?
 
-                        if let text = messageDict["content"] as? String {
+                        if let encodedEditText = messageDict["editData"] as? String {
+                            editText = (NSString(data: NSData(base64EncodedString: encodedEditText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
+                        }
+                        else {
+                            editText = nil
+                        }
+
+                        if let encodedText = messageDict["content"] as? String {
+
+                            let text = NSString(data: NSData(base64EncodedString: encodedText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String
 
                             let audioURLString: String?
                             if let audio = messageDict["audio"] as? String {
