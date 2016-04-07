@@ -114,7 +114,63 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func translateMessage() {
-        print("Translate this message")
+
+        let message = messages[selectedCellIndex!]
+
+        if message.translatedText == nil {
+
+            retrieveTranslation: do {
+
+                let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(message.receiverID)/message/\(message.messageUUID!)/translate")!)
+
+                if let session = HLUser.getCurrentUser().getSession() {
+
+                    request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+                    request.HTTPMethod = "GET"
+
+                    var response: NSURLResponse?
+
+                    if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
+                        print(returnedData)
+                        if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                            print(returnString)
+
+                            if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                                if let translation = ret["translatedContent"] as? String {
+                                    message.translatedText = translation
+                                }
+                            }
+
+                            else {
+                                print("Couldn't parse return dictionary")
+                            }
+
+                            break retrieveTranslation
+                        }
+
+                        print("Response not a string")
+                    }
+
+                    else {
+                        print("Could not send request")
+                    }
+                    
+                    if response != nil {
+                        print(response!)
+                    }
+                }
+            }
+        }
+
+        if message.translatedText != nil {
+            message.showTranslation = !message.showTranslation
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: selectedCellIndex!, inSection: 0)], withRowAnimation: .Automatic)
+            selectedCellIndex = nil
+        }
+
+        else {
+            print("Cannot translate message")
+        }
     }
 
     func editMessage() {
@@ -246,30 +302,31 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message = messages[indexPath.row]
         
         if (message.audioURL != nil)  {
-            let cellIdentity = "ChatTableViewCell"
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
+            let cellIdentity = "ChatVoiceTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatVoiceTableViewCell
             
-            let button = cell.button
-            button.hidden = false
-            
-            if(isPlayingMessage){
-                button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            }else{
-                button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            }
-            button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            button.tag = indexPath.row
-            
-            cell.chatBubbleLeft.hidden = true
-            cell.chatBubbleLeft.text = ""
-            cell.chatBubbleRight.text = ""
-            cell.chatBubbleRight.hidden = true
-            button.translatesAutoresizingMaskIntoConstraints = true
+            let shownButton: UIButton
+            let hiddenButton: UIButton
+
             if messages[indexPath.row].senderID  ==  currentUser.userId {
-                button.frame = CGRectMake(view.frame.size.width-45, 0, 30, 30)
+                shownButton = cell.rightButton
+                hiddenButton = cell.leftButton
             }
+
             else {
-                button.frame = CGRectMake(15, 0, 30, 30)
+                shownButton = cell.leftButton
+                hiddenButton = cell.rightButton
+            }
+
+            shownButton.hidden = false
+            hiddenButton.hidden = true
+            
+            shownButton.tag = indexPath.row
+
+            if(isPlayingMessage){
+                shownButton.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            }else{
+                shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
             
             return cell
@@ -283,7 +340,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.text = ""
                 
                 cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-                cell.chatBubbleRight.text = message.text
+                cell.chatBubbleRight.text = message.showTranslation ? message.translatedText! : message.text
                 cell.chatBubbleRight.hidden = false
                 cell.chatBubbleRight.layer.cornerRadius = 5
             }
@@ -293,7 +350,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleRight.text = ""
                 
                 cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-                cell.chatBubbleLeft.text = message.text
+                cell.chatBubbleLeft.text = message.showTranslation ? message.translatedText! : message.text
                 cell.chatBubbleLeft.hidden = false
                 cell.chatBubbleLeft.layer.cornerRadius = 5
             }
@@ -313,7 +370,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleRight.hidden = false
                 cell.chatBubbleRight.layer.cornerRadius = 5
 
-                cell.rightMessageLabel.text = message.text
+                cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
                 cell.rightEditedMessageLabel.text = message.editedText
             }
 
@@ -324,7 +381,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.hidden = false
                 cell.chatBubbleLeft.layer.cornerRadius = 5
 
-                cell.leftMessageLabel.text = message.text
+                cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
                 cell.leftEditedMessageLabel.text = message.editedText
             }
 
@@ -335,7 +392,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
     }
-    func tapPlayButton(sender: UIButton) {
+    @IBAction func tapPlayButton(sender: UIButton) {
         if(isPlayingMessage == true){
             if(sender == curPlayingMessage){
                 sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
@@ -355,6 +412,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             do {
                 try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
                 try recordingSession.setActive(true)
+
+                //If an exception breakpoint stops here, you can usually ignore it because the exception is caught down below
                 try audioPlayer = AVAudioPlayer(contentsOfURL: audioURL)
                 audioPlayer.delegate = self
                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
@@ -417,7 +476,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var urlString = "https://gethilingual.com/api/chat/\(recipientId)/message"
 
         if messages.count > 0 {
-            urlString += "?before=\(messages.last!.messageUUID!)"
+//            urlString += "?before=\(messages.last!.messageUUID!)"
+            urlString += "?before=\(0)&limit=10000"
         }
 
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
@@ -433,7 +493,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 print(returnedData)
                 if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                     print(returnString)
-                    messages += HLMessage.fromJSONArray(returnedData)
+//                    messages += HLMessage.fromJSONArray(returnedData)
+                    messages = HLMessage.fromJSONArray(returnedData)
 
                     if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
                         //Succeeded in writing to file
