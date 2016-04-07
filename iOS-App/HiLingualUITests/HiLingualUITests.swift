@@ -144,7 +144,7 @@ class HiLingualUITests: XCTestCase {
         
     }
     
-    func testSendSimpleMessage() {
+    func testSendSimpleMessageNoCrash() {
         
         let app = XCUIApplication()
         app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
@@ -185,7 +185,6 @@ class HiLingualUITests: XCTestCase {
         app.pickers["PickerView"].swipeDown()
         app.toolbars.buttons["Done"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
-        
     }
     
     func testEditBioNoCrash() {
@@ -295,6 +294,7 @@ class HiLingualUITests: XCTestCase {
     func testMessagesProfileViewNoCrash(){
         
         let app = XCUIApplication()
+
         app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
         
         let navBar = app.navigationBars.elementBoundByIndex(0)
@@ -327,16 +327,19 @@ class HiLingualUITests: XCTestCase {
         let tablesQuery = app.tables
         let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
         lastmessagelabelStaticText.tap()
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).staticTexts["ChatBubbleLeftLabel"].tap()
+        
+        let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
+        
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
         app.menuItems["Edit"].tap()
+    
         app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
         app.menuItems["Select"].tap()
         
-        let deleteKey = app.keys["delete"]
-        deleteKey.tap()
-        deleteKey.tap()
+        app.keys["j"]
+
         app.buttons["Save"].tap()
-        app.navigationBars["Noah Maxey"].buttons["Messages"].tap()
+        app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Profile"].tap()
@@ -344,21 +347,28 @@ class HiLingualUITests: XCTestCase {
         lastmessagelabelStaticText.tap()
         
         
-        //You should be able to tap on the second edit. But it does not show up. 
-        XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").elementBoundByIndex(2).tap()
+        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit + 1)
         
     }
     
     func testEditMessageWithNoChanges() {
-        
         let app = XCUIApplication()
         let tablesQuery = app.tables
         let lastmessagelabelStaticText = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"]
         lastmessagelabelStaticText.tap()
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(6).staticTexts["ChatBubbleLeftLabel"].tap()
+        
+        let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
+        
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
         app.menuItems["Edit"].tap()
+        
+        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+        app.menuItems["Select"].tap()
+        
+        app.keys["j"]
+        
         app.buttons["Save"].tap()
-        app.navigationBars["Noah Maxey"].buttons["Messages"].tap()
+        app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
         
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Profile"].tap()
