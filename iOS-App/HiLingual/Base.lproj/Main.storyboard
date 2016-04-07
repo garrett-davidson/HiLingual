@@ -213,30 +213,34 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatTableViewCell" id="xPx-jD-MEk" customClass="ChatTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatTableViewCell" id="u8e-U8-Zib" customClass="ChatTableViewCell" customModule="HiLingual" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPx-jD-MEk" id="WZt-bm-o9v">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u8e-U8-Zib" id="AMw-Yv-49J">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BaC-ab-bmX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2l-KZ-MB0">
                                                     <rect key="frame" x="13" y="8" width="11.5" height="28"/>
                                                     <accessibility key="accessibilityConfiguration" label="ChatBubbleLeftLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlJ-BJ-mSC">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLd-4n-QP7">
                                                     <rect key="frame" x="575.5" y="8" width="11.5" height="28"/>
                                                     <accessibility key="accessibilityConfiguration" label="ChatBubbleRightLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" clipsSubviews="YES" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9AS-S7-Cqc">
-                                                    <rect key="frame" x="0.0" y="-5" width="30" height="30"/>
+                                                <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbT-QB-AoN">
+                                                    <rect key="frame" x="8" y="7" width="30" height="30"/>
                                                     <accessibility key="accessibilityConfiguration" label="PlaybackButton"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="czT-tT-GLf"/>
+                                                        <constraint firstAttribute="height" constant="30" id="udl-HS-9Jx"/>
+                                                    </constraints>
                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -244,27 +248,83 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="LlJ-BJ-mSC" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="6mB-sh-r5P"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="BEq-Wu-teg"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="BaC-ab-bmX" secondAttribute="bottom" id="RHe-76-zs7"/>
-                                                <constraint firstItem="LlJ-BJ-mSC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="80" id="Ufk-5q-LTA"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="LlJ-BJ-mSC" secondAttribute="bottom" id="WJf-Fd-O6C"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="LlJ-BJ-mSC" secondAttribute="trailing" constant="5" id="gzF-y9-lGx"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BaC-ab-bmX" secondAttribute="trailing" constant="80" id="rYa-zQ-es0"/>
-                                                <constraint firstItem="BaC-ab-bmX" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="5" id="x12-z9-CjD"/>
+                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" secondItem="NbT-QB-AoN" secondAttribute="trailing" constant="537.5" id="23V-S2-WFV"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R2l-KZ-MB0" secondAttribute="trailing" constant="80" id="7hD-h5-Pbe"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="5" id="G22-Ee-whZ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="R2l-KZ-MB0" secondAttribute="bottom" id="NxH-ZL-rVH"/>
+                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="WZZ-hd-UmJ"/>
+                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="80" id="aF9-Tw-d5P"/>
+                                                <constraint firstItem="NbT-QB-AoN" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" placeholder="YES" id="hUT-fG-JL0"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xLd-4n-QP7" secondAttribute="trailing" constant="5" id="hpi-ti-771"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="juz-ld-ZdP"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="xLd-4n-QP7" secondAttribute="bottom" id="sd6-VB-MAW"/>
+                                                <constraint firstItem="NbT-QB-AoN" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-1" placeholder="YES" id="vgI-9t-Ki4"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" label="ChatTableViewCell"/>
                                         <connections>
-                                            <outlet property="button" destination="9AS-S7-Cqc" id="fsU-Hf-OMo"/>
-                                            <outlet property="chatBubbleLeft" destination="BaC-ab-bmX" id="fNF-JE-sfe"/>
-                                            <outlet property="chatBubbleRight" destination="LlJ-BJ-mSC" id="8ws-b0-0UD"/>
-                                            <outlet property="leftConstraintMessageequal" destination="x12-z9-CjD" id="rvN-Bg-otN"/>
-                                            <outlet property="rightConstraintMessageEqualOrLess" destination="rYa-zQ-es0" id="rrm-gM-zMs"/>
+                                            <outlet property="button" destination="NbT-QB-AoN" id="CVU-6K-1tF"/>
+                                            <outlet property="chatBubbleLeft" destination="R2l-KZ-MB0" id="Y7a-lG-FZn"/>
+                                            <outlet property="chatBubbleRight" destination="xLd-4n-QP7" id="egX-eI-F1k"/>
+                                            <outlet property="leftConstraintMessageequal" destination="G22-Ee-whZ" id="w1M-Gd-8Ug"/>
+                                            <outlet property="rightConstraintMessageEqualOrLess" destination="7hD-h5-Pbe" id="8Td-kG-651"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatVoiceTableViewCell" rowHeight="46" id="xPx-jD-MEk" customClass="ChatVoiceTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="136" width="600" height="46"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPx-jD-MEk" id="WZt-bm-o9v">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9AS-S7-Cqc">
+                                                    <rect key="frame" x="8" y="8" width="30" height="30"/>
+                                                    <accessibility key="accessibilityConfiguration" label="PlaybackButton"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="Tur-ZH-hOW"/>
+                                                        <constraint firstAttribute="height" constant="30" id="use-Q0-cFu"/>
+                                                    </constraints>
+                                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" image="shittyplay">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="tapPlayButton:" destination="nBC-Zq-2jE" eventType="touchUpInside" id="5i8-rN-rhu"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGm-K1-MVc">
+                                                    <rect key="frame" x="562" y="8" width="30" height="30"/>
+                                                    <accessibility key="accessibilityConfiguration" label="PlaybackButton"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="0CE-NQ-tnl"/>
+                                                        <constraint firstAttribute="height" constant="30" id="KGc-O5-shH"/>
+                                                    </constraints>
+                                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" image="shittyplay">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="tapPlayButton:" destination="nBC-Zq-2jE" eventType="touchUpInside" id="4k5-vy-LyE"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="9AS-S7-Cqc" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" id="C7v-vA-l0a"/>
+                                                <constraint firstItem="9AS-S7-Cqc" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="HuH-cs-1LH"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="RGm-K1-MVc" secondAttribute="bottom" id="QTq-iW-aa1"/>
+                                                <constraint firstItem="RGm-K1-MVc" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="V5E-OT-Egp"/>
+                                                <constraint firstItem="RGm-K1-MVc" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" id="inm-mJ-Qtx"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9AS-S7-Cqc" secondAttribute="bottom" id="wRV-Ip-hZp"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" label="ChatTableViewCell"/>
+                                        <connections>
+                                            <outlet property="leftButton" destination="9AS-S7-Cqc" id="aJf-2A-WaQ"/>
+                                            <outlet property="rightButton" destination="RGm-K1-MVc" id="MhJ-Dc-8mW"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatEditedTableViewCell" rowHeight="63" id="jYI-JC-IST" customClass="ChatEditedTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="136" width="600" height="63"/>
+                                        <rect key="frame" x="0.0" y="182" width="600" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jYI-JC-IST" id="JRc-cy-5by">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="63"/>
@@ -944,6 +1004,9 @@
             <point key="canvasLocation" x="5269" y="831"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="shittyplay" width="512" height="512"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="E7P-wL-Y88"/>
         <segue reference="uD0-O0-1tF"/>

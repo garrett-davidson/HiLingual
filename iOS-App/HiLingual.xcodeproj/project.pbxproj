@@ -21,6 +21,7 @@
 		680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24531C716997009F4EE8 /* ChatViewController.swift */; };
 		682D14831C765FDE00443B7D /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682D14821C765FDE00443B7D /* ProfileView.xib */; };
 		682D14851C76620600443B7D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682D14841C76620600443B7D /* ProfileView.swift */; };
+		6853F3AB1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6853F3AA1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift */; };
 		686E4A441CB1578C00152C69 /* ChatEditedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E4A431CB1578C00152C69 /* ChatEditedTableViewCell.swift */; };
 		6876D9971C5A87A90097332A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9961C5A87A90097332A /* AppDelegate.swift */; };
 		6876D99C1C5A87A90097332A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6876D99A1C5A87A90097332A /* Main.storyboard */; };
@@ -75,6 +76,7 @@
 		682D14821C765FDE00443B7D /* ProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
 		682D14841C76620600443B7D /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiLingual-Bridging-Header.h"; sourceTree = "<group>"; };
+		6853F3AA1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVoiceTableViewCell.swift; sourceTree = "<group>"; };
 		686E4A431CB1578C00152C69 /* ChatEditedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatEditedTableViewCell.swift; sourceTree = "<group>"; };
 		6876D9931C5A87A90097332A /* HiLingual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiLingual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D9961C5A87A90097332A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				686E4A431CB1578C00152C69 /* ChatEditedTableViewCell.swift */,
 				72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */,
 				680F24531C716997009F4EE8 /* ChatViewController.swift */,
+				6853F3AA1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift */,
 				720F00291C76996200DA197E /* ConversationTableViewCell.swift */,
 				720F002B1C7E3F3300DA197E /* DetailViewController.swift */,
 				72F621561C7F977700A8A489 /* EditProfileView.swift */,
@@ -484,6 +487,7 @@
 				680F24421C701A45009F4EE8 /* HLUser.swift in Sources */,
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
+				6853F3AB1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift in Sources */,
 				7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,

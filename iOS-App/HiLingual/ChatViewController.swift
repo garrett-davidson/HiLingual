@@ -302,30 +302,31 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let message = messages[indexPath.row]
         
         if (message.audioURL != nil)  {
-            let cellIdentity = "ChatTableViewCell"
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
+            let cellIdentity = "ChatVoiceTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatVoiceTableViewCell
             
-            let button = cell.button
-            button.hidden = false
-            
-            if(isPlayingMessage){
-                button.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            }else{
-                button.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            }
-            button.addTarget(self, action: #selector(ChatViewController.tapPlayButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            button.tag = indexPath.row
-            
-            cell.chatBubbleLeft.hidden = true
-            cell.chatBubbleLeft.text = ""
-            cell.chatBubbleRight.text = ""
-            cell.chatBubbleRight.hidden = true
-            button.translatesAutoresizingMaskIntoConstraints = true
+            let shownButton: UIButton
+            let hiddenButton: UIButton
+
             if messages[indexPath.row].senderID  ==  currentUser.userId {
-                button.frame = CGRectMake(view.frame.size.width-45, 0, 30, 30)
+                shownButton = cell.rightButton
+                hiddenButton = cell.leftButton
             }
+
             else {
-                button.frame = CGRectMake(15, 0, 30, 30)
+                shownButton = cell.leftButton
+                hiddenButton = cell.rightButton
+            }
+
+            shownButton.hidden = false
+            hiddenButton.hidden = true
+            
+            shownButton.tag = indexPath.row
+
+            if(isPlayingMessage){
+                shownButton.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            }else{
+                shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
             
             return cell
@@ -391,7 +392,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
     }
-    func tapPlayButton(sender: UIButton) {
+    @IBAction func tapPlayButton(sender: UIButton) {
         if(isPlayingMessage == true){
             if(sender == curPlayingMessage){
                 sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
@@ -411,6 +412,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             do {
                 try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
                 try recordingSession.setActive(true)
+
+                //If an exception breakpoint stops here, you can usually ignore it because the exception is caught down below
                 try audioPlayer = AVAudioPlayer(contentsOfURL: audioURL)
                 audioPlayer.delegate = self
                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
