@@ -79,71 +79,17 @@ class HiLingualUITests: XCTestCase {
     func testTextViewHeight() {
         
         let app = XCUIApplication()
-        app.tables.staticTexts["This is an already accepted request"].tap()
+        app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0).tap()
         
         let element = app.childrenMatchingType(.Window).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
         element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
         element.childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
         app.menuItems["Paste"].tap()
         
-        let sendButton = app.buttons["Send"]
+        let sendButton = app.buttons["SendButton"]
         sendButton.tap()
         sendButton.tap()
 //     XCTAssert(textView.frame.size.height < 110)
-        
-    }
-    
-    func testEditingLongMessage() {
-        
-        let app = XCUIApplication()
-        let tablesQuery = app.tables
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(4).staticTexts["LastMessageLabel"].tap()
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).staticTexts["ChatBubbleLeftLabel"].tap()
-        app.menuItems["Edit"].tap()
-        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.Button).matchingIdentifier("Button").elementBoundByIndex(0).tap()
-        
-        
-        
-        let textView = XCUIApplication().otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
-        XCTAssert(textView.frame.size.height > 2)
-        
-        
-    }
-    func testLongMessageSend(){
-        
-        
-        
-        
-        
-    }
-    func playbuttonsGetSmallerForSomeReasonFuckMe(){
-        
-        let app = XCUIApplication()
-        let chatbubblerightlabelStaticText = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(14).staticTexts["ChatBubbleRightLabel"]
-        chatbubblerightlabelStaticText.pressForDuration(0.7);
-        chatbubblerightlabelStaticText.tap()
-        chatbubblerightlabelStaticText.tap()
-        
-        let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
-        let textView = element.childrenMatchingType(.TextView).element
-        textView.tap()
-        textView.tap()
-        app.menuItems["Paste"].tap()
-        
-        let returnButton = app.buttons["Return"]
-        returnButton.tap()
-        element.childrenMatchingType(.TextView).element
-        returnButton.tap()
-        element.childrenMatchingType(.TextView).element
-        returnButton.tap()
-        element.childrenMatchingType(.TextView).element
-        returnButton.tap()
-        element.childrenMatchingType(.TextView).element
-        returnButton.tap()
-        element.childrenMatchingType(.TextView).element
-        returnButton.tap()
-        element.childrenMatchingType(.TextView).element
-        app.buttons["Send"].tap()
         
     }
     
@@ -159,19 +105,15 @@ class HiLingualUITests: XCTestCase {
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
         displayNameTextField.pressForDuration(0.7);
+
+        app.menuItems["Select All"].tap()
         
-        let app2 = app
-        app2.menuItems["Select All"].tap()
-        
-        let deleteKey = app2.keys["delete"]
+        let deleteKey = app.keys["delete"]
         deleteKey.tap()
+
+        app.typeText("name")
         
-        app.keys["n"].tap()
-        app.keys["a"].tap()
-        app.keys["m"].tap()
-        app.keys["e"].tap()
-        
-        app2.textFields["Display Name"]
+        app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
@@ -210,14 +152,8 @@ class HiLingualUITests: XCTestCase {
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
         element.childrenMatchingType(.TextView).element
-        app.keys["H"].tap()
-        app.keys["e"].tap()
-        app.keys["l"].tap()
-        app.keys["l"].tap()
-        app.keys["o"].tap()
-        app.buttons["Send"].tap()
-        app.navigationBars["Nathan Ohlson"].buttons["Messages"].tap()
-        
+        app.typeText("Hello")
+        app.buttons["SendButton"].tap()
     }
     
     func testEditGenderNoCrash() {
@@ -228,10 +164,9 @@ class HiLingualUITests: XCTestCase {
         let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
         hilingualProfileviewNavigationBar.buttons["Edit"].tap()
         
-        let app2 = app
-        app2.otherElements["EditProfile"].staticTexts["Female"].tap()
-        app2.pickerWheels["Female"].tap()
-        app2.toolbars.buttons["Done"].tap()
+        app.otherElements["EditProfile"].staticTexts["GenderSelectionLabel"].tap()
+        app.pickerWheels["Female"].tap()
+        app.toolbars.buttons["Done"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
@@ -243,12 +178,12 @@ class HiLingualUITests: XCTestCase {
         
         let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
         hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+
         app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
         
-        let app2 = app
-        app2.otherElements["EditProfile"].staticTexts["100"].tap()
-        app2.pickerWheels["100"].swipeDown()
-        app2.toolbars.buttons["Done"].tap()
+        app.otherElements["EditProfile"].staticTexts["AgeSelectionLabel"].tap()
+        app.pickers["PickerView"].swipeDown()
+        app.toolbars.buttons["Done"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
@@ -281,7 +216,7 @@ class HiLingualUITests: XCTestCase {
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
         app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
-        app.otherElements["EditProfile"].staticTexts["Speaks: Mandarin, Russian, English"].tap()
+        app.otherElements["EditProfileView"].staticTexts["SpeaksLabel"].tap()
         
         let tablesQuery = app.tables
         let languagecellCell = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(0)
@@ -321,7 +256,8 @@ class HiLingualUITests: XCTestCase {
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
         app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
-        app.otherElements["EditProfile"].staticTexts["Learning: Mandarin"].tap()
+        app.otherElements["EditProfileView"].staticTexts["LearningLabel"].tap()
+
         
         let tablesQuery = app.tables
         let languagecellCell = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("LanguageCell").elementBoundByIndex(0)
@@ -361,24 +297,10 @@ class HiLingualUITests: XCTestCase {
         let app = XCUIApplication()
         app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(0).staticTexts["LastMessageLabel"].tap()
         
-        let nathanOhlsonNavigationBar = app.navigationBars["Nathan Ohlson"]
-        nathanOhlsonNavigationBar.buttons["Details"].tap()
-        nathanOhlsonNavigationBar.buttons["Nathan Ohlson"].tap()
-        nathanOhlsonNavigationBar.buttons["Messages"].tap()
-        
-    }
-    
-    func testDeleteConversation() {
-        
-        let app = XCUIApplication()
-        app.tables.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(3).staticTexts["LastMessageLabel"].swipeLeft()
-        app.tables.buttons["Delete"].tap()
-        
-        let tabBarsQuery = app.tabBars
-        tabBarsQuery.buttons["Profile"].tap()
-        tabBarsQuery.buttons["Messages"].tap()
-        XCTAssert(app.tables
-            .childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").allElementsBoundByIndex.count == 3)
+        let navBar = app.navigationBars.elementBoundByIndex(0)
+        navBar.buttons["Details"].tap()
+        navBar.buttons.elementBoundByIndex(0).tap()
+        navBar.buttons["Messages"].tap()
         
     }
     
@@ -443,6 +365,6 @@ class HiLingualUITests: XCTestCase {
         tabBarsQuery.buttons["Messages"].tap()
         lastmessagelabelStaticText.tap()
         
-        XCTAssert(      XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").allElementsBoundByIndex.count == 1)
+        XCTAssert(XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").allElementsBoundByIndex.count == 1)
     }
 }
