@@ -39,11 +39,11 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
 
         if isValidUser(editProfileView.user) {
 
-        editProfileView.user.setSession(session)
-        editProfileView.user.userId = session!.userId
-        editProfileView.user.save()
+            editProfileView.user.setSession(session)
+            editProfileView.user.userId = session!.userId
+            editProfileView.user.save()
 
-        performSegueWithIdentifier("DoneEditing", sender: self)
+            performSegueWithIdentifier("DoneEditing", sender: self)
         }
     }
 
