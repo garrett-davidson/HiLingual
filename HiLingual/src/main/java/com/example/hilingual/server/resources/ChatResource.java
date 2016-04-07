@@ -200,9 +200,9 @@ public class ChatResource {
         } else {
             //  New messages only have content field set
             System.out.println("New text message");
-            Message ret = chatMessageDAO.newMessage(senderId, receiverId, base64Decode(message.getContent()));
+            Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             sendNotification(receiverId, String.format("%s: %s",
-                    sender.getDisplayName(), message.getContent()), NotificationType.NEW_MESSAGE);
+                    sender.getDisplayName(), base64Decode(message.getContent())), NotificationType.NEW_MESSAGE);
             return ret;
         }
     }
