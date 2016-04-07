@@ -163,6 +163,25 @@ class HLServer {
         return nil
     }
 
+    static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {
+
+        if let encodedString = text.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)) {
+            if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["content": encodedString]) {
+                return HLMessage.fromDict(messageDict[0])
+            }
+
+            else {
+                print("Couldn't send message")
+            }
+        }
+
+        else {
+            print("Couldn't base64 encode message text")
+        }
+
+        return nil
+    }
+
     static func sendVoiceMessageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
 
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["audio": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {

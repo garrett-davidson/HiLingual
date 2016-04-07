@@ -85,7 +85,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func sendMessageWithText(text: String) -> Bool {
-        if let message = HLMessage.sendMessageWithText(text, receiverID: recipientId) {
+        if let message = HLServer.sendMessageWithText(text, receiverID: recipientId) {
             print("Sent message")
             print(message.text)
 

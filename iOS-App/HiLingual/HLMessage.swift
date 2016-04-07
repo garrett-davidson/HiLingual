@@ -122,31 +122,6 @@ class HLMessage: NSObject, NSCoding {
         self.audioURL = nil
     }
 
-    static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(receiverID)/message")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "POST"
-
-            let encodedString = text.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["content": encodedString]), options: NSJSONWritingOptions(rawValue: 0))
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                    if let message = HLMessage.fromJSON(returnedData) {
-                        return message
-                    }
-                }
-            }
-        }
-        
-        return nil
-    }
-
     static func fromJSONArray(messageData: NSData) -> [HLMessage] {
         var messageArray = [HLMessage]()
 
