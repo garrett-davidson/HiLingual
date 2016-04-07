@@ -109,13 +109,7 @@ class HiLingualUITests: XCTestCase {
         
         
     }
-    func testLongMessageSend(){
-        
-        
-        
-        
-        
-    }
+    
     func playbuttonsGetSmallerForSomeReasonFuckMe(){
         
         let app = XCUIApplication()
@@ -444,5 +438,13 @@ class HiLingualUITests: XCTestCase {
         lastmessagelabelStaticText.tap()
         
         XCTAssert(      XCUIApplication().tables.cells["ChatEditedTableViewCell"].childrenMatchingType(.StaticText).matchingIdentifier("OriginalLeftTextLabel").allElementsBoundByIndex.count == 1)
+    }
+    
+    func testAudioMessagePlayButtonNotShowingCorrectly() {
+        
+        let tablesQuery = XCUIApplication().tables
+        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ConversationTableViewCell").elementBoundByIndex(4).staticTexts["LastMessageLabel"].tap()
+        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).buttons["PlaybackButton"].frame == CGRectMake(15, 0, 30, 30))
+        
     }
 }
