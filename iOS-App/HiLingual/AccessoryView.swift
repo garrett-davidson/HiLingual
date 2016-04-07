@@ -242,6 +242,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             didEndEditing()
         }
         else {
+            textView.text = textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            if (textView.text  ?? "").isEmpty {
+                print("String is nil or empty.")
+                textView.text = ""
+                textViewDidChange(textView)
+                return
+            }
             if chatViewController!.sendMessageWithText(textView.text) {
                 textView.text = ""
                 textViewDidChange(textView)
