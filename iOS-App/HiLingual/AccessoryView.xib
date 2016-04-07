@@ -25,7 +25,7 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8et-XY-PLa">
                     <rect key="frame" x="45" y="0.0" width="501" height="592"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <accessibility key="accessibilityConfiguration" label="InputTextView"/>
+                    <accessibility key="accessibilityConfiguration" identifier="InputTextView"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="BRK-N5-X2z"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="110" id="D0H-lB-hoH"/>
@@ -38,7 +38,7 @@
                 </textView>
                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PVk-FS-d4h">
                     <rect key="frame" x="546" y="562" width="46" height="30"/>
-                    <accessibility key="accessibilityConfiguration" label="SendButton"/>
+                    <accessibility key="accessibilityConfiguration" identifier="SendButton"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="46" id="YsJ-LI-jGz"/>
                     </constraints>
@@ -50,7 +50,7 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b4-LC-oRi">
                     <rect key="frame" x="8" y="558" width="34" height="34"/>
-                    <accessibility key="accessibilityConfiguration" label="LeftButton"/>
+                    <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="AQW-oU-Vat"/>
                         <constraint firstAttribute="width" constant="34" id="hY6-HZ-Szo"/>
@@ -65,7 +65,7 @@
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9k-mK-rME">
                     <rect key="frame" x="195" y="558" width="34" height="34"/>
-                    <accessibility key="accessibilityConfiguration" label="DeleteRecordingButton"/>
+                    <accessibility key="accessibilityConfiguration" identifier="DeleteRecordingButton"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="eVd-mU-70I"/>
                         <constraint firstAttribute="width" constant="34" id="t58-rc-wGg"/>
@@ -77,7 +77,7 @@
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obr-DO-y8s">
                     <rect key="frame" x="371" y="558" width="34" height="34"/>
-                    <accessibility key="accessibilityConfiguration" label="PreviewRecordingButton"/>
+                    <accessibility key="accessibilityConfiguration" identifier="PreviewRecordingButton"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="34" id="9Ot-LY-Cth"/>
                         <constraint firstAttribute="height" constant="34" id="q5Y-47-cTi"/>
@@ -89,7 +89,7 @@
                 </button>
                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dC5-wN-qVh">
                     <rect key="frame" x="279" y="571" width="42" height="21"/>
-                    <accessibility key="accessibilityConfiguration" label="RecordingTimerLabel"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RecordingTimerLabel"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="42" id="1c3-7p-CIm"/>
                     </constraints>

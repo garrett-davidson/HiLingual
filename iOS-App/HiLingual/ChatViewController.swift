@@ -41,6 +41,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
         self.title = user.name
         print(user.name)
         print(user.userId)
