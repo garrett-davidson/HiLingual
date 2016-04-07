@@ -293,7 +293,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             sendButton.userInteractionEnabled = true
             if isEditing == false {
                 leftButton.hidden = true
+            } else {
+                leftButton.hidden = false
             }
+            
         }
         if isRecording {
             finishRecording()
