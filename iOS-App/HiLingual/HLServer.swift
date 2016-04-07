@@ -87,6 +87,8 @@ class HLServer {
             }
         }
 
+        request.allHTTPHeaderFields = headerFields
+
         request.HTTPMethod = method
 
         if dict != nil {
@@ -143,24 +145,5 @@ class HLServer {
         }
 
         return false
-
-//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(senderID)/message/\(messageUUID!)")!)
-//        if let session = HLUser.getCurrentUser().getSession() {
-//
-//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-//            request.HTTPMethod = "PATCH"
-//
-//
-//
-//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ), options: NSJSONWritingOptions(rawValue: 0))
-//
-//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-//                print(returnedData)
-//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-//                    print(returnString)
-//                    return
-//                }
-//            }
-//        }
     }
 }
