@@ -234,36 +234,20 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbT-QB-AoN">
-                                                    <rect key="frame" x="8" y="7" width="30" height="30"/>
-                                                    <accessibility key="accessibilityConfiguration" label="PlaybackButton"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="czT-tT-GLf"/>
-                                                        <constraint firstAttribute="height" constant="30" id="udl-HS-9Jx"/>
-                                                    </constraints>
-                                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <state key="normal">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" secondItem="NbT-QB-AoN" secondAttribute="trailing" constant="537.5" id="23V-S2-WFV"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R2l-KZ-MB0" secondAttribute="trailing" constant="80" id="7hD-h5-Pbe"/>
                                                 <constraint firstItem="R2l-KZ-MB0" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="5" id="G22-Ee-whZ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="R2l-KZ-MB0" secondAttribute="bottom" id="NxH-ZL-rVH"/>
                                                 <constraint firstItem="xLd-4n-QP7" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="WZZ-hd-UmJ"/>
                                                 <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="80" id="aF9-Tw-d5P"/>
-                                                <constraint firstItem="NbT-QB-AoN" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" placeholder="YES" id="hUT-fG-JL0"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="xLd-4n-QP7" secondAttribute="trailing" constant="5" id="hpi-ti-771"/>
                                                 <constraint firstItem="R2l-KZ-MB0" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="juz-ld-ZdP"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="xLd-4n-QP7" secondAttribute="bottom" id="sd6-VB-MAW"/>
-                                                <constraint firstItem="NbT-QB-AoN" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-1" placeholder="YES" id="vgI-9t-Ki4"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" label="ChatTableViewCell"/>
                                         <connections>
-                                            <outlet property="button" destination="NbT-QB-AoN" id="CVU-6K-1tF"/>
                                             <outlet property="chatBubbleLeft" destination="R2l-KZ-MB0" id="Y7a-lG-FZn"/>
                                             <outlet property="chatBubbleRight" destination="xLd-4n-QP7" id="egX-eI-F1k"/>
                                             <outlet property="leftConstraintMessageequal" destination="G22-Ee-whZ" id="w1M-Gd-8Ug"/>
@@ -444,7 +428,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="ktS-gQ-9LD">
+                    <navigationItem key="navigationItem" id="ktS-gQ-9LD" userLabel="ChatViewControllerNavigationBar">
                         <barButtonItem key="rightBarButtonItem" title="Details" id="FPQ-fb-3tr">
                             <connections>
                                 <action selector="details:" destination="nBC-Zq-2jE" id="XvD-Fw-3UK"/>

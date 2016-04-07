@@ -355,7 +355,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.layer.cornerRadius = 5
             }
         
-            cell.button.hidden = true
             
             return cell
         }else {
