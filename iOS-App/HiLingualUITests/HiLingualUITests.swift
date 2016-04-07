@@ -284,9 +284,19 @@ class HiLingualUITests: XCTestCase {
         app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
         app.tabBars.buttons["Messages"].tap()
         app.tabBars.buttons["Profile"].tap()
-
-        let test = app.textViews.debugDescription
-        XCTAssert(app.textViews["new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio"].exists);
+        
+        
+        let profileviewElement = XCUIApplication().otherElements["ProfileView"]
+        let biotextviewTextView = profileviewElement.textViews["BioTextView"]
+        biotextviewTextView.tap()
+        biotextviewTextView.tap()
+        profileviewElement.staticTexts["BioLabel"].tap()
+        
+        
+        var text: String = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].label
+        
+        print(text)
+        XCTAssert(text == "new blog new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio new bio");
         
     }
     
