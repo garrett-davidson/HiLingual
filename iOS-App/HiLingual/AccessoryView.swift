@@ -284,7 +284,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         else {
             sendButton.tintColor = UIColor.blueColor()
             sendButton.userInteractionEnabled = true
-            leftButton.hidden = true
+            if isEditing == false {
+                leftButton.hidden = true
+            }
         }
         if isRecording {
             finishRecording()
