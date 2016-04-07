@@ -31,6 +31,7 @@
 		6876D9B71C5A87AA0097332A /* HiLingualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876D9B61C5A87AA0097332A /* HiLingualUITests.swift */; };
 		687BD42E1C7E9E3A007C5F9B /* AccountCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */; };
 		688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */; };
+		689E142F1CB6FDFC00C41C60 /* HLServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E142E1CB6FDFC00C41C60 /* HLServer.swift */; };
 		68AA6DCD1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA6DCC1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift */; };
 		68E893D61C87686E00E7AA46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */; };
 		720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720F00291C76996200DA197E /* ConversationTableViewCell.swift */; };
@@ -92,6 +93,7 @@
 		6876D9B81C5A87AA0097332A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		687BD42D1C7E9E3A007C5F9B /* AccountCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationViewController.swift; sourceTree = "<group>"; };
 		688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
+		689E142E1CB6FDFC00C41C60 /* HLServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLServer.swift; sourceTree = "<group>"; };
 		68AA6DCC1C7F9DD10044DC19 /* LanguageSelectionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageSelectionTableViewController.swift; path = ../LanguageSelectionTableViewController.swift; sourceTree = "<group>"; };
 		68E893D51C87686E00E7AA46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		720F00291C76996200DA197E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				72F621541C7F95D200A8A489 /* EditProfileView.xib */,
 				683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */,
 				680F243F1C70194B009F4EE8 /* HLMessage.swift */,
+				689E142E1CB6FDFC00C41C60 /* HLServer.swift */,
 				680F24411C701A45009F4EE8 /* HLUser.swift */,
 				680F24451C7164C3009F4EE8 /* HLUserSession.swift */,
 				6876D9A21C5A87A90097332A /* Info.plist */,
@@ -486,6 +489,7 @@
 				687BD42E1C7E9E3A007C5F9B /* AccountCreationViewController.swift in Sources */,
 				680F24421C701A45009F4EE8 /* HLUser.swift in Sources */,
 				680F24401C70194B009F4EE8 /* HLMessage.swift in Sources */,
+				689E142F1CB6FDFC00C41C60 /* HLServer.swift in Sources */,
 				720F002A1C76996200DA197E /* ConversationTableViewCell.swift in Sources */,
 				6853F3AB1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift in Sources */,
 				7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */,
