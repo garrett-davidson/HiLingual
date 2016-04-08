@@ -12,14 +12,14 @@ package com.example.hilingual.server;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.example.hilingual.server.config.RedisConfig;
 import com.example.hilingual.server.config.ServerConfig;
-import com.example.hilingual.server.dao.FacebookIntegrationDAO;
-import com.example.hilingual.server.dao.GoogleIntegrationDAO;
-import com.example.hilingual.server.dao.SessionDAO;
-import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.health.JedisHealthCheck;
+import com.example.hilingual.server.resources.AssetResource;
 import com.example.hilingual.server.resources.AuthResource;
+import com.example.hilingual.server.resources.ChatResource;
 import com.example.hilingual.server.resources.UserResource;
 import com.example.hilingual.server.service.APNsService;
+import com.example.hilingual.server.service.MsftTranslateService;
 import com.example.hilingual.server.task.ApnsTestTask;
 import com.example.hilingual.server.task.RevokeAllSessionsTask;
 import com.example.hilingual.server.task.TruncateTask;
@@ -99,6 +99,8 @@ public class Main extends Application<ServerConfig> {
         JerseyEnvironment j = environment.jersey();
         j.register(create(AuthResource.class));
         j.register(create(UserResource.class));
+        j.register(create(AssetResource.class));
+        j.register(create(ChatResource.class));
 
         //  Managed
         LOGGER.info("Creating managed objects");
@@ -107,7 +109,9 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(GoogleIntegrationDAO.class));
         l.manage(create(SessionDAO.class));
         l.manage(create(UserDAO.class));
+        l.manage(create(ChatMessageDAO.class));
         l.manage(create(APNsService.class));
+        l.manage(create(MsftTranslateService.class));
 
         //  Tasks
         LOGGER.info("Registering tasks");

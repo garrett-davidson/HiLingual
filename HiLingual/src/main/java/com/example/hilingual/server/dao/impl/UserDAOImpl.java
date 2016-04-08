@@ -88,7 +88,7 @@ public class UserDAOImpl implements UserDAO {
         u.insert(user);
         int lastId = u.getLastInsertId();
         user.setUserId(lastId);
-        updateUser(user);
+        //updateUser(user);
         return user;
     }
 
@@ -99,6 +99,21 @@ public class UserDAOImpl implements UserDAO {
         //create query to search for users where user name is like query. use UserMapper
         usersList.addAll(handle.createQuery("SELECT * FROM hl_users WHERE display_name LIKE :uname")
                 .bind("uname", "%" + query + "%")
+                .map(new UserMapper())
+                .list());
+        //convert the List to Array and return
+        results = new User[usersList.size()];
+        results = usersList.toArray(results);
+        return results;
+    }
+
+    @Override
+    public User[] findMatches(User invoker) {
+        User[] results;
+        Set<User> usersList = new LinkedHashSet<>();
+        //  TODO do an actual real matching algorithm
+        //  Currently just grab the top 5 entries from the table
+        usersList.addAll(handle.createQuery("SELECT * FROM hl_users LIMIT 5")
                 .map(new UserMapper())
                 .list());
         //convert the List to Array and return
@@ -123,7 +138,7 @@ public class UserDAOImpl implements UserDAO {
         handle.close();
     }
 
-    class UserMapper implements ResultSetMapper<User> {
+    public static class UserMapper implements ResultSetMapper<User> {
 
         @Override
         public User map(int index, ResultSet r, StatementContext ctx) throws SQLException {
@@ -167,7 +182,7 @@ public class UserDAOImpl implements UserDAO {
 
     public static interface Update {
 
-        @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
+        @SqlUpdate("insert into hl_users (user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
         void insert(@BindUser User user);
 
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")

@@ -25,6 +25,18 @@ public class AuthenticationRequest {
     @NotEmpty
     private String authorityToken;
 
+    private String deviceToken;
+
+    public AuthenticationRequest() {
+    }
+
+    public AuthenticationRequest(Authority authority, String authorityAccountId, String authorityToken, String deviceToken) {
+        this.authority = authority;
+        this.authorityAccountId = authorityAccountId;
+        this.authorityToken = authorityToken;
+        this.deviceToken = deviceToken;
+    }
+
     @JsonProperty
     public AuthenticationRequest.Authority getAuthority() {
         return authority;
@@ -53,6 +65,16 @@ public class AuthenticationRequest {
     @JsonProperty
     public void setAuthorityToken(String authorityToken) {
         this.authorityToken = authorityToken;
+    }
+
+    @JsonProperty
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    @JsonProperty
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 
     public enum Authority {

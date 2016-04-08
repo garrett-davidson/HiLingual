@@ -36,6 +36,15 @@ public class ServerConfig extends Configuration {
     @Valid
     private APNsConfig apnsConfig;
 
+    @NotEmpty
+    private String assetAccessBaseUrl;
+
+    @NotEmpty
+    private String assetAccessPath;
+
+    @Valid
+    private MsftTranslateConfig msftTranslateConfig;
+
     @JsonProperty("sqlDb")
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -86,5 +95,35 @@ public class ServerConfig extends Configuration {
     @JsonProperty("apns")
     public void setApnsConfig(APNsConfig apnsConfig) {
         this.apnsConfig = apnsConfig;
+    }
+
+    @JsonProperty
+    public String getAssetAccessBaseUrl() {
+        return assetAccessBaseUrl;
+    }
+
+    @JsonProperty
+    public void setAssetAccessBaseUrl(String assetAccessBaseUrl) {
+        this.assetAccessBaseUrl = assetAccessBaseUrl;
+    }
+
+    @JsonProperty
+    public String getAssetAccessPath() {
+        return assetAccessPath;
+    }
+
+    @JsonProperty
+    public void setAssetAccessPath(String assetAccessPath) {
+        this.assetAccessPath = assetAccessPath;
+    }
+
+    @JsonProperty("msftTranslate")
+    public MsftTranslateConfig getMsftTranslateConfig() {
+        return msftTranslateConfig;
+    }
+
+    @JsonProperty("msftTranslate")
+    public void setMsftTranslateConfig(MsftTranslateConfig msftTranslateConfig) {
+        this.msftTranslateConfig = msftTranslateConfig;
     }
 }
