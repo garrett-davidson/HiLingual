@@ -139,7 +139,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
                             if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
                                 if let translation = ret["translatedContent"] as? String {
-                                    message.translatedText = translation
+                                    message.translatedText = (NSString(data: NSData(base64EncodedString: translation, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
                                 }
                             }
 
