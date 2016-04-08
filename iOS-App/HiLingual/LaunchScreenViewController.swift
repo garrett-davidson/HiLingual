@@ -44,7 +44,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             return
         }
 
-        if let user = HLUser.getCurrentUser() {
+        if let _ = HLUser.getCurrentUser() {
             // if let _ = user.getSession() {
             self.performSegueWithIdentifier("previousLogin", sender: self)
             // }
@@ -74,7 +74,6 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
-        var response: NSURLResponse?
         
         requestFromServer("https://gethilingual.com/api/auth/register", authority: "FACEBOOK", signIn: nil)
     }
