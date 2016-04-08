@@ -135,14 +135,14 @@ class HiLingualUITests: XCTestCase {
         app.typeText("oldName")
 
         displayNameTextField.tap()
-        
+
+        sleep(1)
         app.menuItems["Select All"].tap()
         
         let deleteKey = app.keys["delete"]
         deleteKey.tap()
         
         app.typeText("joey")
-
         
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
@@ -457,7 +457,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.staticTexts["Riley Shaw"]
+        let lastmessagelabelStaticText = app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0)
         lastmessagelabelStaticText.tap()
         
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
@@ -484,7 +484,7 @@ class HiLingualUITests: XCTestCase {
             tempElement = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(j)
         }
         
-        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit + 1)
+        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit)
         
     }
     
@@ -492,7 +492,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.staticTexts["Riley Shaw"]
+        let lastmessagelabelStaticText = app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0)
         lastmessagelabelStaticText.tap()
 
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
@@ -500,7 +500,7 @@ class HiLingualUITests: XCTestCase {
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
         for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
-            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleLeftLabel"  {
+            if tempElement.staticTexts.matchingIdentifier("ChatBubbleLeftLabel").count == 1  {
                 tempElement.tap()
                 app.menuItems["Edit"].tap()
                 
@@ -527,7 +527,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.staticTexts["Riley Shaw"]
+        let lastmessagelabelStaticText = app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0)
         lastmessagelabelStaticText.tap()
         
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
@@ -552,7 +552,7 @@ class HiLingualUITests: XCTestCase {
             tempElement = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(j)
         }
         
-        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit + 1)
+        XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit)
     }
 
     func testUnicodeMessage() {
