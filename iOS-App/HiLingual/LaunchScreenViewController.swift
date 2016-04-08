@@ -31,12 +31,11 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     }
 
     func checkSignedIn() {
-        //Use guard if it wouldn't make sense to continue a method if a condition is false
-        //Guard will guarantee a condition is true
-        //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
+
         guard FBSDKAccessToken.currentAccessToken() != nil || GIDSignIn.sharedInstance().currentUser != nil else {
             print("Need to log in")
             let loginButton = FBSDKLoginButton()
+            loginButton.loginBehavior = FBSDKLoginBehavior.SystemAccount
             loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
             loginButton.center = self.view.center
             loginButton.delegate = self
@@ -44,7 +43,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             return
         }
 
-        if let _ = HLUser.getCurrentUser() {
+        if let user = HLUser.getCurrentUser() {
             // if let _ = user.getSession() {
             self.performSegueWithIdentifier("previousLogin", sender: self)
             // }

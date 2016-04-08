@@ -27,13 +27,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-        let isFacebookSetup = setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
-        let isGoogleSetup = setupGoogle()
+        setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
+        setupGoogle()
+
+        FBSDKLoginManager.renewSystemCredentials { (result:ACAccountCredentialRenewResult, error:NSError?) -> Void in
+            print(result)
+            print(error)
+        }
 
         registerForNotifications(application)
 
 
-        return isFacebookSetup && isGoogleSetup
+        return true
     }
 
     func registerForNotifications(application: UIApplication) {

@@ -105,7 +105,7 @@ class HLServer {
         return sendRequest(request)
     }
 
-    static func sendGETRequestToEndpoint(endpoint: String, withParameterString parameters: String?=nil, authenticated: Bool=true) -> [NSDictionary]? {
+    static func sendGETRequestToEndpoint(endpoint: String, withParameterString parameters: String?=nil, authentication: HLUserSession?=HLUser.getCurrentUser().getSession()) -> [NSDictionary]? {
         var urlString = apiBase + endpoint
 
         if parameters != nil {
@@ -116,15 +116,8 @@ class HLServer {
 
         var headerFields = ["Content-Type": "application/json"]
 
-        if authenticated {
-            if let session = HLUser.getCurrentUser().getSession() {
-                headerFields["Authorization"] = "HLAT " + session.sessionId
-            }
-
-            else {
-                print("Could not authenticate")
-                return nil
-            }
+        if authentication != nil {
+            headerFields["Authorization"] = "HLAT " + authentication!.sessionId
         }
 
         request.allHTTPHeaderFields = headerFields
@@ -202,7 +195,7 @@ class HLServer {
 
     static func getUserById(id: Int64, session: HLUserSession=HLUser.getCurrentUser().getSession()!) -> HLUser? {
 
-        if let userDict = sendGETRequestToEndpoint("user/\(id)") {
+        if let userDict = sendGETRequestToEndpoint("user/\(id)", withParameterString: nil, authentication: session) {
             return HLUser.fromDict(userDict[0])
         }
 
