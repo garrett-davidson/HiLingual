@@ -7,6 +7,7 @@ import json
 import ast
 import signal
 from datetime import datetime
+from base64 import *
 
 userSessionId = ""
 userId = ""
@@ -55,7 +56,7 @@ def editMessage():
 
 	editdata = input("Enter edit: ")
 
-	data = "{\"id\":\"" + str(messageId) + "\",\"editData\":\"" + str(editdata) + "\"}"
+	data = "{\"id\":\"" + str(messageId) + "\",\"editData\":\"" + str(b64encode(bytes(editdata, "utf-8"))) + "\"}"
 
 	response = http.request('PATCH', url, headers={'Authorization':auth_param, 'Content-Type':'application/json'}, body=data)
 
@@ -97,38 +98,43 @@ def receiveMessages():
 	print("\n\nChat between you and " + str(otherusername))
 
 
-	count = 0
-	for i in parsed_search_responsebody:
-		tempdict = ast.literal_eval(str(i))
-		addfrom = ""
-		addto = ""
-		frompad = ""
-		if tempdict['sender'] == userId:
-			addfrom = " (you)"
-			frompad = "          "
-		elif tempdict['sender'] == int(otheruser):
-			addfrom = " (" + otherusername + ")"
-		if tempdict['receiver'] == userId:
-			addto = " (you)"
-		elif tempdict['receiver'] == int(otheruser):
-			addto = " (" + otherusername +  ")"
+	if response.status == 200:
+
+		count = 0
+		for i in parsed_search_responsebody:
+			tempdict = ast.literal_eval(str(i))
+			print(tempdict)
+			addfrom = ""
+			addto = ""
+			frompad = ""
+			if tempdict['sender'] == userId:
+				addfrom = " (you)"
+				frompad = "          "
+			elif tempdict['sender'] == int(otheruser):
+				addfrom = " (" + otherusername + ")"
+			if tempdict['receiver'] == userId:
+				addto = " (you)"
+			elif tempdict['receiver'] == int(otheruser):
+				addto = " (" + otherusername +  ")"
 
 
 
-		print("----------- Message " + str(count) +" -----------")
-		print(str(frompad) + "Message ID: " + str(tempdict['id']))
-		print(str(frompad) + "From: " + str(tempdict['sender']) + addfrom)
-		print(str(frompad) + "To: " + str(tempdict['receiver']) + addto)
-		print(str(frompad) + "Time: " + datetime.fromtimestamp(int(tempdict['sentTimestamp']) / 1000).strftime('%Y-%m-%d %H:%M:%S'))
-		print(str(frompad) + "Message:")
-		print(str(frompad) + tempdict['content'])
-		if tempdict['editData'] is not None:
-			print(str(frompad) + "Edit Time: " + datetime.fromtimestamp(int(tempdict['editTimestamp']) / 1000).strftime('%Y-%m-%d %H:%M:%S'))
-			print(str(frompad) + "Edit:")
-			print(str(frompad) + tempdict['editData'])
-		print()
+			print("----------- Message " + str(count) +" -----------")
+			print(str(frompad) + "Message ID: " + str(tempdict['id']))
+			print(str(frompad) + "From: " + str(tempdict['sender']) + addfrom)
+			print(str(frompad) + "To: " + str(tempdict['receiver']) + addto)
+			print(str(frompad) + "Time: " + datetime.fromtimestamp(int(tempdict['sentTimestamp']) / 1000).strftime('%Y-%m-%d %H:%M:%S'))
+			print(str(frompad) + "Message:")
+			print(str(frompad) + str(b64decode(bytes(tempdict['content'], "utf-8")))[2:-1])
+			if tempdict['editData'] is not None:
+				print(str(frompad) + "Edit Time: " + datetime.fromtimestamp(int(tempdict['editTimestamp']) / 1000).strftime('%Y-%m-%d %H:%M:%S'))
+				print(str(frompad) + "Edit:")
+				print(str(frompad) + str(b64decode(bytes(tempdict['editData'], "utf-8")))[2:-1])
+			print()
 
-		count += 1
+			count += 1
+	elif response.status == 404:
+		print("Error convorsation not found (was that user Id yours?)")
 
 
 
@@ -146,7 +152,7 @@ def sendMessage():
 	url = url + str(requestuserid) + "/message"
 	message = input("Enter message: ")
 
-	bodydic = "{\"content\": \""+ message + "\"}"
+	bodydic = "{\"content\": \""+ str(b64encode(bytes(message, "utf-8")))[2:-1] + "\"}"
 	print(bodydic)
 
 	response = http.request('POST', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=bodydic)
