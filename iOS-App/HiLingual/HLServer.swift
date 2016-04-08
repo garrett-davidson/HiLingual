@@ -52,7 +52,7 @@ class HLServer {
                         print("Server fucked up 😏")
 
                     default:
-                        print("Wtf just happened??? 💩")
+                        print("Wtf just happened???  ?¿💩")
                     }
                 }
 

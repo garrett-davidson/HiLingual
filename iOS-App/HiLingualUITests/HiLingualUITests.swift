@@ -762,4 +762,43 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
+    func testPasteButtonShowClickOnRightMessageWithTextView() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        XCUIApplication().textViews["InputTextView"].tap()
+        
+        
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(!app.menuItems["Paste"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
+    }
+    func testPasteButtonShowClickOnLeftMessageWithTextView() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        XCUIApplication().textViews["InputTextView"].tap()
+        
+        
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleLeftLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(!app.menuItems["Paste"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
+    }
+    
 }
