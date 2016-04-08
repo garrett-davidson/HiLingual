@@ -225,4 +225,15 @@ class HLServer {
 
         return sendRequestToEndpoint("chat/\(userId)/", method: "POST") != nil
     }
+
+    static func getMyMatches() -> [HLUser]? {
+
+        if let matchDicts = sendGETRequestToEndpoint("user/match") {
+            return matchDicts.map({ (match) -> HLUser in
+                HLUser.fromDict(match)
+            })
+        }
+
+        return nil
+    }
 }

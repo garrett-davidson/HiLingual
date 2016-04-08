@@ -106,19 +106,9 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
 
     func loadMatches() {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/match")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "GET"
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                    matches = HLUser.fromJSONArray(returnedData)
-                    carousel.reloadData()
-                }
-            }
+        if let myMatches = HLServer.getMyMatches() {
+            matches = myMatches
+            carousel.reloadData()
         }
     }
 
