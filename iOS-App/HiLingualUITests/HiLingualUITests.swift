@@ -781,6 +781,8 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
+
+    //Should fail
     func testPasteButtonShowClickOnLeftMessageWithTextView() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
