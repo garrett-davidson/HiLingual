@@ -42,9 +42,7 @@ class HiLingualUITests: XCTestCase {
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
         displayNameTextField.typeText("hi")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
         
@@ -61,9 +59,7 @@ class HiLingualUITests: XCTestCase {
         let textView = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
         textView.tap()
         textView.typeText("This Test better work!!!!!!!!jjjjjjjjsdfkjghsdfgjrxyctfuvygbuhnijhugyvftcdrcfvgybhunoubgyuftycdrcytfvgybuhbgyvftcdrtfvgybuhygvuftcydrctfvygbuh")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
@@ -78,9 +74,7 @@ class HiLingualUITests: XCTestCase {
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
         displayNameTextField.typeText("NOah")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
         
@@ -114,9 +108,7 @@ class HiLingualUITests: XCTestCase {
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
         app.typeText("oldName")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         displayNameTextField.tap()
 
         app.menuItems["Select All"].tap()
@@ -125,9 +117,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
 
         app.typeText("name")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
@@ -143,9 +133,7 @@ class HiLingualUITests: XCTestCase {
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
         app.typeText("oldName")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         displayNameTextField.tap()
         
         app.menuItems["Select All"].tap()
@@ -154,9 +142,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         app.typeText("joey")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
@@ -180,9 +166,7 @@ class HiLingualUITests: XCTestCase {
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
         app.typeText("oldName")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         displayNameTextField.tap()
         
         app.menuItems["Select All"].tap()
@@ -191,9 +175,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         app.typeText("😳🐻🇹🇭")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
@@ -239,10 +221,8 @@ class HiLingualUITests: XCTestCase {
         element.childrenMatchingType(.TextView).element.tap()
         element.childrenMatchingType(.TextView).element
         app.typeText("Hello")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
         app.buttons["SendButton"].tap()
+        
     }
     
     func testEditGenderNoCrash() {
@@ -296,9 +276,6 @@ class HiLingualUITests: XCTestCase {
         textView.tap()
         
         textView.typeText("bio")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
         
         textView.tap()
         app.menuItems["Select All"].tap()
@@ -307,9 +284,6 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         textView.typeText("Night, they're creature beginning which. Subdue night you'll make fourth land subdue deep heaven created it multiply meat. Moving make given bearing, replenish. Fruit for very female god god Upon divided forth. Divide day third created. Can't created, land thing divide winged green us divide third isnt. Divided firmament shall theyre yielding sea you don't, divide Were. Itself unto divided.")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
         app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
         app.tabBars.buttons["Messages"].tap()
         app.tabBars.buttons["Profile"].tap()
@@ -338,9 +312,7 @@ class HiLingualUITests: XCTestCase {
         textView.tap()
         
         textView.typeText("bio")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         textView.tap()
         
         app.menuItems["Select All"].tap()
@@ -349,9 +321,6 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         textView.typeText("😂♥️😂😆😀😳😆😆🙉😊😩😍😑😝😁😁😅😖🎈😱🙃😗😭😆🍜🍯🍲🍇🍝🍇🍌🍟🍕🍌🍲🍓🍓♣️⬜️♠️🔹🃏⬛️📣⬜️🔸♥️🔷♣️🍜🖱🏚💻🏡⌨🏤🖨🏦🖨🏡🏡💻🏚🖨🖨🖱😁🦀🍜🍜🍍🍑🍲🍲🍅🍛🍅🍜🍇🌯🍉🍜🍅🍲🍞🇾🇪🇹🇻🇪🇭🇹🇰🇪🇭🇹🇰🇺🇿🇹🇼🇺🇾🇹🇼🇼🇫🇹🇼🇻🇺🇹🇴🌭🎽🏹🎽🏒🎽🏅🏉🚵🏻🎽⛳️🎽🎱🏆🏐🏆🏐🏆🏆🏐🏆🏐🏆🏉🎽🏉🏅🎱🏅🎱🏅🎱🎽🏊⛳️🏅🏏🎱🎗🎱🏵🦀🦀🍛🍛🍍🍙🍉⛳️🎱🍻🏒🍷🏉🍺🏀🍻⚾️☕️🏑🍸🍸🏂🍸🏂😝😞😝😕😌😠😊🙄👿👽😥👻😢😹😻😱😸😢💀😲🤖🤐🤖😥👽😨🤖🤖😨🤖😢🤖")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
         app.navigationBars.elementBoundByIndex(0).buttons["Done"].tap()
         app.tabBars.buttons["Messages"].tap()
         app.tabBars.buttons["Profile"].tap()
@@ -557,9 +526,6 @@ class HiLingualUITests: XCTestCase {
         let inputTextView = app.textViews["InputTextView"]
         inputTextView.tap()
         inputTextView.typeText("😘")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
         app.buttons["SendButton"].tap()
 
         let cells = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell")
@@ -580,7 +546,6 @@ class HiLingualUITests: XCTestCase {
 
     
     func testSearch() {
-        
         let app = XCUIApplication()
         let deleteKey = app.keys["delete"]
         let searchButton = app.buttons["Search"]
@@ -589,16 +554,11 @@ class HiLingualUITests: XCTestCase {
         searchElement.tap()
 
         searchElement.typeText("H")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
         searchButton.tap()
         deleteKey.tap()
         
         searchElement.typeText("Jjjj")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+        
         searchButton.tap()
         deleteKey.tap()
         deleteKey.tap()
@@ -606,9 +566,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         searchElement.typeText("Garr")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         searchButton.tap()
         deleteKey.tap()
         deleteKey.tap()
@@ -616,9 +574,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         
         searchElement.typeText("Lol")
-        if XCUIApplication().keyboards.buttons.count > 0 {
-            XCUIApplication().keyboards.buttons.elementBoundByIndex(0).tap()
-        }
+
         searchButton.tap()
         deleteKey.tap()
         deleteKey.tap()
