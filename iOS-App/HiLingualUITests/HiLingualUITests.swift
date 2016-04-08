@@ -422,7 +422,7 @@ class HiLingualUITests: XCTestCase {
         navigationBar.buttons["Messages"].tap()
         
     }
-    
+    //Should fail
     func testDeleteConversation() {
         
         let app = XCUIApplication()
@@ -522,7 +522,7 @@ class HiLingualUITests: XCTestCase {
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit + 1)
         
     }
-    
+    //Should fail
     func testEditMessageWithNoChanges() {
         
         let app = XCUIApplication()
@@ -617,7 +617,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         deleteKey.tap()
     }
-    
+    //should fail
     func testEditButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
@@ -628,7 +628,7 @@ class HiLingualUITests: XCTestCase {
         sleep(1)
         XCTAssert(!app.menuItems["Edit"].exists)
     }
-    
+    //Should fail
     func testTranslateButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
