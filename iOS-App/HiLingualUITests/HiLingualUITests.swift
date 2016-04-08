@@ -628,7 +628,7 @@ class HiLingualUITests: XCTestCase {
         sleep(1)
         XCTAssert(!app.menuItems["Edit"].exists)
     }
-    //Should fail
+
     func testTranslateButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
@@ -737,7 +737,7 @@ class HiLingualUITests: XCTestCase {
             if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
                 tempElement.tap()
                 sleep(1)
-                XCTAssert(!app.menuItems["Translate"].exists)
+                XCTAssert(app.menuItems["Translate"].exists)
                 break;
             }
             j += 1
@@ -782,7 +782,6 @@ class HiLingualUITests: XCTestCase {
         }
     }
 
-    //Should fail
     func testPasteButtonShowClickOnLeftMessageWithTextView() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()

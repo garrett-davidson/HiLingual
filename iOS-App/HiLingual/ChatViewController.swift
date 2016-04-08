@@ -13,7 +13,7 @@ import AVFoundation
 
 //Displays both the sent and received messages in a single chat
 
-class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate{
+class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate, UIKeyInput{
     var user: HLUser!
     var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
@@ -162,6 +162,14 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return selectedCellIndex != nil && canEditMessage()
         }
 
+        else if action == #selector(ChatViewController.translateMessage) {
+            return selectedCellIndex != nil
+        }
+
+        else if selectedCellIndex != nil {
+            return false
+        }
+
         return super.canPerformAction(action, withSender: sender)
     }
     
@@ -206,9 +214,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
-        guard messages[indexPath.row].senderID != currentUser.userId else {
-            return
-        }
+//        guard messages[indexPath.row].senderID != currentUser.userId else {
+//            return
+//        }
 
         guard editingCellIndex == nil else {
             return
@@ -216,18 +224,24 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let menuController = UIMenuController.sharedMenuController()
 
+        let bubble: CGRect
+
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatTableViewCell {
-            selectedCellIndex = indexPath.row
-            let rect = cell.convertRect(cell.chatBubbleLeft.frame, toView: self.view)
-            menuController.setTargetRect(rect, inView: self.view)
-            menuController.setMenuVisible(true, animated: true)
+            self.becomeFirstResponder()
+            bubble = cell.convertRect(messages[indexPath.row].senderID == currentUser.userId ? cell.chatBubbleRight.frame : cell.chatBubbleLeft.frame, toView: self.view)
         }
         else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatEditedTableViewCell {
-            selectedCellIndex = indexPath.row
-            let rect = cell.convertRect(cell.chatBubbleLeft.frame, toView: self.view)
-            menuController.setTargetRect(rect, inView: self.view)
-            menuController.setMenuVisible(true, animated: true)
+            self.becomeFirstResponder()
+            bubble = cell.convertRect(messages[indexPath.row].senderID == currentUser.userId ? cell.chatBubbleRight.frame : cell.chatBubbleLeft.frame, toView: self.view)
         }
+
+        else {
+            return
+        }
+
+        selectedCellIndex = indexPath.row
+        menuController.setTargetRect(bubble, inView: self.view)
+        menuController.setMenuVisible(true, animated: true)
     }
 
     func menuWillHide(notification: NSNotification) {
@@ -487,5 +501,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             print("Failed to retrieve messsages from server")
         }
+    }
+
+    //These have to be here to fix the Edit/Translate buttons 😑
+    func hasText() -> Bool {
+        return false
+    }
+    func insertText(text: String) {
+
+    }
+    func deleteBackward() {
+
     }
 }
