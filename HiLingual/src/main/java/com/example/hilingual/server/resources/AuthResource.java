@@ -86,7 +86,7 @@ public class AuthResource {
                 throw new BadRequestException();
         }
         if (!sessionCheck.test(authorityAccountId, authorityToken)) {
-            throw new ClientErrorException(Response.Status.UNAUTHORIZED);
+            throw new NotAuthorizedException("Invalid authority session");
         }
         long userId = getUserIdFromAuthorityAccountId.applyAsLong(authorityAccountId);
         if (userId == 0) {
@@ -149,6 +149,9 @@ public class AuthResource {
         assignUserIdToAccount.accept(userId, authorityAccountId);
         tokenSetter.accept(userId, authorityToken);
         String sessionId = sessionDAO.newSession(userId);
+        if (!Strings.isNullOrEmpty(body.getDeviceToken())) {
+            tokenDAO.addDeviceToken(userId, body.getDeviceToken());
+        }
         return new AuthenticationResponse(userId, sessionId);
     }
 
