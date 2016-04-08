@@ -82,7 +82,7 @@ class HiLingualUITests: XCTestCase {
     func testTextViewHeight() {
         
         let app = XCUIApplication()
-        app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0).tap()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
         
         let element = app.childrenMatchingType(.Window).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
         element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
@@ -463,52 +463,63 @@ class HiLingualUITests: XCTestCase {
 
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
-        app.menuItems["Edit"].tap()
-    
-        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
-        app.menuItems["Select"].tap()
-        
-        app.keys["j"]
-
-        app.buttons["Save"].tap()
-        app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
-        
-        let tabBarsQuery = app.tabBars
-        tabBarsQuery.buttons["Profile"].tap()
-        tabBarsQuery.buttons["Messages"].tap()
-        lastmessagelabelStaticText.tap()
-        
-        
+        var j: UInt = 1
+        var ageElement = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0)
+        for _ in 0...tablesQuery.childrenMatchingType(.Cell).allElementsBoundByIndex.count {
+            if ageElement.staticTexts["ChatBubbleLeftLabel"].exists || ageElement.staticTexts["ChatBubbleLeftLabel"].exists{
+                ageElement.staticTexts["ChatBubbleLeftLabel"].tap()
+                app.menuItems["Edit"].tap()
+                
+                app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+                
+                app.keys["j"]
+                
+                app.buttons["Save"].tap()
+                app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
+                
+                let tabBarsQuery = app.tabBars
+                tabBarsQuery.buttons["Profile"].tap()
+                tabBarsQuery.buttons["Messages"].tap()
+                lastmessagelabelStaticText.tap()
+                break;
+            }
+            j += 1
+            ageElement = tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(j)
+        }
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit + 1)
         
     }
     
     func testEditMessageWithNoChanges() {
+        
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.staticTexts.elementBoundByIndex(0).staticTexts["LastMessageLabel"]
+        let lastmessagelabelStaticText = app.tables.staticTexts.elementBoundByIndex(0)
         lastmessagelabelStaticText.tap()
         
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
-        tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0).staticTexts["ChatBubbleLeftLabel"].tap()
-        app.menuItems["Edit"].tap()
-        
-        app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
-        app.menuItems["Select"].tap()
-        
-        app.keys["j"]
-        
-        app.buttons["Save"].tap()
-        app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
-        
-        let tabBarsQuery = app.tabBars
-        tabBarsQuery.buttons["Profile"].tap()
-        tabBarsQuery.buttons["Messages"].tap()
-        lastmessagelabelStaticText.tap()
-        
-        
+        var j: UInt = 1
+        var ageElement = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        for _ in 0...tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j).staticTexts["ChatBubbleLeftLabel"].exists {
+                ageElement.staticTexts["ChatBubbleLeftLabel"].tap()
+                app.menuItems["Edit"].tap()
+                
+                app.otherElements["InputView"].childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
+                
+                app.buttons["Save"].tap()
+                app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
+                
+                let tabBarsQuery = app.tabBars
+                tabBarsQuery.buttons["Profile"].tap()
+                tabBarsQuery.buttons["Messages"].tap()
+                lastmessagelabelStaticText.tap()
+                break;
+            }
+            j += 1
+            ageElement = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit)
     }
     
@@ -616,5 +627,41 @@ class HiLingualUITests: XCTestCase {
         } else {
             XCTAssert(!app.menuItems["Paste"].enabled)
         }
+    }
+    
+    func testEditButtonShowClickOnLeftMessage() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts["ChatBubbleLeftLabel"].exists {
+                app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatBubbleLeftLabel").elementBoundByIndex(j).tap()
+                app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
+                sleep(1)
+                XCTAssert(app.menuItems["Edit"].exists)
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
+    }
+    
+    func testTranslateButtonShowClickOnMessage() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        
+app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatBubbleLeftLabel").elementBoundByIndex(0).tap()
+        sleep(1)
+        XCTAssert(app.menuItems["Translate"].exists)
+    }
+    
+    func testPasteButtonShowClickOnMessage() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        
+app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatBubbleLeftLabel").elementBoundByIndex(0).tap()
+        sleep(1)
+        XCTAssert(!app.menuItems["Translate"].exists)
     }
 }
