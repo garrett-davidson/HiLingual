@@ -54,8 +54,11 @@ public class MsftTranslateServiceImpl implements MsftTranslateService {
                     asString();
             String body = ret.getBody();
             JSONObject jso = XML.toJSONObject(body);
-            
-            return jso.getJSONObject("string").getString("content");
+            if (jso.has("string")) {
+                return jso.getJSONObject("string").getString("content");
+            }
+            System.out.println("Translation Error: " + body);
+            return "T/N ERROR";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
