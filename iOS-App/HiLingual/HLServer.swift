@@ -44,7 +44,9 @@ class HLServer {
                         print("You probably fucked up the request 😓")
 
                     case 503:
-                        print("*********Server Down********* 😭")
+                        print("😭😭😭 *********Server Down********* 😭😭😭")
+                        //We don't need to run the diagnostic stuff below if we get here
+                        return nil
 
                     case 500..<600:
                         print("Server fucked up 😏")
@@ -236,4 +238,6 @@ class HLServer {
 
         return nil
     }
+
+//    static
 }
