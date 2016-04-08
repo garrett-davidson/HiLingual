@@ -227,16 +227,19 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let bubble: CGRect
 
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatTableViewCell {
-            self.becomeFirstResponder()
             bubble = cell.convertRect(messages[indexPath.row].senderID == currentUser.userId ? cell.chatBubbleRight.frame : cell.chatBubbleLeft.frame, toView: self.view)
         }
         else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatEditedTableViewCell {
-            self.becomeFirstResponder()
             bubble = cell.convertRect(messages[indexPath.row].senderID == currentUser.userId ? cell.chatBubbleRight.frame : cell.chatBubbleLeft.frame, toView: self.view)
         }
 
         else {
             return
+        }
+
+        //This keeps the keyboard up if it's already up
+        if testView.textView.isFirstResponder() {
+            self.becomeFirstResponder()
         }
 
         selectedCellIndex = indexPath.row
