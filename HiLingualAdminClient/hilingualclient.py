@@ -56,7 +56,7 @@ def editMessage():
 
 	editdata = input("Enter edit: ")
 
-	data = "{\"id\":\"" + str(messageId) + "\",\"editData\":\"" + str(b64encode(bytes(editdata, "utf-8"))) + "\"}"
+	data = "{\"id\":\"" + str(messageId) + "\",\"editData\":\"" + str(b64encode(bytes(editdata, "utf-8")))[2:-1] + "\"}"
 
 	response = http.request('PATCH', url, headers={'Authorization':auth_param, 'Content-Type':'application/json'}, body=data)
 
@@ -103,7 +103,6 @@ def receiveMessages():
 		count = 0
 		for i in parsed_search_responsebody:
 			tempdict = ast.literal_eval(str(i))
-			print(tempdict)
 			addfrom = ""
 			addto = ""
 			frompad = ""
