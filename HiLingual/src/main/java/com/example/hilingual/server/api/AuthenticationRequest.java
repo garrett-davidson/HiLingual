@@ -27,6 +27,16 @@ public class AuthenticationRequest {
 
     private String deviceToken;
 
+    public AuthenticationRequest() {
+    }
+
+    public AuthenticationRequest(Authority authority, String authorityAccountId, String authorityToken, String deviceToken) {
+        this.authority = authority;
+        this.authorityAccountId = authorityAccountId;
+        this.authorityToken = authorityToken;
+        this.deviceToken = deviceToken;
+    }
+
     @JsonProperty
     public AuthenticationRequest.Authority getAuthority() {
         return authority;
