@@ -617,7 +617,7 @@ class HiLingualUITests: XCTestCase {
         deleteKey.tap()
         deleteKey.tap()
     }
-    //should fail
+    
     func testEditButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
