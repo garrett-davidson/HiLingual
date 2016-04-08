@@ -687,7 +687,7 @@ class HiLingualUITests: XCTestCase {
             if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
                 tempElement.tap()
                 sleep(1)
-                XCTAssert(app.menuItems["Edit"].exists)
+                XCTAssert(!app.menuItems["Edit"].exists)
                 break;
             }
             j += 1
@@ -705,7 +705,7 @@ class HiLingualUITests: XCTestCase {
             if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
                 tempElement.tap()
                 sleep(1)
-                XCTAssert(app.menuItems["Translate"].exists)
+                XCTAssert(!app.menuItems["Translate"].exists)
                 break;
             }
             j += 1
