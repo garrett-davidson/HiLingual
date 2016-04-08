@@ -119,25 +119,6 @@ class HLUser: NSObject, NSCoding {
 
         return currentUser
     }
-    
-    static func getUserById(id: Int64, session: HLUserSession) -> HLUser? {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(id)")!)
-        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-        request.HTTPMethod = "GET"
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-            print(returnedData)
-            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                print(returnString)
-                return HLUser.fromJSON(returnedData)
-            }
-        }
-        
-        return nil
-    }
-
-    static func getUserById(id: Int64) -> HLUser? {
-        return getUserById(id, session: HLUser.getCurrentUser().session!)
-    }
 
     static func fromDict(userDict: NSDictionary) -> HLUser {
         let userId = (userDict["userId"] as! NSNumber).longLongValue

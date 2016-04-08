@@ -107,7 +107,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         self.performSegueWithIdentifier("InitialLogin", sender: session)
     }
     func didLoginWithSession(session: HLUserSession) {
-        HLUser.getUserById(session.userId, session: session)?.save()
+        HLServer.getUserById(session.userId, session: session)?.save()
         HLUser.getCurrentUser().setSession(session)
         HLUser.getCurrentUser().save()
         self.performSegueWithIdentifier("previousLogin", sender: session)

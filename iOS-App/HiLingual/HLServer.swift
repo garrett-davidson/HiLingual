@@ -190,4 +190,13 @@ class HLServer {
         
         return nil
     }
+
+    static func getUserById(id: Int64, session: HLUserSession=HLUser.getCurrentUser().getSession()!) -> HLUser? {
+
+        if let userDict = sendGETRequestToEndpoint("user/\(id)") {
+            return HLUser.fromDict(userDict[0])
+        }
+
+        return nil
+    }
 }

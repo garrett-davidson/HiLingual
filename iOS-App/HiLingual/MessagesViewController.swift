@@ -112,7 +112,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cellIdentity = "ConversationTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
-            let user = HLUser.getUserById(currentUser.usersChattedWith[indexPath.row])!
+            let user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row])!
 
             cell.name.text = user.name
             cell.profilePicture.layer.masksToBounds = false
@@ -135,7 +135,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cellIdentity = "ConversationTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
             //Should it be displayname or name?
-            let user = HLUser.getUserById(currentUser.pendingChats[indexPath.row])!
+            let user = HLServer.getUserById(currentUser.pendingChats[indexPath.row])!
             cell.name.text = user.name
             cell.profilePicture.layer.masksToBounds = false
             cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
@@ -200,7 +200,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = HLUser.getUserById(currentUser.pendingChats[indexPath.row])
+                messageDetailViewController.user = HLServer.getUserById(currentUser.pendingChats[indexPath.row])
                 //Once messages is complete I can use that
                 
             }
@@ -213,7 +213,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = HLUser.getUserById(currentUser.usersChattedWith[indexPath.row])
+                messageDetailViewController.user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row])
                 messageDetailViewController.recipientId = currentUser.usersChattedWith[indexPath.row]
                 //Once messages is complete I can use that
                 
