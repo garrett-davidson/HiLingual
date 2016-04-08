@@ -199,4 +199,25 @@ class HLServer {
 
         return nil
     }
+
+    static func registerOrLoginWithFacebook() -> Bool {
+        //TODO: Implement this, once the server is updated
+        return false
+    }
+
+    static func registerOrLoginWithGoogle() -> Bool {
+        //TODO: Implement this, once the server is updated
+        return false
+    }
+
+    static func getSearchResultsForQuery(query: String) -> [HLUser]? {
+
+        if let resultsDicts = sendGETRequestToEndpoint("user/search", withParameterString: "?query=" + query) {
+            return resultsDicts.map({ (userDict) -> HLUser in
+                HLUser.fromDict(userDict)
+            })
+        }
+
+        return nil
+    }
 }
