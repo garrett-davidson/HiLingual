@@ -522,12 +522,6 @@ class HiLingualUITests: XCTestCase {
         }
         XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count == numOfEditedMessagesBeforeEdit)
     }
-    
-    func testAudioMessagePlayButtonNotShowingCorrectly() {
-        
-        //let tablesQuery = XCUIApplication().tables.staticTexts.elementBoundByIndex(4).staticTexts["LastMessageLabel"]
-        //XCTAssert(tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(4).buttons["PlaybackButton"].frame == CGRectMake(15, 0, 30, 30))
-    }
 
     func testUnicodeMessage() {
         
@@ -636,32 +630,104 @@ class HiLingualUITests: XCTestCase {
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
         for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
-            if tempElement.staticTexts["ChatBubbleLeftLabel"].exists {
-                app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatBubbleLeftLabel").elementBoundByIndex(j).tap()
-                app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleLeftLabel"  {
+                tempElement.tap()
                 sleep(1)
                 XCTAssert(app.menuItems["Edit"].exists)
+                break;
             }
             j += 1
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
     
-    func testTranslateButtonShowClickOnMessage() {
+    func testTranslateButtonShowClickOnLeftMessage() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
         
-app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatBubbleLeftLabel").elementBoundByIndex(0).tap()
-        sleep(1)
-        XCTAssert(app.menuItems["Translate"].exists)
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleLeftLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(app.menuItems["Translate"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
     }
     
-    func testPasteButtonShowClickOnMessage() {
+    func testPasteButtonShowClickOnLeftMessage() {
         let app = XCUIApplication()
         app.tables.staticTexts.elementBoundByIndex(0).tap()
         
-app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatBubbleLeftLabel").elementBoundByIndex(0).tap()
-        sleep(1)
-        XCTAssert(!app.menuItems["Translate"].exists)
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleLeftLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(!app.menuItems["Paste"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
+    }
+    
+    func testEditButtonShowClickOnRightMessage() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(app.menuItems["Edit"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
+    }
+    
+    func testTranslateButtonShowClickOnRightMessage() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(app.menuItems["Translate"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
+    }
+    
+    func testPasteButtonShowClickOnRightMessage() {
+        let app = XCUIApplication()
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        
+        var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
+        var j: UInt = 0
+        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+            if tempElement.staticTexts.elementBoundByIndex(0).identifier == "ChatBubbleRightLabel"  {
+                tempElement.tap()
+                sleep(1)
+                XCTAssert(!app.menuItems["Paste"].exists)
+                break;
+            }
+            j += 1
+            tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
+        }
     }
 }
