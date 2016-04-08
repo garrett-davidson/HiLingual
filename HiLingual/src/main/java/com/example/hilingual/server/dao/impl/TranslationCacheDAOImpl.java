@@ -9,9 +9,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class TranslationCacheDAOImpl implements TranslationCacheDAO {
 
+    public static final int EXPIRY_TIME = (int) TimeUnit.MINUTES.toSeconds(30);
     private static String HL_CACHE_BASE = "hl.cache.translation.";
 
     private JedisPool pool;
@@ -26,7 +28,11 @@ public class TranslationCacheDAOImpl implements TranslationCacheDAO {
         String key = key(target, hash(source));
         Jedis jedis = pool.getResource();
         try {
-            return jedis.get(key);
+            String s = jedis.get(key);
+            if (s != null) {
+                jedis.expire(key, EXPIRY_TIME);
+            }
+            return s;
         } finally {
             pool.returnResourceObject(jedis);
         }
@@ -38,6 +44,7 @@ public class TranslationCacheDAOImpl implements TranslationCacheDAO {
         String key = key(target, hash(source));
         try {
             jedis.set(key, result);
+            jedis.expire(key, EXPIRY_TIME);
         } finally {
             pool.returnResourceObject(jedis);
         }
