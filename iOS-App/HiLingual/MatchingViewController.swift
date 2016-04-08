@@ -57,33 +57,6 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             }
         }
     }
-
-    func sendRequestToUser(userId: Int64) {
-        var resp: NSURLResponse?
-        
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(userId)/")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "POST"
-
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
-                if let response = resp as? NSHTTPURLResponse {
-                    if response.statusCode == 204 {
-                        print("Sent request")
-                        return
-                    }
-                }
-
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                }
-
-            }
-        }
-        
-        print("Failed to send request")
-    }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -96,11 +69,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     @IBAction func sendRequest(sender: UIButton) {
         //From search bar
 
-
         let index = sender.tag
         sender.hidden = true
-//        sender.setTitle("Send Request", forState: .Normal)
-        sendRequestToUser(searchResults[index].userId)
+        if !HLServer.sendChatRequestToUser(searchResults[index].userId) {
+            print("Failed to send request")
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -154,8 +127,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
 
     func sendMessageButtonPressed(sender: AnyObject) {
+        //For the carousel view
 
-        sendRequestToUser(matches[sender.tag].userId)
+        if !HLServer.sendChatRequestToUser(matches[sender.tag].userId) {
+            print("Failed to send request to user")
+        }
     }
 
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {

@@ -75,7 +75,7 @@ class HLServer {
         return nil
     }
 
-    static func sendRequestToEndpoint(endpoint: String, method: String, withDictionary dict: Dictionary<String, AnyObject>?, authenticated: Bool=true) -> [NSDictionary]? {
+    static func sendRequestToEndpoint(endpoint: String, method: String, withDictionary dict: Dictionary<String, AnyObject>?=nil, authenticated: Bool=true) -> [NSDictionary]? {
         let request = NSMutableURLRequest(URL: NSURL(string: apiBase + endpoint)!)
 
         var headerFields = ["Content-Type": "application/json"]
@@ -219,5 +219,10 @@ class HLServer {
         }
 
         return nil
+    }
+
+    static func sendChatRequestToUser(userId: Int64) -> Bool {
+
+        return sendRequestToEndpoint("chat/\(userId)/", method: "POST") != nil
     }
 }
