@@ -168,7 +168,7 @@ class HiLingualUITests: XCTestCase {
         app.typeText("oldName")
 
         displayNameTextField.tap()
-        
+        sleep(1)
         app.menuItems["Select All"].tap()
         
         let deleteKey = app.keys["delete"]
