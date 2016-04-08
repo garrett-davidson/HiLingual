@@ -137,7 +137,14 @@ class HLServer {
     static func getTranslationForMessage(message: HLMessage, fromLanguage: String?, toLangauge: String="en-US") -> String? {
 
         if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate") {
-            return ret[0]["translatedContent"] as? String
+
+            if let encodedTranslation = ret[0]["translatedContent"] as? String {
+                return (NSString(data: NSData(base64EncodedString: encodedTranslation, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
+            }
+
+            else {
+                print("Did not receive translation")
+            }
         }
 
         return nil
@@ -239,5 +246,37 @@ class HLServer {
         return nil
     }
 
-//    static
+    static func getChats() -> NSDictionary? {
+
+        if let ret = sendGETRequestToEndpoint("chat/me") {
+            return ret[0]
+        }
+
+        return nil
+
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/me")!)
+        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + (HLUser.getCurrentUser().getSession()?.sessionId)!]
+        request.HTTPMethod = "GET"
+
+        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+            print(returnedData)
+            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                print(returnString)
+
+                if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                    if let pendingChats = ret["pendingChats"] as? [Int] {
+                        HLUser.getCurrentUser().pendingChats = pendingChats.map({ (i) -> Int64 in
+                            Int64(i)
+                        })
+                    }
+
+                    if let acceptedChats = ret["currentChats"] as? [Int] {
+                        HLUser.getCurrentUser().usersChattedWith = acceptedChats.map({ (i) -> Int64 in
+                            Int64(i)
+                        })
+                    }
+                }
+            }
+        }
+    }
 }

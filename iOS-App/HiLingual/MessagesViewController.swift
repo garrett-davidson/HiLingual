@@ -63,32 +63,22 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func refreshTableView() {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/me")!)
-        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + (HLUser.getCurrentUser().getSession()?.sessionId)!]
-        request.HTTPMethod = "GET"
 
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-            print(returnedData)
-            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                print(returnString)
-
-                if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
-                    if let pendingChats = ret["pendingChats"] as? [Int] {
-                        HLUser.getCurrentUser().pendingChats = pendingChats.map({ (i) -> Int64 in
-                            Int64(i)
-                        })
-                    }
-
-                    if let acceptedChats = ret["currentChats"] as? [Int] {
-                        HLUser.getCurrentUser().usersChattedWith = acceptedChats.map({ (i) -> Int64 in
-                            Int64(i)
-                        })
-                    }
-                }
+        if let chats = HLServer.getChats() {
+            if let pendingChats = chats["pendingChats"] as? [Int] {
+                HLUser.getCurrentUser().pendingChats = pendingChats.map({ (i) -> Int64 in
+                    Int64(i)
+                })
             }
+
+            if let acceptedChats = chats["currentChats"] as? [Int] {
+                HLUser.getCurrentUser().usersChattedWith = acceptedChats.map({ (i) -> Int64 in
+                    Int64(i)
+                })
+            }
+
+            converstationTable.reloadData()
         }
-        
-        converstationTable.reloadData()
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
