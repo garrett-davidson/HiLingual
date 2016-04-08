@@ -42,6 +42,22 @@ public class UserResource {
     }
 
     @GET
+    @Path("me")
+    public User getSelf(@HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User user = userDAO.getUser(authUserId);
+        if (user != null) {
+            return user;
+        }
+        throw new NotFoundException();
+    }
+
+    @GET
     @Path("{user-id}")
     public User getUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat) {
         //  Check auth
@@ -131,5 +147,18 @@ public class UserResource {
         User invoker = userDAO.getUser(authUserId);
         //  TODO Validate/sanitize query
         return userDAO.findUsers(query, invoker);
+    }
+
+    @GET
+    @Path("match")
+    public User[] getMatches(@HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User invoker = userDAO.getUser(authUserId);
+        return userDAO.findMatches(invoker);
     }
 }
