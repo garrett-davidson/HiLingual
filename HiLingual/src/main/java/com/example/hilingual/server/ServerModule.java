@@ -72,6 +72,9 @@ public class ServerModule extends AbstractModule {
         bind(ChatMessageDAO.class).
                 to(ChatMessageDAOImpl.class).
                 in(Scopes.SINGLETON);
+        bind(TranslationCacheDAO.class).
+                to(TranslationCacheDAOImpl.class).
+                in(Scopes.SINGLETON);
 
         //  Services
         bind(FacebookGraphAPIService.class).

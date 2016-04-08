@@ -2,10 +2,7 @@ package com.example.hilingual.server.resources;
 
 import com.example.hilingual.server.api.*;
 import com.example.hilingual.server.config.ServerConfig;
-import com.example.hilingual.server.dao.ChatMessageDAO;
-import com.example.hilingual.server.dao.DeviceTokenDAO;
-import com.example.hilingual.server.dao.SessionDAO;
-import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.MsftTranslateService;
 import com.google.inject.Inject;
@@ -42,19 +39,22 @@ public class ChatResource {
     private final APNsService apnsService;
     private final DeviceTokenDAO deviceTokenDAO;
     private final MsftTranslateService translateService;
+    private final TranslationCacheDAO translationCacheDAO;
     private final ServerConfig config;
     private final Random random;
 
     @Inject
     public ChatResource(SessionDAO sessionDAO, UserDAO userDAO, ChatMessageDAO chatMessageDAO,
                         APNsService apnsService, DeviceTokenDAO deviceTokenDAO,
-                        MsftTranslateService translateService, ServerConfig config) {
+                        MsftTranslateService translateService,
+                        TranslationCacheDAO translationCacheDAO, ServerConfig config) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.chatMessageDAO = chatMessageDAO;
         this.apnsService = apnsService;
         this.deviceTokenDAO = deviceTokenDAO;
         this.translateService = translateService;
+        this.translationCacheDAO = translationCacheDAO;
         this.config = config;
 
 
@@ -79,7 +79,6 @@ public class ChatResource {
         if (user == null) {
             throw new NotFoundException("This session is not associated with any user account");
         }
-
         Set<Long> chats = user.getUsersChattedWith();
         Set<Long> pending = chatMessageDAO.getRequests(user.getUserId());
         return new UserChats(user.getUserId(), chats, pending);
@@ -111,7 +110,7 @@ public class ChatResource {
             return;
         }
         chatMessageDAO.addRequest(requesterId, receiverId);
-        sendNotification(receiverId, String.format("<LOCALIZE ME> %s wants to start a conversation with you!",
+        sendNotification(receiverId, String.format("%s wants to start a conversation with you!",
                 requester.getDisplayName()), NotificationType.REQUEST_RECEIVED);
     }
 
@@ -119,22 +118,18 @@ public class ChatResource {
     @Path("/{requester-id}/accept")
     public void accept(@HeaderParam("Authorization") String hlat, @PathParam("requester-id") long requesterId) {
         //  Check auth
-        System.out.println("Starting accept...");
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long accepterId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, accepterId)) {
             throw new NotAuthorizedException("Bad session token");
         }
-        System.out.println("User has session");
         User accepter = userDAO.getUser(accepterId);
         User requester = userDAO.getUser(requesterId);
         if (requester == null) {
-            System.out.println("Requester was null");
             throw new NotFoundException("No such requester");
         }
         //  Ignore requests where accepter already accepted requester
         if (accepter.getUsersChattedWith().contains(requesterId)) {
-            System.out.println("Requester already exists in accepter users chatted with");
             return;
         }
         //  Check that they were requested
@@ -147,15 +142,11 @@ public class ChatResource {
             }
         }
         if (!found) {
-            System.out.println("Requester was not found in accepter requests");
             throw new NotFoundException("Request " + requesterId + " not found");
         }
-
         accepter.getUsersChattedWith().add(requesterId);
         requester.getUsersChattedWith().add(accepterId);
-        System.out.println("Going to accpet request");
         chatMessageDAO.acceptRequest(accepterId, requesterId);
-        System.out.println("Accepted request");
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
         sendNotification(requesterId, String.format("<LOCALIZE ME>%s has accepted your conversation request.",
@@ -168,7 +159,6 @@ public class ChatResource {
     public Message newMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId,
                               @Valid Message message) throws IOException, URISyntaxException {
         //  Check auth
-        System.out.println("New message");
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long senderId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, senderId)) {
@@ -176,17 +166,13 @@ public class ChatResource {
         }
         User sender = userDAO.getUser(senderId);
         User reciever = userDAO.getUser(receiverId);
-        System.out.println("User has session");
         if (reciever == null) {
-            System.out.println("Reciever user does not exist");
             throw new NotFoundException("No such receiver");
         }
         if (!sender.getUsersChattedWith().contains(receiverId)) {
-            System.out.println("Reciever not in senders chatted with list");
             throw new ForbiddenException("This user is not a conversation partner");
         }
         if (message.getAudio() != null) {
-            System.out.println("Audio message");
             String assetId = new BigInteger(130, random).toString(32);
             java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
             Files.createDirectories(outPath.getParent());
@@ -199,7 +185,6 @@ public class ChatResource {
             return ret;
         } else {
             //  New messages only have content field set
-            System.out.println("New text message");
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             sendNotification(receiverId, String.format("%s: %s",
                     sender.getDisplayName(), base64Decode(message.getContent())), NotificationType.NEW_MESSAGE);
@@ -220,7 +205,6 @@ public class ChatResource {
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long editorId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, editorId)) {
-
             throw new NotAuthorizedException("Bad session token");
         }
         User editor = userDAO.getUser(editorId);
@@ -253,13 +237,11 @@ public class ChatResource {
                                  @QueryParam("limit") @DefaultValue("50") int limit,
                                  @QueryParam("before") @DefaultValue("0") long beforeMsgId) {
         //  Check auth
-        System.out.println("New message");
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, authUserId)) {
             throw new NotAuthorizedException("Bad session token");
         }
-        System.out.println("User has session");
         User me = userDAO.getUser(authUserId);
         if (!me.getUsersChattedWith().contains(receiverId)) {
             throw new NotFoundException("Conversation not found");
@@ -287,9 +269,14 @@ public class ChatResource {
         }
 
         Locale locale = Locale.forLanguageTag(toLanguage);
-        String translated = translateService.translate(base64Decode(message.getContent()), locale);
-
-        TranslationResponse response = new TranslationResponse(base64Encode(translated), msgId);
+        String decoded = base64Decode(message.getContent());
+        String translated = translationCacheDAO.getCached(locale, decoded);
+        if (translated == null) {
+            translated = translateService.translate(decoded, locale);
+            translationCacheDAO.cache(locale, decoded, translated);
+        }
+        String encoded = base64Encode(translated);
+        TranslationResponse response = new TranslationResponse(encoded, msgId);
 
         return response;
     }
