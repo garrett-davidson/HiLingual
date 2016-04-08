@@ -1,5 +1,7 @@
+link_with 'HiLingual', 'HiLingualTests'
 pod 'iCarousel'
 pod 'FBSDKCoreKit'
 pod 'FBSDKShareKit'
 pod 'FBSDKLoginKit'
 pod 'Google/SignIn'
+pod 'Google/CloudMessaging'

@@ -11,5 +11,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <Google/SignIn.h>
+#import <Google/CloudMessaging.h>
+#import <iCarousel/iCarousel.h>
 
 #endif /* HiLingual_Bridging_Header_h */

@@ -3,13 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>527151665741-3nd8qfrbac2thl2c5mn64lt83q47pgb3.apps.googleusercontent.com</string>
+	<string>527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.527151665741-3nd8qfrbac2thl2c5mn64lt83q47pgb3</string>
+	<string>com.googleusercontent.apps.527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46</string>
+	<key>GCM_SENDER_ID</key>
+	<string>527151665741</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.HiLingual</string>
+	<string>com.GetHilingual.HiLingual</string>
 	<key>IS_ADS_ENABLED</key>
 	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -17,10 +19,12 @@
 	<key>IS_APPINVITE_ENABLED</key>
 	<false/>
 	<key>IS_GCM_ENABLED</key>
-	<false/>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:527151665741:ios:09738c5ea82ca747</string>
+	<string>1:527151665741:ios:a60f9b07cd290e23</string>
+	<key>PROJECT_ID</key>
+	<string>hilingual-57d1</string>
 </dict>
 </plist>

@@ -10,23 +10,88 @@ import UIKit
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLInstanceIDDelegate {
 
     var window: UIWindow?
+    var registrationOptions: [String: NSObject]?
 
+    var apnsToken: String?
+
+    enum NotificationTypes: String {
+        case newMessage = "NEW_MESSAGE"
+        case editedMessage = "EDITED_MESSAGE"
+        case requestReceived = "REQUEST_RECEIVED"
+        case requestAccepted = "REQUEST_ACCEPTED"
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-        let isFacebookSetup = setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
-        let isGoogleSetup = setupGoogle()
+        setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
+        setupGoogle()
 
-        return isFacebookSetup && isGoogleSetup
+        FBSDKLoginManager.renewSystemCredentials { (result:ACAccountCredentialRenewResult, error:NSError?) -> Void in
+            print(result)
+            print(error)
+        }
+
+        registerForNotifications(application)
+
+
+        return true
+    }
+
+    func registerForNotifications(application: UIApplication) {
+        //        if #available(iOS 8.0, *) {
+        let settings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
+        //        } else {
+        //            // Fallback
+        //            let types: UIRemoteNotificationType = [.Alert, .Badge, .Sound]
+        //            application.registerForRemoteNotificationTypes(types)
+        //        }
+    }
+
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        print("Received remote notification")
+        print(userInfo)
+
+        if let typeString = userInfo["type"] as? String {
+            NSNotificationCenter.defaultCenter().postNotificationName(typeString, object: nil)
+        }
     }
 
     func setupFacebook(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        print("Failed to register for notifications")
+        print("Error: \(error)")
+    }
+
+    func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData ) {
+        print(deviceToken)
+        apnsToken = "\(deviceToken)"
+//        print("Notification token: \(deviceToken.base64EncodedStringWithOptions(NSB))")
+        // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
+        let instanceIDConfig = GGLInstanceIDConfig.defaultConfig()
+        instanceIDConfig.delegate = self
+        // Start the GGLInstanceID shared instance with that config and request a registration
+        // token to enable reception of notifications
+//        GGLInstanceID.sharedInstance().startWithConfig(instanceIDConfig)
+//        registrationOptions = [kGGLInstanceIDRegisterAPNSOption:deviceToken,
+//                               kGGLInstanceIDAPNSServerTypeSandboxOption:true]
+//        GGLInstanceID.sharedInstance().tokenWithAuthorizedEntity("527151665741", scope: kGGLInstanceIDScopeGCM, options: registrationOptions, handler: nil)
+    }
+
+    func onTokenRefresh() {
+        // A rotation of the registration tokens is happening, so the app needs to request a new token.
+        print("The GCM registration token needs to be changed.")
+        GGLInstanceID.sharedInstance().tokenWithAuthorizedEntity("527151665741", scope: kGGLInstanceIDScopeGCM, options: registrationOptions, handler: nil)
+    }
+
 
     func setupGoogle() -> Bool {
         var error: NSError?
@@ -38,6 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
 
         GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().signInSilently()
 
         return true
     }
@@ -75,19 +141,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
         }
 
-        else if (url.scheme == "com.googleusercontent.apps.527151665741-3nd8qfrbac2thl2c5mn64lt83q47pgb3") {
+        else if (url.scheme == "com.googleusercontent.apps.527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46") {
                 return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
         }
 
-        print("Unrecognized url: %@", url)
+        print("Unrecognized url: ", url)
         return false
     }
 
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+        if (error == nil) {
+            print("Google user signed in")
+            print(signIn)
+            print(user)
+        }
+        else {
+            print(error)
+        }
     }
 
     func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
-
+        print("Google user logged out")
+        print(user)
     }
 }
 

@@ -31,7 +31,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.527151665741-3nd8qfrbac2thl2c5mn64lt83q47pgb3</string>
+				<string>com.googleusercontent.apps.527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46</string>
 			</array>
 		</dict>
 		<dict>
@@ -39,7 +39,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.example.HiLingual</string>
+				<string>com.Gethilingual.HiLingual</string>
 			</array>
 		</dict>
 	</array>
@@ -96,8 +96,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

@@ -12,52 +12,71 @@ import UIKit
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
 //Shows Log In and Sign Up buttons 
-class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate{
-    override func viewDidLoad() {
-        super.viewDidLoad();
+class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+    @IBOutlet weak var googleSignInButton: GIDSignInButton!
 
-        //Use guard if it wouldn't make sense to continue a method if a condition is false
-        //Guard will guarantee a condition is true
-        //If the condition is not true, it will run the else clause and force you to the exit the scope (with break or return)
-        guard FBSDKAccessToken.currentAccessToken() != nil else {
+    override func viewDidLoad() {
+//        GIDSignIn.sharedInstance().signOut()
+    }
+
+    override func viewDidAppear(animated:Bool) {
+        super.viewDidAppear(animated);
+
+
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().signInSilently()
+
+        checkSignedIn()
+    }
+
+    func checkSignedIn() {
+
+        guard FBSDKAccessToken.currentAccessToken() != nil || GIDSignIn.sharedInstance().currentUser != nil else {
             print("Need to log in")
             let loginButton = FBSDKLoginButton()
-            loginButton.readPermissions = ["public_profile", "email"]
+            loginButton.loginBehavior = FBSDKLoginBehavior.SystemAccount
+            loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
             loginButton.center = self.view.center
             loginButton.delegate = self
             self.view.addSubview(loginButton)
             return
         }
 
-        print("Need to log in")
+        if let user = HLUser.getCurrentUser() {
+            // if let _ = user.getSession() {
+            self.performSegueWithIdentifier("previousLogin", sender: self)
+            // }
+        }
+
+        print("ViewDidLoadHere")
         let loginButton = FBSDKLoginButton()
-        loginButton.readPermissions = ["public_profile", "email"]
+        loginButton.readPermissions = ["public_profile", "user_about_me", "user_birthday", "user_likes"]
         loginButton.center = self.view.center
         loginButton.delegate = self
         self.view.addSubview(loginButton)
-        
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signInSilently()
     }
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
-        print("User logged in fam")
 
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+        checkSignedIn()
+    }
+
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         guard error == nil else {
             //If you know that an optional is not nil, you should force unwrap it when you print it
             print(error!.localizedDescription)
             return
         }
-
         guard !result.isCancelled else {
             print("User cancelled login")
             return
         }
-
         print("Login complete.")
         getUserInfo()
-        self.performSegueWithIdentifier("LoggedIn", sender: self)
+        
+        requestFromServer("https://gethilingual.com/api/auth/register", authority: "FACEBOOK", signIn: nil)
     }
-    
+
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
     }
@@ -65,41 +84,99 @@ class LaunchScreenViewController: UIViewController , FBSDKLoginButtonDelegate, G
     
     func getUserInfo()
     {
-        let fields = ["fields": "name,email"]
+        let fields = ["fields": "id,name,email"]
         let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: fields)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             guard error == nil else {
                 print("Error: \(error!)")
                 return
             }
-
-            print("fetched user: \(result)")
-            let userName = result.valueForKey("name") as! String
-            print("User Name is: \(userName)")
-            print("User Email is:  \(result.valueForKey("email") as! String)")
+            print("Facebook user id: \(result.valueForKey("id") as! String)")
+            print("Facebook acess token: " + FBSDKAccessToken.currentAccessToken().tokenString)
         })
     }
-    
-    func application(application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-            // Initialize sign-in
-            var configureError: NSError?
-            GGLContext.sharedInstance().configureWithError(&configureError)
-            assert(configureError == nil, "Error configuring Google services: \(configureError)")
-            
-            GIDSignIn.sharedInstance().delegate = self
-            
-            return true
-    }
-    
-    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
-        withError error: NSError!) {
-            if (error == nil) {
-                // Perform any operations on signed in user here.
-                // ...
-            } else {
-                print("\(error.localizedDescription)")
-            }
+
+    func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
+        viewController.dismissViewControllerAnimated(true, completion: nil)
+        requestFromServer("https://gethilingual.com/api/auth/register", authority: "GOOGLE", signIn: signIn)
     }
 
+    func didRegisterWithSession(session: HLUserSession) {
+        self.performSegueWithIdentifier("InitialLogin", sender: session)
+    }
+    func didLoginWithSession(session: HLUserSession) {
+        HLServer.getUserById(session.userId, session: session)?.save()
+        HLUser.getCurrentUser().setSession(session)
+        HLUser.getCurrentUser().save()
+        self.performSegueWithIdentifier("previousLogin", sender: session)
+    }
+    func requestFromServer(url: String,authority: String, signIn: GIDSignIn!){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+
+            var response: NSURLResponse?
+            var bodyDict = [String: String]()
+            
+            if authority == "FACEBOOK" {
+                bodyDict = ["authority": "FACEBOOK",
+                                "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
+                                "authorityToken": FBSDKAccessToken.currentAccessToken().tokenString]
+            }
+            if authority == "GOOGLE" {
+                    while GIDSignIn.sharedInstance().currentUser == nil {
+                        sleep(1)
+                    }
+                    
+                    bodyDict = ["authority": "GOOGLE",
+                                    "authorityAccountId": signIn.currentUser.userID,
+                                    "authorityToken": signIn.currentUser.authentication.idToken]            
+            }
+            
+            let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+            request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+            request.HTTPMethod = "POST"
+            
+            
+            if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
+                bodyDict["deviceToken"] = deviceToken
+            }
+            
+            
+            
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
+            
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
+                if let response2 = response as? NSHTTPURLResponse {
+                    if response2.statusCode == 403 && url == "https://gethilingual.com/api/auth/register"  {
+                        self.requestFromServer("https://gethilingual.com/api/auth/login", authority: authority, signIn: signIn)
+                    }else{
+                        print(returnedData)
+                        if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                            print(returnString)
+                            if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+                                if url == "https://gethilingual.com/api/auth/register" {
+                                    self.didRegisterWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: LoginAuthority(rawValue: authority)!,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                                }else if  url == "https://gethilingual.com/api/auth/login"{
+                                    self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: LoginAuthority(rawValue: authority)!,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+                                }
+                            } else {
+                                print("Couldn't parse return value")
+                            }
+                        } else {
+                            print("Returned data is not a string")
+                        }
+                    }
+                }
+            }
+        
+        })
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destNav = segue.destinationViewController as? UINavigationController {
+            if let dest = destNav.topViewController as? AccountCreationViewController {
+                if let session = sender as? HLUserSession {
+                    dest.session = session
+                }
+            }
+        }
+    }
 }
