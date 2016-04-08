@@ -43,6 +43,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(ChatViewController.loadMoreMessages(_:)), forControlEvents: .ValueChanged)
+        tableView.addSubview(refreshControl)
+
         self.title = user.name
         print(user.name)
         print(user.userId)
@@ -429,6 +433,23 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
     }
 
+    func loadMoreMessages(refreshControl: UIRefreshControl) {
+
+        let countToLoad = 20
+
+        //TODO: Update this with the updated server api
+        if let previousMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: messages.first!.messageUUID! - countToLoad, max: 20) {
+            messages = previousMessages + messages
+            tableView.reloadData()
+        }
+
+        else {
+            print("Couldn't load any more messages")
+        }
+
+        refreshControl.endRefreshing()
+    }
+
     func loadMessages() {
         let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
         if let storedMessages = NSKeyedUnarchiver.unarchiveObjectWithFile(chatURL.path!) as? [HLMessage] {
@@ -437,20 +458,23 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let mostRecentCached: Int64
         if messages.count > 0 {
-//            mostRecentCached = messages.last!.messageUUID
-            mostRecentCached = 0
+            mostRecentCached = messages.last!.messageUUID!
         }
 
         else {
             mostRecentCached = 0
         }
 
-        if let retrievedMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: mostRecentCached, max: 10000) {
-            messages = retrievedMessages
+        if let retrievedMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: mostRecentCached, max: 1000) {
+            messages += retrievedMessages
             tableView.reloadData()
             tableViewScrollToBottom(false)
 
-            if NSKeyedArchiver.archiveRootObject(messages, toFile: chatURL.path!) {
+            let count = messages.count
+
+            //Caches up to 50 messages on disk
+            let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
+            if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
                 //Succeeded in writing to file
                 print("Wrote message cache to disk")
             }
