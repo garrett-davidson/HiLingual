@@ -90,8 +90,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func saveMessageEdit(editedText editedText: String) {
-        messages[editingCellIndex!].editedText = editedText
-        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editingCellIndex!, inSection:0)], withRowAnimation: .Automatic)
+        let message = messages[editingCellIndex!]
+        if editedText != message.text {
+            messages[editingCellIndex!].editedText = editedText
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editingCellIndex!, inSection:0)], withRowAnimation: .Automatic)
+        }
     }
 
     func sendMessageWithText(text: String) -> Bool {
@@ -484,17 +487,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             messages = storedMessages
         }
 
-        let mostRecentCached: Int64
+        let earliestCached: Int64
         if messages.count > 0 {
-            mostRecentCached = messages.last!.messageUUID!
+            earliestCached = messages.first!.messageUUID!
         }
 
         else {
-            mostRecentCached = 0
+            earliestCached = 0
         }
 
-        if let retrievedMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: mostRecentCached, max: 1000) {
-            messages += retrievedMessages
+        if let retrievedMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: earliestCached, max: 1000) {
+            messages = retrievedMessages
             tableView.reloadData()
             tableViewScrollToBottom(false)
 

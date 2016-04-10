@@ -500,7 +500,7 @@ class HiLingualUITests: XCTestCase {
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
-        for _ in 0...app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
+        for _ in 0..<app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").allElementsBoundByIndex.count {
             if tempElement.staticTexts.matchingIdentifier("ChatBubbleLeftLabel").count == 1  {
                 tempElement.tap()
                 app.menuItems["Edit"].tap()
