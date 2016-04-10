@@ -14,10 +14,7 @@ import com.example.hilingual.server.config.RedisConfig;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.health.JedisHealthCheck;
-import com.example.hilingual.server.resources.AssetResource;
-import com.example.hilingual.server.resources.AuthResource;
-import com.example.hilingual.server.resources.ChatResource;
-import com.example.hilingual.server.resources.UserResource;
+import com.example.hilingual.server.resources.*;
 import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.MsftTranslateService;
 import com.example.hilingual.server.task.ApnsTestTask;
@@ -101,6 +98,7 @@ public class Main extends Application<ServerConfig> {
         j.register(create(UserResource.class));
         j.register(create(AssetResource.class));
         j.register(create(ChatResource.class));
+        j.register(create(ServerStatusResource.class));
 
         //  Managed
         LOGGER.info("Creating managed objects");
