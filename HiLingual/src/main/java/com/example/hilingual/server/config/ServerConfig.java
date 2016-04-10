@@ -45,6 +45,9 @@ public class ServerConfig extends Configuration {
     @Valid
     private MsftTranslateConfig msftTranslateConfig;
 
+    @NotEmpty
+    private String slackIncomingWebhookUrl;
+
     @JsonProperty("sqlDb")
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -125,5 +128,15 @@ public class ServerConfig extends Configuration {
     @JsonProperty("msftTranslate")
     public void setMsftTranslateConfig(MsftTranslateConfig msftTranslateConfig) {
         this.msftTranslateConfig = msftTranslateConfig;
+    }
+
+    @JsonProperty
+    public String getSlackIncomingWebhookUrl() {
+        return slackIncomingWebhookUrl;
+    }
+
+    @JsonProperty
+    public void setSlackIncomingWebhookUrl(String slackIncomingWebhookUrl) {
+        this.slackIncomingWebhookUrl = slackIncomingWebhookUrl;
     }
 }

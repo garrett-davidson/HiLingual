@@ -12,13 +12,11 @@ package com.example.hilingual.server;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.dao.impl.*;
-import com.example.hilingual.server.service.APNsService;
-import com.example.hilingual.server.service.FacebookGraphAPIService;
-import com.example.hilingual.server.service.GoogleAccountAPIService;
-import com.example.hilingual.server.service.MsftTranslateService;
+import com.example.hilingual.server.service.*;
 import com.example.hilingual.server.service.impl.APNsServiceImpl;
 import com.example.hilingual.server.service.impl.FacebookGraphAPIServiceImpl;
 import com.example.hilingual.server.service.impl.GoogleAccountAPIServiceImpl;
+import com.example.hilingual.server.service.impl.SlackStatusInformationServiceImpl;
 import com.example.hilingual.server.service.impl.msfttranslate.MsftTranslateServiceImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
@@ -88,6 +86,9 @@ public class ServerModule extends AbstractModule {
                 in(Scopes.SINGLETON);
         bind(MsftTranslateService.class).
                 to(MsftTranslateServiceImpl.class).
+                in(Scopes.SINGLETON);
+        bind(SlackStatusInformationService.class).
+                to(SlackStatusInformationServiceImpl.class).
                 in(Scopes.SINGLETON);
     }
 
