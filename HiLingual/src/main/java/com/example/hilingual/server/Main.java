@@ -17,6 +17,7 @@ import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.*;
 import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.MsftTranslateService;
+import com.example.hilingual.server.service.SlackStatusInformationService;
 import com.example.hilingual.server.task.ApnsTestTask;
 import com.example.hilingual.server.task.RevokeAllSessionsTask;
 import com.example.hilingual.server.task.TruncateTask;
@@ -110,6 +111,7 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(ChatMessageDAO.class));
         l.manage(create(APNsService.class));
         l.manage(create(MsftTranslateService.class));
+        l.manage(create(SlackStatusInformationService.class));
 
         //  Tasks
         LOGGER.info("Registering tasks");
