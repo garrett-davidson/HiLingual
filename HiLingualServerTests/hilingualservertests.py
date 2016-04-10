@@ -28,7 +28,48 @@ def test5():
 	print("Test 7: Request Chat")
 
 def test4():
-	print("Test 6: Search Users")
+	global userIdUser1
+	global userSessionIdUser1
+	global userIdUser2
+	global userSessionIdUser2
+	global user2Name
+
+	print("Test 4: Search Users")
+
+	print("4.1.1 User 1 search User 2")
+
+	query = user2Name
+	url = 'https://gethilingual.com/api/user/search'
+
+	auth_param = "HLAT " + userSessionIdUser1
+
+	response = http.request('GET', url, {'query':query}, headers={'Authorization':auth_param})
+	responsebody = response.data.decode('utf-8')
+	parsed = json.loads(responsebody)
+	if response.status != 200:
+		print("Test 4.1.1 Failed")
+	else:
+		print("Test 4.1.1 Passed!")
+		
+	#########
+	print("4.1.2 User 2 search User 1")
+
+	query = user1Name
+	url = 'https://gethilingual.com/api/user/search'
+
+	auth_param = "HLAT " + userSessionIdUser2
+
+	response = http.request('GET', url, {'query':query}, headers={'Authorization':auth_param})
+	responsebody = response.data.decode('utf-8')
+	parsed = json.loads(responsebody)
+	if response.status != 200:
+		print("Test 4.1.2 Failed")
+	else:
+		print("Test 4.1.2 Passed!")
+		
+
+
+
 
 
 def test3():
@@ -36,10 +77,74 @@ def test3():
 	global userSessionIdUser1
 	global userIdUser2
 	global userSessionIdUser2
+	global user1Name
+	global user2Name
+
+	url = 'https://gethilingual.com/api/user/' + str(userIdUser1)
 
 	print("Test 3: Get Profile Info")
 
-	print("3.1")
+	print("3.1 Get Users Profile Info")
+
+	###################
+	print("3.1.1 Invalid Auth Param...")
+
+
+	auth_param = "HLAT " + "fakesessionid"
+
+	data = '{"userId":"' + str(userIdUser1) + '"}'
+
+	response = http.request('GET', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=data)
+	responsebody = response.data.decode('utf-8')
+	parsed = json.loads(responsebody)
+	print("UHTTP 401 Unauthorized expected...")
+	print(parsed)
+	if response.status != 401:
+		print("Test 3.1.1 Failed")
+	else:
+		print("Test 3.1.1 Passed!")
+
+	####################
+
+	print("3.1.2 Valid Auth Param User 1")
+
+	auth_param = "HLAT " + userSessionIdUser1
+
+	data = '{"userId":"' + str(userIdUser1) + '"}'
+
+	response = http.request('GET', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=data)
+	responsebody = response.data.decode('utf-8')
+	parsed = json.loads(responsebody)
+	print("Valid JSON User Object response expected...")
+	print(parsed)
+	if response.status != 200:
+		print("Test 3.1.2 Failed")
+	else:
+		print("Test 3.1.2 Passed!")
+		user1Name = parsed['name']
+
+	###########################
+	print("3.1.3 Valid Auth Param User 2")
+
+	url = 'https://gethilingual.com/api/user/' + str(userIdUser2)
+
+	auth_param = "HLAT " + userSessionIdUser2
+
+	data = '{"userId":"' + str(userIdUser2) + '"}'
+
+	response = http.request('GET', url, headers={'Content-Type':'application/json', 'Authorization':auth_param}, body=data)
+	responsebody = response.data.decode('utf-8')
+	parsed = json.loads(responsebody)
+	print("Valid JSON User Object response expected...")
+	print(parsed)
+	if response.status != 200:
+		print("Test 3.1.3 Failed")
+	else:
+		print("Test 3.1.3 Passed!")
+		user2Name = parsed['name']
+
+
+	
 
 
 
@@ -82,13 +187,13 @@ def test2():
 	responsebody = response.data.decode('utf-8')
 	parsed = json.loads(responsebody)
 	print("Unable to process JSON expected...")
+	print(parsed)
 	if response.status != 400:
-		print(parsed)
 		print("Test 2.1.1 Failed")
 		sys.exit(1)
 	else:
-		print(parsed)
 		print("Test 2.1.1 Passed!")
+
 
 	########################################
 	print("2.1.2 Invalid Account Id...")
@@ -108,14 +213,13 @@ def test2():
 	responsebody = response.data.decode('utf-8')
 	parsed = json.loads(responsebody)
 	print("Token is not for this user expected...")
+	print(parsed)
 	if response.status != 400:
-		print(parsed)
 		print("Test 2.1.2 Failed")
 		sys.exit(1)
 	else:
-
-		print(parsed)
 		print("Test 2.1.2 Passed!")
+	
 
 	#############################################
 	print("2.1.3 Invalid Authority Token")
@@ -136,13 +240,13 @@ def test2():
 	parsed = json.loads(responsebody)
 
 	print("HTTP 401 Unauthorized expected...")
+	print(parsed)
 	if response.status != 401:
-		print(parsed)
 		print("Test 2.1.3 Failed")
 		sys.exit(1)
 	else:
-		print(parsed)
 		print("Test 2.1.3 Passed!")
+
 
 	##################################
 	print("2.2 Successful Login")
@@ -161,13 +265,11 @@ def test2():
 
 	responsebody = response.data.decode('utf-8')
 	parsed = json.loads(responsebody)
-
+	print(parsed)
 	if response.status != 200:
-		print(parsed)
 		print("Test 2.2 Failed")
 		sys.exit(1)
 	else:
-		print(parsed)
 		parsed_login_responsebody = json.loads(responsebody)
 		userSessionIdUser1 = parsed_login_responsebody["sessionId"]
 		userIdUser1 = parsed_login_responsebody["userId"]
@@ -190,29 +292,17 @@ def test2():
 
 	responsebody = response.data.decode('utf-8')
 	parsed = json.loads(responsebody)
-
+	print(parsed)
 	if response.status != 200:
-		print(parsed)
 		print("Test 2.2 Failed")
 		sys.exit(1)
 	else:
-		print(parsed)
 		parsed_login_responsebody = json.loads(responsebody)
-		userSessionIdUser1 = parsed_login_responsebody["sessionId"]
-		userIdUser1 = parsed_login_responsebody["userId"]
+		userSessionIdUser2 = parsed_login_responsebody["sessionId"]
+		userIdUser2 = parsed_login_responsebody["userId"]
 		print("SessionID: " + userSessionIdUser1)
 		print("UserID: " + str(userIdUser1))
 		print("Test 2.2 Passed!")
-
-
-
-
-
-
-
-
-	#
-
 
 def test1():
 	global authAuthorityUser1
@@ -232,13 +322,12 @@ def test1():
 
 	response = http.request('POST', url, headers={'Content-Type':'application/json'}, body=data)
 	responsebody = response.data.decode("utf-8")
+	parsed_login_responsebody = json.loads(responsebody)
+	print(responsebody)
 	if response.status != 200:
 		print("Test failed")
-		print(responsebody)
 		sys.exit(1)
 	else:
-		parsed_login_responsebody = json.loads(responsebody)
-		print(responsebody)
 		userSessionIdUser1 = parsed_login_responsebody["sessionId"]
 		userIdUser1 = parsed_login_responsebody["userId"]
 		print("SessionID: " + userSessionIdUser1)
