@@ -244,26 +244,26 @@ class HiLingualUITests: XCTestCase {
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
         app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
-        let app2 = app
+
         var j: UInt = 1
-        var ageElement: XCUIElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(0)
-        for _ in 0...app2.otherElements["EditProfile"].staticTexts.count {
+        var ageElement: XCUIElement = app.otherElements["EditProfile"].staticTexts.elementBoundByIndex(0)
+        for _ in 0...app.otherElements["EditProfile"].staticTexts.count {
             if ageElement.label == "Age:" {
                 j += 1
-                ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
+                ageElement = app.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
                 break;
             }
             j += 1
-            ageElement = app2.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
+            ageElement = app.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
         }
         ageElement.tap()
         let text = ageElement.label
         if text == "13" {
-            app2.pickerWheels[text].swipeUp()
+            app.pickerWheels[text].swipeUp()
         } else {
-            app2.pickerWheels[text].swipeDown()
+            app.pickerWheels[text].swipeDown()
         }
-        app2.toolbars.buttons["Done"].tap()
+        app.toolbars.buttons["Done"].tap()
     }
     
     func testEditBioPlainTextNoCrash() {
@@ -314,7 +314,8 @@ class HiLingualUITests: XCTestCase {
         textView.typeText("bio")
 
         textView.tap()
-        
+
+        sleep(1)
         app.menuItems["Select All"].tap()
         
         let deleteKey = app.keys["delete"]

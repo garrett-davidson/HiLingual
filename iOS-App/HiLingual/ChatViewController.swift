@@ -11,9 +11,15 @@ import UIKit
 import QuartzCore
 import AVFoundation
 
+class NonPastableTextField: UITextField {
+    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+        return false
+    }
+}
+
 //Displays both the sent and received messages in a single chat
 
-class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate, UIKeyInput{
+class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,AVAudioRecorderDelegate,AVAudioPlayerDelegate{
     var user: HLUser!
     var currentUser = HLUser.getCurrentUser()
     var messageTest = [String]()
@@ -29,6 +35,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var detailsProfile: UIBarButtonItem!
     @IBOutlet weak var chatTableView: UITableView!
+    @IBOutlet weak var hiddenTextField: UITextField!
 
     @IBOutlet weak var testView: AccessoryView!
     var selectedCellIndex: Int?
@@ -68,7 +75,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
        // let controller = AudioRecorderViewController()
        // controller.audioRecorderDelegate = self
         //presentViewController(controller, animated: true, completion: nil)
-        
     }
 
     func handleEditedMessageNotification(notification: NSNotification) {
@@ -239,12 +245,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         //This keeps the keyboard up if it's already up
         if testView.textView.isFirstResponder() {
-            self.becomeFirstResponder()
+            hiddenTextField.becomeFirstResponder()
         }
 
         selectedCellIndex = indexPath.row
-        menuController.setTargetRect(bubble, inView: self.view)
-        menuController.setMenuVisible(true, animated: true)
+
+        //This delay MUST be here
+        //Otherwiser, the whenever the first responder changes, the menu immediately disappears
+        dispatch_after(5, dispatch_get_main_queue(), {
+            menuController.setTargetRect(bubble, inView: self.view)
+            menuController.setMenuVisible(true, animated: true)
+        })
     }
 
     func menuWillHide(notification: NSNotification) {
@@ -504,16 +515,5 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             print("Failed to retrieve messsages from server")
         }
-    }
-
-    //These have to be here to fix the Edit/Translate buttons 😑
-    func hasText() -> Bool {
-        return false
-    }
-    func insertText(text: String) {
-
-    }
-    func deleteBackward() {
-
     }
 }
