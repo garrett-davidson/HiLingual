@@ -359,6 +359,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cellIdentity = "ChatEditedTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
 
+            if message.attributedEditedText == nil {
+                let lcs = longestCommonSubsequence(message.text, s2: message.editedText!)
+                message.attributedEditedText = getDiff(message.text, s2: message.editedText!, lcs: lcs)
+            }
+
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
                 cell.leftMessageLabel.text = ""
@@ -368,7 +373,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleRight.layer.cornerRadius = 5
 
                 cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                cell.rightEditedMessageLabel.text = message.editedText
+                cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
             }
 
             else {
@@ -379,7 +384,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.layer.cornerRadius = 5
 
                 cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                cell.leftEditedMessageLabel.text = message.editedText
+                cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
             }
 
             return cell
@@ -518,5 +523,163 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             print("Failed to retrieve messsages from server")
         }
+    }
+
+    //Longest Common Subsequence
+    func longestCommonSubsequence(s1: String, s2: String) -> String {
+        print("s1: ", s1)
+        print("s2: ", s2)
+        var L = [[Int]](count: s1.characters.count+1, repeatedValue: [Int](count: s2.characters.count+1, repeatedValue: 0))
+
+        for i in 0...s1.characters.count {
+            for j in 0...s2.characters.count {
+                if i == 0 || j == 0 {
+                    L[i][j] = 0
+                }
+
+                else if s1[i-1] == s2[j-1] {
+                    L[i][j] = L[i-1][j-1] + 1
+                }
+
+                else {
+                    L[i][j] = max(L[i-1][j], L[i][j-1])
+                }
+            }
+        }
+
+        // Create a character array to store the lcs string
+        var lcs = ""
+
+        // Start from the right-most-bottom-most corner and
+        // one by one store characters in lcs[]
+        var i = s1.characters.count
+        var j = s2.characters.count
+        while (i > 0 && j > 0) {
+            // If current character in X[] and Y are same, then
+            // current character is part of LCS
+            if (s1[i-1] == s2[j-1]) {
+                lcs.insert(s1[i-1]!, atIndex: lcs.startIndex)
+                i -= 1
+                j -= 1
+            }
+
+            // If not same, then find the larger of two and
+            // go in the direction of larger value
+            else if (L[i-1][j] > L[i][j-1]) {
+                i -= 1;
+            }
+            else {
+                j -= 1;
+            }
+        }
+
+        print(lcs)
+        return lcs
+    }
+
+    func getDiff(s1: String, s2: String, lcs: String) -> NSAttributedString {
+
+        var i = 0
+        var j = 0
+        var k = 0
+
+        let attributedDiff = NSMutableAttributedString()
+        var removedString = ""
+        var addedString = ""
+        var commonString = ""
+
+        func appendRemovedString() {
+            let attributedAddedString = NSAttributedString(string: removedString, attributes: [NSForegroundColorAttributeName : UIColor.grayColor(), NSStrikethroughStyleAttributeName : NSNumber(int: Int32(NSUnderlineStyle.StyleSingle.rawValue))])
+            attributedDiff.appendAttributedString(attributedAddedString)
+            removedString = ""
+        }
+
+        func appendAddedString() {
+            let attributedRemovedString = NSAttributedString(string: addedString, attributes: [NSForegroundColorAttributeName : UIColor(red: 0, green: 169/255, blue: 0, alpha: 1)])
+            attributedDiff.appendAttributedString(attributedRemovedString)
+            addedString = ""
+        }
+
+        func appendCommonString() {
+            let attributedCommonString = NSAttributedString(string: commonString)
+            attributedDiff.appendAttributedString(attributedCommonString)
+            commonString = ""
+        }
+
+        while i < s1.characters.count || j < s2.characters.count || k < lcs.characters.count {
+
+            if s2[j] != lcs[k] {
+                if removedString != "" {
+                    appendRemovedString()
+                }
+                else if commonString != "" {
+                    appendCommonString()
+                }
+
+                addedString.append(s2[j]!)
+                j += 1
+            }
+
+            else if s1[i] != lcs[k] {
+                if addedString != "" {
+                    appendAddedString()
+                }
+                else if commonString != "" {
+                    appendCommonString()
+                }
+
+                removedString.append(s1[i]!)
+                i += 1
+            }
+
+            else {
+                if removedString != "" {
+                    appendRemovedString()
+                }
+                else if addedString != "" {
+                    appendAddedString()
+                }
+                
+                commonString.append(lcs[k]!)
+                k += 1
+                i += 1
+                j += 1
+            }
+        }
+
+        if addedString != "" {
+            appendAddedString()
+        }
+
+        else if removedString != "" {
+            appendRemovedString()
+        }
+
+        else if commonString != "" {
+            appendCommonString()
+        }
+        
+        return attributedDiff
+    }
+
+}
+
+extension String {
+
+    subscript (i: Int) -> Character? {
+        if i >= self.characters.count {
+            return nil
+        }
+        return self[self.startIndex.advancedBy(i)]
+    }
+
+//    subscript (i: Int) -> String {
+//        return String(self[i] as Character)
+//    }
+
+    subscript (r: Range<Int>) -> String {
+        let start = startIndex.advancedBy(r.startIndex)
+        let end = start.advancedBy(r.endIndex - r.startIndex)
+        return self[Range(start ..< end)]
     }
 }

@@ -23,6 +23,7 @@ class HLMessage: NSObject, NSCoding {
             saveMessageEdit()
         }
     }
+    var attributedEditedText: NSAttributedString?
     //TODO: Add hide flags
 
     let senderID: Int64
