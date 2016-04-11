@@ -9,9 +9,15 @@ public interface ChatMessageDAO extends Managed {
 
     void init();
 
-    Message[] getLatestMessages(long participantA, long participantB, int limit);
+    default Message[] getLatestMessages(long participantA, long participantB, int limit) {
+        return getMessages(participantA, participantB, 0L, 0L, limit);
+    }
 
-    Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit);
+    default Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit) {
+        return getMessages(participantA, participantB, beforeMessageId, 0, limit);
+    }
+
+    Message[] getMessages(long participantA, long participantB, long beforeMessageId, long afterMessageId, int limit);
 
     default Message newMessage(long sender, long receiver, String content) {
         return newMessage(sender, receiver, content, "");

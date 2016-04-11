@@ -231,7 +231,9 @@ public class ChatResource {
     public Message[] getMessages(@HeaderParam("Authorization") String hlat,
                                  @PathParam("receiver-id") long receiverId,
                                  @QueryParam("limit") @DefaultValue("50") int limit,
-                                 @QueryParam("before") @DefaultValue("0") long beforeMsgId) {
+                                 @QueryParam("before") @DefaultValue("0") long beforeMsgId,
+                                 @QueryParam("after") @DefaultValue("0") long afterMsgId,
+                                 @QueryParam("e") @DefaultValue("false") boolean returnEditsOnly) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
@@ -242,8 +244,16 @@ public class ChatResource {
         if (!me.getUsersChattedWith().contains(receiverId)) {
             throw new NotFoundException("Conversation not found");
         }
-        Message[] messages = chatMessageDAO.getLatestMessages(authUserId, receiverId, beforeMsgId, limit);
-        return messages;
+        if (beforeMsgId < 0) {
+            throw new BadRequestException("Before msg ID cannot be less than 0");
+        }
+        if (afterMsgId < 0) {
+            throw new BadRequestException("After msg ID cannot be less than 0");
+        }
+        if (limit < 0) {
+            throw new BadRequestException("Limit cannot be less than 0");
+        }
+        return chatMessageDAO.getMessages(authUserId, receiverId, beforeMsgId, afterMsgId, limit);
     }
 
     @GET

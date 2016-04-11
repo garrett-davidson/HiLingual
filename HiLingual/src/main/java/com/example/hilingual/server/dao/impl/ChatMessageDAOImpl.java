@@ -55,56 +55,80 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 "pending_chat_users LONGTEXT)");
     }
 
+//    @Override
+//    public Message[] getLatestMessages(long participantA, long participantB, int limit) {
+//        //  Convenience method
+//        List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages WHERE " +
+//                "(receiver_id = :receiver_id AND sender_id = :sender_id) " +
+//                "OR (receiver_id = :sender_id AND sender_id = :receiver_id) LIMIT :num")
+//                .bind("num", limit)
+//                .bind("receiver_id", participantA)
+//                .bind("sender_id", participantB)
+//                .map(new MessageMapper())
+//                .list();
+//
+//        Message[] messagesArray = new Message[returnedMessages.size()];
+//        messagesArray = returnedMessages.toArray(messagesArray);
+//
+//        return messagesArray;
+//    }
+
+//    @Override
+//    public Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit) {
+//        //  Get the n=limit messages before beforeMessageId between A and B
+//        //  if beforeMessageId is 0, then we get the most recent n=limit messages.
+//        List<Message> returnedMessages;
+//        if (beforeMessageId == 0) {
+//            returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
+//                    "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
+//                    "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) LIMIT :num")
+//                    .bind("num", limit)
+//                    .bind("receiver_id", participantA)
+//                    .bind("sender_id", participantB)
+//                    .bind("num", limit)
+//                    .map(new MessageMapper())
+//                    .list();
+//        } else {
+//            returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
+//                    "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
+//                    "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) AND (message_id < :message_id) LIMIT :num")
+//                    .bind("num", limit)
+//                    .bind("receiver_id", participantA)
+//                    .bind("sender_id", participantB)
+//                    .bind("message_id", beforeMessageId)
+//                    .bind("num", limit)
+//                    .map(new MessageMapper())
+//                    .list();
+//        }
+//
+//        Message[] messagesArray = new Message[returnedMessages.size()];
+//        messagesArray = returnedMessages.toArray(messagesArray);
+//
+//        return messagesArray;
+//    }
+
     @Override
-    public Message[] getLatestMessages(long participantA, long participantB, int limit) {
-        //  Convenience method
-        List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages WHERE " +
-                "(receiver_id = :receiver_id AND sender_id = :sender_id) " +
-                "OR (receiver_id = :sender_id AND sender_id = :receiver_id) LIMIT :num")
+    public Message[] getMessages(long participantA, long participantB,
+                                 long beforeMessageId, long afterMessageId, int limit) {
+        //  Internally remap beforeMessageId being null (0) to max value so the condition will always be true
+        if (beforeMessageId == 0) {
+            beforeMessageId = Long.MAX_VALUE;
+        }
+        //  afterMessageId being null (0) works out well since the condition will always hold true
+        List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
+                "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
+                "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) " +
+                "AND ((message_id < :before) AND (message_id > :after) LIMIT :limit")
                 .bind("num", limit)
                 .bind("receiver_id", participantA)
                 .bind("sender_id", participantB)
-                .map(new MessageMapper())
-                .list();
-
-        Message[] messagesArray = new Message[returnedMessages.size()];
-        messagesArray = returnedMessages.toArray(messagesArray);
-
-        return messagesArray;
-    }
-
-    @Override
-    public Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit) {
-        //  Get the n=limit messages before beforeMessageId between A and B
-        //  if beforeMessageId is 0, then we get the most recent n=limit messages.
-        List<Message> returnedMessages;
-        if (beforeMessageId == 0) {
-            returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
-                    "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
-                    "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) LIMIT :num")
-                    .bind("num", limit)
-                    .bind("receiver_id", participantA)
-                    .bind("sender_id", participantB)
-                    .bind("num", limit)
-                    .map(new MessageMapper())
-                    .list();
-        } else {
-            returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
-                    "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
-                    "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) AND (message_id < :message_id) LIMIT :num")
-                    .bind("num", limit)
-                    .bind("receiver_id", participantA)
-                    .bind("sender_id", participantB)
-                    .bind("message_id", beforeMessageId)
-                    .bind("num", limit)
-                    .map(new MessageMapper())
-                    .list();
-        }
-
-        Message[] messagesArray = new Message[returnedMessages.size()];
-        messagesArray = returnedMessages.toArray(messagesArray);
-
-        return messagesArray;
+                .bind("before", beforeMessageId)
+                .bind("after", afterMessageId)
+                .bind("limit", limit)
+                .map(new MessageMapper()).
+                list();
+        Message[] msgs = new Message[returnedMessages.size()];
+        return returnedMessages.toArray(msgs);
     }
 
     @Override
