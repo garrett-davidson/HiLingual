@@ -153,9 +153,9 @@ class HLServer {
         return false
     }
 
-    static func retrieveMessageFromUser(user:Int64, sinceLastMessageId lastMessageId: Int64=0, afterMessageId: Int64=Int64.max, max: Int64=50) -> [HLMessage]? {
+    static func retrieveMessageFromUser(user:Int64, before: Int64, max: Int64=50) -> [HLMessage]? {
 
-        if let messagesDicts = sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(lastMessageId)&after=\(afterMessageId)&limit=\(max)") {
+        if let messagesDicts = sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(before)&limit=\(max)") {
 
             return messagesDicts.map({ (messageDict) -> HLMessage in
                 return HLMessage.fromDict(messageDict)!
@@ -163,6 +163,21 @@ class HLServer {
         }
 
         return nil
+    }
+
+    static func retrieveMessageFromUser(user:Int64, after: Int64, max: Int64=50) -> [HLMessage]? {
+        if let messagesDicts = sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?after=\(after)&limit=\(max)") {
+
+            return messagesDicts.map({ (messageDict) -> HLMessage in
+                return HLMessage.fromDict(messageDict)!
+            })
+        }
+        
+        return nil
+    }
+
+    static func retrieveEditedMessages(user:Int64, before: Int64, max: Int64=50) -> [NSDictionary]? {
+        return sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(before)&limit=\(max)&e=true")
     }
 
     static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {

@@ -470,11 +470,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func loadMoreMessages(refreshControl: UIRefreshControl) {
-
-        let countToLoad = 20
-
-        //TODO: Update this with the updated server api
-        if let previousMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: messages.first!.messageUUID! - countToLoad, max: 20) {
+        if let previousMessages = HLServer.retrieveMessageFromUser(recipientId, before: messages.first!.messageUUID!, max: 20) {
             messages = previousMessages + messages
             tableView.reloadData()
         }
@@ -486,23 +482,42 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         refreshControl.endRefreshing()
     }
 
+    func loadEdits(before: Int64, count: Int=50) {
+        if let edits = HLServer.retrieveEditedMessages(recipientId, before: before) {
+            for edit in edits {
+                if let id = (edit["id"] as? NSNumber)?.longLongValue {
+                    if let encodedEditText = edit["editData"] as? String {
+                        let editText = (NSString(data: NSData(base64EncodedString: encodedEditText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
+                        for message in messages {
+                            if message.messageUUID == id {
+                                message.editedText = editText
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     func loadMessages() {
         let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
         if let storedMessages = NSKeyedUnarchiver.unarchiveObjectWithFile(chatURL.path!) as? [HLMessage] {
             messages = storedMessages
         }
 
-        let earliestCached: Int64
+        let lastCached: Int64
         if messages.count > 0 {
-            earliestCached = messages.first!.messageUUID!
+            lastCached = messages.last!.messageUUID!
         }
 
         else {
-            earliestCached = 0
+            lastCached = 0
         }
 
-        if let retrievedMessages = HLServer.retrieveMessageFromUser(recipientId, sinceLastMessageId: earliestCached, max: 1000) {
-            messages = retrievedMessages
+        if let newMessages = HLServer.retrieveMessageFromUser(recipientId, after: lastCached, max: 1000) {
+            messages += newMessages
+            loadEdits(lastCached, count: 50 - newMessages.count)
+
             tableView.reloadData()
             tableViewScrollToBottom(false)
 

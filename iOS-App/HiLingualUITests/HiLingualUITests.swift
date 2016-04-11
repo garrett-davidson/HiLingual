@@ -245,15 +245,12 @@ class HiLingualUITests: XCTestCase {
         app.tabBars.buttons["Profile"].tap()
         app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
 
-        var j: UInt = 1
         var ageElement: XCUIElement = app.otherElements["EditProfile"].staticTexts.elementBoundByIndex(0)
-        for _ in 0...app.otherElements["EditProfile"].staticTexts.count {
+        for j in 0...app.otherElements["EditProfile"].staticTexts.count {
             if ageElement.label == "Age:" {
-                j += 1
                 ageElement = app.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
                 break;
             }
-            j += 1
             ageElement = app.otherElements["EditProfile"].staticTexts.elementBoundByIndex(j)
         }
         ageElement.tap()
