@@ -167,7 +167,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 .bind("before", beforeMessageId)
                 .bind("after", afterMessageId)
                 .bind("limit", limit)
-                .map(new EditMessageMapper()).
+                .map(new MessageEditMapper()).
                         list();
         MessageEdit[] msgs = new MessageEdit[returnedMessages.size()];
         return returnedMessages.toArray(msgs);
@@ -352,14 +352,14 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         }
     }
 
-    class EditMessageMapper implements ResultSetMapper<MessageEdit> {
+    class MessageEditMapper implements ResultSetMapper<MessageEdit> {
 
         @Override
         public MessageEdit map(int index, ResultSet r, StatementContext ctx) throws SQLException {
             MessageEdit edit = new MessageEdit();
             edit.setEditData(r.getString("edited_message"));
             edit.setId(r.getLong("message_id"));
-            return null;
+            return edit;
         }
     }
 
