@@ -92,7 +92,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func saveMessageEdit(editedText editedText: String) {
         let message = messages[editingCellIndex!]
         if editedText != message.text {
-            messages[editingCellIndex!].editedText = editedText
+            message.editedText = editedText
+            message.saveMessageEdit()
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editingCellIndex!, inSection:0)], withRowAnimation: .Automatic)
         }
     }
@@ -515,7 +516,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
 
         if let newMessages = HLServer.retrieveMessageFromUser(recipientId, after: lastCached, max: 1000) {
-            messages += newMessages
+            if newMessages.count > 0 {
+                messages += newMessages
+            } else {
+                print("No new messages")
+            }
+
             loadEdits(lastCached, count: 50 - newMessages.count)
 
             tableView.reloadData()

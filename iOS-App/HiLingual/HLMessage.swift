@@ -13,16 +13,7 @@ class HLMessage: NSObject, NSCoding {
     let sentTimestamp: NSDate
     var editedTimestamp: NSDate?
     let text: String
-    var editedText: String? {
-
-//        get {
-//            return editedText
-//        }
-
-        didSet {
-            saveMessageEdit()
-        }
-    }
+    var editedText: String?
     var attributedEditedText: NSAttributedString?
     //TODO: Add hide flags
 
