@@ -1,6 +1,7 @@
 package com.example.hilingual.server.dao;
 
 import com.example.hilingual.server.api.Message;
+import com.example.hilingual.server.api.MessageEdit;
 import io.dropwizard.lifecycle.Managed;
 
 import java.util.Set;
@@ -18,6 +19,8 @@ public interface ChatMessageDAO extends Managed {
     }
 
     Message[] getMessages(long participantA, long participantB, long beforeMessageId, long afterMessageId, int limit);
+
+    MessageEdit[] getMessageEdits(long participantA, long participantB, long beforeMessageId, long afterMessageId, int limit);
 
     default Message newMessage(long sender, long receiver, String content) {
         return newMessage(sender, receiver, content, "");

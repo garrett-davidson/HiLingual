@@ -1,6 +1,7 @@
 package com.example.hilingual.server.dao.impl;
 
 import com.example.hilingual.server.api.Message;
+import com.example.hilingual.server.api.MessageEdit;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.UserChats;
 import com.example.hilingual.server.dao.ChatMessageDAO;
@@ -28,31 +29,21 @@ import java.util.stream.Collectors;
 
 public class ChatMessageDAOImpl implements ChatMessageDAO {
 
+    private static Logger LOGGER = Logger.getLogger(ChatMessageDAOImpl.class.getName());
     //  TODO
     private final DBI dbi;
     private Handle handle;
-    private static Logger LOGGER = Logger.getLogger(ChatMessageDAOImpl.class.getName());
     private Update u;
 
     @Inject
-    public ChatMessageDAOImpl(DBI dbi) { this.dbi = dbi;}
+    public ChatMessageDAOImpl(DBI dbi) {
+        this.dbi = dbi;
+    }
 
-    @Override
-    public void init() {
-        u = handle.attach(Update.class);
-        handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_messages(" +
-                "message_id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT, " +
-                "sent_timestamp TIMESTAMP, " +
-                "edit_timestamp TIMESTAMP, " +
-                "sender_id BIGINT, " +
-                "receiver_id BIGINT, " +
-                "message VARCHAR(500), " +
-                "edited_message VARCHAR(500), " +
-                "audio VARCHAR(500))");
-
-        handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
-                "user_id BIGINT, " +
-                "pending_chat_users LONGTEXT)");
+    public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
+        return set.stream().
+                map(toStringer).
+                collect(Collectors.joining(","));
     }
 
 //    @Override
@@ -107,6 +98,34 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 //        return messagesArray;
 //    }
 
+    public static <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
+        Set<T> set = new HashSet<>();
+        StringTokenizer tokenizer = new StringTokenizer(input, ",");
+        while (tokenizer.hasMoreTokens()) {
+            T t = fromStringer.apply(tokenizer.nextToken());
+            set.add(t);
+        }
+        return set;
+    }
+
+    @Override
+    public void init() {
+        u = handle.attach(Update.class);
+        handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_messages(" +
+                "message_id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT, " +
+                "sent_timestamp TIMESTAMP, " +
+                "edit_timestamp TIMESTAMP, " +
+                "sender_id BIGINT, " +
+                "receiver_id BIGINT, " +
+                "message VARCHAR(500), " +
+                "edited_message VARCHAR(500), " +
+                "audio VARCHAR(500))");
+
+        handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
+                "user_id BIGINT, " +
+                "pending_chat_users LONGTEXT)");
+    }
+
     @Override
     public Message[] getMessages(long participantA, long participantB,
                                  long beforeMessageId, long afterMessageId, int limit) {
@@ -118,7 +137,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
                 "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
                 "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) " +
-                "AND ((message_id < :before) AND (message_id > :after) LIMIT :limit")
+                "AND ((message_id < :before) AND (message_id > :after)) LIMIT :limit")
                 .bind("num", limit)
                 .bind("receiver_id", participantA)
                 .bind("sender_id", participantB)
@@ -126,8 +145,31 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 .bind("after", afterMessageId)
                 .bind("limit", limit)
                 .map(new MessageMapper()).
-                list();
+                        list();
         Message[] msgs = new Message[returnedMessages.size()];
+        return returnedMessages.toArray(msgs);
+    }
+
+    @Override
+    public MessageEdit[] getMessageEdits(long participantA, long participantB, long beforeMessageId, long afterMessageId, int limit) {
+        //  Internally remap beforeMessageId being null (0) to max value so the condition will always be true
+        if (beforeMessageId == 0) {
+            beforeMessageId = Long.MAX_VALUE;
+        }
+        //  afterMessageId being null (0) works out well since the condition will always hold true
+        List<MessageEdit> returnedMessages = handle.createQuery("SELECT edited_message,message_id FROM hl_chat_messages where " +
+                "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
+                "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) " +
+                "AND ((message_id < :before) AND (message_id > :after)) AND (edited_message IS NOT NULL) LIMIT :limit")
+                .bind("num", limit)
+                .bind("receiver_id", participantA)
+                .bind("sender_id", participantB)
+                .bind("before", beforeMessageId)
+                .bind("after", afterMessageId)
+                .bind("limit", limit)
+                .map(new EditMessageMapper()).
+                        list();
+        MessageEdit[] msgs = new MessageEdit[returnedMessages.size()];
         return returnedMessages.toArray(msgs);
     }
 
@@ -217,7 +259,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         }
 
 
-
     }
 
     @Override
@@ -270,50 +311,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
     }
 
-    class MessageMapper implements ResultSetMapper<Message> {
-
-        @Override
-        public Message map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-            Message message = new Message();
-            message.setId(r.getLong("message_id"));
-            message.setSentTimestamp(r.getTimestamp("sent_timestamp").getTime());
-            message.setEditTimestamp(r.getTimestamp("edit_timestamp").getTime());
-            message.setSender(r.getLong("sender_id"));
-            message.setReceiver(r.getLong("receiver_id"));
-            message.setContent(r.getString("message"));
-            message.setEditData(r.getString("edited_message"));
-            message.setAudio(r.getString("audio"));
-            return message;
-        }
-    }
-
-    class RequestsMapper implements ResultSetMapper<UserChats> {
-        @Override
-        public UserChats map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-            UserChats uc = new UserChats();
-            uc.setUserId(r.getLong("user_id"));
-            String pendingChats = r.getString("pending_chat_users");
-            uc.setPendingChats(stringToSet(pendingChats, Long::parseLong));
-            return uc;
-        }
-    }
-
-    public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
-        return set.stream().
-                map(toStringer).
-                collect(Collectors.joining(","));
-    }
-
-    public static <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
-        Set<T> set = new HashSet<>();
-        StringTokenizer tokenizer = new StringTokenizer(input, ",");
-        while (tokenizer.hasMoreTokens()) {
-            T t = fromStringer.apply(tokenizer.nextToken());
-            set.add(t);
-        }
-        return set;
-    }
-
     public static interface Update {
         @SqlUpdate("insert into hl_chat_messages (sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message, audio) values (:sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message, :audio)")
         void insertmessage(@BindMessage Message message);
@@ -336,5 +333,44 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         @SqlQuery("SELECT LAST_INSERT_ID()")
         int getLastMessageId();
 
+    }
+
+    class MessageMapper implements ResultSetMapper<Message> {
+
+        @Override
+        public Message map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            Message message = new Message();
+            message.setId(r.getLong("message_id"));
+            message.setSentTimestamp(r.getTimestamp("sent_timestamp").getTime());
+            message.setEditTimestamp(r.getTimestamp("edit_timestamp").getTime());
+            message.setSender(r.getLong("sender_id"));
+            message.setReceiver(r.getLong("receiver_id"));
+            message.setContent(r.getString("message"));
+            message.setEditData(r.getString("edited_message"));
+            message.setAudio(r.getString("audio"));
+            return message;
+        }
+    }
+
+    class EditMessageMapper implements ResultSetMapper<MessageEdit> {
+
+        @Override
+        public MessageEdit map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            MessageEdit edit = new MessageEdit();
+            edit.setEditData(r.getString("edited_message"));
+            edit.setId(r.getLong("message_id"));
+            return null;
+        }
+    }
+
+    class RequestsMapper implements ResultSetMapper<UserChats> {
+        @Override
+        public UserChats map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            UserChats uc = new UserChats();
+            uc.setUserId(r.getLong("user_id"));
+            String pendingChats = r.getString("pending_chat_users");
+            uc.setPendingChats(stringToSet(pendingChats, Long::parseLong));
+            return uc;
+        }
     }
 }

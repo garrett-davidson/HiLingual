@@ -228,7 +228,7 @@ public class ChatResource {
 
     @GET
     @Path("/{receiver-id}/message")
-    public Message[] getMessages(@HeaderParam("Authorization") String hlat,
+    public Object[] getMessages(@HeaderParam("Authorization") String hlat,
                                  @PathParam("receiver-id") long receiverId,
                                  @QueryParam("limit") @DefaultValue("50") int limit,
                                  @QueryParam("before") @DefaultValue("0") long beforeMsgId,
@@ -253,7 +253,11 @@ public class ChatResource {
         if (limit < 0) {
             throw new BadRequestException("Limit cannot be less than 0");
         }
-        return chatMessageDAO.getMessages(authUserId, receiverId, beforeMsgId, afterMsgId, limit);
+        if (returnEditsOnly) {
+            return chatMessageDAO.getMessageEdits(authUserId, receiverId, beforeMsgId, afterMsgId, limit);
+        } else {
+            return chatMessageDAO.getMessages(authUserId, receiverId, beforeMsgId, afterMsgId, limit);
+        }
     }
 
     @GET
