@@ -177,7 +177,7 @@ class HLServer {
     }
 
     static func retrieveEditedMessages(user:Int64, before: Int64, max: Int64=50) -> [NSDictionary]? {
-        return sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(before)&limit=\(max)&e=true")
+        return sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(before+1)&limit=\(max)&e=true")
     }
 
     static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {
