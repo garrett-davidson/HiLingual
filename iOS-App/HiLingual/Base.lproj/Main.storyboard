@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F18b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -502,6 +502,7 @@
                         <segue destination="KKk-kp-eLC" kind="relationship" relationship="viewControllers" id="zmD-Gt-X9g"/>
                         <segue destination="2in-sX-LFU" kind="relationship" relationship="viewControllers" id="6GW-Be-OvZ"/>
                         <segue destination="EA8-An-G2I" kind="relationship" relationship="viewControllers" id="Tm2-hg-sfu"/>
+                        <segue destination="FFY-Zy-0zR" kind="show" id="wP9-mr-7Ag"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hNt-U5-mGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -881,7 +882,37 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfH-H5-ikC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3867" y="987"/>
+            <point key="canvasLocation" x="3195" y="1019"/>
+        </scene>
+        <!--Flash Card View Controller-->
+        <scene sceneID="Ql9-PP-nf0">
+            <objects>
+                <viewController id="FFY-Zy-0zR" customClass="FlashCardViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pnd-Oq-5U8"/>
+                        <viewControllerLayoutGuide type="bottom" id="25t-9K-MyE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3p7-pE-oAV">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mhm-Pj-Ujz">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Mhm-Pj-Ujz" firstAttribute="top" secondItem="3p7-pE-oAV" secondAttribute="topMargin" id="3nO-ln-rz3"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Mhm-Pj-Ujz" secondAttribute="trailing" constant="-20" id="Wnh-my-oX7"/>
+                            <constraint firstItem="25t-9K-MyE" firstAttribute="top" secondItem="Mhm-Pj-Ujz" secondAttribute="bottom" id="XP7-eH-fSU"/>
+                            <constraint firstItem="Mhm-Pj-Ujz" firstAttribute="leading" secondItem="3p7-pE-oAV" secondAttribute="leadingMargin" constant="-20" id="re8-bK-gau"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Zo-u9-6kO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4060" y="1015"/>
         </scene>
         <!--Messages-->
         <scene sceneID="biN-L3-hVo">
@@ -998,9 +1029,9 @@
         <image name="shittyplay" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uD0-O0-1tF"/>
         <segue reference="eTR-Rc-7JK"/>
         <segue reference="S8b-uI-wvn"/>
-        <segue reference="3s2-qW-3mn"/>
+        <segue reference="uD0-O0-1tF"/>
+        <segue reference="US8-Fg-o83"/>
     </inferredMetricsTieBreakers>
 </document>
