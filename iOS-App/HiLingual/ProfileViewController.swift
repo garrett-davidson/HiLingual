@@ -26,7 +26,7 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
         if(editProfileView.hidden == true){
             editProfileView.hidden = false
             profileView.hidden = true
-            self.navigationItem.rightBarButtonItem?.title = "Done"
+            self.navigationItem.rightBarButtonItem?.title = "Done".localized
         }
 
         else {
@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
             editProfileView.user.save()
             editProfileView.hidden = true
             profileView.hidden = false
-            self.navigationItem.rightBarButtonItem?.title = "Edit"
+            self.navigationItem.rightBarButtonItem?.title = "Edit".localized
             editProfileView.user = HLUser.getCurrentUser()
             profileView.user = HLUser.getCurrentUser()
         }

@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    let settings = ["Show Gender", "Show Age", "Show Profile in Matching", "Display Full Name"]
+    let settings = ["Show Gender".localized, "Show Age".localized, "Show Profile in Matching".localized, "Display Full Name".localized]
 
     override func viewDidLoad() {
         super.viewDidLoad()

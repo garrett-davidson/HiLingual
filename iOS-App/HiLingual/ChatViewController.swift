@@ -113,7 +113,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func sendVoiceMessageWithData(data: NSData) {
         if let message = HLServer.sendVoiceMessageWithData(data, receiverID: recipientId) {
-            print("Sent message")
+            print("Sent voice message")
             print(message)
         }
         
@@ -123,8 +123,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func setupEditMenuButtons() {
         let menuController = UIMenuController.sharedMenuController()
 
-        let editItem = UIMenuItem(title: "Edit", action: #selector(ChatViewController.editMessage))
-        let translateItem = UIMenuItem(title: "Translate", action: #selector(ChatViewController.translateMessage))
+        let editItem = UIMenuItem(title: "Edit".localized, action: #selector(ChatViewController.editMessage))
+        let translateItem = UIMenuItem(title: "Translate".localized, action: #selector(ChatViewController.translateMessage))
 
         menuController.menuItems = [editItem, translateItem]
     }

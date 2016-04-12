@@ -140,7 +140,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
                 bio = bioString
             }
             else {
-                bio = "Bio"
+                bio = "Bio".localized
             }
 
             //Birthday

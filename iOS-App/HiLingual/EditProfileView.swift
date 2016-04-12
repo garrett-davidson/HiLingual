@@ -51,24 +51,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             nameText.text = user.displayName
 
             if user.gender != nil {
-                genderLabel.text = "\(user.gender!)"
+                genderLabel.text = "\(user.gender!)".localized
             }
             else {
-                genderLabel.text = "Not Specified"
+                genderLabel.text = "Not Specified".localized
             }
 
             if (user.age != nil) {
                 ageLabel.text = "\(user.age!)"
             }
             else {
-                ageLabel.text = "Not Specified"
+                ageLabel.text = "Not Specified".localized
             }
 
             let knownList = user.knownLanguages.toList()
             let learningList = user.learningLanguages.toList()
 
-            languagesSpeaks.text = "Speaks: " + (knownList == "" ? "None" : knownList)
-            languagesLearning.text = "Learning: " + (learningList == "" ? "None" : learningList)
+            languagesSpeaks.text = "Speaks: ".localized + (knownList == "" ? "None".localized : knownList)
+            languagesLearning.text = "Learning: ".localized + (learningList == "" ? "None".localized : learningList)
             bioText.text = user.bio
         }
 
@@ -86,13 +86,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     @IBAction func pictureTap(sender: UITapGestureRecognizer) {
         let imagePickerController = UIImagePickerController()
-        let alertController = UIAlertController(title: nil, message: "Choose Source", preferredStyle: .ActionSheet)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+        let alertController = UIAlertController(title: nil, message: "Choose Source".localized, preferredStyle: .ActionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .Cancel) { (action) in
             return
         }
         alertController.addAction(cancelAction)
         
-        let takePictureAction = UIAlertAction(title: "Take Picture", style: .Default) { (action) in
+        let takePictureAction = UIAlertAction(title: "Take Picture".localized, style: .Default) { (action) in
             imagePickerController.sourceType = .Camera
             imagePickerController.delegate = self
             
@@ -103,7 +103,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
         }
         alertController.addAction(takePictureAction)
-        let usePhotoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default) { (action) in
+        let usePhotoLibraryAction = UIAlertAction(title: "Photo Library".localized, style: .Default) { (action) in
             imagePickerController.sourceType = .PhotoLibrary
             imagePickerController.delegate = self
             
@@ -222,7 +222,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             return "\(minimunAge + row)"
 
         case .Gender:
-            return "\(Gender.allValues[row])"
+            return "\(Gender.allValues[row])".localized
         }
     }
     
@@ -232,7 +232,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             ageLabel.text = "\(minimunAge + row)"
             user.birthdate = NSCalendar.currentCalendar().dateByAddingUnit(.Year, value: -(minimunAge + row), toDate: NSDate(), options: NSCalendarOptions(rawValue: 0))
         case .Gender:
-            genderLabel.text = "\(Gender.allValues[row])"
+            genderLabel.text = "\(Gender.allValues[row])".localized
             user.gender = Gender(rawValue: row)
         }
     }

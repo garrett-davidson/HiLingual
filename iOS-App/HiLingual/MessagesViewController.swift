@@ -87,11 +87,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         if section == 1 || section == 0 && !hasPendingChats {
-            return "Current chats"
+            return "Current chats".localized
         }
 
         else {
-            return "Pending chats"
+            return "Pending chats".localized
         }
     }
     

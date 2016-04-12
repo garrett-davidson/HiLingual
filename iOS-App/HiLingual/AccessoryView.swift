@@ -73,7 +73,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         isEditing = true
 
         leftButton.setImage(UIImage(named: "shittyx"), forState: .Normal)
-        sendButton.setTitle("Save", forState: .Normal)
+        sendButton.setTitle("Save".localized, forState: .Normal)
 
         textViewDidChange(textView)
     }
@@ -82,7 +82,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         isEditing = false
 
         leftButton.setImage(UIImage(named: "Microphone-128"), forState: .Normal)
-        sendButton.setTitle("Send", forState: .Normal)
+        sendButton.setTitle("Send".localized, forState: .Normal)
 
         textView.text = ""
         textView.scrollEnabled = false
@@ -258,7 +258,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
 
     func textViewDidBeginEditing(textView: UITextView) {
         textView.textColor = UIColor.blackColor()
-        if textView.text == "" || textView.text == "Message" {
+        if textView.text == "" || textView.text == "Message".localized {
             textView.text = ""
             
             //textView.scrollEnabled = false
@@ -269,7 +269,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
     func textViewDidEndEditing(textView: UITextView) {
         if textView.text == "" {
             textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
-            textView.text = "Message"
+            textView.text = "Message".localized
             textView.scrollEnabled = false
             leftButton.hidden = false
 
@@ -354,7 +354,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         textView.layer.borderWidth = 0.5
         textView.layer.cornerRadius = 5
         textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
-        textView.text = "Message"
+        textView.text = "Message".localized
     }
     
     

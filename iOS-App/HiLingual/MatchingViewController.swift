@@ -87,8 +87,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         cell.profilePicture.image = user.profilePicture
         cell.sendRequestButton.tag = indexPath.row
         //Mark: Fills the view
-        cell.langaugesLearning.text! = "Learning: " + user.learningLanguages.toList()
-        cell.languagesSpeaks.text! = "  Speaks: " + user.knownLanguages.toList()
+        cell.langaugesLearning.text! = "Learning: ".localized + user.learningLanguages.toList()
+        cell.languagesSpeaks.text! = "  Speaks: ".localized + user.knownLanguages.toList()
         return cell
     }
 
@@ -135,7 +135,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             profileViewCell = MatchProfileView()
             let sendMessageButton = UIButton(type: .System)
 
-            sendMessageButton.setTitle("Send Message", forState: .Normal)
+            sendMessageButton.setTitle("Send Message".localized, forState: .Normal)
             sendMessageButton.addTarget(self, action: #selector(MatchingViewController.sendMessageButtonPressed(_:)), forControlEvents: .TouchUpInside)
 
             profileViewCell.profileView.addSubview(sendMessageButton)
