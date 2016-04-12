@@ -130,7 +130,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
-    func cropToSquare(image originalImage: UIImage) -> UIImage {
+    static func cropToSquare(image originalImage: UIImage) -> UIImage {
         // Create a copy of the image without the imageOrientation property so it is in its native orientation (landscape)
         let contextImage: UIImage = UIImage(CGImage: originalImage.CGImage!)
         
@@ -167,8 +167,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        profileImage.image = cropToSquare(image: selectedImage);
-        user.profilePicture = cropToSquare(image: selectedImage);
+        profileImage.image = EditProfileView.cropToSquare(image: selectedImage);
+        user.profilePicture = EditProfileView.cropToSquare(image: selectedImage);
         
         
         
