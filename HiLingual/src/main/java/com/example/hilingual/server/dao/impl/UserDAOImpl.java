@@ -97,8 +97,9 @@ public class UserDAOImpl implements UserDAO {
         User[] results;
         Set<User> usersList = new LinkedHashSet<>();
         //create query to search for users where user name is like query. use UserMapper
-        usersList.addAll(handle.createQuery("SELECT * FROM hl_users WHERE display_name LIKE :uname")
+        usersList.addAll(handle.createQuery("SELECT * FROM hl_users WHERE (user_id != :invoker) AND (display_name LIKE :uname)")
                 .bind("uname", "%" + query + "%")
+                .bind("invoker", invoker.getUserId())
                 .map(new UserMapper())
                 .list());
         //convert the List to Array and return
