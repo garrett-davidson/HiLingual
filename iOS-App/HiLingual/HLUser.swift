@@ -138,7 +138,7 @@ enum Gender: Int {
         let usersChattedWith = userDict["usersChattedWith"]
 
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
-        let birthday = NSDate(timeIntervalSince1970: birthdayNumber)
+        let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
         //TODO: ^^ This doesn't quite work
 
         //TODO: Load this image
