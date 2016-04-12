@@ -126,7 +126,22 @@ enum Gender: Int {
 
         //                    let gender = userDict["gender"]
         //TODO: Fix this
-        let gender = Gender.Female
+
+        let gender: Gender
+        if let genderString = userDict["gender"] as? String {
+            if genderString == "MALE" {
+                gender = Gender.Male
+            }
+            else if genderString == "FEMALE" {
+                gender = Gender.Female
+            } else {
+                gender = Gender.NotSpecified
+                print("Uncrecognized gender")
+            }
+        } else {
+            gender = .NotSpecified
+            print("No gender returned")
+        }
 
         //Not important
         let blockedUsers = userDict["blockedUsers"]

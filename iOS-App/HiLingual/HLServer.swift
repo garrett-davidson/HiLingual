@@ -45,6 +45,7 @@ class HLServer {
 
                     case 503:
                         print("😭😭😭 *********Server Down********* 😭😭😭")
+                        
                         //We don't need to run the diagnostic stuff below if we get here
                         return nil
 
