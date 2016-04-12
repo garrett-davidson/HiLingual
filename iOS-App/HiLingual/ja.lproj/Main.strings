@@ -1,0 +1,252 @@
+
+/* Class = "UILabel"; accessibilityIdentifier = "SearchResultLanguageLearningLabel"; ObjectID = "1of-ER-rhA"; */
+"1of-ER-rhA.accessibilityIdentifier" = "SearchResultLanguageLearningLabel";
+
+/* Class = "UILabel"; text = "Learning:"; ObjectID = "1of-ER-rhA"; */
+"1of-ER-rhA.text" = "Learning:";
+
+/* Class = "UISearchBar"; 529-gY-tSH.scopeButtonTitles[0] = "Title"; ObjectID = "529-gY-tSH"; */
+"529-gY-tSH.scopeButtonTitles[0]" = "Title";
+
+/* Class = "UISearchBar"; 529-gY-tSH.scopeButtonTitles[1] = "Title"; ObjectID = "529-gY-tSH"; */
+"529-gY-tSH.scopeButtonTitles[1]" = "Title";
+
+/* Class = "UIView"; accessibilityIdentifier = "EditedChatBubbleLeftView"; ObjectID = "5OH-us-hj3"; */
+"5OH-us-hj3.accessibilityIdentifier" = "EditedChatBubbleLeftView";
+
+/* Class = "UIButton"; accessibilityIdentifier = "PlaybackButton"; ObjectID = "9AS-S7-Cqc"; */
+"9AS-S7-Cqc.accessibilityIdentifier" = "PlaybackButton";
+
+/* Class = "UILabel"; accessibilityIdentifier = "EditedLeftTextLabel"; ObjectID = "9Yj-zr-FGs"; */
+"9Yj-zr-FGs.accessibilityIdentifier" = "EditedLeftTextLabel";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "9Yj-zr-FGs"; */
+"9Yj-zr-FGs.text" = "A";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "9fx-vR-vke"; */
+"9fx-vR-vke.accessibilityIdentifier" = "View";
+
+/* Class = "UITabBarItem"; title = "Matching"; ObjectID = "Afi-Gr-tu1"; */
+"Afi-Gr-tu1.title" = "Matching";
+
+/* Class = "UIView"; accessibilityIdentifier = "ProfileView"; ObjectID = "Au8-DZ-63Z"; */
+"Au8-DZ-63Z.accessibilityIdentifier" = "ProfileView";
+
+/* Class = "UILabel"; accessibilityIdentifier = "EditedRightTextLabel"; ObjectID = "BZj-OK-mpZ"; */
+"BZj-OK-mpZ.accessibilityIdentifier" = "EditedRightTextLabel";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "BZj-OK-mpZ"; */
+"BZj-OK-mpZ.text" = "A";
+
+/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "CQv-Ld-E6L"; */
+"CQv-Ld-E6L.title" = "Messages";
+
+/* Class = "UILabel"; accessibilityIdentifier = "LastMessageLabel"; ObjectID = "DsD-GD-Ptj"; */
+"DsD-GD-Ptj.accessibilityIdentifier" = "LastMessageLabel";
+
+/* Class = "UILabel"; text = "Recent Message"; ObjectID = "DsD-GD-Ptj"; */
+"DsD-GD-Ptj.text" = "Recent Message";
+
+/* Class = "UIView"; accessibilityIdentifier = "InputView"; ObjectID = "E7n-91-J2A"; */
+"E7n-91-J2A.accessibilityIdentifier" = "InputView";
+
+/* Class = "UIViewController"; title = "Matching View Controller"; ObjectID = "EA8-An-G2I"; */
+"EA8-An-G2I.title" = "Matching View Controller";
+
+/* Class = "UITabBarItem"; title = "Messages"; ObjectID = "EoS-15-JWE"; */
+"EoS-15-JWE.title" = "Messages";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "SettingsCell"; ObjectID = "FAi-Zl-ei5"; */
+"FAi-Zl-ei5.accessibilityIdentifier" = "SettingsCell";
+
+/* Class = "UIBarButtonItem"; title = "Details"; ObjectID = "FPQ-fb-3tr"; */
+"FPQ-fb-3tr.title" = "Details";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "SearchResultCell"; ObjectID = "GNK-ZF-Iem"; */
+"GNK-ZF-Iem.accessibilityIdentifier" = "SearchResultCell";
+
+/* Class = "UIImageView"; accessibilityIdentifier = "ProfilePictureImageView"; ObjectID = "IUP-Vd-aa4"; */
+"IUP-Vd-aa4.accessibilityIdentifier" = "ProfilePictureImageView";
+
+/* Class = "UINavigationItem"; title = "Create Account"; ObjectID = "Ifm-1s-9H5"; */
+"Ifm-1s-9H5.title" = "Create Account";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "Iso-nN-x3G"; */
+"Iso-nN-x3G.accessibilityIdentifier" = "View";
+
+/* Class = "UILabel"; accessibilityIdentifier = "NameLabel"; ObjectID = "J8t-oZ-gwa"; */
+"J8t-oZ-gwa.accessibilityIdentifier" = "NameLabel";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "J8t-oZ-gwa"; */
+"J8t-oZ-gwa.text" = "Name";
+
+/* Class = "UILabel"; accessibilityIdentifier = "SearchResultNameLabel"; ObjectID = "Kzu-Zh-LvB"; */
+"Kzu-Zh-LvB.accessibilityIdentifier" = "SearchResultNameLabel";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "Kzu-Zh-LvB"; */
+"Kzu-Zh-LvB.text" = "Name";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "L4j-WK-wGO"; */
+"L4j-WK-wGO.accessibilityIdentifier" = "View";
+
+/* Class = "UILabel"; accessibilityIdentifier = "LanguageTitleLabel"; ObjectID = "MdS-Ej-wbj"; */
+"MdS-Ej-wbj.accessibilityIdentifier" = "LanguageTitleLabel";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "MdS-Ej-wbj"; */
+"MdS-Ej-wbj.text" = "Title";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "LanguageCell"; ObjectID = "OTF-n2-jWb"; */
+"OTF-n2-jWb.accessibilityIdentifier" = "LanguageCell";
+
+/* Class = "UIViewController"; title = "Profile VIew Controller"; ObjectID = "Q1f-p8-L4k"; */
+"Q1f-p8-L4k.title" = "Profile VIew Controller";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "QWt-dy-j6t"; */
+"QWt-dy-j6t.accessibilityIdentifier" = "View";
+
+/* Class = "UILabel"; accessibilityIdentifier = "ChatBubbleLeftLabel"; ObjectID = "R2l-KZ-MB0"; */
+"R2l-KZ-MB0.accessibilityIdentifier" = "ChatBubbleLeftLabel";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "R2l-KZ-MB0"; */
+"R2l-KZ-MB0.text" = "A";
+
+/* Class = "UIButton"; accessibilityIdentifier = "PlaybackButton"; ObjectID = "RGm-K1-MVc"; */
+"RGm-K1-MVc.accessibilityIdentifier" = "PlaybackButton";
+
+/* Class = "UIViewController"; title = "Launch Screen"; ObjectID = "VV5-3k-4nK"; */
+"VV5-3k-4nK.title" = "Launch Screen";
+
+/* Class = "UISwitch"; accessibilityIdentifier = "SettingSwitch"; ObjectID = "WAo-sR-7Fu"; */
+"WAo-sR-7Fu.accessibilityIdentifier" = "SettingSwitch";
+
+/* Class = "UIViewController"; title = "Messages View Controller"; ObjectID = "WMC-dk-gVI"; */
+"WMC-dk-gVI.title" = "Messages View Controller";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "X1a-mJ-Bwz"; */
+"X1a-mJ-Bwz.accessibilityIdentifier" = "View";
+
+/* Class = "UILabel"; accessibilityIdentifier = "SearchResultLanguageSpeakingLabel"; ObjectID = "Xd6-Dl-92U"; */
+"Xd6-Dl-92U.accessibilityIdentifier" = "SearchResultLanguageSpeakingLabel";
+
+/* Class = "UILabel"; text = "  Speaks:"; ObjectID = "Xd6-Dl-92U"; */
+"Xd6-Dl-92U.text" = "  Speaks:";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "XdT-O1-gU3"; */
+"XdT-O1-gU3.accessibilityIdentifier" = "View";
+
+/* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "Z5f-4H-Weu"; */
+"Z5f-4H-Weu.title" = "Done";
+
+/* Class = "UIBarButtonItem"; title = "Settings"; ObjectID = "a9S-Er-P21"; */
+"a9S-Er-P21.title" = "Settings";
+
+/* Class = "UIView"; accessibilityIdentifier = "Carousel"; ObjectID = "aVZ-WE-2Oy"; */
+"aVZ-WE-2Oy.accessibilityIdentifier" = "Carousel";
+
+/* Class = "UILabel"; accessibilityIdentifier = "OriginalRightTextLabel"; ObjectID = "dpO-eU-jNx"; */
+"dpO-eU-jNx.accessibilityIdentifier" = "OriginalRightTextLabel";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "dpO-eU-jNx"; */
+"dpO-eU-jNx.text" = "A";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "faW-i2-Inc"; */
+"faW-i2-Inc.accessibilityIdentifier" = "View";
+
+/* Class = "UIButton"; accessibilityIdentifier = "AcceptButton"; ObjectID = "gC5-m3-3gT"; */
+"gC5-m3-3gT.accessibilityIdentifier" = "AcceptButton";
+
+/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "gC5-m3-3gT"; */
+"gC5-m3-3gT.normalTitle" = "Accept";
+
+/* Class = "UILabel"; accessibilityIdentifier = "SettingTitleLabel"; ObjectID = "gtD-dL-fnB"; */
+"gtD-dL-fnB.accessibilityIdentifier" = "SettingTitleLabel";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "gtD-dL-fnB"; */
+"gtD-dL-fnB.text" = "Label";
+
+/* Class = "UILabel"; accessibilityIdentifier = "OriginalLeftTextLabel"; ObjectID = "hEU-jx-Rjb"; */
+"hEU-jx-Rjb.accessibilityIdentifier" = "OriginalLeftTextLabel";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "hEU-jx-Rjb"; */
+"hEU-jx-Rjb.text" = "A";
+
+/* Class = "UIButton"; accessibilityIdentifier = "SearchResultSendRequestButton"; ObjectID = "hPl-gv-Ufh"; */
+"hPl-gv-Ufh.accessibilityIdentifier" = "SearchResultSendRequestButton";
+
+/* Class = "UIButton"; normalTitle = "Send request"; ObjectID = "hPl-gv-Ufh"; */
+"hPl-gv-Ufh.normalTitle" = "Send request";
+
+/* Class = "UIImageView"; accessibilityIdentifier = "ProfilePicture"; ObjectID = "hvv-XV-Jgu"; */
+"hvv-XV-Jgu.accessibilityIdentifier" = "ProfilePicture";
+
+/* Class = "UIView"; accessibilityIdentifier = "ProfileView"; ObjectID = "iwx-Bx-znf"; */
+"iwx-Bx-znf.accessibilityIdentifier" = "ProfileView";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "ChatEditedTableViewCell"; ObjectID = "jYI-JC-IST"; */
+"jYI-JC-IST.accessibilityIdentifier" = "ChatEditedTableViewCell";
+
+/* Class = "UILabel"; accessibilityIdentifier = "LastMessageDateLabel"; ObjectID = "jtj-uA-qSk"; */
+"jtj-uA-qSk.accessibilityIdentifier" = "LastMessageDateLabel";
+
+/* Class = "UILabel"; text = "LastMessage"; ObjectID = "jtj-uA-qSk"; */
+"jtj-uA-qSk.text" = "LastMessage";
+
+/* Class = "UIView"; accessibilityIdentifier = "EditProfile"; ObjectID = "lqy-PJ-PuE"; */
+"lqy-PJ-PuE.accessibilityIdentifier" = "EditProfile";
+
+/* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "mD7-OI-9fd"; */
+"mD7-OI-9fd.accessibilityIdentifier" = "View";
+
+/* Class = "UIView"; accessibilityIdentifier = "EditedChatBubbleRightView"; ObjectID = "n4B-Xn-cqo"; */
+"n4B-Xn-cqo.accessibilityIdentifier" = "EditedChatBubbleRightView";
+
+/* Class = "UIButton"; accessibilityIdentifier = "DeclineButton"; ObjectID = "nAO-Cy-IOV"; */
+"nAO-Cy-IOV.accessibilityIdentifier" = "DeclineButton";
+
+/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "nAO-Cy-IOV"; */
+"nAO-Cy-IOV.normalTitle" = "Decline";
+
+/* Class = "UIViewController"; title = "Chat View Controller"; ObjectID = "nBC-Zq-2jE"; */
+"nBC-Zq-2jE.title" = "Chat View Controller";
+
+/* Class = "UITabBarItem"; title = "Profile"; ObjectID = "ndt-1q-acR"; */
+"ndt-1q-acR.title" = "Profile";
+
+/* Class = "UILabel"; accessibilityIdentifier = "LogoLabel"; ObjectID = "o50-s4-HwC"; */
+"o50-s4-HwC.accessibilityIdentifier" = "LogoLabel";
+
+/* Class = "UILabel"; text = "HiLingual"; ObjectID = "o50-s4-HwC"; */
+"o50-s4-HwC.text" = "HiLingual";
+
+/* Class = "UIImageView"; accessibilityIdentifier = "BackgroundImageView"; ObjectID = "pHP-vv-FDu"; */
+"pHP-vv-FDu.accessibilityIdentifier" = "BackgroundImageView";
+
+/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "pHn-AO-3os"; */
+"pHn-AO-3os.title" = "Edit";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "ConversationTableViewCell"; ObjectID = "pcS-i8-Jrm"; */
+"pcS-i8-Jrm.accessibilityIdentifier" = "ConversationTableViewCell";
+
+/* Class = "UIView"; accessibilityIdentifier = "EditProfileView"; ObjectID = "qRK-tG-nLo"; */
+"qRK-tG-nLo.accessibilityIdentifier" = "EditProfileView";
+
+/* Class = "UIViewController"; title = "Initial Profile Edit"; ObjectID = "rAU-kN-Pj2"; */
+"rAU-kN-Pj2.title" = "Initial Profile Edit";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "ChatTableViewCell"; ObjectID = "u8e-U8-Zib"; */
+"u8e-U8-Zib.accessibilityIdentifier" = "ChatTableViewCell";
+
+/* Class = "UIButton"; accessibilityIdentifier = "GoogleSignButton"; ObjectID = "ueO-Dy-BUE"; */
+"ueO-Dy-BUE.accessibilityIdentifier" = "GoogleSignButton";
+
+/* Class = "UIButton"; normalTitle = "Google Sign In"; ObjectID = "ueO-Dy-BUE"; */
+"ueO-Dy-BUE.normalTitle" = "Google Sign In";
+
+/* Class = "UILabel"; accessibilityIdentifier = "ChatBubbleRightLabel"; ObjectID = "xLd-4n-QP7"; */
+"xLd-4n-QP7.accessibilityIdentifier" = "ChatBubbleRightLabel";
+
+/* Class = "UILabel"; text = "A"; ObjectID = "xLd-4n-QP7"; */
+"xLd-4n-QP7.text" = "A";
+
+/* Class = "UITableViewCell"; accessibilityIdentifier = "ChatTableViewCell"; ObjectID = "xPx-jD-MEk"; */
+"xPx-jD-MEk.accessibilityIdentifier" = "ChatTableViewCell";
