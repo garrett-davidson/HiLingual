@@ -110,6 +110,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         return false
     }
+    func sendImageWithData(data: NSData) {
+        if let message = HLServer.sendImageWithData(data, receiverID: recipientId) {
+            print("Sent voice message")
+            print(message)
+        }
+        
+        loadMessages()
+        
+    }
     
     func sendVoiceMessageWithData(data: NSData) {
         if let message = HLServer.sendVoiceMessageWithData(data, receiverID: recipientId) {
