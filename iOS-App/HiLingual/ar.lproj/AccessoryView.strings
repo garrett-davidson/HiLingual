@@ -1,0 +1,33 @@
+
+/* Class = "UIButton"; accessibilityIdentifier = "LeftButton"; ObjectID = "3b4-LC-oRi"; */
+"3b4-LC-oRi.accessibilityIdentifier" = "LeftButton";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "3b4-LC-oRi"; */
+"3b4-LC-oRi.normalTitle" = "Button";
+
+/* Class = "UITextView"; accessibilityIdentifier = "InputTextView"; ObjectID = "8et-XY-PLa"; */
+"8et-XY-PLa.accessibilityIdentifier" = "InputTextView";
+
+/* Class = "UIButton"; accessibilityIdentifier = "SendButton"; ObjectID = "PVk-FS-d4h"; */
+"PVk-FS-d4h.accessibilityIdentifier" = "SendButton";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "PVk-FS-d4h"; */
+"PVk-FS-d4h.normalTitle" = "Send";
+
+/* Class = "UILabel"; accessibilityIdentifier = "RecordingTimerLabel"; ObjectID = "dC5-wN-qVh"; */
+"dC5-wN-qVh.accessibilityIdentifier" = "RecordingTimerLabel";
+
+/* Class = "UILabel"; text = "0.0"; ObjectID = "dC5-wN-qVh"; */
+"dC5-wN-qVh.text" = "0.0";
+
+/* Class = "UIButton"; accessibilityIdentifier = "DeleteRecordingButton"; ObjectID = "m9k-mK-rME"; */
+"m9k-mK-rME.accessibilityIdentifier" = "DeleteRecordingButton";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "m9k-mK-rME"; */
+"m9k-mK-rME.normalTitle" = "Button";
+
+/* Class = "UIButton"; accessibilityIdentifier = "PreviewRecordingButton"; ObjectID = "obr-DO-y8s"; */
+"obr-DO-y8s.accessibilityIdentifier" = "PreviewRecordingButton";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "obr-DO-y8s"; */
+"obr-DO-y8s.normalTitle" = "Button";

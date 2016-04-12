@@ -1,0 +1,69 @@
+
+/* Class = "UITextView"; accessibilityIdentifier = "BioTextView"; ObjectID = "0lz-Lz-qrn"; */
+"0lz-Lz-qrn.accessibilityIdentifier" = "BioTextView";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "0lz-Lz-qrn"; */
+"0lz-Lz-qrn.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UILabel"; accessibilityIdentifier = "LearningLabel"; ObjectID = "7eX-35-LIf"; */
+"7eX-35-LIf.accessibilityIdentifier" = "LearningLabel";
+
+/* Class = "UILabel"; text = "Learning:"; ObjectID = "7eX-35-LIf"; */
+"7eX-35-LIf.text" = "Learning:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "Gender"; ObjectID = "JGi-Df-EfT"; */
+"JGi-Df-EfT.accessibilityIdentifier" = "Gender";
+
+/* Class = "UILabel"; text = "Gender"; ObjectID = "JGi-Df-EfT"; */
+"JGi-Df-EfT.text" = "Gender";
+
+/* Class = "UILabel"; accessibilityIdentifier = "DisplayNameLabel"; ObjectID = "Jyl-fK-C4p"; */
+"Jyl-fK-C4p.accessibilityIdentifier" = "DisplayNameLabel";
+
+/* Class = "UILabel"; text = "Display Name:"; ObjectID = "Jyl-fK-C4p"; */
+"Jyl-fK-C4p.text" = "Display Name:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "SpeaksLabel"; ObjectID = "L5Z-TO-ooy"; */
+"L5Z-TO-ooy.accessibilityIdentifier" = "SpeaksLabel";
+
+/* Class = "UILabel"; text = "Speaks:"; ObjectID = "L5Z-TO-ooy"; */
+"L5Z-TO-ooy.text" = "Speaks:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "NameLabel"; ObjectID = "M4a-zz-yy0"; */
+"M4a-zz-yy0.accessibilityIdentifier" = "NameLabel";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "M4a-zz-yy0"; */
+"M4a-zz-yy0.text" = "Name";
+
+/* Class = "UILabel"; accessibilityIdentifier = "Age"; ObjectID = "Xad-tA-wXK"; */
+"Xad-tA-wXK.accessibilityIdentifier" = "Age";
+
+/* Class = "UILabel"; text = "Age"; ObjectID = "Xad-tA-wXK"; */
+"Xad-tA-wXK.text" = "Age";
+
+/* Class = "UILabel"; accessibilityIdentifier = "DisplayName"; ObjectID = "aeL-hh-kR5"; */
+"aeL-hh-kR5.accessibilityIdentifier" = "DisplayName";
+
+/* Class = "UILabel"; text = "MyDisplayName"; ObjectID = "aeL-hh-kR5"; */
+"aeL-hh-kR5.text" = "MyDisplayName";
+
+/* Class = "UILabel"; accessibilityIdentifier = "GenderLabel"; ObjectID = "eee-T1-hMX"; */
+"eee-T1-hMX.accessibilityIdentifier" = "GenderLabel";
+
+/* Class = "UILabel"; text = "Gender:"; ObjectID = "eee-T1-hMX"; */
+"eee-T1-hMX.text" = "Gender:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "BioLabel"; ObjectID = "hOp-P2-QLR"; */
+"hOp-P2-QLR.accessibilityIdentifier" = "BioLabel";
+
+/* Class = "UILabel"; text = "Bio:"; ObjectID = "hOp-P2-QLR"; */
+"hOp-P2-QLR.text" = "Bio:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "AgeLabel"; ObjectID = "hYi-cj-msg"; */
+"hYi-cj-msg.accessibilityIdentifier" = "AgeLabel";
+
+/* Class = "UILabel"; text = "Age:"; ObjectID = "hYi-cj-msg"; */
+"hYi-cj-msg.text" = "Age:";
+
+/* Class = "UIImageView"; accessibilityIdentifier = "ProfileImageView"; ObjectID = "odi-Bj-nAX"; */
+"odi-Bj-nAX.accessibilityIdentifier" = "ProfileImageView";

@@ -115,7 +115,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.acceptButton.hidden = true
 
 
-            cell.date.text = "Yesterday"
+            cell.date.text = "Yesterday".localized
             cell.lastMessage.text = ""
             return cell
         }
