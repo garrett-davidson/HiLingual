@@ -20,6 +20,7 @@
 		680F24521C716926009F4EE8 /* MatchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24511C716926009F4EE8 /* MatchingViewController.swift */; };
 		680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680F24531C716997009F4EE8 /* ChatViewController.swift */; };
 		682D14851C76620600443B7D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682D14841C76620600443B7D /* ProfileView.swift */; };
+		684A89131CBCAA7B00EB0A33 /* AccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686E511B1CBCA2AE00EFD2ED /* AccessoryView.xib */; };
 		6853F3AB1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6853F3AA1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift */; };
 		686E4A441CB1578C00152C69 /* ChatEditedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E4A431CB1578C00152C69 /* ChatEditedTableViewCell.swift */; };
 		686E510F1CBC9E0400EFD2ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 686E51111CBC9E0400EFD2ED /* Localizable.strings */; };
@@ -396,6 +397,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				684A89131CBCAA7B00EB0A33 /* AccessoryView.xib in Resources */,
 				686E511E1CBCA2CD00EFD2ED /* EditProfileView.xib in Resources */,
 				6876D9A11C5A87A90097332A /* LaunchScreen.storyboard in Resources */,
 				686E51231CBCA2E200EFD2ED /* ProfileView.xib in Resources */,
