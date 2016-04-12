@@ -17,7 +17,7 @@ enum Gender: Int {
     static let allValues: [Gender] = [.Male, .Female]
 }
 
-class HLUser: NSObject, NSCoding {
+@objc class HLUser: NSObject, NSCoding {
     var userId: Int64
     var name: String?
     var displayName: String?
