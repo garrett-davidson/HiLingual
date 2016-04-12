@@ -13,7 +13,7 @@ import AVFoundation
 public extension String {
     var NS: NSString { return (self as NSString) }
 }
-class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
+class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
 
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -130,7 +130,50 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         }
     }
     
-    @IBAction func tapMicDown(sender: AnyObject) {
+    @IBAction func tapMicDown(sender: UITapGestureRecognizer) {
+        // NOW PICTURE BUTTON TAP
+        let imagePickerController = UIImagePickerController()
+        let alertController = UIAlertController(title: nil, message: "Choose Source".localized, preferredStyle: .ActionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .Cancel) { (action) in
+            return
+        }
+        alertController.addAction(cancelAction)
+        
+        let takePictureAction = UIAlertAction(title: "Take Picture".localized, style: .Default) { (action) in
+            imagePickerController.sourceType = .Camera
+            imagePickerController.delegate = self
+            
+            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            while((topVC!.presentedViewController) != nil) {
+                topVC = topVC!.presentedViewController
+            }
+            topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+        }
+        alertController.addAction(takePictureAction)
+        let usePhotoLibraryAction = UIAlertAction(title: "Photo Library".localized, style: .Default) { (action) in
+            imagePickerController.sourceType = .PhotoLibrary
+            imagePickerController.delegate = self
+            
+            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            while((topVC!.presentedViewController) != nil) {
+                topVC = topVC!.presentedViewController
+            }
+            topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+        }
+        alertController.addAction(usePhotoLibraryAction)
+        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        while((topVC!.presentedViewController) != nil) {
+            topVC = topVC!.presentedViewController
+        }
+        topVC?.presentViewController(alertController, animated: true, completion: nil)
+
+        
+        
+        
+        
+        
+        //START MIC
+        /*
         guard !isEditing else {
             //We don't want to do anything on touch down if we're editing
             return
@@ -165,8 +208,43 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
             print("Recording failed: ", error)
         }
 
-        startRecording()
+        startRecording()*/
+        
+        
+        //END MIC
     }
+    
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        // Dismiss the picker if the user canceled.
+        
+        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        while((topVC!.presentedViewController) != nil) {
+            topVC = topVC!.presentedViewController
+        }
+        topVC?.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        var selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        selectedImage = EditProfileView.cropToSquare(image: selectedImage)
+    
+        let imageData = UIImagePNGRepresentation(selectedImage)
+        chatViewController!.sendVoiceMessageWithData(imageData!)
+
+        
+        
+        //post to server
+        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        while((topVC!.presentedViewController) != nil){
+            topVC = topVC!.presentedViewController
+        }
+        topVC?.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    
+    
     func updateLabel() {
         curTime = CACurrentMediaTime();
         recordingTimer.text = String(format:"%.1f", curTime-origTime)
@@ -229,7 +307,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate{
         if isRecording{
             print("sent voice")
             data = NSData(contentsOfURL: curURL)
-            
             chatViewController!.sendVoiceMessageWithData(data!)
             tapDelete(sender)
             

@@ -45,6 +45,7 @@ class HLServer {
 
                     case 503:
                         print("😭😭😭 *********Server Down********* 😭😭😭")
+                        
                         //We don't need to run the diagnostic stuff below if we get here
                         return nil
 
@@ -198,6 +199,16 @@ class HLServer {
 
         return nil
     }
+    
+    static func sendImageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
+        
+        if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["image": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
+            return HLMessage.fromDict(messageDict[0])
+        }
+        
+        return nil
+    }
+
 
     static func sendVoiceMessageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
 

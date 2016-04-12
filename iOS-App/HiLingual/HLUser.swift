@@ -17,7 +17,7 @@ enum Gender: Int {
     static let allValues: [Gender] = [.Male, .Female]
 }
 
-class HLUser: NSObject, NSCoding {
+@objc class HLUser: NSObject, NSCoding {
     var userId: Int64
     var name: String?
     var displayName: String?
@@ -126,7 +126,22 @@ class HLUser: NSObject, NSCoding {
 
         //                    let gender = userDict["gender"]
         //TODO: Fix this
-        let gender = Gender.Female
+
+        let gender: Gender
+        if let genderString = userDict["gender"] as? String {
+            if genderString == "MALE" {
+                gender = Gender.Male
+            }
+            else if genderString == "FEMALE" {
+                gender = Gender.Female
+            } else {
+                gender = Gender.NotSpecified
+                print("Uncrecognized gender")
+            }
+        } else {
+            gender = .NotSpecified
+            print("No gender returned")
+        }
 
         //Not important
         let blockedUsers = userDict["blockedUsers"]
@@ -138,7 +153,7 @@ class HLUser: NSObject, NSCoding {
         let usersChattedWith = userDict["usersChattedWith"]
 
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
-        let birthday = NSDate(timeIntervalSince1970: birthdayNumber)
+        let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
         //TODO: ^^ This doesn't quite work
 
         //TODO: Load this image
