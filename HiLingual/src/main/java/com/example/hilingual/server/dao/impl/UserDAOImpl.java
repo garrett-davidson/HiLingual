@@ -114,7 +114,8 @@ public class UserDAOImpl implements UserDAO {
         Set<User> usersList = new LinkedHashSet<>();
         //  TODO do an actual real matching algorithm
         //  Currently just grab the top 5 entries from the table
-        usersList.addAll(handle.createQuery("SELECT * FROM hl_users LIMIT 5")
+        usersList.addAll(handle.createQuery("SELECT * FROM hl_users WHERE (user_id != :invoker) LIMIT 5")
+                .bind("invoker", invoker.getUserId())
                 .map(new UserMapper())
                 .list());
         //convert the List to Array and return
