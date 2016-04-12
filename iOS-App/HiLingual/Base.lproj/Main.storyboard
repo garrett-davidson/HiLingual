@@ -502,7 +502,7 @@
                         <segue destination="KKk-kp-eLC" kind="relationship" relationship="viewControllers" id="zmD-Gt-X9g"/>
                         <segue destination="2in-sX-LFU" kind="relationship" relationship="viewControllers" id="6GW-Be-OvZ"/>
                         <segue destination="EA8-An-G2I" kind="relationship" relationship="viewControllers" id="Tm2-hg-sfu"/>
-                        <segue destination="FFY-Zy-0zR" kind="show" id="wP9-mr-7Ag"/>
+                        <segue destination="Xm0-rl-tbh" kind="relationship" relationship="viewControllers" id="Mp4-x1-iwY"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hNt-U5-mGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -736,7 +736,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uji-b7-0Wm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6181" y="861"/>
+            <point key="canvasLocation" x="6993" y="861"/>
         </scene>
         <!--Data Source-->
         <scene sceneID="R3e-Td-13D">
@@ -884,10 +884,10 @@
             </objects>
             <point key="canvasLocation" x="3195" y="1019"/>
         </scene>
-        <!--Flash Card View Controller-->
+        <!--Flashcard View Contrller-->
         <scene sceneID="Ql9-PP-nf0">
             <objects>
-                <viewController id="FFY-Zy-0zR" customClass="FlashCardViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Flashcard View Contrller" id="FFY-Zy-0zR" customClass="FlashCardViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pnd-Oq-5U8"/>
                         <viewControllerLayoutGuide type="bottom" id="25t-9K-MyE"/>
@@ -909,10 +909,11 @@
                             <constraint firstItem="Mhm-Pj-Ujz" firstAttribute="leading" secondItem="3p7-pE-oAV" secondAttribute="leadingMargin" constant="-20" id="re8-bK-gau"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="l5v-rO-X5s"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Zo-u9-6kO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4060" y="1015"/>
+            <point key="canvasLocation" x="4872" y="1015"/>
         </scene>
         <!--Messages-->
         <scene sceneID="biN-L3-hVo">
@@ -1022,7 +1023,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HSr-BE-Z8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5269" y="831"/>
+            <point key="canvasLocation" x="6081" y="831"/>
+        </scene>
+        <!--Flashcard Navigation Controller-->
+        <scene sceneID="AKS-NV-x1u">
+            <objects>
+                <navigationController title="Flashcard Navigation Controller" automaticallyAdjustsScrollViewInsets="NO" id="Xm0-rl-tbh" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Flashcards" id="PwJ-yW-OJZ"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lha-LE-9Od">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="FFY-Zy-0zR" kind="relationship" relationship="rootViewController" id="JDY-SX-mgc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B90-lv-dsx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4060" y="1015"/>
         </scene>
     </scenes>
     <resources>
@@ -1031,7 +1051,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="eTR-Rc-7JK"/>
         <segue reference="S8b-uI-wvn"/>
-        <segue reference="uD0-O0-1tF"/>
         <segue reference="US8-Fg-o83"/>
+        <segue reference="XeF-YT-wgH"/>
     </inferredMetricsTieBreakers>
 </document>
