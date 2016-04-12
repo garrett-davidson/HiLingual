@@ -1,0 +1,78 @@
+
+/* Class = "UILabel"; accessibilityIdentifier = "SpeaksLabel"; ObjectID = "4Fl-0e-YAL"; */
+"4Fl-0e-YAL.accessibilityIdentifier" = "SpeaksLabel";
+
+/* Class = "UILabel"; text = "Speaks:"; ObjectID = "4Fl-0e-YAL"; */
+"4Fl-0e-YAL.text" = "Speaks:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "LearningLabel"; ObjectID = "CCJ-CG-M0J"; */
+"CCJ-CG-M0J.accessibilityIdentifier" = "LearningLabel";
+
+/* Class = "UILabel"; text = "Learning:"; ObjectID = "CCJ-CG-M0J"; */
+"CCJ-CG-M0J.text" = "Learning:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "GenderSelectionLabel"; ObjectID = "EP1-OT-Q5T"; */
+"EP1-OT-Q5T.accessibilityIdentifier" = "GenderSelectionLabel";
+
+/* Class = "UILabel"; text = "Gender"; ObjectID = "EP1-OT-Q5T"; */
+"EP1-OT-Q5T.text" = "Gender";
+
+/* Class = "UILabel"; accessibilityIdentifier = "GenderLabel"; ObjectID = "Fwc-fh-aKk"; */
+"Fwc-fh-aKk.accessibilityIdentifier" = "GenderLabel";
+
+/* Class = "UILabel"; text = "Gender: "; ObjectID = "Fwc-fh-aKk"; */
+"Fwc-fh-aKk.text" = "Gender: ";
+
+/* Class = "UILabel"; accessibilityIdentifier = "AgeLabel"; ObjectID = "OKn-yi-esB"; */
+"OKn-yi-esB.accessibilityIdentifier" = "AgeLabel";
+
+/* Class = "UILabel"; text = "Age:"; ObjectID = "OKn-yi-esB"; */
+"OKn-yi-esB.text" = "Age:";
+
+/* Class = "UITextView"; accessibilityIdentifier = "BioTextView"; ObjectID = "VCT-Qw-TZ1"; */
+"VCT-Qw-TZ1.accessibilityIdentifier" = "BioTextView";
+
+/* Class = "UITextView"; text = "Bio text"; ObjectID = "VCT-Qw-TZ1"; */
+"VCT-Qw-TZ1.text" = "Bio text";
+
+/* Class = "UILabel"; accessibilityIdentifier = "BioLabel"; ObjectID = "bMO-ri-N1e"; */
+"bMO-ri-N1e.accessibilityIdentifier" = "BioLabel";
+
+/* Class = "UILabel"; text = "Bio:"; ObjectID = "bMO-ri-N1e"; */
+"bMO-ri-N1e.text" = "Bio:";
+
+/* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "g3o-wo-TLm"; */
+"g3o-wo-TLm.title" = "Done";
+
+/* Class = "UILabel"; accessibilityIdentifier = "NameLabel"; ObjectID = "gvm-3o-omc"; */
+"gvm-3o-omc.accessibilityIdentifier" = "NameLabel";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "gvm-3o-omc"; */
+"gvm-3o-omc.text" = "Name";
+
+/* Class = "UIView"; accessibilityIdentifier = "EditProfileView"; ObjectID = "iN0-l3-epB"; */
+"iN0-l3-epB.accessibilityIdentifier" = "EditProfileView";
+
+/* Class = "UIImageView"; accessibilityIdentifier = "ProfileImage"; ObjectID = "prR-kc-wq2"; */
+"prR-kc-wq2.accessibilityIdentifier" = "ProfileImage";
+
+/* Class = "UILabel"; accessibilityIdentifier = "DisplayNameLabel"; ObjectID = "qKJ-ua-Xsy"; */
+"qKJ-ua-Xsy.accessibilityIdentifier" = "DisplayNameLabel";
+
+/* Class = "UILabel"; text = "Display Name:"; ObjectID = "qKJ-ua-Xsy"; */
+"qKJ-ua-Xsy.text" = "Display Name:";
+
+/* Class = "UILabel"; accessibilityIdentifier = "AgeSelectionLabel"; ObjectID = "thM-fQ-h5b"; */
+"thM-fQ-h5b.accessibilityIdentifier" = "AgeSelectionLabel";
+
+/* Class = "UILabel"; text = "Age"; ObjectID = "thM-fQ-h5b"; */
+"thM-fQ-h5b.text" = "Age";
+
+/* Class = "UITextField"; accessibilityIdentifier = "DisplayNameField"; ObjectID = "v2x-fg-pw2"; */
+"v2x-fg-pw2.accessibilityIdentifier" = "DisplayNameField";
+
+/* Class = "UITextField"; placeholder = "Display Name"; ObjectID = "v2x-fg-pw2"; */
+"v2x-fg-pw2.placeholder" = "Display Name";
+
+/* Class = "UIPickerView"; accessibilityIdentifier = "PickerView"; ObjectID = "xuJ-H6-jyd"; */
+"xuJ-H6-jyd.accessibilityIdentifier" = "PickerView";
