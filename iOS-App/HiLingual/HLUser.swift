@@ -185,8 +185,9 @@ class HLUser: NSObject, NSCoding {
         return userArray
     }
 
-    func save() {
+    func save(session: HLUserSession=HLUser.getCurrentUser().session!) {
         //This should only be called on the current user
+        
         HLUser.currentUser = self
         var size = CGSize(width: 150, height: 150)
 //        
@@ -218,18 +219,18 @@ class HLUser: NSObject, NSCoding {
 //
 //        //TODO: Implement creating a loggin in to server user
 //        //That way this doesn't have to be hard-coded
-//        if let userJSONData = self.toJSON() {
-//            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
-//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session!.sessionId]
-//            request.HTTPMethod = "PATCH"
-//            request.HTTPBody = userJSONData
-//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-//                print(returnedData)
-//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-//                    print(returnString)
-//                }
-//            }
-//        }
+        if let userJSONData = self.toJSON() {
+            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "PATCH"
+            request.HTTPBody = userJSONData
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+            }
+        }
     }
     func scaleImage(image: UIImage, toSize newSize: CGSize) -> (UIImage) {
         let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
@@ -260,7 +261,7 @@ class HLUser: NSObject, NSCoding {
             userDict.setObject("\(gender!)".capitalizedString, forKey: "gender")
         }
         if birthdate != nil {
-            userDict.setObject(birthdate!.timeIntervalSince1970, forKey: "birthdate")
+            userDict.setObject(birthdate!.timeIntervalSince1970 * 1000, forKey: "birthdate")
         }
 
         let learningLanguagesStrings = learningLanguages.map { (language) -> String in
