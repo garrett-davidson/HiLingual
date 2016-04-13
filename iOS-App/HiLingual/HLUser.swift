@@ -124,9 +124,6 @@ enum Gender: Int {
         let userId = (userDict["userId"] as! NSNumber).longLongValue
         let displayName = userDict["displayName"] as! String
 
-        //                    let gender = userDict["gender"]
-        //TODO: Fix this
-
         let gender: Gender
         if let genderString = userDict["gender"] as? String {
             if genderString == "MALE" {

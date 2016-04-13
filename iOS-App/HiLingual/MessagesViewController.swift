@@ -114,9 +114,17 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.declineButton.hidden = true
             cell.acceptButton.hidden = true
 
+            let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(user.userId).chat.last")
+
+            if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
+                cell.lastMessage.text = lastMessage.text
+            }
+
+            else {
+                cell.lastMessage.text = ""
+            }
 
             cell.date.text = "Yesterday".localized
-            cell.lastMessage.text = ""
             return cell
         }
 
