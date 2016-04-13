@@ -708,6 +708,9 @@ extension UITableView {
     func scrollToBottom(ofSection section:Int=0, animated:Bool=true) {
         let cellCount = self.numberOfRowsInSection(section)
 
+        guard cellCount > 0 else {
+            return
+        }
         self.scrollToRowAtIndexPath(NSIndexPath(forItem: cellCount-1, inSection: section), atScrollPosition: .Top, animated: animated)
     }
 }
