@@ -131,6 +131,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     }
     
     @IBAction func tapMicDown(sender: UITapGestureRecognizer) {
+
+        guard !isEditing else {
+            //We don't want to do anything on touch down if we're editing
+            return
+        }
+
+        textView.resignFirstResponder()
         // NOW PICTURE BUTTON TAP
         let imagePickerController = UIImagePickerController()
         let alertController = UIAlertController(title: nil, message: "Choose Source".localized, preferredStyle: .ActionSheet)
@@ -166,9 +173,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             topVC = topVC!.presentedViewController
         }
         topVC?.presentViewController(alertController, animated: true, completion: nil)
-
-        
-        
         
         
         
@@ -398,8 +402,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
         if lines != numLines {
             lines = numLines
-            chatViewController?.tableViewScrollToBottom(false)
-            
+//            chatViewController?.tableViewScrollToBottom(false)
+
         }
         if textView.text == "" && textViewTested == false{
             textViewTested = true
