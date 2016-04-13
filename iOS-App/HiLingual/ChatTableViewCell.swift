@@ -14,4 +14,8 @@ class ChatTableViewCell: UITableViewCell {
     @IBOutlet weak var chatBubbleRight: UILabel!
     @IBOutlet weak var rightConstraintMessageEqualOrLess: NSLayoutConstraint!
     @IBOutlet weak var leftConstraintMessageequal: NSLayoutConstraint!
+    
+    @IBOutlet weak var chatLeftImage: UIImageView!
+    @IBOutlet weak var chatRightImage: UIImageView!
+    
 }

@@ -330,7 +330,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     //MARK:CELL ROW
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
         
@@ -361,31 +360,32 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }else{
                 shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
-            
             return cell
         } else if message.editedText == nil {
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             
-            
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
                 cell.chatBubbleLeft.text = ""
-                
-                cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+                cell.chatLeftImage.hidden = true
+                cell.chatRightImage.layer.cornerRadius = 6
+                //cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
                 cell.chatBubbleRight.text = message.showTranslation ? message.translatedText! : message.text
                 cell.chatBubbleRight.hidden = false
-                cell.chatBubbleRight.layer.cornerRadius = 5
+                cell.chatRightImage.hidden = false
             }
                 
             else {
                 cell.chatBubbleRight.hidden = true
                 cell.chatBubbleRight.text = ""
-                
-                cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+                cell.chatBubbleLeft.text = ""
+                cell.chatRightImage.hidden = true
+                cell.chatLeftImage.layer.cornerRadius = 6
+                //cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
                 cell.chatBubbleLeft.text = message.showTranslation ? message.translatedText! : message.text
+                cell.chatLeftImage.hidden = false
                 cell.chatBubbleLeft.hidden = false
-                cell.chatBubbleLeft.layer.cornerRadius = 5
             }
         
             
@@ -404,11 +404,14 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.leftMessageLabel.text = ""
                 cell.leftEditedMessageLabel.text = ""
                 cell.chatBubbleLeft.frame.size.height = 0
+                cell.editChatLeftImage.hidden = true
                 cell.chatBubbleRight.hidden = false
-                cell.chatBubbleRight.layer.cornerRadius = 5
+                cell.chatBubbleRight.backgroundColor = UIColor.clearColor()
+                cell.editChatRightImage.layer.cornerRadius = 6
 
                 cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
                 cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
+                cell.editChatRightImage.hidden = false
             }
 
             else {
@@ -416,10 +419,14 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.rightMessageLabel.text = ""
                 cell.rightEditedMessageLabel.text = ""
                 cell.chatBubbleLeft.hidden = false
-                cell.chatBubbleLeft.layer.cornerRadius = 5
+                cell.editChatRightImage.hidden = true
+                cell.editChatLeftImage.layer.cornerRadius = 6
 
                 cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
                 cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
+                cell.editChatLeftImage.hidden = false
+
+                
             }
 
             return cell

@@ -225,15 +225,23 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z3R-nL-vUC">
+                                                    <rect key="frame" x="8" y="6" width="26.5" height="32"/>
+                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HVE-Uz-kPg">
+                                                    <rect key="frame" x="565" y="6" width="27" height="32"/>
+                                                    <color key="backgroundColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2l-KZ-MB0">
-                                                    <rect key="frame" x="13" y="8" width="11.5" height="28"/>
+                                                    <rect key="frame" x="18" y="8" width="11.5" height="28"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="ChatBubbleLeftLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLd-4n-QP7">
-                                                    <rect key="frame" x="575.5" y="8" width="11.5" height="28"/>
+                                                    <rect key="frame" x="570" y="8" width="11.5" height="28"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="ChatBubbleRightLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -241,12 +249,20 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="trailing" secondItem="AMw-Yv-49J" secondAttribute="trailingMargin" id="3dX-tX-vby"/>
+                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-2" id="6oh-Ow-5DW"/>
+                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" id="7DZ-R2-K1D"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R2l-KZ-MB0" secondAttribute="trailing" constant="80" id="7hD-h5-Pbe"/>
-                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="5" id="G22-Ee-whZ"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="10" id="G22-Ee-whZ"/>
+                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="leading" secondItem="xLd-4n-QP7" secondAttribute="leading" constant="-5" id="Glh-Hz-Mff"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="R2l-KZ-MB0" secondAttribute="bottom" id="NxH-ZL-rVH"/>
+                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-2" id="RLo-Zt-B57"/>
+                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="bottom" secondItem="AMw-Yv-49J" secondAttribute="bottomMargin" constant="2" id="SWd-wA-i5V"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="HVE-Uz-kPg" secondAttribute="bottom" constant="-2" id="SXq-Yj-P8w"/>
                                                 <constraint firstItem="xLd-4n-QP7" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="WZZ-hd-UmJ"/>
                                                 <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="80" id="aF9-Tw-d5P"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="xLd-4n-QP7" secondAttribute="trailing" constant="5" id="hpi-ti-771"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="trailing" secondItem="z3R-nL-vUC" secondAttribute="trailing" constant="-5" id="ho2-XS-7CY"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xLd-4n-QP7" secondAttribute="trailing" constant="10" id="hpi-ti-771"/>
                                                 <constraint firstItem="R2l-KZ-MB0" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="juz-ld-ZdP"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="xLd-4n-QP7" secondAttribute="bottom" id="sd6-VB-MAW"/>
                                             </constraints>
@@ -255,19 +271,134 @@
                                         <connections>
                                             <outlet property="chatBubbleLeft" destination="R2l-KZ-MB0" id="Y7a-lG-FZn"/>
                                             <outlet property="chatBubbleRight" destination="xLd-4n-QP7" id="egX-eI-F1k"/>
+                                            <outlet property="chatLeftImage" destination="z3R-nL-vUC" id="jTr-If-kNa"/>
+                                            <outlet property="chatRightImage" destination="HVE-Uz-kPg" id="g52-Wh-fah"/>
                                             <outlet property="leftConstraintMessageequal" destination="G22-Ee-whZ" id="w1M-Gd-8Ug"/>
                                             <outlet property="rightConstraintMessageEqualOrLess" destination="7hD-h5-Pbe" id="8Td-kG-651"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatEditedTableViewCell" rowHeight="63" id="jYI-JC-IST" customClass="ChatEditedTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="63"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jYI-JC-IST" id="JRc-cy-5by">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="63"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yVy-aM-ogz">
+                                                    <rect key="frame" x="13" y="6" width="21.5" height="47"/>
+                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g9I-QY-aNc">
+                                                    <rect key="frame" x="565" y="6" width="22" height="51"/>
+                                                    <color key="backgroundColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
+                                                <view opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5OH-us-hj3">
+                                                    <rect key="frame" x="18" y="8" width="11.5" height="47"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEU-jx-Rjb">
+                                                            <rect key="frame" x="0.0" y="0.0" width="11.5" height="25"/>
+                                                            <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="OriginalLeftTextLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Yj-zr-FGs">
+                                                            <rect key="frame" x="0.0" y="26" width="11.5" height="21"/>
+                                                            <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="EditedLeftTextLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="EditedChatBubbleLeftView"/>
+                                                    <constraints>
+                                                        <constraint firstItem="hEU-jx-Rjb" firstAttribute="leading" secondItem="5OH-us-hj3" secondAttribute="leading" id="48B-OW-CZL"/>
+                                                        <constraint firstItem="9Yj-zr-FGs" firstAttribute="leading" secondItem="5OH-us-hj3" secondAttribute="leading" id="Ebi-ne-mfR"/>
+                                                        <constraint firstAttribute="bottom" secondItem="9Yj-zr-FGs" secondAttribute="bottom" id="GkV-Sc-rUo"/>
+                                                        <constraint firstItem="hEU-jx-Rjb" firstAttribute="top" secondItem="5OH-us-hj3" secondAttribute="top" id="IXb-jC-K2w"/>
+                                                        <constraint firstAttribute="trailing" secondItem="hEU-jx-Rjb" secondAttribute="trailing" id="vQc-Sd-7oB"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9Yj-zr-FGs" secondAttribute="trailing" id="y2D-eR-UCh"/>
+                                                        <constraint firstItem="9Yj-zr-FGs" firstAttribute="top" secondItem="hEU-jx-Rjb" secondAttribute="bottom" constant="1" id="zQO-JR-NPI"/>
+                                                    </constraints>
+                                                </view>
+                                                <view opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n4B-Xn-cqo">
+                                                    <rect key="frame" x="570" y="8" width="11.5" height="47"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpO-eU-jNx">
+                                                            <rect key="frame" x="0.0" y="0.0" width="11.5" height="25"/>
+                                                            <color key="backgroundColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="OriginalRightTextLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZj-OK-mpZ">
+                                                            <rect key="frame" x="0.0" y="26" width="11.5" height="21"/>
+                                                            <color key="backgroundColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="EditedRightTextLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="EditedChatBubbleRightView"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="dpO-eU-jNx" secondAttribute="trailing" id="270-O0-z3H"/>
+                                                        <constraint firstItem="BZj-OK-mpZ" firstAttribute="top" secondItem="dpO-eU-jNx" secondAttribute="bottom" constant="1" id="6lQ-fJ-n3H"/>
+                                                        <constraint firstItem="dpO-eU-jNx" firstAttribute="top" secondItem="n4B-Xn-cqo" secondAttribute="top" id="Art-dE-i2R"/>
+                                                        <constraint firstAttribute="bottom" secondItem="BZj-OK-mpZ" secondAttribute="bottom" id="Bvh-3a-kIh"/>
+                                                        <constraint firstItem="dpO-eU-jNx" firstAttribute="leading" secondItem="n4B-Xn-cqo" secondAttribute="leading" id="N5h-Eg-hNp"/>
+                                                        <constraint firstAttribute="trailing" secondItem="BZj-OK-mpZ" secondAttribute="trailing" id="OiU-q5-gh6"/>
+                                                        <constraint firstItem="BZj-OK-mpZ" firstAttribute="leading" secondItem="n4B-Xn-cqo" secondAttribute="leading" id="xz5-lt-4Fb"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="yVy-aM-ogz" firstAttribute="bottom" secondItem="JRc-cy-5by" secondAttribute="bottomMargin" constant="-2" id="16A-st-FbQ"/>
+                                                <constraint firstItem="5OH-us-hj3" firstAttribute="leading" secondItem="JRc-cy-5by" secondAttribute="leadingMargin" constant="10" id="3rD-G5-jFz"/>
+                                                <constraint firstItem="g9I-QY-aNc" firstAttribute="top" secondItem="JRc-cy-5by" secondAttribute="topMargin" constant="-2" id="6f4-p0-YNj"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="n4B-Xn-cqo" secondAttribute="bottom" id="7Bq-j6-DcK"/>
+                                                <constraint firstItem="5OH-us-hj3" firstAttribute="trailing" secondItem="yVy-aM-ogz" secondAttribute="trailing" constant="-5" id="FLx-1y-Lt6"/>
+                                                <constraint firstItem="yVy-aM-ogz" firstAttribute="leading" secondItem="JRc-cy-5by" secondAttribute="leadingMargin" constant="5" id="XmO-UG-ly4"/>
+                                                <constraint firstItem="g9I-QY-aNc" firstAttribute="leading" secondItem="n4B-Xn-cqo" secondAttribute="leading" constant="-5" id="aQG-WZ-CHl"/>
+                                                <constraint firstItem="n4B-Xn-cqo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JRc-cy-5by" secondAttribute="leadingMargin" constant="80" id="efW-mv-T6p"/>
+                                                <constraint firstItem="n4B-Xn-cqo" firstAttribute="top" secondItem="JRc-cy-5by" secondAttribute="topMargin" id="fQo-Yj-QuK"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5OH-us-hj3" secondAttribute="bottom" id="kOE-1U-FDu"/>
+                                                <constraint firstItem="yVy-aM-ogz" firstAttribute="top" secondItem="JRc-cy-5by" secondAttribute="topMargin" constant="-2" id="mNT-QU-7TJ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="g9I-QY-aNc" secondAttribute="bottom" constant="-2" id="meT-2G-Mvj"/>
+                                                <constraint firstItem="5OH-us-hj3" firstAttribute="top" secondItem="JRc-cy-5by" secondAttribute="topMargin" id="vHD-DC-VbU"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="n4B-Xn-cqo" secondAttribute="trailing" constant="10" id="wFX-jc-h4U"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5OH-us-hj3" secondAttribute="trailing" constant="80" id="wYn-CZ-fhb"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="g9I-QY-aNc" secondAttribute="trailing" constant="5" id="zp6-4z-7mo"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="ChatEditedTableViewCell"/>
+                                        <connections>
+                                            <outlet property="chatBubbleLeft" destination="5OH-us-hj3" id="vZ5-6d-tRg"/>
+                                            <outlet property="chatBubbleRight" destination="n4B-Xn-cqo" id="WIv-z3-WGz"/>
+                                            <outlet property="editChatLeftImage" destination="yVy-aM-ogz" id="ylb-6M-DNp"/>
+                                            <outlet property="editChatRightImage" destination="g9I-QY-aNc" id="AzH-18-Yld"/>
+                                            <outlet property="leftConstraintMessageequal" destination="3rD-G5-jFz" id="G6J-LX-gXW"/>
+                                            <outlet property="leftEditedMessageLabel" destination="9Yj-zr-FGs" id="9MT-a8-yIX"/>
+                                            <outlet property="leftMessageLabel" destination="hEU-jx-Rjb" id="LVF-EA-4ZW"/>
+                                            <outlet property="rightConstraintMessageEqualOrLess" destination="wYn-CZ-fhb" id="Klz-cz-XTZ"/>
+                                            <outlet property="rightEditedMessageLabel" destination="BZj-OK-mpZ" id="s3S-tP-3EV"/>
+                                            <outlet property="rightMessageLabel" destination="dpO-eU-jNx" id="VzY-SO-ICv"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatVoiceTableViewCell" rowHeight="46" id="xPx-jD-MEk" customClass="ChatVoiceTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="600" height="46"/>
+                                        <rect key="frame" x="0.0" y="135" width="600" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPx-jD-MEk" id="WZt-bm-o9v">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9AS-S7-Cqc">
-                                                    <rect key="frame" x="8" y="8" width="30" height="30"/>
+                                                    <rect key="frame" x="13" y="8" width="30" height="30"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="PlaybackButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="Tur-ZH-hOW"/>
@@ -282,7 +413,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGm-K1-MVc">
-                                                    <rect key="frame" x="562" y="8" width="30" height="30"/>
+                                                    <rect key="frame" x="567" y="8" width="30" height="30"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="PlaybackButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="0CE-NQ-tnl"/>
@@ -298,11 +429,11 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="9AS-S7-Cqc" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" id="C7v-vA-l0a"/>
+                                                <constraint firstItem="9AS-S7-Cqc" firstAttribute="leading" secondItem="WZt-bm-o9v" secondAttribute="leadingMargin" constant="5" id="C7v-vA-l0a"/>
                                                 <constraint firstItem="9AS-S7-Cqc" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="HuH-cs-1LH"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="RGm-K1-MVc" secondAttribute="bottom" id="QTq-iW-aa1"/>
                                                 <constraint firstItem="RGm-K1-MVc" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="V5E-OT-Egp"/>
-                                                <constraint firstItem="RGm-K1-MVc" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" id="inm-mJ-Qtx"/>
+                                                <constraint firstItem="RGm-K1-MVc" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="5" id="inm-mJ-Qtx"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="9AS-S7-Cqc" secondAttribute="bottom" id="wRV-Ip-hZp"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -310,101 +441,6 @@
                                         <connections>
                                             <outlet property="leftButton" destination="9AS-S7-Cqc" id="aJf-2A-WaQ"/>
                                             <outlet property="rightButton" destination="RGm-K1-MVc" id="MhJ-Dc-8mW"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatEditedTableViewCell" rowHeight="63" id="jYI-JC-IST" customClass="ChatEditedTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="118" width="600" height="63"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jYI-JC-IST" id="JRc-cy-5by">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="63"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5OH-us-hj3">
-                                                    <rect key="frame" x="13" y="8" width="11.5" height="47"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEU-jx-Rjb">
-                                                            <rect key="frame" x="0.0" y="0.0" width="11.5" height="25"/>
-                                                            <color key="backgroundColor" red="0.87450980389999999" green="0.87450980389999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="OriginalLeftTextLabel"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Yj-zr-FGs">
-                                                            <rect key="frame" x="0.0" y="26" width="11.5" height="21"/>
-                                                            <color key="backgroundColor" red="0.87450980392156863" green="0.87450980392156863" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="EditedLeftTextLabel"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="EditedChatBubbleLeftView"/>
-                                                    <constraints>
-                                                        <constraint firstItem="hEU-jx-Rjb" firstAttribute="leading" secondItem="5OH-us-hj3" secondAttribute="leading" id="48B-OW-CZL"/>
-                                                        <constraint firstItem="9Yj-zr-FGs" firstAttribute="leading" secondItem="5OH-us-hj3" secondAttribute="leading" id="Ebi-ne-mfR"/>
-                                                        <constraint firstAttribute="bottom" secondItem="9Yj-zr-FGs" secondAttribute="bottom" id="GkV-Sc-rUo"/>
-                                                        <constraint firstItem="hEU-jx-Rjb" firstAttribute="top" secondItem="5OH-us-hj3" secondAttribute="top" id="IXb-jC-K2w"/>
-                                                        <constraint firstAttribute="trailing" secondItem="hEU-jx-Rjb" secondAttribute="trailing" id="vQc-Sd-7oB"/>
-                                                        <constraint firstAttribute="trailing" secondItem="9Yj-zr-FGs" secondAttribute="trailing" id="y2D-eR-UCh"/>
-                                                        <constraint firstItem="9Yj-zr-FGs" firstAttribute="top" secondItem="hEU-jx-Rjb" secondAttribute="bottom" constant="1" id="zQO-JR-NPI"/>
-                                                    </constraints>
-                                                </view>
-                                                <view opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n4B-Xn-cqo">
-                                                    <rect key="frame" x="575" y="8" width="11.5" height="47"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpO-eU-jNx">
-                                                            <rect key="frame" x="0.0" y="0.0" width="11.5" height="25"/>
-                                                            <color key="backgroundColor" red="0.42745098040000001" green="1" blue="0.39607843139999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="OriginalRightTextLabel"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZj-OK-mpZ">
-                                                            <rect key="frame" x="0.0" y="26" width="11.5" height="21"/>
-                                                            <color key="backgroundColor" red="0.42745098040000001" green="1" blue="0.39607843139999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="EditedRightTextLabel"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="EditedChatBubbleRightView"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="dpO-eU-jNx" secondAttribute="trailing" id="270-O0-z3H"/>
-                                                        <constraint firstItem="BZj-OK-mpZ" firstAttribute="top" secondItem="dpO-eU-jNx" secondAttribute="bottom" constant="1" id="6lQ-fJ-n3H"/>
-                                                        <constraint firstItem="dpO-eU-jNx" firstAttribute="top" secondItem="n4B-Xn-cqo" secondAttribute="top" id="Art-dE-i2R"/>
-                                                        <constraint firstAttribute="bottom" secondItem="BZj-OK-mpZ" secondAttribute="bottom" id="Bvh-3a-kIh"/>
-                                                        <constraint firstItem="dpO-eU-jNx" firstAttribute="leading" secondItem="n4B-Xn-cqo" secondAttribute="leading" id="N5h-Eg-hNp"/>
-                                                        <constraint firstAttribute="trailing" secondItem="BZj-OK-mpZ" secondAttribute="trailing" id="OiU-q5-gh6"/>
-                                                        <constraint firstItem="BZj-OK-mpZ" firstAttribute="leading" secondItem="n4B-Xn-cqo" secondAttribute="leading" id="xz5-lt-4Fb"/>
-                                                    </constraints>
-                                                </view>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="5OH-us-hj3" firstAttribute="leading" secondItem="JRc-cy-5by" secondAttribute="leadingMargin" constant="5" id="3rD-G5-jFz"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="n4B-Xn-cqo" secondAttribute="bottom" id="7Bq-j6-DcK"/>
-                                                <constraint firstItem="n4B-Xn-cqo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JRc-cy-5by" secondAttribute="leadingMargin" constant="80" id="efW-mv-T6p"/>
-                                                <constraint firstItem="n4B-Xn-cqo" firstAttribute="top" secondItem="JRc-cy-5by" secondAttribute="topMargin" id="fQo-Yj-QuK"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="5OH-us-hj3" secondAttribute="bottom" id="kOE-1U-FDu"/>
-                                                <constraint firstItem="5OH-us-hj3" firstAttribute="top" secondItem="JRc-cy-5by" secondAttribute="topMargin" id="vHD-DC-VbU"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="n4B-Xn-cqo" secondAttribute="trailing" constant="5" id="wFX-jc-h4U"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5OH-us-hj3" secondAttribute="trailing" constant="80" id="wYn-CZ-fhb"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" identifier="ChatEditedTableViewCell"/>
-                                        <connections>
-                                            <outlet property="chatBubbleLeft" destination="5OH-us-hj3" id="vZ5-6d-tRg"/>
-                                            <outlet property="chatBubbleRight" destination="n4B-Xn-cqo" id="WIv-z3-WGz"/>
-                                            <outlet property="leftConstraintMessageequal" destination="3rD-G5-jFz" id="G6J-LX-gXW"/>
-                                            <outlet property="leftEditedMessageLabel" destination="9Yj-zr-FGs" id="9MT-a8-yIX"/>
-                                            <outlet property="leftMessageLabel" destination="hEU-jx-Rjb" id="LVF-EA-4ZW"/>
-                                            <outlet property="rightConstraintMessageEqualOrLess" destination="wYn-CZ-fhb" id="Klz-cz-XTZ"/>
-                                            <outlet property="rightEditedMessageLabel" destination="BZj-OK-mpZ" id="s3S-tP-3EV"/>
-                                            <outlet property="rightMessageLabel" destination="dpO-eU-jNx" id="VzY-SO-ICv"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1050,8 +1086,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="eTR-Rc-7JK"/>
-        <segue reference="S8b-uI-wvn"/>
-        <segue reference="US8-Fg-o83"/>
         <segue reference="XeF-YT-wgH"/>
+        <segue reference="3s2-qW-3mn"/>
+        <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>
