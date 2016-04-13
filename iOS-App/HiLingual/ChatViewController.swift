@@ -138,6 +138,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return true
         }
 
+        print("Faild to send message")
+
         return false
     }
     func sendImageWithData(data: NSData) {
@@ -698,10 +700,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         return attributedDiff
-    }
-
-    func accessoryViewChangedToNewHeight(height: CGFloat) {
-        
     }
 
 }

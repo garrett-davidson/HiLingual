@@ -332,6 +332,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             if chatViewController!.sendMessageWithText(textView.text) {
                 textView.text = ""
                 textViewDidChange(textView)
+                chatViewController?.tableView.scrollToBottom()
             }
         }
     }
