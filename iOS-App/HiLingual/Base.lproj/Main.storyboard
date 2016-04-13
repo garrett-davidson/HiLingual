@@ -88,14 +88,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Recent Message" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsD-GD-Ptj">
-                                                    <rect key="frame" x="82" y="32.5" width="477" height="16"/>
+                                                    <rect key="frame" x="82" y="32" width="477" height="16"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="LastMessageLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastMessage" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jtj-uA-qSk">
-                                                    <rect key="frame" x="489" y="8" width="69.5" height="13.5"/>
+                                                    <rect key="frame" x="489" y="11" width="69.5" height="13.5"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="LastMessageDateLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -145,6 +145,7 @@
                                             <constraints>
                                                 <constraint firstItem="DsD-GD-Ptj" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="10" id="3sy-Xy-HRi"/>
                                                 <constraint firstItem="J8t-oZ-gwa" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="7eT-Nu-lCf"/>
+                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="centerY" secondItem="J8t-oZ-gwa" secondAttribute="centerY" id="A8Y-kE-87H"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="IUP-Vd-aa4" secondAttribute="bottom" id="AYX-vf-P6I"/>
                                                 <constraint firstItem="IUP-Vd-aa4" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="FXM-89-W4W"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="DsD-GD-Ptj" secondAttribute="trailing" id="H2i-DT-Oge"/>
@@ -155,7 +156,6 @@
                                                 <constraint firstItem="w23-lp-SXl" firstAttribute="centerX" secondItem="Bl9-2e-fTH" secondAttribute="centerX" id="THU-UV-6mE"/>
                                                 <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="10" id="e3z-Z4-nSN"/>
                                                 <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="DsD-GD-Ptj" secondAttribute="bottom" id="gNr-q6-YOf"/>
-                                                <constraint firstItem="jtj-uA-qSk" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="mQS-t4-klX"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="w23-lp-SXl" secondAttribute="bottom" id="pSU-JJ-h5s"/>
                                             </constraints>
                                         </tableViewCellContentView>
