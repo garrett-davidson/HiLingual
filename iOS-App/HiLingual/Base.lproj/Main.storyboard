@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F18b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -87,8 +87,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Recent Message" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsD-GD-Ptj">
-                                                    <rect key="frame" x="82" y="32.5" width="477" height="39.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Recent Message" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsD-GD-Ptj">
+                                                    <rect key="frame" x="82" y="32.5" width="477" height="16"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="LastMessageLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -154,7 +154,7 @@
                                                 <constraint firstItem="jtj-uA-qSk" firstAttribute="leading" secondItem="J8t-oZ-gwa" secondAttribute="trailing" constant="8" id="SwD-kW-img"/>
                                                 <constraint firstItem="w23-lp-SXl" firstAttribute="centerX" secondItem="Bl9-2e-fTH" secondAttribute="centerX" id="THU-UV-6mE"/>
                                                 <constraint firstItem="J8t-oZ-gwa" firstAttribute="leading" secondItem="IUP-Vd-aa4" secondAttribute="trailing" constant="10" id="e3z-Z4-nSN"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="DsD-GD-Ptj" secondAttribute="bottom" id="gNr-q6-YOf"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="DsD-GD-Ptj" secondAttribute="bottom" id="gNr-q6-YOf"/>
                                                 <constraint firstItem="jtj-uA-qSk" firstAttribute="top" secondItem="Bl9-2e-fTH" secondAttribute="topMargin" id="mQS-t4-klX"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="w23-lp-SXl" secondAttribute="bottom" id="pSU-JJ-h5s"/>
                                             </constraints>
@@ -998,9 +998,9 @@
         <image name="shittyplay" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uD0-O0-1tF"/>
+        <segue reference="US8-Fg-o83"/>
         <segue reference="eTR-Rc-7JK"/>
         <segue reference="S8b-uI-wvn"/>
-        <segue reference="3s2-qW-3mn"/>
+        <segue reference="uD0-O0-1tF"/>
     </inferredMetricsTieBreakers>
 </document>
