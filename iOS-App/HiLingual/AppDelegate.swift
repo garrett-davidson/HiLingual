@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 extension String {
     func localizedWithComment(comment:String) -> String {
@@ -44,13 +45,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
             print(error)
         }
 
-        registerForNotifications(application)
+        registerForRemoteNotifications(application)
+        registerForLocalNotifications()
 
 
         return true
     }
 
-    func registerForNotifications(application: UIApplication) {
+    func registerForRemoteNotifications(application: UIApplication) {
         //        if #available(iOS 8.0, *) {
         let settings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         application.registerUserNotificationSettings(settings)
@@ -60,6 +62,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         //            let types: UIRemoteNotificationType = [.Alert, .Badge, .Sound]
         //            application.registerForRemoteNotificationTypes(types)
         //        }
+    }
+
+    func registerForLocalNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.newMessage.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.editedMessage.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.requestAccepted.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.requestReceived.rawValue, object: nil)
+
+    }
+
+    func receivedRemoteNotification(notifcation: NSNotification) {
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

@@ -17,6 +17,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     var messages = [HLMessage]()
 
     let currentUser = HLUser.getCurrentUser()
+    let timestampFormamter = NSDateFormatter()
 
     var hasPendingChats: Bool {
         get {
@@ -33,7 +34,13 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         //for (getCurrentUser().chattedWith.count)) hiddenButtons+= true
         // hiddenButtons = getCurrentUser().chattedWith
         //grab users.ChattedWith to fill users conversations list
+
+        timestampFormamter.locale = NSLocale.autoupdatingCurrentLocale()
+        timestampFormamter.dateStyle = .ShortStyle
+        timestampFormamter.timeStyle = .ShortStyle
+        timestampFormamter.doesRelativeDateFormatting = true
     }
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return hasPendingChats ? 2 : 1
     }
@@ -118,8 +125,16 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
                 cell.lastMessage.text = lastMessage.text
 
+                if NSCalendar.currentCalendar().isDateInToday(lastMessage.sentTimestamp) {
+                    timestampFormamter.timeStyle = .ShortStyle
+                    timestampFormamter.dateStyle = .NoStyle
+                } else {
+                    timestampFormamter.timeStyle = .NoStyle
+                    timestampFormamter.dateStyle = .ShortStyle
+                }
 
-                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
+                cell.date.text = timestampFormamter.stringFromDate(lastMessage.sentTimestamp)
+//                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
             }
 
             else {
