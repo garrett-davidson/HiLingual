@@ -998,9 +998,9 @@
         <image name="shittyplay" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="US8-Fg-o83"/>
         <segue reference="eTR-Rc-7JK"/>
-        <segue reference="S8b-uI-wvn"/>
         <segue reference="uD0-O0-1tF"/>
+        <segue reference="3s2-qW-3mn"/>
+        <segue reference="S8b-uI-wvn"/>
     </inferredMetricsTieBreakers>
 </document>

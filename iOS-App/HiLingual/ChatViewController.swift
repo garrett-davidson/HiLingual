@@ -62,7 +62,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
         enableKeyboardHideOnTap()
-        tableViewScrollToBottom(false)
 
         setupEditMenuButtons()
 
@@ -75,6 +74,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
        // let controller = AudioRecorderViewController()
        // controller.audioRecorderDelegate = self
         //presentViewController(controller, animated: true, completion: nil)
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        chatTableView.scrollToBottom(animated: true)
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -200,6 +204,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         testView.textViewDidChange(testView.textView)
         testView.textTestchange()
         //testView.textViewDidChange(testView.textView)
+
+        tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: editingCellIndex!, inSection: 0), atScrollPosition: .Bottom, animated: true)
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
@@ -248,20 +254,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     private func enableKeyboardHideOnTap(){
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.menuWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillChangeFrame(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
     func textViewDidChange(textView: UITextView) {
-        tableViewScrollToBottom(true)
+        tableView.scrollToBottom()
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
-//        guard messages[indexPath.row].senderID != currentUser.userId else {
-//            return
-//        }
 
         guard editingCellIndex == nil else {
             return
@@ -282,12 +284,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return
         }
 
+        selectedCellIndex = indexPath.row
+
         //This keeps the keyboard up if it's already up
         if testView.textView.isFirstResponder() {
             hiddenTextField.becomeFirstResponder()
         }
-
-        selectedCellIndex = indexPath.row
 
         //This delay MUST be here
         //Otherwiser, the whenever the first responder changes, the menu immediately disappears
@@ -302,34 +304,31 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func keyboardWillShow(notification: NSNotification) {
+        let oldKeyboardFrame = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
+
+        if oldKeyboardFrame.height + oldKeyboardFrame.minY > self.view.frame.height {
+            self.chatTableView.scrollToBottom()
+        }
+    }
+
+    func keyboardWillChangeFrame(notification: NSNotification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
         UIView.animateWithDuration(duration) { () -> Void in
             if let height = self.navigationController?.navigationBar.frame.height {
-                self.chatTableView.contentInset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.height, 0)
-                self.view.layoutIfNeeded()
+                let inset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.size.height, 0)
+                self.chatTableView.contentInset = inset
+                self.chatTableView.scrollIndicatorInsets = inset
             }
-            
         }
-        if scroll < 2{
-            scroll += 1
-            tableViewScrollToBottom(true)
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
-        UIView.animateWithDuration(duration) { () -> Void in
-            if let height = self.navigationController?.navigationBar.frame.height {
-                self.chatTableView.contentInset = UIEdgeInsetsMake(height + 20, 0, 0, 0);
-                self.view.layoutIfNeeded()
-            }
+        if editingCellIndex != nil {
+            tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: editingCellIndex!, inSection: 0), atScrollPosition: .Bottom, animated: true)
         }
-        scroll = 0
     }
+
     //MARK:CELL ROW
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -364,7 +363,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
             return cell
-        }else if message.editedText == nil {
+        } else if message.editedText == nil {
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             
@@ -391,7 +390,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
             
             return cell
-        }else {
+        } else {
             let cellIdentity = "ChatEditedTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
 
@@ -426,23 +425,25 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
     }
+
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
     }
+
     @IBAction func tapPlayButton(sender: UIButton) {
-        if(isPlayingMessage == true){
-            if(sender == curPlayingMessage){
+        if isPlayingMessage == true {
+            if sender == curPlayingMessage {
                 sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
                 isPlayingMessage = false;
                 audioPlayer.stop()
-            }else{
+            } else {
                 curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
                 audioPlayer.stop()
                 isPlayingMessage = false;
                 tapPlayButton(sender)
             }
-        }else{
+        } else {
             let deviceURL = messages[sender.tag].messageUUID!
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let audioURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).m4a")
@@ -490,19 +491,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
-    }
-    
-    func tableViewScrollToBottom(animated: Bool) {
-
-        dispatch_async(dispatch_get_main_queue(), {
-            let numberOfSections = self.chatTableView.numberOfSections
-            let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
-            
-            if numberOfRows > 0 {
-                let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
-                self.chatTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
-            }
-        })
     }
 
     func loadMoreMessages(refreshControl: UIRefreshControl) {
@@ -560,7 +548,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             loadEdits(lastCached, count: 50 - newMessages.count)
 
             tableView.reloadData()
-            tableViewScrollToBottom(false)
+            tableView.scrollToBottom()
         }
 
         else {
@@ -705,6 +693,18 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return attributedDiff
     }
 
+    func accessoryViewChangedToNewHeight(height: CGFloat) {
+        
+    }
+
+}
+
+extension UITableView {
+    func scrollToBottom(ofSection section:Int=0, animated:Bool=true) {
+        let cellCount = self.numberOfRowsInSection(section)
+
+        self.scrollToRowAtIndexPath(NSIndexPath(forItem: cellCount-1, inSection: section), atScrollPosition: .Top, animated: animated)
+    }
 }
 
 extension String {

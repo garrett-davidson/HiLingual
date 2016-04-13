@@ -87,7 +87,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         textView.text = ""
         textView.scrollEnabled = false
         textViewDidChange(textView)
-
         chatViewController?.editingCellIndex = nil
     }
 
@@ -359,7 +358,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     func textViewDidChange(textView: UITextView) {
         
         //stop the view at top of screen somehow
-        textView.reloadInputViews()
+//        textView.reloadInputViews()
         if textView.text == "" {
             textView.scrollEnabled = false
             textView.sizeToFit()
@@ -390,7 +389,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             sendButton.tintColor = UIColor.lightGrayColor()
             sendButton.userInteractionEnabled = false
         }
-        textView.reloadInputViews()
+//        textView.reloadInputViews()
         let numLines = textView.contentSize.height / textView.font!.lineHeight;
 
         if numLines > 5 {
@@ -437,12 +436,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
         textView.text = "Message".localized
     }
-    
-    
+
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }
-    
-    
 }
 
