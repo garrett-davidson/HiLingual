@@ -33,7 +33,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         //for (getCurrentUser().chattedWith.count)) hiddenButtons+= true
         // hiddenButtons = getCurrentUser().chattedWith
         //grab users.ChattedWith to fill users conversations list
-        
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return hasPendingChats ? 2 : 1
@@ -118,13 +117,16 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
             if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
                 cell.lastMessage.text = lastMessage.text
+
+
+                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
             }
 
             else {
                 cell.lastMessage.text = ""
+                cell.date.text = ""
             }
 
-            cell.date.text = "Yesterday".localized
             return cell
         }
 
