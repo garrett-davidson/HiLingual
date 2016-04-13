@@ -296,6 +296,7 @@ public class ChatResource {
         String builtBody = new ApnsPayloadBuilder().
                 setAlertTitle("HiLingual Chat").
                 setAlertBody(body).
+                setSoundFileName("default").
                 addCustomProperty("type", type.name()).
                 buildWithDefaultMaximumLength();
         Set<String> tokens = deviceTokenDAO.getUserDeviceTokens(user);
