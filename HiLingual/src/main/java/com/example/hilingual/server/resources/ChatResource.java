@@ -98,6 +98,9 @@ public class ChatResource {
         if (receiver == null) {
             throw new NotFoundException("No such receiverId");
         }
+        if (receiverId == requesterId) {
+            throw new ForbiddenException("You cannot request a chat with yourself");
+        }
         //  Ignore requests that already exist
         Set<Long> req = chatMessageDAO.getRequests(receiverId);
         for (long l : req) {
@@ -153,6 +156,34 @@ public class ChatResource {
                 accepter.getDisplayName()), NotificationType.REQUEST_ACCEPTED);
     }
 
+    @DELETE
+    @Path("/{requester-id}/request")
+    public void reject(@HeaderParam("Authorization") String hlat, @PathParam("requester-id") long requesterId) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long rejecterId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, rejecterId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User rejecter = userDAO.getUser(rejecterId);
+        User requester = userDAO.getUser(requesterId);
+        if (requester == null) {
+            throw new NotFoundException("No such requester");
+        }
+        //  Check that they were requested
+        Set<Long> requests = chatMessageDAO.getRequests(rejecterId);
+        boolean found = false;
+        for (long request : requests) {
+            if (request == requesterId) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            throw new NotFoundException("Request " + requesterId + " not found");
+        }
+        chatMessageDAO.rejectRequest(rejecterId, requesterId);
+    }
 
     @POST
     @Path("/{receiver-id}/message")
@@ -229,11 +260,11 @@ public class ChatResource {
     @GET
     @Path("/{receiver-id}/message")
     public Object[] getMessages(@HeaderParam("Authorization") String hlat,
-                                 @PathParam("receiver-id") long receiverId,
-                                 @QueryParam("limit") @DefaultValue("50") int limit,
-                                 @QueryParam("before") @DefaultValue("0") long beforeMsgId,
-                                 @QueryParam("after") @DefaultValue("0") long afterMsgId,
-                                 @QueryParam("e") @DefaultValue("false") boolean returnEditsOnly) {
+                                @PathParam("receiver-id") long receiverId,
+                                @QueryParam("limit") @DefaultValue("50") int limit,
+                                @QueryParam("before") @DefaultValue("0") long beforeMsgId,
+                                @QueryParam("after") @DefaultValue("0") long afterMsgId,
+                                @QueryParam("e") @DefaultValue("false") boolean returnEditsOnly) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
@@ -265,32 +296,58 @@ public class ChatResource {
     public TranslationResponse getTranslation(@HeaderParam("Authorization") String hlat,
                                               @PathParam("receiver-id") long receiverId,
                                               @PathParam("message-id") long msgId,
-                                              @QueryParam("to") @DefaultValue("en") String toLanguage) {
+                                              @QueryParam("to") @DefaultValue("en") String toLanguage,
+                                              @QueryParam("edit") @DefaultValue("false") boolean translateEdit) {
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
         if (!sessionDAO.isValidSession(sessionId, authUserId)) {
             throw new NotAuthorizedException("Bad session token");
         }
-        //  TODO Verify that the user is in a chat with this person
-
         Message message = chatMessageDAO.getMessage(msgId);
         if (message == null) {
             throw new NotFoundException("Message " + msgId + " not found");
         }
-
+        if (message.getReceiver() != authUserId && message.getSender() != authUserId) {
+            throw new ForbiddenException("You are not in this conversation");
+        }
+        if (translateEdit && message.getEditData() == null) {
+            throw new NotFoundException("Message " + msgId + " has no edit data");
+        }
         Locale locale = Locale.forLanguageTag(toLanguage);
-        String decoded = base64Decode(message.getContent());
+        String decoded;
+        if (translateEdit) {
+            decoded = base64Decode(message.getEditData());
+        } else {
+            decoded = base64Decode(message.getContent());
+        }
         String translated = translationCacheDAO.getCached(locale, decoded);
         if (translated == null) {
             translated = translateService.translate(decoded, locale);
             translationCacheDAO.cache(locale, decoded, translated);
         }
         String encoded = base64Encode(translated);
-        TranslationResponse response = new TranslationResponse(encoded, msgId);
-
-        return response;
+        return new TranslationResponse(encoded, msgId, translateEdit);
     }
 
+    @DELETE
+    @Path("/{receiver-id}")
+    public void deleteChat(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long requesterId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, requesterId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User requester = userDAO.getUser(requesterId);
+        User receiver = userDAO.getUser(receiverId);
+        if (receiver == null) {
+            throw new NotFoundException("No such receiverId");
+        }
+        requester.getUsersChattedWith().remove(receiverId);
+        receiver.getUsersChattedWith().remove(requesterId);
+        userDAO.updateUser(receiver);
+        userDAO.updateUser(receiver);
+    }
 
     private void sendNotification(long user, String body, NotificationType type) {
         String builtBody = new ApnsPayloadBuilder().

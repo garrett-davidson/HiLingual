@@ -38,6 +38,8 @@ public interface ChatMessageDAO extends Managed {
 
     void acceptRequest(long accepter, long requester);
 
+    void rejectRequest(long rejecter, long requester);
+
     Set<Long> getRequests(long userId);
 
     Message editMessage(long messsageId, String editData);

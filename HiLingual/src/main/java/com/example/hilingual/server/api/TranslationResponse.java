@@ -6,13 +6,15 @@ public class TranslationResponse {
 
     private String translatedContent;
     private long parentMessageId;
+    private boolean edit;
 
     public TranslationResponse() {
     }
 
-    public TranslationResponse(String translatedContent, long parentMessageId) {
+    public TranslationResponse(String translatedContent, long parentMessageId, boolean edit) {
         this.translatedContent = translatedContent;
         this.parentMessageId = parentMessageId;
+        this.edit = edit;
     }
 
     @JsonProperty
@@ -33,5 +35,15 @@ public class TranslationResponse {
     @JsonProperty
     public void setParentMessageId(long parentMessageId) {
         this.parentMessageId = parentMessageId;
+    }
+
+    @JsonProperty
+    public boolean isEdit() {
+        return edit;
+    }
+
+    @JsonProperty
+    public void setEdit(boolean edit) {
+        this.edit = edit;
     }
 }

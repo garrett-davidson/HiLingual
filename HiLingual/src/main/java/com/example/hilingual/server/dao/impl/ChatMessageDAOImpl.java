@@ -216,9 +216,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             UserChats newentry = new UserChats(recipient, new HashSet<Long>(), tempSet);
             u.insertrequest(newentry);
         } else {
-            Set<Long> pendingChats = uc.getPendingChats();
-            pendingChats.add(requester);
-            uc.setPendingChats(pendingChats);
+            uc.getPendingChats().add(requester);
             u.updaterequests(uc);
         }
         LOGGER.info("DONE");
@@ -243,22 +241,36 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 .bind("uid", String.valueOf(accepter))
                 .map(new RequestsMapper())
                 .first();
-        System.out.println("Accepting request");
         if (uc != null) {
-            System.out.println("Query returned NON-NULL UserChats object");
             Set<Long> pendingset = uc.getPendingChats();
             pendingset.remove(requester);
             if (pendingset.isEmpty()) {
                 u.removerequests(uc);
             } else {
-                uc.setPendingChats(pendingset);
                 u.updaterequests(uc);
             }
         } else {
             //error
         }
+    }
 
-
+    @Override
+    public void rejectRequest(long rejecter, long requester) {
+        UserChats uc = handle.createQuery("SELECT * FROM hl_chat_pending_requests WHERE user_id = :uid")
+                .bind("uid", String.valueOf(rejecter))
+                .map(new RequestsMapper())
+                .first();
+        if (uc != null) {
+            Set<Long> pendingset = uc.getPendingChats();
+            pendingset.remove(requester);
+            if (pendingset.isEmpty()) {
+                u.removerequests(uc);
+            } else {
+                u.updaterequests(uc);
+            }
+        } else {
+            //error
+        }
     }
 
     @Override
