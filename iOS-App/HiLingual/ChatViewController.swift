@@ -77,6 +77,32 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //presentViewController(controller, animated: true, completion: nil)
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
+        let count = messages.count
+
+        //Caches up to 50 messages on disk
+        let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
+        if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
+            //Succeeded in writing to file
+            print("Wrote message cache to disk")
+        }
+
+        else {
+            print("Failed to write chat cache")
+        }
+
+        if let lastMessage = last50.last {
+            if NSKeyedArchiver.archiveRootObject(lastMessage, toFile: chatURL.URLByAppendingPathExtension("last").path!) {
+                print("Wrote last message to disk")
+            }
+
+            else {
+                print("Failed to write last message to disk")
+            }
+        }
+    }
+
     func handleEditedMessageNotification(notification: NSNotification) {
         didReceiveMessage()
     }
@@ -535,29 +561,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             tableView.reloadData()
             tableViewScrollToBottom(false)
-
-            let count = messages.count
-
-            //Caches up to 50 messages on disk
-            let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
-            if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
-                //Succeeded in writing to file
-                print("Wrote message cache to disk")
-            }
-
-            else {
-                print("Failed to write chat cache")
-            }
-
-            if let lastMessage = last50.last {
-                if NSKeyedArchiver.archiveRootObject(lastMessage, toFile: chatURL.URLByAppendingPathExtension("last").path!) {
-                    print("Wrote last message to disk")
-                }
-
-                else {
-                    print("Failed to write last message to disk")
-                }
-            }
         }
 
         else {
