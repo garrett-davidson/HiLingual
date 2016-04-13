@@ -60,8 +60,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewWillAppear(animated: Bool) {
         self.tabBarController!.tabBar.hidden = false
-
-        refreshTableView()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -273,7 +271,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             // Delete the row from the data source
 
             if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
-                currentUser.usersChattedWith.removeAtIndex(indexPath.row)
+                if HLServer.deleteConversationWithUser(currentUser.usersChattedWith[indexPath.row]) {
+                    currentUser.usersChattedWith.removeAtIndex(indexPath.row)
+                } else {
+                    print("Failed to delete chat")
+                }
             }
 
             else {
