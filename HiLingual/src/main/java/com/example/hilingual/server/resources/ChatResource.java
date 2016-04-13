@@ -345,7 +345,7 @@ public class ChatResource {
         }
         requester.getUsersChattedWith().remove(receiverId);
         receiver.getUsersChattedWith().remove(requesterId);
-        userDAO.updateUser(receiver);
+        userDAO.updateUser(requester);
         userDAO.updateUser(receiver);
     }
 
