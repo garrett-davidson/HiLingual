@@ -407,6 +407,29 @@
                                             <outlet property="rightMessageLabel" destination="dpO-eU-jNx" id="VzY-SO-ICv"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatPictureTableViewCell" rowHeight="280" id="nKA-Qc-raJ" customClass="ChatPictureTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="181" width="600" height="280"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nKA-Qc-raJ" id="p0n-Qg-z3O">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="280"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
+                                                    <rect key="frame" x="394" y="20" width="198" height="239"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
+                                                    <rect key="frame" x="8" y="20" width="198" height="239"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="198" id="IkB-Y3-7bD"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="ChatEditedTableViewCell"/>
+                                        <connections>
+                                            <outlet property="leftPicture" destination="pzy-rh-QT1" id="fSR-8C-3MR"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="nBC-Zq-2jE" id="G2K-Vg-dga"/>
