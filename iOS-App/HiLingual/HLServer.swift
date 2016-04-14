@@ -221,8 +221,23 @@ class HLServer {
 
     static func getUserById(id: Int64, session: HLUserSession=HLUser.getCurrentUser().getSession()!) -> HLUser? {
 
+        let userURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(id).user")
+
+        if let cachedUser = NSKeyedUnarchiver.unarchiveObjectWithFile(userURL.path!) as? HLUser {
+            print("Pulled user from cache")
+            return cachedUser
+        }
+
         if let userDict = sendGETRequestToEndpoint("user/\(id)", withParameterString: nil, authentication: session) {
-            return HLUser.fromDict(userDict[0])
+            let returnedUser = HLUser.fromDict(userDict[0])
+
+
+            if NSKeyedArchiver.archiveRootObject(returnedUser, toFile: userURL.path!) {
+                print("Wrote user to cache")
+            } else {
+                print("Failed to write user to cache")
+            }
+            return returnedUser
         }
 
         return nil
