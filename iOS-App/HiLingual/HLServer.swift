@@ -13,6 +13,19 @@ class HLServer {
 
     static let apiBase = "https://gethilingual.com/api/"
 
+    static func getTopViewController() -> UIViewController? {
+        if var topController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+
+            // topController should now be your topmost view controller
+            return topController
+        }
+
+        return nil
+    }
+
     static func sendRequest(request: NSURLRequest) -> [NSDictionary]? {
         var resp: NSURLResponse?
 
@@ -45,6 +58,11 @@ class HLServer {
 
                     case 503:
                         print("😭😭😭 *********Server Down********* 😭😭😭")
+                        let alertController = UIAlertController(title: "Cannot connect".localized, message: "Our server seems to be down. Please try again later", preferredStyle: .Alert)
+                        alertController.addAction(UIAlertAction(title: "Ok".localized, style: .Cancel, handler: nil))
+                        if let topVC = getTopViewController() {
+                            topVC.presentViewController(alertController, animated: true, completion: nil)
+                        }
                         
                         //We don't need to run the diagnostic stuff below if we get here
                         return nil
