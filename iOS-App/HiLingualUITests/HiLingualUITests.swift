@@ -146,7 +146,7 @@ class HiLingualUITests: XCTestCase {
         sheetsQuery.collectionViews.buttons["Take Picture"].tap()
 
         app.buttons["PhotoCapture"].tap()
-        sleep(10)
+        sleep(1)
         app.buttons["Use Photo"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         tabBarsQuery.buttons["Messages"].tap()
