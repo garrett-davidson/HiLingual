@@ -209,7 +209,18 @@ public class ChatResource {
         if (!sender.getUsersChattedWith().contains(receiverId)) {
             throw new ForbiddenException("This user is not a conversation partner");
         }
-        if (message.getAudio() != null) {
+        if (message.getImage() != null) {
+            String assetId = new BigInteger(130, random).toString(32);
+            java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "image", assetId);
+            Files.createDirectories(outPath.getParent());
+            Files.write(outPath, message.audioDataToBytes(), CREATE, TRUNCATE_EXISTING);
+            URI uri = getImageUrl(senderId, assetId);
+            //  New messages only have content field set
+            Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
+            sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a picture.",
+                    sender.getDisplayName()), NotificationType.NEW_MESSAGE);
+            return ret;
+        } else if (message.getAudio() != null) {
             String assetId = new BigInteger(130, random).toString(32);
             java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
             Files.createDirectories(outPath.getParent());
@@ -231,6 +242,10 @@ public class ChatResource {
 
     private URI getAudioUrl(long userId, String assetId) throws URISyntaxException {
         return new URI(config.getAssetAccessBaseUrl() + "/audio/" + assetId);
+    }
+
+    private URI getImageUrl(long userId, String assetId) throws URISyntaxException {
+        return new URI(config.getAssetAccessBaseUrl() + "/image/" + assetId);
     }
 
     @PATCH

@@ -23,14 +23,18 @@ public interface ChatMessageDAO extends Managed {
     MessageEdit[] getMessageEdits(long participantA, long participantB, long beforeMessageId, long afterMessageId, int limit);
 
     default Message newMessage(long sender, long receiver, String content) {
-        return newMessage(sender, receiver, content, "");
+        return newMessage(sender, receiver, content, "", "");
     }
 
     default Message newAudioMessage(long sender, long receiver, String audioUrl) {
-        return newMessage(sender, receiver, "", audioUrl);
+        return newMessage(sender, receiver, "", audioUrl, "");
     }
 
-    Message newMessage(long sender, long receiver, String content, String audioUrl);
+    default Message newImageMessage(long sender, long receiver, String imageUrl) {
+        return newMessage(sender, receiver, "", "", imageUrl);
+    }
+
+    Message newMessage(long sender, long receiver, String content, String audioUrl, String imageUrl);
 
     Message getMessage(long messageId);
 

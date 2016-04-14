@@ -13,6 +13,7 @@ public class Message {
     private long receiver;
     private String content;
     private String audio;
+    private String image;
 
     private String editData;
 
@@ -108,7 +109,21 @@ public class Message {
         this.audio = audio;
     }
 
+    @JsonProperty
+    public String getImage() {
+        return image;
+    }
+
+    @JsonProperty
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public byte[] audioDataToBytes() {
         return Base64.getDecoder().decode(audio);
+    }
+
+    public byte[] imageDataToBytes() {
+        return Base64.getDecoder().decode(image);
     }
 }

@@ -55,6 +55,7 @@ public @interface BindMessage {
                     q.bind("message", arg.getContent());
                     q.bind("edited_message", arg.getEditData());
                     q.bind("audio", arg.getAudio());
+                    q.bind("image", arg.getImage());
 
                 }
             };

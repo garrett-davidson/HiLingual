@@ -65,7 +65,8 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 "receiver_id BIGINT, " +
                 "message VARCHAR(500), " +
                 "edited_message VARCHAR(500), " +
-                "audio VARCHAR(500))");
+                "audio VARCHAR(500), " +
+                "image VARCHAR(500)");
 
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
                 "user_id BIGINT, " +
@@ -120,12 +121,13 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     @Override
-    public Message newMessage(long sender, long receiver, String content, String audioUrl) {
+    public Message newMessage(long sender, long receiver, String content, String audioUrl, String imageUrl) {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
         Message message = new Message();
         message.setContent(content);
         message.setAudio(audioUrl);
+        message.setImage(imageUrl);
         message.setSender(sender);
         message.setReceiver(receiver);
         message.setSentTimestamp(System.currentTimeMillis());
@@ -257,10 +259,10 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     public static interface Update {
-        @SqlUpdate("insert into hl_chat_messages (sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message, audio) values (:sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message, :audio)")
+        @SqlUpdate("insert into hl_chat_messages (sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message, audio, image) values (:sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message, :audio, :image)")
         void insertmessage(@BindMessage Message message);
 
-        @SqlUpdate("update hl_chat_messages set message_id = :message_id, sent_timestamp = :sent_timestamp, edit_timestamp = :edit_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message, audio = :audio where message_id = :message_id")
+        @SqlUpdate("update hl_chat_messages set message_id = :message_id, sent_timestamp = :sent_timestamp, edit_timestamp = :edit_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message, audio = :audio, image = :image where message_id = :message_id")
         int updatemessage(@BindMessage Message message);
 
         @SqlUpdate("update hl_chat_pending_requests set user_id = :user_id, pending_chat_users = :pending_chat_users where user_id = :user_id")
@@ -290,6 +292,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             message.setContent(r.getString("message"));
             message.setEditData(r.getString("edited_message"));
             message.setAudio(r.getString("audio"));
+            message.setImage(r.getString("image"));
             return message;
         }
     }
