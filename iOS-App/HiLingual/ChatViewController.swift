@@ -204,8 +204,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             testView.textView.text = selectedMessage.text
         }
         testView.textViewDidChange(testView.textView)
-        testView.textTestchange()
-        //testView.textViewDidChange(testView.textView)
 
         tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: editingCellIndex!, inSection: 0), atScrollPosition: .Bottom, animated: true)
     }

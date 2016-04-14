@@ -318,8 +318,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             return
         }
         else if isEditing {
-            //TODO:
-            //Save edit
             chatViewController!.saveMessageEdit(editedText: textView.text)
             didEndEditing()
         }
@@ -359,9 +357,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
     }
     func textViewDidChange(textView: UITextView) {
-        
-        //stop the view at top of screen somehow
-//        textView.reloadInputViews()
+
         if textView.text == "" {
             textView.scrollEnabled = false
             textView.sizeToFit()
@@ -393,22 +389,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             sendButton.userInteractionEnabled = false
         }
 
-//        let numLines = textView.contentSize.height / textView.font!.lineHeight;
-//        if numLines > 5 {
-//            textView.scrollEnabled = true
-//            textViewHeightConstraint.constant = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.max)).height
-//        }
-//
-//        else {
-//            textView.scrollEnabled = false
-//        }
-//
-//        if lines != numLines {
-//            lines = numLines
-////            chatViewController?.tableViewScrollToBottom(false)
-//
-//        }
-
         var height = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max)).height
         if height < 34 {
             height = 34
@@ -427,20 +407,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             textViewDidChange(textView)
         }
         textViewTested = false
-    }
-    
-    func textTestchange(){
-//        let numLines = textView.contentSize.height / textView.font!.lineHeight;
-//        //(textView.text as NSString).sizeWithAttributes(<#T##attrs: [String : AnyObject]?##[String : AnyObject]?#>)
-//        if numLines > 5 {
-//            textView.scrollEnabled = true
-//
-//        }
-//
-//        else {
-//            textView.scrollEnabled = false
-//        }
-//        
     }
 
     override func intrinsicContentSize() -> CGSize {
