@@ -106,38 +106,39 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cellIdentity = "ConversationTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
-            let user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row])!
+            if let user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row]) {
 
-            cell.name.text = user.name
-            cell.profilePicture.layer.masksToBounds = false
-            cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
-            cell.profilePicture.clipsToBounds = true
-            cell.profilePicture.image = user.profilePicture
-            cell.acceptButton.tag = indexPath.row
-            cell.declineButton.tag = indexPath.row
-            cell.declineButton.hidden = true
-            cell.acceptButton.hidden = true
+                cell.name.text = user.name
+                cell.profilePicture.layer.masksToBounds = false
+                cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
+                cell.profilePicture.clipsToBounds = true
+                cell.profilePicture.image = user.profilePicture
+                cell.acceptButton.tag = indexPath.row
+                cell.declineButton.tag = indexPath.row
+                cell.declineButton.hidden = true
+                cell.acceptButton.hidden = true
 
-            let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(user.userId).chat.last")
+                let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(user.userId).chat.last")
 
-            if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
-                cell.lastMessage.text = lastMessage.text
+                if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
+                    cell.lastMessage.text = lastMessage.text
 
-                if NSCalendar.currentCalendar().isDateInToday(lastMessage.sentTimestamp) {
-                    timestampFormamter.timeStyle = .ShortStyle
-                    timestampFormamter.dateStyle = .NoStyle
-                } else {
-                    timestampFormamter.timeStyle = .NoStyle
-                    timestampFormamter.dateStyle = .ShortStyle
+                    if NSCalendar.currentCalendar().isDateInToday(lastMessage.sentTimestamp) {
+                        timestampFormamter.timeStyle = .ShortStyle
+                        timestampFormamter.dateStyle = .NoStyle
+                    } else {
+                        timestampFormamter.timeStyle = .NoStyle
+                        timestampFormamter.dateStyle = .ShortStyle
+                    }
+
+                    cell.date.text = timestampFormamter.stringFromDate(lastMessage.sentTimestamp)
+    //                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
                 }
 
-                cell.date.text = timestampFormamter.stringFromDate(lastMessage.sentTimestamp)
-//                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
-            }
-
-            else {
-                cell.lastMessage.text = ""
-                cell.date.text = ""
+                else {
+                    cell.lastMessage.text = ""
+                    cell.date.text = ""
+                }
             }
 
             return cell
