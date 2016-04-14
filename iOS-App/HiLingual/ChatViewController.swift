@@ -138,6 +138,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return true
         }
 
+        print("Faild to send message")
+
         return false
     }
     func sendImageWithData(data: NSData) {
@@ -699,16 +701,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return attributedDiff
     }
 
-    func accessoryViewChangedToNewHeight(height: CGFloat) {
-        
-    }
-
 }
 
 extension UITableView {
     func scrollToBottom(ofSection section:Int=0, animated:Bool=true) {
         let cellCount = self.numberOfRowsInSection(section)
 
+        guard cellCount > 0 else {
+            return
+        }
         self.scrollToRowAtIndexPath(NSIndexPath(forItem: cellCount-1, inSection: section), atScrollPosition: .Top, animated: animated)
     }
 }
