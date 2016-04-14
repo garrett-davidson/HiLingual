@@ -229,16 +229,45 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
-
+  /*  func resizeImage(image: UIImage){
+        var actualHeight = image.size.height;
+        var actualWidth = image.size.width;
+        let maxHeight = CGFloat(300.0);
+        let maxWidth = CGFloat(400.0);
+        var imgRatio = (actualWidth/actualHeight);
+        let maxRatio = maxWidth/maxHeight;
+        let compressionQuality = 0.5;//50 percent compression
+            if(imgRatio < maxRatio) {
+    //adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight;
+                actualWidth = imgRatio * actualWidth;
+                actualHeight = maxHeight;
+            }else if(imgRatio > maxRatio){
+    //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth;
+                actualHeight = imgRatio * actualHeight;
+                actualWidth = maxWidth;
+            } else  {
+                actualHeight = maxHeight;
+                actualWidth = maxWidth;
+            }
+        var rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size);
+        var img = UIGraphicsGetImageFromCurrentImageContext();
+    NSData *imageData = UIImageJPEGRepresentation(img, compressionQuality);
+    UIGraphicsEndImageContext();
+    
+    return [UIImage imageWithData:imageData];
+    
+    }
+*/
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         var selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        selectedImage = EditProfileView.cropToSquare(image: selectedImage)
-    
-        let imageData = UIImagePNGRepresentation(selectedImage)
-        chatViewController!.sendVoiceMessageWithData(imageData!)
+        selectedImage = UIImage(CGImage: selectedImage.CGImage!, scale: 0.02, orientation: UIImageOrientation.Up)
 
-        
+        let imageData = UIImagePNGRepresentation(selectedImage)
+        chatViewController!.sendImageWithData(imageData!)
         
         //post to server
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
@@ -420,6 +449,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         textView.layer.cornerRadius = 5
         textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
         textView.text = "Message".localized
+//        textView.font = UIFont(name: "FontAwesome", size: 12)
+//        textView.text = "\u{f0f9}"
     }
 
     convenience required init?(coder aDecoder: NSCoder) {

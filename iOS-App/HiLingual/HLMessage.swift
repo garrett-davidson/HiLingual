@@ -27,6 +27,8 @@ class HLMessage: NSObject, NSCoding {
     let receiverID: Int64
 
     let audioURL: NSURL?
+    
+    let pictureURL: NSURL?
 
     var translatedText: String?
     var translatedEdit: String?
@@ -58,6 +60,12 @@ class HLMessage: NSObject, NSCoding {
         else {
             audioURL = nil
         }
+        if let picture = aDecoder.decodeObjectForKey("pictureURL") as? NSURL {
+            pictureURL = picture
+        }
+        else {
+            pictureURL = nil
+        }
     }
 
     func encodeWithCoder(aCoder: NSCoder) {
@@ -86,7 +94,7 @@ class HLMessage: NSObject, NSCoding {
         }
     }
 
-    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil) {
+    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, pictureURLString: String?=nil) {
         self.messageUUID = UUID
         self.sentTimestamp = sentTimestamp
 
@@ -112,6 +120,13 @@ class HLMessage: NSObject, NSCoding {
         else {
             self.audioURL = nil
         }
+        
+        if pictureURLString != nil {
+            self.pictureURL = NSURL(string: pictureURLString!)
+        }
+        else {
+            self.pictureURL = nil
+        }
     }
 
     init(text: String, senderID: Int64, receiverID: Int64) {
@@ -124,11 +139,11 @@ class HLMessage: NSObject, NSCoding {
         self.translatedText = nil
         self.showTranslation = false
         self.audioURL = nil
+        self.pictureURL = nil;
     }
 
     static func fromJSONArray(messageData: NSData) -> [HLMessage] {
         var messageArray = [HLMessage]()
-
         if let obj = try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0)) {
             if let array = obj as? [NSDictionary] {
                 for messageDict in array {

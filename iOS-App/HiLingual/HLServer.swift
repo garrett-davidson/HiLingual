@@ -13,6 +13,19 @@ class HLServer {
 
     static let apiBase = "https://gethilingual.com/api/"
 
+    static func getTopViewController() -> UIViewController? {
+        if var topController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+
+            // topController should now be your topmost view controller
+            return topController
+        }
+
+        return nil
+    }
+
     static func sendRequest(request: NSURLRequest) -> [NSDictionary]? {
         var resp: NSURLResponse?
 
@@ -45,6 +58,11 @@ class HLServer {
 
                     case 503:
                         print("😭😭😭 *********Server Down********* 😭😭😭")
+                        let alertController = UIAlertController(title: "Cannot connect".localized, message: "Our server seems to be down. Please try again later", preferredStyle: .Alert)
+                        alertController.addAction(UIAlertAction(title: "Ok".localized, style: .Cancel, handler: nil))
+                        if let topVC = getTopViewController() {
+                            topVC.presentViewController(alertController, animated: true, completion: nil)
+                        }
                         
                         //We don't need to run the diagnostic stuff below if we get here
                         return nil
@@ -201,7 +219,8 @@ class HLServer {
     }
     
     static func sendImageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
-        
+      //  print("string:",data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)))
+        print("string length: ",data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)).characters.count)
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["image": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
             return HLMessage.fromDict(messageDict[0])
         }
