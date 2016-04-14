@@ -278,4 +278,7 @@ class HLServer {
         return sendRequestToEndpoint("chat/\(userId)", method: "DELETE") != nil
     }
 
+    static func deleteRequestFromUser(userId: Int64) -> Bool {
+        return sendRequestToEndpoint("chat/\(userId)/request", method: "DELETE") != nil
+    }
 }

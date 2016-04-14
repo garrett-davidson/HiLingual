@@ -196,15 +196,23 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         print("Failed to accept request")
     }
     @IBAction func decline(sender: UIButton) {
-        sender.hidden = true
-        let index = sender.tag
-        let indexPath = NSIndexPath(forRow: index, inSection: 0)
 
-        currentUser.pendingChats.removeAtIndex(index)
+        if HLServer.deleteRequestFromUser(currentUser.pendingChats[sender.tag]) {
 
-        converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
-        converstationTable.reloadData()
-        //send decline to server
+            sender.hidden = true
+            let index = sender.tag
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+
+
+            currentUser.pendingChats.removeAtIndex(index)
+
+            if currentUser.pendingChats.count > 0 {
+                converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            } else {
+                converstationTable.deleteSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+                converstationTable.reloadData()
+            }
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
