@@ -122,7 +122,30 @@ class HiLingualUITests: XCTestCase {
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
-    
+    func testEditPictureNoCrash() {
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        let profileButton = tabBarsQuery.buttons["Profile"]
+        profileButton.tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        XCUIApplication().images.elementBoundByIndex(3).tap()
+        
+        
+        let sheetsQuery = app.sheets
+        sheetsQuery.buttons["Cancel"].tap()
+       XCUIApplication().images.elementBoundByIndex(3).tap()
+        sheetsQuery.collectionViews.buttons["Take Picture"].tap()
+
+        app.buttons["PhotoCapture"].tap()
+        sleep(1)
+        app.buttons["Use Photo"].tap()
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        tabBarsQuery.buttons["Messages"].tap()
+        profileButton.tap()
+        
+    }
     func testEditNamePlainTextSave() {
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
@@ -799,5 +822,4 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
-    
 }
