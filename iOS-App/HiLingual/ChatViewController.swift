@@ -178,6 +178,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if let translatedText = HLServer.getTranslationForMessage(message, fromLanguage: nil) {
                 message.translatedText = translatedText
             }
+
+            if message.editedText != nil {
+                if let translatedEdit = HLServer.getTranslationForMessage(message, edit: true, fromLanguage: nil) {
+                    message.translatedEdit = translatedEdit
+                }
+            }
         }
 
         if message.translatedText != nil {
@@ -409,7 +415,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.editChatRightImage.layer.cornerRadius = 6
 
                 cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
+                if message.showTranslation {
+                    cell.rightEditedMessageLabel.text = message.translatedEdit
+                } else {
+                    cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
+                }
                 cell.editChatRightImage.hidden = false
             }
 
@@ -422,7 +432,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.editChatLeftImage.layer.cornerRadius = 6
 
                 cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
+                if message.showTranslation {
+                    cell.leftEditedMessageLabel.text = message.translatedEdit
+                } else {
+                    cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
+                }
                 cell.editChatLeftImage.hidden = false
 
                 

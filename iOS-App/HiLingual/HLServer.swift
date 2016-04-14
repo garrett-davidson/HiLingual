@@ -128,9 +128,9 @@ class HLServer {
         return sendRequest(request)
     }
 
-    static func getTranslationForMessage(message: HLMessage, fromLanguage: String?, toLangauge: String="en-US") -> String? {
+    static func getTranslationForMessage(message: HLMessage, edit:Bool=false, fromLanguage: String?, toLangauge: String="en-US") -> String? {
 
-        if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate") {
+        if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate", withParameterString: edit ? "?edit=true" : "") {
 
             if let encodedTranslation = ret[0]["translatedContent"] as? String {
                 return (NSString(data: NSData(base64EncodedString: encodedTranslation, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
