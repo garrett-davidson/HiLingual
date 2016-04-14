@@ -107,10 +107,11 @@ class HiLingualUITests: XCTestCase {
         
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
-        app.typeText("oldName")
-
+        app.typeText(" oldName")
         displayNameTextField.tap()
+        displayNameTextField.pressForDuration(1.7);
 
+        
         app.menuItems["Select All"].tap()
         
         let deleteKey = app.keys["delete"]
@@ -135,16 +136,17 @@ class HiLingualUITests: XCTestCase {
         
         let sheetsQuery = app.sheets
         sheetsQuery.buttons["Cancel"].tap()
+        
         XCUIApplication().images.elementBoundByIndex(3).tap()
         
         app.sheets.collectionViews.buttons["Photo Library"].tap()
         app.navigationBars["Photos"].buttons["Cancel"].tap()
         
-        
+        XCUIApplication().images.elementBoundByIndex(3).tap()
         sheetsQuery.collectionViews.buttons["Take Picture"].tap()
 
         app.buttons["PhotoCapture"].tap()
-        sleep(1)
+        sleep(10)
         app.buttons["Use Photo"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         tabBarsQuery.buttons["Messages"].tap()
