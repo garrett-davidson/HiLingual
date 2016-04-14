@@ -2,11 +2,9 @@ package com.example.hilingual.server.dao.impl;
 
 import com.example.hilingual.server.api.Message;
 import com.example.hilingual.server.api.MessageEdit;
-import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.UserChats;
 import com.example.hilingual.server.dao.ChatMessageDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindMessage;
-import com.example.hilingual.server.dao.impl.annotation.BindUser;
 import com.example.hilingual.server.dao.impl.annotation.BindUserChats;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
@@ -45,58 +43,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 map(toStringer).
                 collect(Collectors.joining(","));
     }
-
-//    @Override
-//    public Message[] getLatestMessages(long participantA, long participantB, int limit) {
-//        //  Convenience method
-//        List<Message> returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages WHERE " +
-//                "(receiver_id = :receiver_id AND sender_id = :sender_id) " +
-//                "OR (receiver_id = :sender_id AND sender_id = :receiver_id) LIMIT :num")
-//                .bind("num", limit)
-//                .bind("receiver_id", participantA)
-//                .bind("sender_id", participantB)
-//                .map(new MessageMapper())
-//                .list();
-//
-//        Message[] messagesArray = new Message[returnedMessages.size()];
-//        messagesArray = returnedMessages.toArray(messagesArray);
-//
-//        return messagesArray;
-//    }
-
-//    @Override
-//    public Message[] getLatestMessages(long participantA, long participantB, long beforeMessageId, int limit) {
-//        //  Get the n=limit messages before beforeMessageId between A and B
-//        //  if beforeMessageId is 0, then we get the most recent n=limit messages.
-//        List<Message> returnedMessages;
-//        if (beforeMessageId == 0) {
-//            returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
-//                    "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
-//                    "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) LIMIT :num")
-//                    .bind("num", limit)
-//                    .bind("receiver_id", participantA)
-//                    .bind("sender_id", participantB)
-//                    .bind("num", limit)
-//                    .map(new MessageMapper())
-//                    .list();
-//        } else {
-//            returnedMessages = handle.createQuery("SELECT * FROM hl_chat_messages where " +
-//                    "((receiver_id = :receiver_id AND sender_id = :sender_id) " +
-//                    "OR (receiver_id = :sender_id AND sender_id = :receiver_id)) AND (message_id < :message_id) LIMIT :num")
-//                    .bind("num", limit)
-//                    .bind("receiver_id", participantA)
-//                    .bind("sender_id", participantB)
-//                    .bind("message_id", beforeMessageId)
-//                    .bind("num", limit)
-//                    .map(new MessageMapper())
-//                    .list();
-//        }
-//
-//        Message[] messagesArray = new Message[returnedMessages.size()];
-//        messagesArray = returnedMessages.toArray(messagesArray);
-//
-//        return messagesArray;
-//    }
 
     public static <T> Set<T> stringToSet(String input, Function<String, T> fromStringer) {
         Set<T> set = new HashSet<>();
@@ -178,7 +124,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
         Message message = new Message();
-        System.out.println("New message: " + content);
         message.setContent(content);
         message.setAudio(audioUrl);
         message.setSender(sender);
@@ -194,11 +139,10 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     @Override
     public Message getMessage(long messageId) {
         //  Get a specific message, or null if it does not exist
-        Message mess = handle.createQuery("SELECT * FROM hl_chat_messages where message_id = :message_id")
+        return handle.createQuery("SELECT * FROM hl_chat_messages where message_id = :message_id")
                 .bind("message_id", messageId)
                 .map(new MessageMapper())
                 .first();
-        return mess;
     }
 
     @Override
@@ -219,19 +163,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             uc.getPendingChats().add(requester);
             u.updaterequests(uc);
         }
-        LOGGER.info("DONE");
-
-
-        //update the hl_users table for requester
-        User user = handle.createQuery("SELECT * FROM hl_users WHERE user_id = :uidq")
-                .bind("uidq", String.valueOf(requester))
-                .map(new UserDAOImpl.UserMapper())
-                .first();
-
-        user.addusersChattedWith(recipient);
-        u.updateuser(user);
-
-
     }
 
     @Override
@@ -251,6 +182,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             }
         } else {
             //error
+            LOGGER.warning("Missing accepter " + accepter);
         }
     }
 
@@ -270,6 +202,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
             }
         } else {
             //error
+            LOGGER.warning("Missing rejector " + rejecter);
         }
     }
 
@@ -335,9 +268,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
         @SqlUpdate("insert into hl_chat_pending_requests (user_id, pending_chat_users) values (:user_id, :pending_chat_users)")
         void insertrequest(@BindUserChats UserChats uc);
-
-        @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")
-        int updateuser(@BindUser User user);
 
         @SqlUpdate("delete from hl_chat_pending_requests where user_id = :user_id")
         void removerequests(@BindUserChats UserChats uc);

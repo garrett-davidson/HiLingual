@@ -112,6 +112,8 @@ public class ChatResource {
         if (receiver.getUsersChattedWith().contains(requesterId)) {
             return;
         }
+        requester.getUsersChattedWith().add(receiverId);
+        userDAO.updateUser(requester);
         chatMessageDAO.addRequest(requesterId, receiverId);
         sendNotification(receiverId, String.format("%s wants to start a conversation with you!",
                 requester.getDisplayName()), NotificationType.REQUEST_RECEIVED);
@@ -182,6 +184,10 @@ public class ChatResource {
         if (!found) {
             throw new NotFoundException("Request " + requesterId + " not found");
         }
+        requester.getUsersChattedWith().remove(rejecterId);
+        rejecter.getUsersChattedWith().remove(requesterId);
+        userDAO.updateUser(requester);
+        userDAO.updateUser(rejecter);
         chatMessageDAO.rejectRequest(rejecterId, requesterId);
     }
 
