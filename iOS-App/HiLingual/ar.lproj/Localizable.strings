@@ -5,4 +5,19 @@
   Created by Garrett Davidson on 4/11/16.
   Copyright © 2016 Team3. All rights reserved.
 */
-Messages="رسائل";
+"Messages" = "الرسائل";
+"Message" = "الرسالة";
+"Send" = "إرسال";
+"Profile" = "الشخصية";
+"Edit" = "تحرير";
+"Settings" = "إعدادات";
+"Done" = "أكملت";
+"Learning:" = "يعلم:";
+"Speaks:" = "يتكلم:";
+"Male" = "ذكر";
+"Female" = "أثنى";
+"Send Message" = "إرسال رسالة";
+"Flashcards" = "البطاقات التعليمية";
+"Display Name:" = "إسم العرض:";
+"Bio:" = "سيرة ذاتية";
+"None" = "لا شيء";

@@ -50,7 +50,7 @@ class ProfileView: UIView {
         }
         
         if user.gender != nil {
-            genderLabel.text = "\(user.gender!)"
+            genderLabel.text = "\(user.gender!)".localized
         }
         else {
             genderLabel.text = "Not Specified".localized
@@ -59,8 +59,8 @@ class ProfileView: UIView {
         let knownList = user.knownLanguages.toList()
         let learningList = user.learningLanguages.toList()
 
-        speaksLabel.text = "Speaks: ".localized + (knownList == "" ? "None".localized : knownList)
-        learningLabel.text = "Learning: ".localized + (learningList == "" ? "None".localized : learningList)
+        speaksLabel.text = "Speaks:".localized + " " + (knownList == "" ? "None".localized : knownList)
+        learningLabel.text = "Learning:".localized + " " + (learningList == "" ? "None".localized : learningList)
         bioTextView.text = user.bio
 
         if (!editing) {
