@@ -66,7 +66,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 "message VARCHAR(500), " +
                 "edited_message VARCHAR(500), " +
                 "audio VARCHAR(500), " +
-                "image VARCHAR(500)");
+                "image VARCHAR(500))");
 
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_pending_requests(" +
                 "user_id BIGINT, " +
