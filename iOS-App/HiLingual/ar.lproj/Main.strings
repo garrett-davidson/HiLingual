@@ -27,7 +27,7 @@
 "9fx-vR-vke.accessibilityIdentifier" = "View";
 
 /* Class = "UITabBarItem"; title = "Matching"; ObjectID = "Afi-Gr-tu1"; */
-"Afi-Gr-tu1.title" = "Matching";
+"Afi-Gr-tu1.title" = "مطابقة";
 
 /* Class = "UIView"; accessibilityIdentifier = "ProfileView"; ObjectID = "Au8-DZ-63Z"; */
 "Au8-DZ-63Z.accessibilityIdentifier" = "ProfileView";
@@ -39,7 +39,7 @@
 "BZj-OK-mpZ.text" = "A";
 
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "CQv-Ld-E6L"; */
-"CQv-Ld-E6L.title" = "رسائل";
+"CQv-Ld-E6L.title" = "الرسائل";
 
 /* Class = "UILabel"; accessibilityIdentifier = "LastMessageLabel"; ObjectID = "DsD-GD-Ptj"; */
 "DsD-GD-Ptj.accessibilityIdentifier" = "LastMessageLabel";
@@ -54,13 +54,16 @@
 "EA8-An-G2I.title" = "Matching View Controller";
 
 /* Class = "UITabBarItem"; title = "Messages"; ObjectID = "EoS-15-JWE"; */
-"EoS-15-JWE.title" = "رسائل";
+"EoS-15-JWE.title" = "الرسائل";
 
 /* Class = "UITableViewCell"; accessibilityIdentifier = "SettingsCell"; ObjectID = "FAi-Zl-ei5"; */
 "FAi-Zl-ei5.accessibilityIdentifier" = "SettingsCell";
 
+/* Class = "UIViewController"; title = "Flashcard View Contrller"; ObjectID = "FFY-Zy-0zR"; */
+"FFY-Zy-0zR.title" = "Flashcard View Contrller";
+
 /* Class = "UIBarButtonItem"; title = "Details"; ObjectID = "FPQ-fb-3tr"; */
-"FPQ-fb-3tr.title" = "Details";
+"FPQ-fb-3tr.title" = "تفاصيل";
 
 /* Class = "UITableViewCell"; accessibilityIdentifier = "SearchResultCell"; ObjectID = "GNK-ZF-Iem"; */
 "GNK-ZF-Iem.accessibilityIdentifier" = "SearchResultCell";
@@ -98,6 +101,9 @@
 /* Class = "UITableViewCell"; accessibilityIdentifier = "LanguageCell"; ObjectID = "OTF-n2-jWb"; */
 "OTF-n2-jWb.accessibilityIdentifier" = "LanguageCell";
 
+/* Class = "UITabBarItem"; title = "Flashcards"; ObjectID = "PwJ-yW-OJZ"; */
+"PwJ-yW-OJZ.title" = "البطاقات التعليمية";
+
 /* Class = "UIViewController"; title = "Profile VIew Controller"; ObjectID = "Q1f-p8-L4k"; */
 "Q1f-p8-L4k.title" = "Profile VIew Controller";
 
@@ -134,11 +140,14 @@
 /* Class = "UIView"; accessibilityIdentifier = "View"; ObjectID = "XdT-O1-gU3"; */
 "XdT-O1-gU3.accessibilityIdentifier" = "View";
 
+/* Class = "UINavigationController"; title = "Flashcard Navigation Controller"; ObjectID = "Xm0-rl-tbh"; */
+"Xm0-rl-tbh.title" = "Flashcard Navigation Controller";
+
 /* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "Z5f-4H-Weu"; */
 "Z5f-4H-Weu.title" = "أكملت";
 
 /* Class = "UIBarButtonItem"; title = "Settings"; ObjectID = "a9S-Er-P21"; */
-"a9S-Er-P21.title" = "Settings";
+"a9S-Er-P21.title" = "الإعدادات";
 
 /* Class = "UIView"; accessibilityIdentifier = "Carousel"; ObjectID = "aVZ-WE-2Oy"; */
 "aVZ-WE-2Oy.accessibilityIdentifier" = "Carousel";
@@ -210,7 +219,7 @@
 "nBC-Zq-2jE.title" = "Chat View Controller";
 
 /* Class = "UITabBarItem"; title = "Profile"; ObjectID = "ndt-1q-acR"; */
-"ndt-1q-acR.title" = "Profile";
+"ndt-1q-acR.title" = "الشخصية";
 
 /* Class = "UILabel"; accessibilityIdentifier = "LogoLabel"; ObjectID = "o50-s4-HwC"; */
 "o50-s4-HwC.accessibilityIdentifier" = "LogoLabel";
@@ -222,7 +231,7 @@
 "pHP-vv-FDu.accessibilityIdentifier" = "BackgroundImageView";
 
 /* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "pHn-AO-3os"; */
-"pHn-AO-3os.title" = "Edit";
+"pHn-AO-3os.title" = "تحرير";
 
 /* Class = "UITableViewCell"; accessibilityIdentifier = "ConversationTableViewCell"; ObjectID = "pcS-i8-Jrm"; */
 "pcS-i8-Jrm.accessibilityIdentifier" = "ConversationTableViewCell";

@@ -17,6 +17,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     var messages = [HLMessage]()
 
     let currentUser = HLUser.getCurrentUser()
+    let timestampFormamter = NSDateFormatter()
 
     var hasPendingChats: Bool {
         get {
@@ -33,8 +34,13 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         //for (getCurrentUser().chattedWith.count)) hiddenButtons+= true
         // hiddenButtons = getCurrentUser().chattedWith
         //grab users.ChattedWith to fill users conversations list
-        
+
+        timestampFormamter.locale = NSLocale.autoupdatingCurrentLocale()
+        timestampFormamter.dateStyle = .ShortStyle
+        timestampFormamter.timeStyle = .ShortStyle
+        timestampFormamter.doesRelativeDateFormatting = true
     }
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return hasPendingChats ? 2 : 1
     }
@@ -54,8 +60,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewWillAppear(animated: Bool) {
         self.tabBarController!.tabBar.hidden = false
-
-        refreshTableView()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -102,21 +106,41 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cellIdentity = "ConversationTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
-            let user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row])!
+            if let user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row]) {
 
-            cell.name.text = user.name
-            cell.profilePicture.layer.masksToBounds = false
-            cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
-            cell.profilePicture.clipsToBounds = true
-            cell.profilePicture.image = user.profilePicture
-            cell.acceptButton.tag = indexPath.row
-            cell.declineButton.tag = indexPath.row
-            cell.declineButton.hidden = true
-            cell.acceptButton.hidden = true
+                cell.name.text = user.name
+                cell.profilePicture.layer.masksToBounds = false
+                cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
+                cell.profilePicture.clipsToBounds = true
+                cell.profilePicture.image = user.profilePicture
+                cell.acceptButton.tag = indexPath.row
+                cell.declineButton.tag = indexPath.row
+                cell.declineButton.hidden = true
+                cell.acceptButton.hidden = true
 
+                let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(user.userId).chat.last")
 
-            cell.date.text = "Yesterday".localized
-            cell.lastMessage.text = ""
+                if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
+                    cell.lastMessage.text = lastMessage.text
+
+                    if NSCalendar.currentCalendar().isDateInToday(lastMessage.sentTimestamp) {
+                        timestampFormamter.timeStyle = .ShortStyle
+                        timestampFormamter.dateStyle = .NoStyle
+                    } else {
+                        timestampFormamter.timeStyle = .NoStyle
+                        timestampFormamter.dateStyle = .ShortStyle
+                    }
+
+                    cell.date.text = timestampFormamter.stringFromDate(lastMessage.sentTimestamp)
+    //                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
+                }
+
+                else {
+                    cell.lastMessage.text = ""
+                    cell.date.text = ""
+                }
+            }
+
             return cell
         }
 
@@ -173,15 +197,23 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         print("Failed to accept request")
     }
     @IBAction func decline(sender: UIButton) {
-        sender.hidden = true
-        let index = sender.tag
-        let indexPath = NSIndexPath(forRow: index, inSection: 0)
 
-        currentUser.pendingChats.removeAtIndex(index)
+        if HLServer.deleteRequestFromUser(currentUser.pendingChats[sender.tag]) {
 
-        converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade )
-        converstationTable.reloadData()
-        //send decline to server
+            sender.hidden = true
+            let index = sender.tag
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+
+
+            currentUser.pendingChats.removeAtIndex(index)
+
+            if currentUser.pendingChats.count > 0 {
+                converstationTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            } else {
+                converstationTable.deleteSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+                converstationTable.reloadData()
+            }
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -248,7 +280,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             // Delete the row from the data source
 
             if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
-                currentUser.usersChattedWith.removeAtIndex(indexPath.row)
+                if HLServer.deleteConversationWithUser(currentUser.usersChattedWith[indexPath.row]) {
+                    currentUser.usersChattedWith.removeAtIndex(indexPath.row)
+                } else {
+                    print("Failed to delete chat")
+                }
             }
 
             else {

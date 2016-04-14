@@ -62,7 +62,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.chatTableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.tabBar.hidden = true
         enableKeyboardHideOnTap()
-        tableViewScrollToBottom(false)
 
         setupEditMenuButtons()
 
@@ -75,6 +74,37 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
        // let controller = AudioRecorderViewController()
        // controller.audioRecorderDelegate = self
         //presentViewController(controller, animated: true, completion: nil)
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        chatTableView.scrollToBottom(animated: true)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
+        let count = messages.count
+
+        //Caches up to 50 messages on disk
+        let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
+        if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
+            //Succeeded in writing to file
+            print("Wrote message cache to disk")
+        }
+
+        else {
+            print("Failed to write chat cache")
+        }
+
+        if let lastMessage = last50.last {
+            if NSKeyedArchiver.archiveRootObject(lastMessage, toFile: chatURL.URLByAppendingPathExtension("last").path!) {
+                print("Wrote last message to disk")
+            }
+
+            else {
+                print("Failed to write last message to disk")
+            }
+        }
     }
 
     func handleEditedMessageNotification(notification: NSNotification) {
@@ -107,6 +137,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             return true
         }
+
+        print("Faild to send message")
 
         return false
     }
@@ -146,6 +178,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if let translatedText = HLServer.getTranslationForMessage(message, fromLanguage: nil) {
                 message.translatedText = translatedText
             }
+
+            if message.editedText != nil {
+                if let translatedEdit = HLServer.getTranslationForMessage(message, edit: true, fromLanguage: nil) {
+                    message.translatedEdit = translatedEdit
+                }
+            }
         }
 
         if message.translatedText != nil {
@@ -172,8 +210,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             testView.textView.text = selectedMessage.text
         }
         testView.textViewDidChange(testView.textView)
-        testView.textTestchange()
-        //testView.textViewDidChange(testView.textView)
+
+        tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: editingCellIndex!, inSection: 0), atScrollPosition: .Bottom, animated: true)
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
@@ -222,20 +260,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     private func enableKeyboardHideOnTap(){
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.menuWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillChangeFrame(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
     func textViewDidChange(textView: UITextView) {
-        tableViewScrollToBottom(true)
+        tableView.scrollToBottom()
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
-//        guard messages[indexPath.row].senderID != currentUser.userId else {
-//            return
-//        }
 
         guard editingCellIndex == nil else {
             return
@@ -256,12 +290,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return
         }
 
+        selectedCellIndex = indexPath.row
+
         //This keeps the keyboard up if it's already up
         if testView.textView.isFirstResponder() {
             hiddenTextField.becomeFirstResponder()
         }
-
-        selectedCellIndex = indexPath.row
 
         //This delay MUST be here
         //Otherwiser, the whenever the first responder changes, the menu immediately disappears
@@ -276,36 +310,32 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func keyboardWillShow(notification: NSNotification) {
+        let oldKeyboardFrame = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
+
+        if oldKeyboardFrame.height + oldKeyboardFrame.minY > self.view.frame.height {
+            self.chatTableView.scrollToBottom()
+        }
+    }
+
+    func keyboardWillChangeFrame(notification: NSNotification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
         UIView.animateWithDuration(duration) { () -> Void in
             if let height = self.navigationController?.navigationBar.frame.height {
-                self.chatTableView.contentInset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.height, 0)
-                self.view.layoutIfNeeded()
+                let inset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.size.height, 0)
+                self.chatTableView.contentInset = inset
+                self.chatTableView.scrollIndicatorInsets = inset
             }
-            
         }
-        if scroll < 2{
-            scroll += 1
-            tableViewScrollToBottom(true)
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
-        UIView.animateWithDuration(duration) { () -> Void in
-            if let height = self.navigationController?.navigationBar.frame.height {
-                self.chatTableView.contentInset = UIEdgeInsetsMake(height + 20, 0, 0, 0);
-                self.view.layoutIfNeeded()
-            }
+        if editingCellIndex != nil {
+            tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: editingCellIndex!, inSection: 0), atScrollPosition: .Bottom, animated: true)
         }
-        scroll = 0
     }
+
     //MARK:CELL ROW
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
         
@@ -336,7 +366,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }else{
                 shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
-            
             return cell
         }else if (message.audioURL != nil)  {
             let cellIdentity = "ChatPictureTableViewCell"
@@ -371,30 +400,32 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             
-            
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 cell.chatBubbleLeft.hidden = true
                 cell.chatBubbleLeft.text = ""
-                
-                cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+                cell.chatLeftImage.hidden = true
+                cell.chatRightImage.layer.cornerRadius = 6
+                //cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
                 cell.chatBubbleRight.text = message.showTranslation ? message.translatedText! : message.text
                 cell.chatBubbleRight.hidden = false
-                cell.chatBubbleRight.layer.cornerRadius = 5
+                cell.chatRightImage.hidden = false
             }
                 
             else {
                 cell.chatBubbleRight.hidden = true
                 cell.chatBubbleRight.text = ""
-                
-                cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+                cell.chatBubbleLeft.text = ""
+                cell.chatRightImage.hidden = true
+                cell.chatLeftImage.layer.cornerRadius = 6
+                //cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
                 cell.chatBubbleLeft.text = message.showTranslation ? message.translatedText! : message.text
+                cell.chatLeftImage.hidden = false
                 cell.chatBubbleLeft.hidden = false
-                cell.chatBubbleLeft.layer.cornerRadius = 5
             }
         
             
             return cell
-        }else {
+        } else {
             let cellIdentity = "ChatEditedTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
 
@@ -408,11 +439,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.leftMessageLabel.text = ""
                 cell.leftEditedMessageLabel.text = ""
                 cell.chatBubbleLeft.frame.size.height = 0
+                cell.editChatLeftImage.hidden = true
                 cell.chatBubbleRight.hidden = false
-                cell.chatBubbleRight.layer.cornerRadius = 5
+                cell.editChatRightImage.layer.cornerRadius = 6
 
                 cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
+                if message.showTranslation {
+                    cell.rightEditedMessageLabel.text = message.translatedEdit
+                } else {
+                    cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
+                }
+                cell.editChatRightImage.hidden = false
             }
 
             else {
@@ -420,32 +457,42 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.rightMessageLabel.text = ""
                 cell.rightEditedMessageLabel.text = ""
                 cell.chatBubbleLeft.hidden = false
-                cell.chatBubbleLeft.layer.cornerRadius = 5
+                cell.editChatRightImage.hidden = true
+                cell.editChatLeftImage.layer.cornerRadius = 6
 
                 cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
+                if message.showTranslation {
+                    cell.leftEditedMessageLabel.text = message.translatedEdit
+                } else {
+                    cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
+                }
+                cell.editChatLeftImage.hidden = false
+
+                
             }
 
             return cell
         }
     }
+
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
     }
+
     @IBAction func tapPlayButton(sender: UIButton) {
-        if(isPlayingMessage == true){
-            if(sender == curPlayingMessage){
+        if isPlayingMessage == true {
+            if sender == curPlayingMessage {
                 sender.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
                 isPlayingMessage = false;
                 audioPlayer.stop()
-            }else{
+            } else {
                 curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
                 audioPlayer.stop()
                 isPlayingMessage = false;
                 tapPlayButton(sender)
             }
-        }else{
+        } else {
             let deviceURL = messages[sender.tag].messageUUID!
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let audioURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).m4a")
@@ -493,19 +540,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
-    }
-    
-    func tableViewScrollToBottom(animated: Bool) {
-
-        dispatch_async(dispatch_get_main_queue(), {
-            let numberOfSections = self.chatTableView.numberOfSections
-            let numberOfRows = self.chatTableView.numberOfRowsInSection(numberOfSections-1)
-            
-            if numberOfRows > 0 {
-                let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
-                self.chatTableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
-            }
-        })
     }
 
     func loadMoreMessages(refreshControl: UIRefreshControl) {
@@ -563,20 +597,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             loadEdits(lastCached, count: 50 - newMessages.count)
 
             tableView.reloadData()
-            tableViewScrollToBottom(false)
-
-            let count = messages.count
-
-            //Caches up to 50 messages on disk
-            let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
-            if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
-                //Succeeded in writing to file
-                print("Wrote message cache to disk")
-            }
-
-            else {
-                print("Failed to write chat cache")
-            }
+            tableView.scrollToBottom()
         }
 
         else {
@@ -721,6 +742,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return attributedDiff
     }
 
+}
+
+extension UITableView {
+    func scrollToBottom(ofSection section:Int=0, animated:Bool=true) {
+        let cellCount = self.numberOfRowsInSection(section)
+
+        guard cellCount > 0 else {
+            return
+        }
+        self.scrollToRowAtIndexPath(NSIndexPath(forItem: cellCount-1, inSection: section), atScrollPosition: .Top, animated: animated)
+    }
 }
 
 extension String {

@@ -41,7 +41,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
 
             editProfileView.user.setSession(session)
             editProfileView.user.userId = session!.userId
-            editProfileView.user.save()
+            editProfileView.user.save(session!)
 
             performSegueWithIdentifier("DoneEditing", sender: self)
         }

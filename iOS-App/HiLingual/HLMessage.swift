@@ -31,6 +31,7 @@ class HLMessage: NSObject, NSCoding {
     let pictureURL: NSURL?
 
     var translatedText: String?
+    var translatedEdit: String?
 
     var showTranslation: Bool
 
@@ -43,11 +44,14 @@ class HLMessage: NSObject, NSCoding {
         text = aDecoder.decodeObjectForKey("text") as! String
 
         editedText = aDecoder.decodeObjectForKey("editedText") as? String
+        attributedEditedText = aDecoder.decodeObjectForKey("attributedEditedText") as? NSAttributedString
 
         senderID = aDecoder.decodeInt64ForKey("senderID")
         receiverID = aDecoder.decodeInt64ForKey("receiverID")
 
         translatedText = aDecoder.decodeObjectForKey("translatedText") as? String
+        translatedEdit = aDecoder.decodeObjectForKey("translatedEdit") as? String
+
         showTranslation = aDecoder.decodeBoolForKey("showTranslation")
 
         if let audio = aDecoder.decodeObjectForKey("audioURL") as? NSURL {
@@ -74,7 +78,9 @@ class HLMessage: NSObject, NSCoding {
         aCoder.encodeInt64(receiverID, forKey: "receiverID")
         aCoder.encodeObject(audioURL, forKey: "audioURL")
         aCoder.encodeObject(translatedText, forKey: "translatedText")
+        aCoder.encodeObject(translatedEdit, forKey: "translatedEdit")
         aCoder.encodeBool(showTranslation, forKey: "showTranslation")
+        aCoder.encodeObject(attributedEditedText, forKey: "attributedEditedText")
     }
 
     func saveMessageEdit() {

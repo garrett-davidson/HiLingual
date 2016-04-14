@@ -58,7 +58,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             }
 
             if (user.age != nil) {
-                ageLabel.text = "\(user.age!)"
+                ageLabel.text = "\(user.age!)".localized
             }
             else {
                 ageLabel.text = "Not Specified".localized
@@ -67,8 +67,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             let knownList = user.knownLanguages.toList()
             let learningList = user.learningLanguages.toList()
 
-            languagesSpeaks.text = "Speaks: ".localized + (knownList == "" ? "None".localized : knownList)
-            languagesLearning.text = "Learning: ".localized + (learningList == "" ? "None".localized : learningList)
+            languagesSpeaks.text = "Speaks:".localized + " " + (knownList == "" ? "None".localized : knownList)
+            languagesLearning.text = "Learning:".localized + " " + (learningList == "" ? "None".localized : learningList)
             bioText.text = user.bio
         }
 

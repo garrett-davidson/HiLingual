@@ -12,7 +12,7 @@
 "PVk-FS-d4h.accessibilityIdentifier" = "SendButton";
 
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "PVk-FS-d4h"; */
-"PVk-FS-d4h.normalTitle" = "Send";
+"PVk-FS-d4h.normalTitle" = "إرسال";
 
 /* Class = "UILabel"; accessibilityIdentifier = "RecordingTimerLabel"; ObjectID = "dC5-wN-qVh"; */
 "dC5-wN-qVh.accessibilityIdentifier" = "RecordingTimerLabel";

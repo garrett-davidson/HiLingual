@@ -13,6 +13,19 @@ class HLServer {
 
     static let apiBase = "https://gethilingual.com/api/"
 
+    static func getTopViewController() -> UIViewController? {
+        if var topController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+
+            // topController should now be your topmost view controller
+            return topController
+        }
+
+        return nil
+    }
+
     static func sendRequest(request: NSURLRequest) -> [NSDictionary]? {
         var resp: NSURLResponse?
 
@@ -45,6 +58,12 @@ class HLServer {
 
                     case 503:
                         print("😭😭😭 *********Server Down********* 😭😭😭")
+                        let alertController = UIAlertController(title: "Cannot connect".localized, message: "Our server seems to be down. Please try again later", preferredStyle: .Alert)
+                        alertController.addAction(UIAlertAction(title: "Ok".localized, style: .Cancel, handler: nil))
+                        if let topVC = getTopViewController() {
+                            topVC.presentViewController(alertController, animated: true, completion: nil)
+                        }
+                        
                         //We don't need to run the diagnostic stuff below if we get here
                         return nil
 
@@ -127,9 +146,9 @@ class HLServer {
         return sendRequest(request)
     }
 
-    static func getTranslationForMessage(message: HLMessage, fromLanguage: String?, toLangauge: String="en-US") -> String? {
+    static func getTranslationForMessage(message: HLMessage, edit:Bool=false, fromLanguage: String?, toLangauge: String="en-US") -> String? {
 
-        if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate") {
+        if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate", withParameterString: edit ? "?edit=true" : "") {
 
             if let encodedTranslation = ret[0]["translatedContent"] as? String {
                 return (NSString(data: NSData(base64EncodedString: encodedTranslation, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
@@ -220,8 +239,23 @@ class HLServer {
 
     static func getUserById(id: Int64, session: HLUserSession=HLUser.getCurrentUser().getSession()!) -> HLUser? {
 
+        let userURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(id).user")
+
+        if let cachedUser = NSKeyedUnarchiver.unarchiveObjectWithFile(userURL.path!) as? HLUser {
+            print("Pulled user from cache")
+            return cachedUser
+        }
+
         if let userDict = sendGETRequestToEndpoint("user/\(id)", withParameterString: nil, authentication: session) {
-            return HLUser.fromDict(userDict[0])
+            let returnedUser = HLUser.fromDict(userDict[0])
+
+
+            if NSKeyedArchiver.archiveRootObject(returnedUser, toFile: userURL.path!) {
+                print("Wrote user to cache")
+            } else {
+                print("Failed to write user to cache")
+            }
+            return returnedUser
         }
 
         return nil
@@ -271,5 +305,13 @@ class HLServer {
         }
 
         return nil
+    }
+
+    static func deleteConversationWithUser(userId: Int64) -> Bool {
+        return sendRequestToEndpoint("chat/\(userId)", method: "DELETE") != nil
+    }
+
+    static func deleteRequestFromUser(userId: Int64) -> Bool {
+        return sendRequestToEndpoint("chat/\(userId)/request", method: "DELETE") != nil
     }
 }

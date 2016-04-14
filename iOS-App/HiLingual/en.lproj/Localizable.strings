@@ -5,4 +5,21 @@
   Created by Garrett Davidson on 4/11/16.
   Copyright © 2016 Team3. All rights reserved.
 */
-Messages="Messages";
+"Messages" = "Messages";
+"Message" = "Message";
+"Send" = "Send";
+"Profile" = "Profile";
+"Edit" = "Edit";
+"Settings" = "Settings";
+"Done" = "Done";
+"Learning:" = "Learning:";
+"Speaks:" = "Speaks:";
+"Male" = "Male";
+"Female" = "Female";
+"Send Message" = "Send Message";
+"Flashcards" = "Flashcards";
+"Display Name:" = "Display Name:";
+"Bio:" = "Bio:";
+"None" = "None";
+"Cannot connect" = "Cannot connect";
+"Our server seems to be down. Please try again later" = "Our server seems to be down. Please try again later";
