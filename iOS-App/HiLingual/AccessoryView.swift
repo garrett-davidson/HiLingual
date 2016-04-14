@@ -41,7 +41,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     var isEditing = false
     var chatViewController: ChatViewController?
 
-    
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var textViewMaxHeightConstraint: NSLayoutConstraint!
+
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -390,22 +392,37 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             sendButton.tintColor = UIColor.lightGrayColor()
             sendButton.userInteractionEnabled = false
         }
-//        textView.reloadInputViews()
-        let numLines = textView.contentSize.height / textView.font!.lineHeight;
 
-        if numLines > 5 {
+//        let numLines = textView.contentSize.height / textView.font!.lineHeight;
+//        if numLines > 5 {
+//            textView.scrollEnabled = true
+//            textViewHeightConstraint.constant = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.max)).height
+//        }
+//
+//        else {
+//            textView.scrollEnabled = false
+//        }
+//
+//        if lines != numLines {
+//            lines = numLines
+////            chatViewController?.tableViewScrollToBottom(false)
+//
+//        }
+
+        var height = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max)).height
+        if height < 34 {
+            height = 34
+            textView.scrollEnabled = false
+        } else if height > 110 {
+            height = 110
             textView.scrollEnabled = true
-        }
-
-        else {
+        } else {
             textView.scrollEnabled = false
         }
-        if lines != numLines {
-            lines = numLines
-//            chatViewController?.tableViewScrollToBottom(false)
 
-        }
-        if textView.text == "" && textViewTested == false{
+        textViewHeightConstraint.constant = height
+
+        if textView.text == "" && textViewTested == false {
             textViewTested = true
             textViewDidChange(textView)
         }
@@ -413,18 +430,19 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     }
     
     func textTestchange(){
-        let numLines = textView.contentSize.height / textView.font!.lineHeight;
-        //(textView.text as NSString).sizeWithAttributes(<#T##attrs: [String : AnyObject]?##[String : AnyObject]?#>)
-        if numLines > 5 {
-            textView.scrollEnabled = true
-        }
-            
-        else {
-            textView.scrollEnabled = false
-        }
-        
+//        let numLines = textView.contentSize.height / textView.font!.lineHeight;
+//        //(textView.text as NSString).sizeWithAttributes(<#T##attrs: [String : AnyObject]?##[String : AnyObject]?#>)
+//        if numLines > 5 {
+//            textView.scrollEnabled = true
+//
+//        }
+//
+//        else {
+//            textView.scrollEnabled = false
+//        }
+//        
     }
-    
+
     override func intrinsicContentSize() -> CGSize {
         return CGSize(width: view.frame.width, height: textView.font!.lineHeight)
     }

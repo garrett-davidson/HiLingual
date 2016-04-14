@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F18b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -14,6 +14,7 @@
                 <outlet property="recordingTimer" destination="dC5-wN-qVh" id="kuF-so-dKx"/>
                 <outlet property="sendButton" destination="PVk-FS-d4h" id="wHW-Lc-sYP"/>
                 <outlet property="textView" destination="8et-XY-PLa" id="b4b-r7-Q3j"/>
+                <outlet property="textViewHeightConstraint" destination="HX5-2q-w8b" id="dg9-CR-xUO"/>
                 <outlet property="view" destination="iN0-l3-epB" id="m8s-ie-plz"/>
             </connections>
         </placeholder>
@@ -27,8 +28,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration" identifier="InputTextView"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="BRK-N5-X2z"/>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="110" id="D0H-lB-hoH"/>
+                        <constraint firstAttribute="height" constant="592" id="HX5-2q-w8b"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
