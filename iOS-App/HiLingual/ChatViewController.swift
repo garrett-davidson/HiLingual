@@ -406,7 +406,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.chatBubbleLeft.frame.size.height = 0
                 cell.editChatLeftImage.hidden = true
                 cell.chatBubbleRight.hidden = false
-                cell.chatBubbleRight.backgroundColor = UIColor.clearColor()
                 cell.editChatRightImage.layer.cornerRadius = 6
 
                 cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
