@@ -68,7 +68,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
         
-        loadTextView()
+        loadViews()
     }
 
     func didBegingEditing() {
@@ -121,8 +121,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         audioRecorder.stop()
         
         if success {
-            sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
-            sendButton.setTitle("Send", forState: UIControlState.Normal)
+            changeToSend()
             sendButton.tintColor = UIColor.blueColor()
             sendButton.userInteractionEnabled = true
             print("recorded audio")
@@ -256,8 +255,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         recordTimer.invalidate()
         
         isSend = true
-        sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
-        sendButton.setTitle("Send", forState: UIControlState.Normal)
+        changeToSend()
         
         finishRecording(success: true)
     }
@@ -281,8 +279,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         isRecording = false;
         
         isSend = false
-        sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-        sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+        changeToMicroPhone()
 
 
         
@@ -294,8 +291,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         print("isSend: ",isSend)
         if isSend {
             isSend = false
-            sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-            sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+            changeToMicroPhone()
             if isRecording{
                 print("sent voice")
                 data = NSData(contentsOfURL: curURL)
@@ -379,7 +375,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
             textView.text = "Message".localized
             textView.scrollEnabled = false
-            leftButton.hidden = false
 
         }
     }
@@ -390,24 +385,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             textView.sizeToFit()
             textView.layoutIfNeeded()
             sendButton.tintColor = UIColor.blueColor()
-            //sendButton.userInteractionEnabled = false
             isSend = false
-            sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-            sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
-            
-            leftButton.hidden = false
+            changeToMicroPhone()
         }
 
         else {
             isSend = true
-            sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
-            sendButton.setTitle("Send", forState: UIControlState.Normal)
-            sendButton.userInteractionEnabled = true
-            if isEditing == false {
-                leftButton.hidden = true
-            } else {
-                leftButton.hidden = false
-            }
+            changeToSend()
             
         }
         if isRecording {
@@ -418,10 +402,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             previewRecording.hidden = true
             deleteRecording.hidden = true
             isRecording = false;
-            sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
-            sendButton.setTitle("Send", forState: UIControlState.Normal)
-            sendButton.tintColor = UIColor.lightGrayColor()
-            sendButton.userInteractionEnabled = false
+            isSend = false
+            changeToSend()
         }
 
         var height = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max)).height
@@ -448,7 +430,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         return CGSize(width: view.frame.width, height: textView.font!.lineHeight)
     }
     
-    func loadTextView() {
+    func loadViews() {
         view.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7)
         view.layer.borderWidth = 0.4
         textView.layer.borderWidth = 0.5
@@ -456,10 +438,24 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
         textView.text = "Message".localized
         isSend = false
-        sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
-        sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+        changeToMicroPhone()
+        leftButton.setTitle("\u{f083}", forState: UIControlState.Normal)
+        deleteRecording.setTitle("\u{f057}", forState: UIControlState.Normal)
+        previewRecording.setTitle("\u{f144}", forState: UIControlState.Normal)
+        
         //textView.font = UIFont(name: "FontAwesome", size: 12)
         //textView.text = "\u{f0f9}"
+    }
+    
+    func changeToSend(){
+        sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
+        sendButton.setTitle("Send", forState: UIControlState.Normal)
+    }
+    
+    func changeToMicroPhone() {
+        sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 24)
+        sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+        
     }
 
     convenience required init?(coder aDecoder: NSCoder) {

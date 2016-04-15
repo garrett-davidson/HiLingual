@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="FontAwesome.otf">
+            <string>FontAwesome</string>
+            <string>FontAwesome</string>
+            <string>FontAwesome</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccessoryView" customModule="HiLingual" customModuleProvider="target">
             <connections>
@@ -30,31 +37,40 @@
                         <constraint firstAttribute="height" constant="34" id="AQW-oU-Vat"/>
                         <constraint firstAttribute="width" constant="34" id="hY6-HZ-Szo"/>
                     </constraints>
-                    <state key="normal" title="Button" image="Microphone-128"/>
+                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="28"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
                     <connections>
                         <action selector="tapCameraDown:" destination="-1" eventType="touchDown" id="bIL-jP-rjZ"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9k-mK-rME">
-                    <rect key="frame" x="195" y="8" width="34" height="34"/>
+                    <rect key="frame" x="205" y="8" width="34" height="34"/>
                     <accessibility key="accessibilityConfiguration" identifier="DeleteRecordingButton"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="eVd-mU-70I"/>
                         <constraint firstAttribute="width" constant="34" id="t58-rc-wGg"/>
                     </constraints>
-                    <state key="normal" title="Button" image="shittyx"/>
+                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="34"/>
+                    <state key="normal">
+                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
                     <connections>
                         <action selector="tapDelete:" destination="-1" eventType="touchUpInside" id="YBv-Js-Oam"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obr-DO-y8s">
-                    <rect key="frame" x="371" y="8" width="34" height="34"/>
+                    <rect key="frame" x="361" y="8" width="34" height="34"/>
                     <accessibility key="accessibilityConfiguration" identifier="PreviewRecordingButton"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="34" id="9Ot-LY-Cth"/>
                         <constraint firstAttribute="height" constant="34" id="q5Y-47-cTi"/>
                     </constraints>
-                    <state key="normal" title="Button" image="shittyplay"/>
+                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="34"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
                     <connections>
                         <action selector="tapPreview:" destination="-1" eventType="touchUpInside" id="J7x-Hs-ikf"/>
                     </connections>
@@ -70,7 +86,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8et-XY-PLa">
-                    <rect key="frame" x="45" y="8" width="501" height="34"/>
+                    <rect key="frame" x="45" y="8" width="505" height="34"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration" identifier="InputTextView"/>
                     <constraints>
@@ -83,7 +99,7 @@
                     </connections>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PVk-FS-d4h">
-                    <rect key="frame" x="546" y="12" width="46" height="30"/>
+                    <rect key="frame" x="550" y="12" width="46" height="30"/>
                     <accessibility key="accessibilityConfiguration" identifier="SendButton"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="46" id="YsJ-LI-jGz"/>
@@ -103,7 +119,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="1hm-Lc-FbK"/>
-                <constraint firstItem="obr-DO-y8s" firstAttribute="leading" secondItem="dC5-wN-qVh" secondAttribute="trailing" constant="50" id="5hs-ya-vmo"/>
+                <constraint firstItem="obr-DO-y8s" firstAttribute="leading" secondItem="dC5-wN-qVh" secondAttribute="trailing" constant="40" id="5hs-ya-vmo"/>
                 <constraint firstAttribute="bottomMargin" secondItem="m9k-mK-rME" secondAttribute="bottom" id="5j6-Eq-098"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="6YE-sU-z4i"/>
                 <constraint firstAttribute="bottomMargin" secondItem="obr-DO-y8s" secondAttribute="bottom" id="IJP-VV-xrs"/>
@@ -112,20 +128,15 @@
                 <constraint firstItem="dC5-wN-qVh" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NlP-6I-lf0"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="leading" secondItem="3b4-LC-oRi" secondAttribute="trailing" constant="3" id="PI1-l5-Z0g"/>
                 <constraint firstAttribute="bottomMargin" secondItem="dC5-wN-qVh" secondAttribute="bottom" id="R2z-hU-S6Z"/>
-                <constraint firstItem="PVk-FS-d4h" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="Rh1-Vo-LMj"/>
+                <constraint firstItem="PVk-FS-d4h" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" constant="4" id="Rh1-Vo-LMj"/>
                 <constraint firstItem="3b4-LC-oRi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="Rq5-Zq-dvz"/>
                 <constraint firstItem="PVk-FS-d4h" firstAttribute="leading" secondItem="8et-XY-PLa" secondAttribute="trailing" id="VZo-7g-bfB"/>
                 <constraint firstItem="8et-XY-PLa" firstAttribute="bottom" secondItem="PVk-FS-d4h" secondAttribute="bottom" id="e26-yt-PfM"/>
-                <constraint firstItem="dC5-wN-qVh" firstAttribute="leading" secondItem="m9k-mK-rME" secondAttribute="trailing" constant="50" id="gvd-6o-6Fd"/>
+                <constraint firstItem="dC5-wN-qVh" firstAttribute="leading" secondItem="m9k-mK-rME" secondAttribute="trailing" constant="40" id="gvd-6o-6Fd"/>
                 <constraint firstItem="3b4-LC-oRi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="owx-WO-jEK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="240" y="201"/>
         </view>
     </objects>
-    <resources>
-        <image name="Microphone-128" width="128" height="128"/>
-        <image name="shittyplay" width="512" height="512"/>
-        <image name="shittyx" width="600" height="600"/>
-    </resources>
 </document>

@@ -23,6 +23,9 @@ class HLFlashCard: NSObject, NSCoding {
         aCoder.encodeObject(frontText, forKey: "front")
         aCoder.encodeObject(backText, forKey: "back")
     }
-
+    init(frontText: String,backText: String){
+        self.backText = backText
+        self.frontText = frontText
+    }
     
 }

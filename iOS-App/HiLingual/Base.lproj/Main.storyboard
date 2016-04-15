@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -982,6 +982,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="R77-4U-dP5" kind="show" identifier="toFlashcardRing" id="MaO-PC-bI9"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -999,17 +1002,53 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Flashcards" id="W54-Bc-eDq">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="QZ3-tr-GoZ"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="e0S-ng-boh">
                             <connections>
                                 <action selector="AddFlashCard:" destination="FFY-Zy-0zR" id="Ndw-kc-WZE"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="flashcardTable" destination="Mhm-Pj-Ujz" id="noc-ts-eeg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Zo-u9-6kO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4872" y="1015"/>
+        </scene>
+        <!--Data Source-->
+        <scene sceneID="JfU-ZA-589">
+            <objects>
+                <viewController id="R77-4U-dP5" customClass="FlashcardSetViewController" customModule="HiLingual" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vjd-P2-B7W"/>
+                        <viewControllerLayoutGuide type="bottom" id="tZW-5i-q02"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ln6-dX-lti">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2v1-nQ-14l" customClass="iCarousel">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="R77-4U-dP5" id="PK1-S8-9A1"/>
+                                    <outlet property="delegate" destination="R77-4U-dP5" id="mHf-tH-aOp"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2v1-nQ-14l" firstAttribute="leading" secondItem="ln6-dX-lti" secondAttribute="leadingMargin" constant="-20" id="dLp-5P-5qr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2v1-nQ-14l" secondAttribute="trailing" constant="-20" id="di1-Rb-axJ"/>
+                            <constraint firstItem="2v1-nQ-14l" firstAttribute="top" secondItem="vjd-P2-B7W" secondAttribute="bottom" id="gjp-Oq-D9m"/>
+                            <constraint firstItem="tZW-5i-q02" firstAttribute="top" secondItem="2v1-nQ-14l" secondAttribute="bottom" id="pqq-dz-CEk"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zIT-6C-26W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5536" y="1019"/>
         </scene>
         <!--Messages-->
         <scene sceneID="biN-L3-hVo">
@@ -1119,7 +1158,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HSr-BE-Z8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6081" y="831"/>
+            <point key="canvasLocation" x="6180" y="816"/>
         </scene>
         <!--Flashcard Navigation Controller-->
         <scene sceneID="AKS-NV-x1u">
