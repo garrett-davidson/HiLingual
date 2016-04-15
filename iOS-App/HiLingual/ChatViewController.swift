@@ -366,7 +366,36 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
             return cell
-        } else if message.editedText == nil {
+        }else if (message.audioURL != nil)  {
+            let cellIdentity = "ChatPictureTableViewCell"
+            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatPictureTableViewCell
+            
+            let shownPicture: UIImageView
+            let hiddenPicture: UIImageView
+            
+            if messages[indexPath.row].senderID  ==  currentUser.userId {
+                shownPicture = cell.rightPicture
+                hiddenPicture = cell.leftPicture
+            }
+                
+            else {
+                shownPicture = cell.rightPicture
+                hiddenPicture = cell.leftPicture
+            }
+            
+            shownPicture.hidden = false
+            hiddenPicture.hidden = true
+            
+            shownPicture.tag = indexPath.row
+            
+//            if(isPlayingMessage){
+//                shownPicture.image = UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal)
+//            }else{
+//                shownPicture.image = UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal)
+//            }
+            
+            return cell
+        }else if message.editedText == nil {
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             

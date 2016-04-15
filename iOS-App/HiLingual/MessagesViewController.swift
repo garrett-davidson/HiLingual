@@ -132,7 +132,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
 
                     cell.date.text = timestampFormamter.stringFromDate(lastMessage.sentTimestamp)
-    //                cell.date.text = NSDateFormatter.localizedStringFromDate(lastMessage.sentTimestamp, dateStyle: .NoStyle, timeStyle: .ShortStyle)
                 }
 
                 else {

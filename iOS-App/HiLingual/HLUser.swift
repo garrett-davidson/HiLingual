@@ -144,7 +144,12 @@ enum Gender: Int {
         let blockedUsers = userDict["blockedUsers"]
 
 
-        let bio = userDict["bio"] as! String
+        let bio: String?
+        if let encodedBio = userDict["bio"] as? String {
+            bio = (NSString(data: NSData(base64EncodedString: encodedBio, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
+        } else {
+            bio = nil
+        }
 
         //Not important
         let usersChattedWith = userDict["usersChattedWith"]
@@ -267,7 +272,7 @@ enum Gender: Int {
             userDict.setObject(displayName!, forKey: "displayName")
         }
         if bio != nil {
-            userDict.setObject(bio!, forKey: "bio")
+            userDict.setObject(bio!.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)), forKey: "bio")
         }
         if gender != nil {
             userDict.setObject("\(gender!)".capitalizedString, forKey: "gender")

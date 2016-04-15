@@ -107,10 +107,11 @@ class HiLingualUITests: XCTestCase {
         
         let displayNameTextField = app.textFields["Display Name"]
         displayNameTextField.tap()
-        app.typeText("oldName")
-
+        app.typeText(" oldName")
         displayNameTextField.tap()
+        displayNameTextField.pressForDuration(1.7);
 
+        
         app.menuItems["Select All"].tap()
         
         let deleteKey = app.keys["delete"]
@@ -122,7 +123,36 @@ class HiLingualUITests: XCTestCase {
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
-    
+    func testEditPictureNoCrash() {
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        let profileButton = tabBarsQuery.buttons["Profile"]
+        profileButton.tap()
+        
+        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
+        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
+        XCUIApplication().images.elementBoundByIndex(3).tap()
+        
+        
+        let sheetsQuery = app.sheets
+        sheetsQuery.buttons["Cancel"].tap()
+        
+        XCUIApplication().images.elementBoundByIndex(3).tap()
+        
+        app.sheets.collectionViews.buttons["Photo Library"].tap()
+        app.navigationBars["Photos"].buttons["Cancel"].tap()
+        
+        XCUIApplication().images.elementBoundByIndex(3).tap()
+        sheetsQuery.collectionViews.buttons["Take Picture"].tap()
+
+        app.buttons["PhotoCapture"].tap()
+        sleep(1)
+        app.buttons["Use Photo"].tap()
+        hilingualProfileviewNavigationBar.buttons["Done"].tap()
+        tabBarsQuery.buttons["Messages"].tap()
+        profileButton.tap()
+        
+    }
     func testEditNamePlainTextSave() {
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
@@ -412,7 +442,16 @@ class HiLingualUITests: XCTestCase {
     func testMessagesProfileViewNoCrash(){
         
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let navigationBar = app.navigationBars.elementBoundByIndex(0)
         navigationBar.buttons["Details"].tap()
@@ -455,8 +494,16 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0)
-        lastmessagelabelStaticText.tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
@@ -475,7 +522,7 @@ class HiLingualUITests: XCTestCase {
                 let tabBarsQuery = app.tabBars
                 tabBarsQuery.buttons["Profile"].tap()
                 tabBarsQuery.buttons["Messages"].tap()
-                lastmessagelabelStaticText.tap()
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
                 break;
             }
             j += 1
@@ -490,8 +537,16 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0)
-        lastmessagelabelStaticText.tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
 
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
@@ -510,7 +565,7 @@ class HiLingualUITests: XCTestCase {
                 let tabBarsQuery = app.tabBars
                 tabBarsQuery.buttons["Profile"].tap()
                 tabBarsQuery.buttons["Messages"].tap()
-                lastmessagelabelStaticText.tap()
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
                 break;
             }
             j += 1
@@ -525,8 +580,16 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        let lastmessagelabelStaticText = app.tables.childrenMatchingType(.Cell).elementBoundByIndex(0)
-        lastmessagelabelStaticText.tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let numOfEditedMessagesBeforeEdit = tablesQuery.childrenMatchingType(.Cell).matchingIdentifier("ChatEditedTableViewCell").allElementsBoundByIndex.count
         
@@ -543,7 +606,7 @@ class HiLingualUITests: XCTestCase {
                 let tabBarsQuery = app.tabBars
                 tabBarsQuery.buttons["Profile"].tap()
                 tabBarsQuery.buttons["Messages"].tap()
-                lastmessagelabelStaticText.tap()
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
                 break;
             }
             j += 1
@@ -556,7 +619,16 @@ class HiLingualUITests: XCTestCase {
     func testUnicodeMessage() {
         
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
 
         let inputTextView = app.textViews["InputTextView"]
         inputTextView.tap()
@@ -618,7 +690,16 @@ class HiLingualUITests: XCTestCase {
     
     func testEditButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
@@ -629,7 +710,16 @@ class HiLingualUITests: XCTestCase {
 
     func testTranslateButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
@@ -640,7 +730,16 @@ class HiLingualUITests: XCTestCase {
     
     func testPasteButtonCanShowInTypingMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
@@ -655,7 +754,16 @@ class HiLingualUITests: XCTestCase {
     
     func testEditButtonShowClickOnLeftMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
@@ -673,7 +781,16 @@ class HiLingualUITests: XCTestCase {
     
     func testTranslateButtonShowClickOnLeftMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
@@ -691,7 +808,16 @@ class HiLingualUITests: XCTestCase {
     
     func testPasteButtonShowClickOnLeftMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
@@ -709,7 +835,16 @@ class HiLingualUITests: XCTestCase {
     
     func testEditButtonShowClickOnRightMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
@@ -727,7 +862,16 @@ class HiLingualUITests: XCTestCase {
     
     func testTranslateButtonShowClickOnRightMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
@@ -745,7 +889,16 @@ class HiLingualUITests: XCTestCase {
     
     func testPasteButtonShowClickOnRightMessage() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         var tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(0)
         var j: UInt = 0
@@ -762,7 +915,16 @@ class HiLingualUITests: XCTestCase {
     }
     func testPasteButtonShowClickOnRightMessageWithTextView() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         XCUIApplication().textViews["InputTextView"].tap()
         
         
@@ -782,7 +944,16 @@ class HiLingualUITests: XCTestCase {
 
     func testPasteButtonShowClickOnLeftMessageWithTextView() {
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         XCUIApplication().textViews["InputTextView"].tap()
         
         
@@ -799,5 +970,15 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
-    
+    func testAAAAAAAappCreation() {
+        
+        let app = XCUIApplication()
+        //app.alerts["“HiLingual” Would Like to Send You Notifications"].collectionViews.buttons["OK"].tap()
+        app.buttons["GoogleSignButton"].tap()
+        sleep(10)
+        let tabBarsQuery = app.tabBars
+        let profileButton = tabBarsQuery.buttons["Profile"]
+        profileButton.tap()
+        
+    }
 }
