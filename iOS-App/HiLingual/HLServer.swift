@@ -222,7 +222,7 @@ class HLServer {
         print("string length: ",data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)).characters.count)
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["image": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
             return HLMessage.fromDict(messageDict[0])
-        }
+        } //this needs to be asynchronous so bad pls
         
         return nil
     }

@@ -279,6 +279,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         previewRecording.hidden = true
         deleteRecording.hidden = true
         isRecording = false;
+        
+        isSend = false
+        sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+        sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+
 
         
     }
