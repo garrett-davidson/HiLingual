@@ -310,11 +310,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func keyboardWillShow(notification: NSNotification) {
-        let oldKeyboardFrame = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
 
-        if oldKeyboardFrame.height + oldKeyboardFrame.minY > self.view.frame.height {
-            self.chatTableView.scrollToBottom()
-        }
+        self.chatTableView.scrollToBottom()
+
+        
     }
 
     func keyboardWillChangeFrame(notification: NSNotification) {

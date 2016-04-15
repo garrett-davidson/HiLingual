@@ -33,7 +33,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     @IBOutlet var deleteRecording: UIButton!
     
     
-    
+    var isSend = false
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
@@ -67,7 +67,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
-
+        
         loadTextView()
     }
 
@@ -121,6 +121,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         audioRecorder.stop()
         
         if success {
+            sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
+            sendButton.setTitle("Send", forState: UIControlState.Normal)
             sendButton.tintColor = UIColor.blueColor()
             sendButton.userInteractionEnabled = true
             print("recorded audio")
@@ -277,6 +279,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         previewRecording.hidden = false
         deleteRecording.hidden = false
         recordTimer.invalidate()
+        sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
+        sendButton.setTitle("Send", forState: UIControlState.Normal)
+        isSend = true
+        
         finishRecording(success: true)
     }
     
@@ -297,8 +303,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         previewRecording.hidden = true
         deleteRecording.hidden = true
         isRecording = false;
-        sendButton.tintColor = UIColor.lightGrayColor()
-        sendButton.userInteractionEnabled = false
 
         
     }
@@ -306,31 +310,36 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     
     @IBAction func sendClicked(sender: AnyObject) {
        var data: NSData? = nil
-        if isRecording{
-            print("sent voice")
-            data = NSData(contentsOfURL: curURL)
-            chatViewController!.sendVoiceMessageWithData(data!)
-            tapDelete(sender)
-            
-            return
-        }
-        else if isEditing {
-            chatViewController!.saveMessageEdit(editedText: textView.text)
-            didEndEditing()
-        }
-        else {
-            textView.text = textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            if (textView.text  ?? "").isEmpty {
-                print("String is nil or empty.")
-                textView.text = ""
-                textViewDidChange(textView)
+        if isSend {
+            if isRecording{
+                print("sent voice")
+                data = NSData(contentsOfURL: curURL)
+                chatViewController!.sendVoiceMessageWithData(data!)
+                tapDelete(sender)
+                
                 return
             }
-            if chatViewController!.sendMessageWithText(textView.text) {
-                textView.text = ""
-                textViewDidChange(textView)
-                chatViewController?.tableView.scrollToBottom()
+            else if isEditing {
+                chatViewController!.saveMessageEdit(editedText: textView.text)
+                didEndEditing()
             }
+            else {
+                textView.text = textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                if (textView.text  ?? "").isEmpty {
+                    print("String is nil or empty.")
+                    textView.text = ""
+                    textViewDidChange(textView)
+                    return
+                }
+                if chatViewController!.sendMessageWithText(textView.text) {
+                    textView.text = ""
+                    textViewDidChange(textView)
+                    chatViewController?.tableView.scrollToBottom()
+                }
+            }
+        }else {
+            //RECORDING GOES IN HERE RILEY
+        
         }
     }
 
@@ -359,13 +368,19 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             textView.scrollEnabled = false
             textView.sizeToFit()
             textView.layoutIfNeeded()
-            sendButton.tintColor = UIColor.lightGrayColor()
-            sendButton.userInteractionEnabled = false
+            sendButton.tintColor = UIColor.blueColor()
+            //sendButton.userInteractionEnabled = false
+            isSend = false
+            sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+            sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+            
             leftButton.hidden = false
         }
 
         else {
-            sendButton.tintColor = UIColor.blueColor()
+            isSend = true
+            sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
+            sendButton.setTitle("Send", forState: UIControlState.Normal)
             sendButton.userInteractionEnabled = true
             if isEditing == false {
                 leftButton.hidden = true
@@ -382,6 +397,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             previewRecording.hidden = true
             deleteRecording.hidden = true
             isRecording = false;
+            sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
+            sendButton.setTitle("Send", forState: UIControlState.Normal)
             sendButton.tintColor = UIColor.lightGrayColor()
             sendButton.userInteractionEnabled = false
         }
@@ -417,8 +434,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         textView.layer.cornerRadius = 5
         textView.textColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5)
         textView.text = "Message".localized
-//        textView.font = UIFont(name: "FontAwesome", size: 12)
-//        textView.text = "\u{f0f9}"
+        isSend = false
+        sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+        sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
+        //textView.font = UIFont(name: "FontAwesome", size: 12)
+        //textView.text = "\u{f0f9}"
     }
 
     convenience required init?(coder aDecoder: NSCoder) {

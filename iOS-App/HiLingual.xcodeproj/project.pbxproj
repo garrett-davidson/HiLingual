@@ -44,7 +44,7 @@
 		7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7220839C1CACBC0700609446 /* AccessoryView.swift */; };
 		7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */; };
 		72A640851CBD79DF00EFFEEE /* FlashCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640841CBD79DF00EFFEEE /* FlashCardViewController.swift */; };
-		72A640871CBEBEAE00EFFEEE /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640861CBEBEAE00EFFEEE /* BubbleView.swift */; };
+		72A640891CC0216800EFFEEE /* HLFlashCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640881CC0216800EFFEEE /* HLFlashCard.swift */; };
 		72DAA67D1C9BA1F70093B51C /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */; };
 		72F621571C7F977700A8A489 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F621561C7F977700A8A489 /* EditProfileView.swift */; };
 		7CF1F1931C875BCA00BC258A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */; };
@@ -141,7 +141,7 @@
 		7220839C1CACBC0700609446 /* AccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryView.swift; sourceTree = "<group>"; };
 		7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		72A640841CBD79DF00EFFEEE /* FlashCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardViewController.swift; sourceTree = "<group>"; };
-		72A640861CBEBEAE00EFFEEE /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		72A640881CC0216800EFFEEE /* HLFlashCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLFlashCard.swift; sourceTree = "<group>"; };
 		72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		72F621561C7F977700A8A489 /* EditProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -231,6 +231,7 @@
 				72A640841CBD79DF00EFFEEE /* FlashCardViewController.swift */,
 				683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */,
 				680F243F1C70194B009F4EE8 /* HLMessage.swift */,
+				72A640881CC0216800EFFEEE /* HLFlashCard.swift */,
 				689E142E1CB6FDFC00C41C60 /* HLServer.swift */,
 				680F24411C701A45009F4EE8 /* HLUser.swift */,
 				680F24451C7164C3009F4EE8 /* HLUserSession.swift */,
@@ -558,8 +559,8 @@
 				7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
-				72A640871CBEBEAE00EFFEEE /* BubbleView.swift in Sources */,
 				720F002C1C7E3F3300DA197E /* DetailViewController.swift in Sources */,
+				72A640891CC0216800EFFEEE /* HLFlashCard.swift in Sources */,
 				72DAA67D1C9BA1F70093B51C /* ChatTableViewCell.swift in Sources */,
 				688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */,
 				680F24441C701A9B009F4EE8 /* Languages.swift in Sources */,
