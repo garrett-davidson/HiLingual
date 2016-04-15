@@ -82,7 +82,16 @@ class HiLingualUITests: XCTestCase {
     func testTextViewHeight() {
         
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let element = app.childrenMatchingType(.Window).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
         element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
@@ -146,7 +155,7 @@ class HiLingualUITests: XCTestCase {
         sheetsQuery.collectionViews.buttons["Take Picture"].tap()
 
         app.buttons["PhotoCapture"].tap()
-        sleep(1)
+        sleep(10)
         app.buttons["Use Photo"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         tabBarsQuery.buttons["Messages"].tap()
@@ -245,7 +254,16 @@ class HiLingualUITests: XCTestCase {
     func testSendSimpleMessageNoCrash() {
         
         let app = XCUIApplication()
-        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
@@ -264,7 +282,11 @@ class HiLingualUITests: XCTestCase {
         hilingualProfileviewNavigationBar.buttons["Edit"].tap()
         
         app.otherElements["EditProfile"].staticTexts["GenderSelectionLabel"].tap()
-        app.pickerWheels["Female"].tap()
+        if app.pickerWheels["Female"].exists {
+            app.pickerWheels.elementBoundByIndex(0).swipeDown()
+        } else {
+            app.pickerWheels.elementBoundByIndex(0).swipeUp()
+        }
         app.toolbars.buttons["Done"].tap()
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
     }
