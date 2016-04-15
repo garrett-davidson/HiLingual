@@ -326,7 +326,8 @@ class HiLingualUITests: XCTestCase {
         
         textView.typeText("bio")
         
-        textView.tap()
+        textView.pressForDuration(1)
+        sleep(1)
         app.menuItems["Select All"].tap()
         
         let deleteKey = app.keys["delete"]
@@ -992,15 +993,19 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
-    func testAAAAAAAappCreation() {
+    func testAappCreation() {
         
         let app = XCUIApplication()
-        //app.alerts["“HiLingual” Would Like to Send You Notifications"].collectionViews.buttons["OK"].tap()
         app.buttons["GoogleSignButton"].tap()
+        let webViewsQuery = app.webViews
+        webViewsQuery.textFields["Enter your email"].tap()
+        webViewsQuery.textFields["Enter your email"].typeText("sirjosephsavastano@gmail.com")
+        XCUIApplication().buttons["Go"].tap()
+        webViewsQuery.secureTextFields["Password"].tap()
+        webViewsQuery.secureTextFields["Password"].typeText("ifucking")
+        XCUIApplication().buttons["Go"].tap()
         sleep(10)
-        let tabBarsQuery = app.tabBars
-        let profileButton = tabBarsQuery.buttons["Profile"]
-        profileButton.tap()
+        app.tabBars.buttons["Profile"].tap()
         
     }
 }
