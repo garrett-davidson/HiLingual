@@ -229,38 +229,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
-  /*  func resizeImage(image: UIImage){
-        var actualHeight = image.size.height;
-        var actualWidth = image.size.width;
-        let maxHeight = CGFloat(300.0);
-        let maxWidth = CGFloat(400.0);
-        var imgRatio = (actualWidth/actualHeight);
-        let maxRatio = maxWidth/maxHeight;
-        let compressionQuality = 0.5;//50 percent compression
-            if(imgRatio < maxRatio) {
-    //adjust width according to maxHeight
-                imgRatio = maxHeight / actualHeight;
-                actualWidth = imgRatio * actualWidth;
-                actualHeight = maxHeight;
-            }else if(imgRatio > maxRatio){
-    //adjust height according to maxWidth
-                imgRatio = maxWidth / actualWidth;
-                actualHeight = imgRatio * actualHeight;
-                actualWidth = maxWidth;
-            } else  {
-                actualHeight = maxHeight;
-                actualWidth = maxWidth;
-            }
-        var rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
-        UIGraphicsBeginImageContext(rect.size);
-        var img = UIGraphicsGetImageFromCurrentImageContext();
-    NSData *imageData = UIImageJPEGRepresentation(img, compressionQuality);
-    UIGraphicsEndImageContext();
-    
-    return [UIImage imageWithData:imageData];
-    
-    }
-*/
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         var selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage

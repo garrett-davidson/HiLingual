@@ -207,28 +207,28 @@ enum Gender: Int {
         
         HLUser.currentUser = self
         var size = CGSize(width: 150, height: 150)
-//        
-//        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
-//        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
-//        if let session = HLUser.getCurrentUser().getSession() {
-//            
-//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-//            request.HTTPMethod = "POST"
-//            
-//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
-//            
-//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-//                print(returnedData)
-//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-//                    print(returnString)
-//                }
-//            }
-//        }
-//
-//
-//        
-//        
+        
+        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
+        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
+        if let session = HLUser.getCurrentUser().getSession() {
+            
+            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+            request.HTTPMethod = "POST"
+            
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
+            
+            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                print(returnedData)
+                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                    print(returnString)
+                }
+            }
+        }
+
+
+        
+        
         
 
         let userData = NSKeyedArchiver.archivedDataWithRootObject(self)

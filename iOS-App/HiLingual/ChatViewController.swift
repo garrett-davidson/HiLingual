@@ -367,7 +367,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
             return cell
-        }else if (message.audioURL != nil)  {
+        }else if (message.pictureURL != nil)  {
             let cellIdentity = "ChatPictureTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatPictureTableViewCell
             
@@ -389,11 +389,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             shownPicture.tag = indexPath.row
             
-//            if(isPlayingMessage){
-//                shownPicture.image = UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal)
-//            }else{
-//                shownPicture.image = UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal)
-//            }
+            showPicture(shownPicture);
+        
             
             return cell
         }else if message.editedText == nil {
@@ -478,6 +475,21 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
+    }
+    func showPicture(sender: UIImageView){
+        let deviceURL = messages[sender.tag].messageUUID!
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let pictureURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).png")
+
+        if let filePath = NSBundle.mainBundle().pathForResource(String(deviceURL), ofType: "png"), image = UIImage(contentsOfFile: filePath) {
+            sender.contentMode = .ScaleAspectFit
+            sender.image = image
+        }else{
+            loadFileSync(messages[sender.tag].pictureURL!,writeTo: pictureURL, completion:{(audioURL:String, error:NSError!) in
+                print("downloaded to: \(pictureURL)")
+            })
+            showPicture(sender)
+        }
     }
 
     @IBAction func tapPlayButton(sender: UIButton) {
