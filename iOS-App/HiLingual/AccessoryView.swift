@@ -133,13 +133,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
     }
     
-    @IBAction func tapMicDown(sender: UITapGestureRecognizer) {
-
+    @IBAction func tapCameraDown(sender: AnyObject) {
+        
         guard !isEditing else {
             //We don't want to do anything on touch down if we're editing
             return
         }
-
+        
         textView.resignFirstResponder()
         // NOW PICTURE BUTTON TAP
         let imagePickerController = UIImagePickerController()
@@ -181,46 +181,12 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         
         //START MIC
         /*
-        guard !isEditing else {
-            //We don't want to do anything on touch down if we're editing
-            return
-        }
-
-        recordingTimer.text = "0.0"
-        recordingSession = AVAudioSession.sharedInstance()
-        
-        do {
-            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try recordingSession.setActive(true)
-            recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
-                dispatch_async(dispatch_get_main_queue()) {
-                    return;
-                }
-                
-            }
-            
-            isRecording = true;
-            recordingTimer.hidden = false
-            previewRecording.hidden = true
-            deleteRecording.hidden = true
-            origTime =  CACurrentMediaTime();
-            textView.hidden = true
-            //textView.editable = false;
-            recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
-
-        } catch let error as NSError {
-            // failed to record!
-
-            //If something fails, it would be nice to know...
-            print("Recording failed: ", error)
-        }
-
-        startRecording()*/
+         */
         
         
         //END MIC
+
     }
-    
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
@@ -256,16 +222,25 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     
     
     @IBAction func tapMicUpOut(sender: AnyObject) {
+        if isSend{
+            return
+        }
         if isRecording {
             finishRecording()
         }
     }
     @IBAction func tapMicCancel(sender: AnyObject) {
+        if isSend{
+            return
+        }
         if isRecording {
             finishRecording()
         }
     }
     @IBAction func tapMicUpIn(sender: AnyObject) {
+        if isSend{
+            return
+        }
         if isRecording {
             finishRecording()
         }
@@ -279,9 +254,10 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         previewRecording.hidden = false
         deleteRecording.hidden = false
         recordTimer.invalidate()
+        
+        isSend = true
         sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
         sendButton.setTitle("Send", forState: UIControlState.Normal)
-        isSend = true
         
         finishRecording(success: true)
     }
@@ -310,7 +286,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     
     @IBAction func sendClicked(sender: AnyObject) {
        var data: NSData? = nil
+        print("isSend: ",isSend)
         if isSend {
+            isSend = false
+            sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 20)
+            sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
             if isRecording{
                 print("sent voice")
                 data = NSData(contentsOfURL: curURL)
@@ -337,8 +317,44 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
                     chatViewController?.tableView.scrollToBottom()
                 }
             }
+    
         }else {
             //RECORDING GOES IN HERE RILEY
+            guard !isEditing else {
+                //We don't want to do anything on touch down if we're editing
+                return
+            }
+            
+            recordingTimer.text = "0.0"
+            recordingSession = AVAudioSession.sharedInstance()
+            
+            do {
+                try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+                try recordingSession.setActive(true)
+                recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        return;
+                    }
+                    
+                }
+                
+                isRecording = true;
+                recordingTimer.hidden = false
+                previewRecording.hidden = true
+                deleteRecording.hidden = true
+                origTime =  CACurrentMediaTime();
+                textView.hidden = true
+                //textView.editable = false;
+                recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
+                
+            } catch let error as NSError {
+                // failed to record!
+                
+                //If something fails, it would be nice to know...
+                print("Recording failed: ", error)
+            }
+            
+            startRecording()
         
         }
     }
