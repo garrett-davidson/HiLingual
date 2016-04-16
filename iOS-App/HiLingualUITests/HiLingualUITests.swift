@@ -582,7 +582,7 @@ class HiLingualUITests: XCTestCase {
                 
                 app.typeText("edit")
                 
-                app.buttons["Save"].tap()
+                app.buttons["Send"].tap()
                 app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
                 
                 let tabBarsQuery = app.tabBars
@@ -623,7 +623,7 @@ class HiLingualUITests: XCTestCase {
                 tempElement.tap()
                 app.menuItems["Edit"].tap()
                 
-                app.buttons["Save"].tap()
+                app.buttons["Send"].tap()
                 app.navigationBars.elementBoundByIndex(0).buttons["Messages"].tap()
                 
                 let tabBarsQuery = app.tabBars
@@ -995,17 +995,17 @@ class HiLingualUITests: XCTestCase {
     }
     func testAappCreation() {
         
-        let app = XCUIApplication()
-        app.buttons["GoogleSignButton"].tap()
-        let webViewsQuery = app.webViews
-        webViewsQuery.textFields["Enter your email"].tap()
-        webViewsQuery.textFields["Enter your email"].typeText("sirjosephsavastano@gmail.com")
-        XCUIApplication().buttons["Go"].tap()
-        webViewsQuery.secureTextFields["Password"].tap()
-        webViewsQuery.secureTextFields["Password"].typeText("ifucking")
-        XCUIApplication().buttons["Go"].tap()
-        sleep(10)
-        app.tabBars.buttons["Profile"].tap()
-        
+//        let app = XCUIApplication()
+//        app.buttons["GoogleSignButton"].tap()
+//        let webViewsQuery = app.webViews
+//        webViewsQuery.textFields["Enter your email"].tap()
+//        webViewsQuery.textFields["Enter your email"].typeText("sirjosephsavastano@gmail.com")
+//        XCUIApplication().buttons["Go"].tap()
+//        webViewsQuery.secureTextFields["Password"].tap()
+//        webViewsQuery.secureTextFields["Password"].typeText("ifucking")
+//        XCUIApplication().buttons["Go"].tap()
+//        sleep(10)
+//        app.tabBars.buttons["Profile"].tap()
+//        
     }
 }
