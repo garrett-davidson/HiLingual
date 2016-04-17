@@ -132,7 +132,7 @@ class HiLingualUITests: XCTestCase {
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
-    func testEditPictureNoCrash() {
+    func testAEditPictureNoCrash() {
         let app = XCUIApplication()
         let tabBarsQuery = app.tabBars
         let profileButton = tabBarsQuery.buttons["Profile"]
@@ -149,7 +149,12 @@ class HiLingualUITests: XCTestCase {
         XCUIApplication().images.elementBoundByIndex(3).tap()
         
         app.sheets.collectionViews.buttons["Photo Library"].tap()
-        app.navigationBars["Photos"].buttons["Cancel"].tap()
+        
+        app.tables.buttons["Camera Roll"].tap()
+        
+        //tester needs to select a photo here
+        sleep(10)
+        
         
         XCUIApplication().images.elementBoundByIndex(3).tap()
         sheetsQuery.collectionViews.buttons["Take Picture"].tap()
@@ -513,6 +518,57 @@ class HiLingualUITests: XCTestCase {
         carouselElement.tap()
         
     }
+    
+    func testSendAudioMessageNoCrash() {
+        let app = XCUIApplication()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
+        
+        let sendbuttonButton = app.buttons["SendButton"]
+        sendbuttonButton.pressForDuration(1.5);
+        
+        app.buttons["PreviewRecordingButton"].tap()
+        app.buttons["DeleteRecordingButton"].tap()
+        sendbuttonButton.pressForDuration(0.8);
+        app.buttons["SendButton"].tap()
+        
+    }
+    
+    //Currently failing
+    func testSendPhotoMessageNoCrash() {
+        let app = XCUIApplication()
+        sleep(1)
+        var i: UInt = 0
+        for temp in app.tables.staticTexts.allElementsBoundByIndex {
+            if temp.label == "Current chats"  {
+                i += 1
+                app.tables.staticTexts.elementBoundByIndex(i).tap()
+                break;
+            }
+            i += 1
+        }
+        
+        let leftbuttonButton = app.buttons["LeftButton"]
+        leftbuttonButton.tap()
+        
+        let sheetsQuery = app.sheets
+        sheetsQuery.buttons["Cancel"].tap()
+//        leftbuttonButton.tap()
+//        sheetsQuery.collectionViews.buttons["Take Picture"].tap()
+//        app.buttons["PhotoCapture"].tap()
+//        app.buttons["Use Photo"].tap()
+        
+        
+    }
+
     func testEditsSavePreviousEdit() {
         
         let app = XCUIApplication()
@@ -993,6 +1049,7 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
+    
     func testAappCreation() {
         
 //        let app = XCUIApplication()
@@ -1008,4 +1065,55 @@ class HiLingualUITests: XCTestCase {
 //        app.tabBars.buttons["Profile"].tap()
 //        
     }
+    func testFlashCardNoCrash() {
+        let app = XCUIApplication()
+        let tabBarsQuery = app.tabBars
+        let flashCardButton = tabBarsQuery.buttons["Flashcards"]
+        flashCardButton.tap()
+    }
+    
+    func testViewFlashCardsNoCrash() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Flashcards"].tap()
+        let topCardName = app.tables.staticTexts.elementBoundByIndex(0).label
+        app.tables.staticTexts.elementBoundByIndex(0).tap()
+        app.navigationBars[topCardName].buttons["Flashcards"].tap()
+    }
+    
+    func testAddandDeleteFlashCardsNoCrash() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Flashcards"].tap()
+
+        let addButton = app.navigationBars["Flashcards"].buttons["Add"]
+        addButton.tap()
+        
+        let flashcardNameAlert = app.alerts["Flashcard Name:"]
+        let collectionViewsQuery = flashcardNameAlert.collectionViews
+        collectionViewsQuery.buttons["Cancel"].tap()
+        addButton.tap()
+        app.alerts["Flashcard Name:"].childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.collectionViews.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.TextField).element.typeText("English")
+        collectionViewsQuery.buttons["Done"].tap()
+        app.tables.staticTexts.elementBoundByIndex(0).swipeLeft()
+        app.tables.buttons["Delete"].tap()
+    }
+    
+    func testAReorderFlashCardsNoCrash() {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Flashcards"].tap()
+        
+        let addButton = app.navigationBars["Flashcards"].buttons["Add"]
+ 
+    
+        for i in 0...2 {
+            addButton.tap()
+            let flashcardNameAlert = app.alerts["Flashcard Name:"]
+            let collectionViewsQuery = flashcardNameAlert.collectionViews
+            app.alerts["Flashcard Name:"].childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.collectionViews.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.TextField).element.typeText(String(i+1))
+            collectionViewsQuery.buttons["Done"].tap()
+        }
+        //Can't figure out how to reorder with code. So this has to be done manually also
+        
+        sleep(10)
+    }
+    
 }
