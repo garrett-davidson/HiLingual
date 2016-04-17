@@ -6,11 +6,11 @@ import com.example.hilingual.server.api.UserChats;
 import com.example.hilingual.server.dao.ChatMessageDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindMessage;
 import com.example.hilingual.server.dao.impl.annotation.BindUserChats;
+import com.example.hilingual.server.service.IdentifierService;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
@@ -30,12 +30,14 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     private static Logger LOGGER = Logger.getLogger(ChatMessageDAOImpl.class.getName());
     //  TODO
     private final DBI dbi;
+    private final IdentifierService identifierService;
     private Handle handle;
     private Update u;
 
     @Inject
-    public ChatMessageDAOImpl(DBI dbi) {
+    public ChatMessageDAOImpl(DBI dbi, IdentifierService identifierService) {
         this.dbi = dbi;
+        this.identifierService = identifierService;
     }
 
     public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
@@ -58,7 +60,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     public void init() {
         u = handle.attach(Update.class);
         handle.execute("CREATE TABLE IF NOT EXISTS hl_chat_messages(" +
-                "message_id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT, " +
+                "message_id BIGINT UNIQUE PRIMARY KEY, " +
                 "sent_timestamp TIMESTAMP, " +
                 "edit_timestamp TIMESTAMP, " +
                 "sender_id BIGINT, " +
@@ -125,6 +127,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         //  Create a new message from sender to receiver with the given content, timestamp of now, and no edit data
         //  and return it after giving it a unique ID
         Message message = new Message();
+        message.setId(identifierService.generateId(IdentifierService.TYPE_MESSAGE));
         message.setContent(content);
         message.setAudio(audioUrl);
         message.setImage(imageUrl);
@@ -133,8 +136,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         message.setSentTimestamp(System.currentTimeMillis());
         message.setEditTimestamp(0);
         u.insertmessage(message);
-        int maxid = u.getLastMessageId();
-        message.setId(maxid);
         return message;
     }
 
@@ -259,7 +260,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     public static interface Update {
-        @SqlUpdate("insert into hl_chat_messages (sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message, audio, image) values (:sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message, :audio, :image)")
+        @SqlUpdate("insert into hl_chat_messages (message_id, sent_timestamp, edit_timestamp, sender_id, receiver_id, message, edited_message, audio, image) values (:message_id, :sent_timestamp, :edit_timestamp, :sender_id, :receiver_id, :message, :edited_message, :audio, :image)")
         void insertmessage(@BindMessage Message message);
 
         @SqlUpdate("update hl_chat_messages set message_id = :message_id, sent_timestamp = :sent_timestamp, edit_timestamp = :edit_timestamp, sender_id = :sender_id, receiver_id = :receiver_id, message = :message, edited_message = :edited_message, audio = :audio, image = :image where message_id = :message_id")
@@ -273,9 +274,6 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
 
         @SqlUpdate("delete from hl_chat_pending_requests where user_id = :user_id")
         void removerequests(@BindUserChats UserChats uc);
-
-        @SqlQuery("SELECT LAST_INSERT_ID()")
-        int getLastMessageId();
 
     }
 

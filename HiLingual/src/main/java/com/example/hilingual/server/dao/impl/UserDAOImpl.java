@@ -13,6 +13,7 @@ import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindUser;
+import com.example.hilingual.server.service.IdentifierService;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -36,21 +37,23 @@ public class UserDAOImpl implements UserDAO {
 
 
     private final DBI dbi;
+    private final IdentifierService identifierService;
     private Handle handle;
     private Update u;
 
     private static Logger LOGGER = Logger.getLogger(UserDAOImpl.class.getName());
 
     @Inject
-    public UserDAOImpl(DBI dbi) {
+    public UserDAOImpl(DBI dbi, IdentifierService identifierService) {
         this.dbi = dbi;
+        this.identifierService = identifierService;
     }
 
     @Override
     public void init() {
         u = handle.attach(Update.class);
         handle.execute("CREATE TABLE IF NOT EXISTS hl_users(" +
-                "user_id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT, " +
+                "user_id BIGINT UNIQUE PRIMARY KEY, " +
                 "user_name TINYTEXT, " +
                 "display_name TINYTEXT, " +
                 "bio TEXT, " +
@@ -85,9 +88,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User createUser() {
         User user = new User();
+        user.setUserId(identifierService.generateId(IdentifierService.TYPE_USER));
         u.insert(user);
-        int lastId = u.getLastInsertId();
-        user.setUserId(lastId);
         //updateUser(user);
         return user;
     }
@@ -184,7 +186,7 @@ public class UserDAOImpl implements UserDAO {
 
     public static interface Update {
 
-        @SqlUpdate("insert into hl_users (user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
+        @SqlUpdate("insert into hl_users (user_id, user_name, display_name, bio, gender, birth_date, image_url, known_languages, learning_languages, blocked_users, users_chatted_with, profile_set) values (:user_id, :user_name, :display_name, :bio, :gender, :birth_date, :image_url, :known_languages, :learning_languages, :blocked_users, :users_chatted_with, :profile_set)")
         void insert(@BindUser User user);
 
         @SqlUpdate("update hl_users set user_name = :user_name, display_name = :display_name, bio = :bio, gender = :gender, birth_date = :birth_date, image_url = :image_url, known_languages = :known_languages, learning_languages = :learning_languages, blocked_users = :blocked_users, users_chatted_with = :users_chatted_with, profile_set = :profile_set where user_id = :user_id")

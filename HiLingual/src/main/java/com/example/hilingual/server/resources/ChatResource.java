@@ -4,6 +4,7 @@ import com.example.hilingual.server.api.*;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.service.APNsService;
+import com.example.hilingual.server.service.IdentifierService;
 import com.example.hilingual.server.service.MsftTranslateService;
 import com.google.inject.Inject;
 import com.relayrides.pushy.apns.util.ApnsPayloadBuilder;
@@ -40,6 +41,7 @@ public class ChatResource {
     private final DeviceTokenDAO deviceTokenDAO;
     private final MsftTranslateService translateService;
     private final TranslationCacheDAO translationCacheDAO;
+    private final IdentifierService identifierService;
     private final ServerConfig config;
     private final Random random;
 
@@ -47,7 +49,8 @@ public class ChatResource {
     public ChatResource(SessionDAO sessionDAO, UserDAO userDAO, ChatMessageDAO chatMessageDAO,
                         APNsService apnsService, DeviceTokenDAO deviceTokenDAO,
                         MsftTranslateService translateService,
-                        TranslationCacheDAO translationCacheDAO, ServerConfig config) {
+                        TranslationCacheDAO translationCacheDAO,
+                        IdentifierService identifierService, ServerConfig config) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.chatMessageDAO = chatMessageDAO;
@@ -55,6 +58,7 @@ public class ChatResource {
         this.deviceTokenDAO = deviceTokenDAO;
         this.translateService = translateService;
         this.translationCacheDAO = translationCacheDAO;
+        this.identifierService = identifierService;
         this.config = config;
 
 
@@ -221,7 +225,7 @@ public class ChatResource {
                     sender.getDisplayName()), NotificationType.NEW_MESSAGE);
             return ret;
         } else if (message.getAudio() != null) {
-            String assetId = new BigInteger(130, random).toString(32);
+            String assetId = Long.toUnsignedString(identifierService.generateId(IdentifierService.TYPE_AUDIO));
             java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
             Files.createDirectories(outPath.getParent());
             Files.write(outPath, message.audioDataToBytes(), CREATE, TRUNCATE_EXISTING);
