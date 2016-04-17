@@ -9,9 +9,7 @@
 
 package com.example.hilingual.server.resources;
 
-import com.example.hilingual.server.api.AuthenticationRequest;
-import com.example.hilingual.server.api.AuthenticationResponse;
-import com.example.hilingual.server.api.User;
+import com.example.hilingual.server.api.*;
 import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.service.FacebookGraphAPIService;
 import com.example.hilingual.server.service.GoogleAccountAPIService;
@@ -61,6 +59,49 @@ public class AuthResource {
         this.fbApiService = fbApiService;
         this.googleApiService = googleApiService;
         this.tokenDAO = tokenDAO;
+    }
+
+    @POST
+    public AuthResponse logInOrRegister(@Valid AuthenticationRequest body) {
+        String authorityAccountId = body.getAuthorityAccountId();
+        String authorityToken = body.getAuthorityToken();
+        BiPredicate<String, String> sessionCheck;
+        BiConsumer<Long, String> assignUserIdToAccount;
+        ToLongFunction<String> getUserIdFromAuthorityAccountId;
+        BiConsumer<Long, String> tokenSetter;
+        switch (body.getAuthority()) {
+            case FACEBOOK:
+                sessionCheck = fbApiService::isValidFacebookSession;
+                getUserIdFromAuthorityAccountId = facebookIntegrationDAO::getUserIdFromFacebookAccountId;
+                assignUserIdToAccount = facebookIntegrationDAO::setUserIdForFacebookAccountId;
+                tokenSetter = facebookIntegrationDAO::setFacebookToken;
+                break;
+            case GOOGLE:
+                sessionCheck = googleApiService::isValidGoogleSession;
+                getUserIdFromAuthorityAccountId = googleIntegrationDAO::getUserIdFromGoogleAccountId;
+                assignUserIdToAccount = googleIntegrationDAO::setUserIdForGoogleAccountId;
+                tokenSetter = googleIntegrationDAO::setGoogleToken;
+                break;
+            default:
+                throw new BadRequestException();
+        }
+        if (!sessionCheck.test(authorityAccountId, authorityToken)) {
+            throw new NotAuthorizedException("Invalid authority session");
+        }
+        long userId = getUserIdFromAuthorityAccountId.applyAsLong(authorityAccountId);
+        User user;
+        if (userId == 0) {
+            user = userDAO.createUser();
+            assignUserIdToAccount.accept(userId, authorityAccountId);
+        } else {
+            user = userDAO.getUser(userId);
+        }
+        tokenSetter.accept(userId, authorityToken);
+        if (!Strings.isNullOrEmpty(body.getDeviceToken())) {
+            tokenDAO.addDeviceToken(userId, body.getDeviceToken());
+        }
+        String sessionId = sessionDAO.newSession(userId);
+        return new AuthResponse(sessionId, user);
     }
 
     @POST
