@@ -10,12 +10,15 @@ import com.example.hilingual.server.service.MsftTranslateService;
 import com.google.inject.Inject;
 import com.relayrides.pushy.apns.util.ApnsPayloadBuilder;
 import io.dropwizard.jersey.PATCH;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -311,18 +314,7 @@ public class ChatResource {
             throw new ForbiddenException("This user is not a conversation partner");
         }
         if (message.getImage() != null) {
-            String assetId = new BigInteger(130, random).toString(32);
-            java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "image", assetId);
-            Files.createDirectories(outPath.getParent());
-            Files.write(outPath, message.audioDataToBytes(), CREATE, TRUNCATE_EXISTING);
-            URI uri = getImageUrl(senderId, assetId);
-            //  New messages only have content field set
-            Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
-            sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a picture.",
-                    sender.getDisplayName()),
-                    NotificationType.NEW_MESSAGE,
-                    getBadgeNumber(receiverId));
-            return ret;
+            throw new BadRequestException("image field cannot be set");
         } else if (message.getAudio() != null) {
             String assetId = Long.toUnsignedString(identifierService.generateId(IdentifierService.TYPE_AUDIO));
             java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "audio", assetId);
@@ -345,6 +337,48 @@ public class ChatResource {
                     getBadgeNumber(receiverId));
             return ret;
         }
+    }
+
+    @POST
+    @Path("/{receiver-id}/message/image")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Message newImage(@HeaderParam("Authorization") String hlat,
+                            @PathParam("receiver-id") long receiverId,
+                            @FormDataParam("file") InputStream file,
+                            @FormDataParam("file") FormDataContentDisposition fileDisposition) throws Exception {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long senderId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, senderId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User sender = userDAO.getUser(senderId);
+        User reciever = userDAO.getUser(receiverId);
+        if (reciever == null) {
+            throw new NotFoundException("No such receiver");
+        }
+        if (!sender.getUsersChattedWith().contains(receiverId)) {
+            throw new ForbiddenException("This user is not a conversation partner");
+        }
+        String assetId = Long.toUnsignedString(identifierService.generateId(IdentifierService.TYPE_IMAGE));
+        java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "image", assetId);
+        Files.createDirectories(outPath.getParent());
+        try (BufferedOutputStream outputStream =
+                     new BufferedOutputStream(Files.newOutputStream(outPath, CREATE, TRUNCATE_EXISTING))) {
+            byte[] buf = new byte[8192];
+            int len;
+            while ((len = file.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+        }
+        URI uri = getImageUrl(senderId, assetId);
+        //  New messages only have content field set
+        Message ret = chatMessageDAO.newImageMessage(senderId, receiverId, uri.toASCIIString());
+        sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a picture.",
+                sender.getDisplayName()),
+                NotificationType.NEW_MESSAGE,
+                getBadgeNumber(receiverId));
+        return ret;
     }
 
     private URI getAudioUrl(long userId, String assetId) throws URISyntaxException {
