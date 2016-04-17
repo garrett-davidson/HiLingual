@@ -1080,7 +1080,7 @@ class HiLingualUITests: XCTestCase {
         app.navigationBars[topCardName].buttons["Flashcards"].tap()
     }
     
-    func testAddandDeleteFlashCardsNoCrash() {
+    func testddandDeleteFlashCardsNoCrash() {
         let app = XCUIApplication()
         app.tabBars.buttons["Flashcards"].tap()
 
