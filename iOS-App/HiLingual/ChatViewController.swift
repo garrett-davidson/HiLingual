@@ -571,10 +571,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             for edit in edits {
                 if let id = (edit["id"] as? NSNumber)?.longLongValue {
                     if let encodedEditText = edit["editData"] as? String {
-                        let editText = (NSString(data: NSData(base64EncodedString: encodedEditText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
-                        for message in messages {
-                            if message.messageUUID == id {
-                                message.editedText = editText
+                        if let editText = encodedEditText.fromBase64() {
+                            for message in messages {
+                                if message.messageUUID == id {
+                                    message.editedText = editText
+                                }
                             }
                         }
                     }
@@ -783,5 +784,17 @@ extension String {
         let start = startIndex.advancedBy(r.startIndex)
         let end = start.advancedBy(r.endIndex - r.startIndex)
         return self[Range(start ..< end)]
+    }
+
+    func toBase64() -> String? {
+        return self.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+    }
+
+    func fromBase64() -> String? {
+        if let data = NSData(base64EncodedString: self, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+            return NSString(data: data, encoding: NSUTF8StringEncoding) as? String
+        }
+
+        return nil
     }
 }
