@@ -53,6 +53,9 @@ class HLServer {
                         print("Result redirected")
                         print("Was that supposed to happen...? 🤔")
 
+                    case 401:
+                        print("You aren't authorized to do that 🖕")
+
                     case 400..<500:
                         print("You probably fucked up the request 😓")
 
@@ -313,5 +316,9 @@ class HLServer {
 
     static func deleteRequestFromUser(userId: Int64) -> Bool {
         return sendRequestToEndpoint("chat/\(userId)/request", method: "DELETE") != nil
+    }
+
+    static func acceptRequestFromUser(userId: Int64) -> Bool {
+        return sendRequestToEndpoint("chat/\(userId)/accept", method: "POST") != nil
     }
 }

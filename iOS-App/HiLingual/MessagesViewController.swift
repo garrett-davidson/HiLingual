@@ -172,28 +172,12 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
         let acceptedUser = currentUser.pendingChats[index]
 
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/chat/\(acceptedUser)/accept")!)
-        request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + (HLUser.getCurrentUser().getSession()?.sessionId)!]
-        request.HTTPMethod = "POST"
-
-        var resp: NSURLResponse?
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
-            if let response = resp as? NSHTTPURLResponse {
-                if response.statusCode == 204 {
-                    print("Accepted request")
-                    refreshTableView()
-                    return
-                }
-            }
-
-            print(returnedData)
-            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                print(returnString)
-            }
-
+        if HLServer.acceptRequestFromUser(acceptedUser) {
+            print("Accepted request")
+            refreshTableView()
+        } else {
+            print("Failed to accept request")
         }
-
-        print("Failed to accept request")
     }
     @IBAction func decline(sender: UIButton) {
 
