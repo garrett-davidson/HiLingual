@@ -24,6 +24,7 @@ import com.example.hilingual.server.task.TruncateTask;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.Application;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
@@ -61,6 +62,7 @@ public class Main extends Application<ServerConfig> {
     @Override
     public void initialize(Bootstrap<ServerConfig> bootstrap) {
         super.initialize(bootstrap);
+        bootstrap.addBundle(new MultiPartBundle());
     }
 
     @Override
