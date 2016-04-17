@@ -49,7 +49,7 @@ public class AuthResourceTest {
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder().
             addResource(new AuthResource(sessionDAO, userDAO, facebookIntegrationDAO,  googleIntegrationDAO,
-                    fbApiService, googleApiService,  tokenDAO)).
+                    fbApiService, googleApiService, tokenDAO)).
             build();
 
 
