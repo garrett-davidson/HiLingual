@@ -54,4 +54,6 @@ public interface ChatMessageDAO extends Managed {
 
     long getLastAckedMessage(long myId, long partnerId);
 
+    int getUnackedMessageCount(long myId, long partnerId);
+
 }

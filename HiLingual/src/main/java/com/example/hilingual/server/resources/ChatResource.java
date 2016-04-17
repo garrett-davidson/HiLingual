@@ -5,6 +5,7 @@ import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.IdentifierService;
+import com.example.hilingual.server.service.LocalizationService;
 import com.example.hilingual.server.service.MsftTranslateService;
 import com.google.inject.Inject;
 import com.relayrides.pushy.apns.util.ApnsPayloadBuilder;
@@ -43,15 +44,21 @@ public class ChatResource {
     private final MsftTranslateService translateService;
     private final TranslationCacheDAO translationCacheDAO;
     private final IdentifierService identifierService;
+    private final LocalizationService localizationService;
     private final ServerConfig config;
     private final Random random;
 
     @Inject
-    public ChatResource(SessionDAO sessionDAO, UserDAO userDAO, ChatMessageDAO chatMessageDAO,
-                        APNsService apnsService, DeviceTokenDAO deviceTokenDAO,
+    public ChatResource(SessionDAO sessionDAO,
+                        UserDAO userDAO,
+                        ChatMessageDAO chatMessageDAO,
+                        APNsService apnsService,
+                        DeviceTokenDAO deviceTokenDAO,
                         MsftTranslateService translateService,
                         TranslationCacheDAO translationCacheDAO,
-                        IdentifierService identifierService, ServerConfig config) {
+                        IdentifierService identifierService,
+                        LocalizationService localizationService,
+                        ServerConfig config) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.chatMessageDAO = chatMessageDAO;
@@ -60,6 +67,7 @@ public class ChatResource {
         this.translateService = translateService;
         this.translationCacheDAO = translationCacheDAO;
         this.identifierService = identifierService;
+        this.localizationService = localizationService;
         this.config = config;
 
         random = new Random();
@@ -205,7 +213,9 @@ public class ChatResource {
         userDAO.updateUser(requester);
         chatMessageDAO.addRequest(requesterId, receiverId);
         sendNotification(receiverId, String.format("%s wants to start a conversation with you!",
-                requester.getDisplayName()), NotificationType.REQUEST_RECEIVED);
+                requester.getDisplayName()),
+                NotificationType.REQUEST_RECEIVED,
+                getBadgeNumber(receiverId));
     }
 
     @POST
@@ -244,7 +254,9 @@ public class ChatResource {
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
         sendNotification(requesterId, String.format("<LOCALIZE ME>%s has accepted your conversation request.",
-                accepter.getDisplayName()), NotificationType.REQUEST_ACCEPTED);
+                accepter.getDisplayName()),
+                NotificationType.REQUEST_ACCEPTED,
+                getBadgeNumber(requesterId));
     }
 
     @DELETE
@@ -307,7 +319,9 @@ public class ChatResource {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
             sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a picture.",
-                    sender.getDisplayName()), NotificationType.NEW_MESSAGE);
+                    sender.getDisplayName()),
+                    NotificationType.NEW_MESSAGE,
+                    getBadgeNumber(receiverId));
             return ret;
         } else if (message.getAudio() != null) {
             String assetId = Long.toUnsignedString(identifierService.generateId(IdentifierService.TYPE_AUDIO));
@@ -318,13 +332,17 @@ public class ChatResource {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
             sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a voice clip.",
-                    sender.getDisplayName()), NotificationType.NEW_MESSAGE);
+                    sender.getDisplayName()),
+                    NotificationType.NEW_MESSAGE,
+                    getBadgeNumber(receiverId));
             return ret;
         } else {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             sendNotification(receiverId, String.format("%s: %s",
-                    sender.getDisplayName(), base64Decode(message.getContent())), NotificationType.NEW_MESSAGE);
+                    sender.getDisplayName(), base64Decode(message.getContent())),
+                    NotificationType.NEW_MESSAGE,
+                    getBadgeNumber(receiverId));
             return ret;
         }
     }
@@ -363,7 +381,9 @@ public class ChatResource {
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
         sendNotification(receiverId, String.format("%s edited: %s",
-                editor.getDisplayName(), base64Decode(editedMessage.getEditData())), NotificationType.EDITED_MESSAGE);
+                editor.getDisplayName(), base64Decode(editedMessage.getEditData())),
+                NotificationType.EDITED_MESSAGE,
+                getBadgeNumber(receiverId));
         return editedMessage;
     }
 
@@ -460,9 +480,14 @@ public class ChatResource {
     }
 
     private void sendNotification(long user, String body, NotificationType type) {
+        sendNotification(user, body, type, null);
+    }
+
+    private void sendNotification(long user, String body, NotificationType type, Integer badgeNumber) {
         String builtBody = new ApnsPayloadBuilder().
                 setAlertTitle("HiLingual Chat").
                 setAlertBody(body).
+                setBadgeNumber(badgeNumber).
                 setSoundFileName("default").
                 addCustomProperty("type", type.name()).
                 buildWithDefaultMaximumLength();
@@ -480,5 +505,12 @@ public class ChatResource {
 
     private String base64Encode(String text) {
         return Base64.getEncoder().encodeToString(text.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private int getBadgeNumber(long userId) {
+        User user = userDAO.getUser(userId);
+        return user.getUsersChattedWith().stream().
+                mapToInt(l -> chatMessageDAO.getUnackedMessageCount(userId, l)).
+                sum() + chatMessageDAO.getRequests(userId).size();
     }
 }

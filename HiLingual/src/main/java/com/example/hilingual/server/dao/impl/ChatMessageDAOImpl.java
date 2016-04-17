@@ -254,6 +254,14 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     }
 
     @Override
+    public int getUnackedMessageCount(long myId, long partnerId) {
+        long lastAckedMessage = getLastAckedMessage(myId, partnerId);
+        //  TODO replace with SQL query that just gets the number of messages, not ALL of the messages
+        Message[] msgs = getMessages(myId,  partnerId, 0, lastAckedMessage, 0);
+        return msgs.length;
+    }
+
+    @Override
     public void ackMessage(long myId, long partnerId, long messageId) {
         Jedis jedis = jedisPool.getResource();
         try {
