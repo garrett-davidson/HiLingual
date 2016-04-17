@@ -120,16 +120,24 @@ public class ChatResource {
     public Chat getChatInfo(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
-        long authUserId = sessionDAO.getSessionOwner(sessionId);
-        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+        long ackerId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, ackerId)) {
             throw new NotAuthorizedException("Bad session token");
+        }
+        User acker = userDAO.getUser(ackerId);
+        User reciever = userDAO.getUser(receiverId);
+        if (reciever == null) {
+            throw new NotFoundException("No such receiver");
+        }
+        if (!acker.getUsersChattedWith().contains(receiverId)) {
+            throw new ForbiddenException("This user is not a conversation partner");
         }
         Chat chat = new Chat();
         chat.setReceiver(receiverId);
-        ChatAck ack = new ChatAck(chatMessageDAO.getLastAckedMessage(receiverId, authUserId),
-                chatMessageDAO.getLastAckedMessage(authUserId, receiverId));
+        ChatAck ack = new ChatAck(chatMessageDAO.getLastAckedMessage(receiverId, ackerId),
+                chatMessageDAO.getLastAckedMessage(ackerId, receiverId));
         chat.setAck(ack);
-        Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, authUserId, 1);
+        Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, ackerId, 1);
         if (latestMessages.length == 1) {
             chat.setLastReceivedMessage(latestMessages[0].getId());
         }
@@ -141,13 +149,21 @@ public class ChatResource {
     public ChatAck getChatAck(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
-        long authUserId = sessionDAO.getSessionOwner(sessionId);
-        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+        long ackerId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, ackerId)) {
             throw new NotAuthorizedException("Bad session token");
         }
+        User acker = userDAO.getUser(ackerId);
+        User reciever = userDAO.getUser(receiverId);
+        if (reciever == null) {
+            throw new NotFoundException("No such receiver");
+        }
+        if (!acker.getUsersChattedWith().contains(receiverId)) {
+            throw new ForbiddenException("This user is not a conversation partner");
+        }
         ChatAck chat = new ChatAck();
-        chat.setLastAckedMessage(chatMessageDAO.getLastAckedMessage(receiverId, authUserId));
-        chat.setLastPartnerAckedMessage(chatMessageDAO.getLastAckedMessage(authUserId, receiverId));
+        chat.setLastAckedMessage(chatMessageDAO.getLastAckedMessage(receiverId, ackerId));
+        chat.setLastPartnerAckedMessage(chatMessageDAO.getLastAckedMessage(ackerId, receiverId));
         return chat;
     }
 
@@ -169,19 +185,27 @@ public class ChatResource {
     private void ackMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId, @PathParam("message-id") long messageId) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
-        long authUserId = sessionDAO.getSessionOwner(sessionId);
-        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+        long ackerId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, ackerId)) {
             throw new NotAuthorizedException("Bad session token");
         }
+        User acker = userDAO.getUser(ackerId);
+        User reciever = userDAO.getUser(receiverId);
+        if (reciever == null) {
+            throw new NotFoundException("No such receiver");
+        }
+        if (!acker.getUsersChattedWith().contains(receiverId)) {
+            throw new ForbiddenException("This user is not a conversation partner");
+        }
         if (messageId == 0) {
-            Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, authUserId, 1);
+            Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, ackerId, 1);
             if (latestMessages.length == 1) {
                 messageId = latestMessages[0].getId();
             } else {
                 return;
             }
         }
-        chatMessageDAO.ackMessage(authUserId,  receiverId, messageId);
+        chatMessageDAO.ackMessage(ackerId,  receiverId, messageId);
     }
 
     @POST
