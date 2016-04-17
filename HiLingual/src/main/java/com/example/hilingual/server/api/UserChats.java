@@ -7,10 +7,10 @@ import java.util.Set;
 public class UserChats {
 
     private long userId;
-    private Set<Long> currentChats;
+    private Set<Chat> currentChats;
     private Set<Long> pendingChats;
 
-    public UserChats(long userId, Set<Long> currentChats, Set<Long> pendingChats) {
+    public UserChats(long userId, Set<Chat> currentChats, Set<Long> pendingChats) {
         this.userId = userId;
         this.currentChats = currentChats;
         this.pendingChats = pendingChats;
@@ -29,12 +29,12 @@ public class UserChats {
     }
 
     @JsonProperty
-    public Set<Long> getCurrentChats() {
+    public Set<Chat> getCurrentChats() {
         return currentChats;
     }
 
     @JsonProperty
-    public void setCurrentChats(Set<Long> currentChats) {
+    public void setCurrentChats(Set<Chat> currentChats) {
         this.currentChats = currentChats;
     }
 
@@ -47,6 +47,5 @@ public class UserChats {
     public void setPendingChats(Set<Long> pendingChats) {
         this.pendingChats = pendingChats;
     }
-
 
 }

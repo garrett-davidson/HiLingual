@@ -24,6 +24,7 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
@@ -61,7 +62,6 @@ public class ChatResource {
         this.identifierService = identifierService;
         this.config = config;
 
-
         random = new Random();
         //  Force secure seeding
         byte[] temp = new byte[128];
@@ -83,9 +83,94 @@ public class ChatResource {
         if (user == null) {
             throw new NotFoundException("This session is not associated with any user account");
         }
-        Set<Long> chats = user.getUsersChattedWith();
+        Set<Chat> chats = user.getUsersChattedWith().stream().
+                map(l -> mapToChat(l, authUserId)).
+                collect(Collectors.toSet());
         Set<Long> pending = chatMessageDAO.getRequests(user.getUserId());
         return new UserChats(user.getUserId(), chats, pending);
+    }
+
+    private Chat mapToChat(long receiverId, long myId) {
+        Chat chat = new Chat();
+        chat.setReceiver(receiverId);
+        ChatAck ack = new ChatAck(chatMessageDAO.getLastAckedMessage(receiverId, myId),
+                chatMessageDAO.getLastAckedMessage(myId, receiverId));
+        chat.setAck(ack);
+        Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, myId, 1);
+        if (latestMessages.length > 0) {
+            chat.setLastReceivedMessage(latestMessages[0].getId());
+        }
+        return chat;
+    }
+
+
+    @GET
+    @Path("/{receiver-id}/")
+    public Chat getChatInfo(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        Chat chat = new Chat();
+        chat.setReceiver(receiverId);
+        ChatAck ack = new ChatAck(chatMessageDAO.getLastAckedMessage(receiverId, authUserId),
+                chatMessageDAO.getLastAckedMessage(authUserId, receiverId));
+        chat.setAck(ack);
+        Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, authUserId, 1);
+        if (latestMessages.length == 1) {
+            chat.setLastReceivedMessage(latestMessages[0].getId());
+        }
+        return chat;
+    }
+
+    @GET
+    @Path("/{receiver-id}/ack")
+    public ChatAck getChatAck(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        ChatAck chat = new ChatAck();
+        chat.setLastAckedMessage(chatMessageDAO.getLastAckedMessage(receiverId, authUserId));
+        chat.setLastPartnerAckedMessage(chatMessageDAO.getLastAckedMessage(authUserId, receiverId));
+        return chat;
+    }
+
+    @POST
+    @Path("/{receiver-id}/ack")
+    public void ackLatest(@HeaderParam("Authorization") String hlat,
+                    @PathParam("receiver-id") long receiverId) {
+        ackMessage(hlat, receiverId, 0);
+    }
+
+    @POST
+    @Path("/{receiver-id}/ack/{message-id}")
+    public void ack(@HeaderParam("Authorization") String hlat,
+                    @PathParam("receiver-id") long receiverId,
+                    @PathParam("message-id") long messageId) {
+        ackMessage(hlat, receiverId, messageId);
+    }
+
+    private void ackMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId, @PathParam("message-id") long messageId) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        if (messageId == 0) {
+            Message[] latestMessages = chatMessageDAO.getLatestMessages(receiverId, authUserId, 1);
+            if (latestMessages.length == 1) {
+                messageId = latestMessages[0].getId();
+            } else {
+                return;
+            }
+        }
+        chatMessageDAO.ackMessage(authUserId,  receiverId, messageId);
     }
 
     @POST

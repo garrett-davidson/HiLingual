@@ -50,4 +50,8 @@ public interface ChatMessageDAO extends Managed {
 
     void truncate();
 
+    void ackMessage(long myId, long partnerId, long messageId);
+
+    long getLastAckedMessage(long myId, long partnerId);
+
 }

@@ -13,13 +13,12 @@ import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -27,17 +26,21 @@ import java.util.stream.Collectors;
 
 public class ChatMessageDAOImpl implements ChatMessageDAO {
 
+    public static final String HL_MESSAGE_ACK_KEY_FMT = "hl:messageacks:%s:%s";
+
     private static Logger LOGGER = Logger.getLogger(ChatMessageDAOImpl.class.getName());
     //  TODO
     private final DBI dbi;
     private final IdentifierService identifierService;
+    private final JedisPool jedisPool;
     private Handle handle;
     private Update u;
 
     @Inject
-    public ChatMessageDAOImpl(DBI dbi, IdentifierService identifierService) {
+    public ChatMessageDAOImpl(DBI dbi, IdentifierService identifierService, JedisPool jedisPool) {
         this.dbi = dbi;
         this.identifierService = identifierService;
+        this.jedisPool = jedisPool;
     }
 
     public static <T> String setToString(Set<T> set, Function<T, String> toStringer) {
@@ -160,7 +163,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         if (uc == null) {
             Set<Long> tempSet = new HashSet<Long>();
             tempSet.add(requester);
-            UserChats newentry = new UserChats(recipient, new HashSet<Long>(), tempSet);
+            UserChats newentry = new UserChats(recipient, new HashSet<>(), tempSet);
             u.insertrequest(newentry);
         } else {
             uc.getPendingChats().add(requester);
@@ -237,6 +240,31 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
         u.updatemessage(mess);
 
         return mess;
+    }
+
+    @Override
+    public long getLastAckedMessage(long myId, long partnerId) {
+        Jedis jedis = jedisPool.getResource();
+        try {
+            return Long.parseUnsignedLong(
+                    Optional.ofNullable(jedis.get(getHLMessageAckKey(myId, partnerId))).orElse("0"));
+        } finally {
+            jedisPool.returnResourceObject(jedis);
+        }
+    }
+
+    @Override
+    public void ackMessage(long myId, long partnerId, long messageId) {
+        Jedis jedis = jedisPool.getResource();
+        try {
+            jedis.set(getHLMessageAckKey(myId, partnerId), Long.toUnsignedString(messageId));
+        } finally {
+            jedisPool.returnResourceObject(jedis);
+        }
+    }
+
+    private String getHLMessageAckKey(long sender, long receiver) {
+        return String.format(HL_MESSAGE_ACK_KEY_FMT, sender, receiver);
     }
 
     @Override
