@@ -5,4 +5,21 @@
   Created by Garrett Davidson on 4/11/16.
   Copyright © 2016 Team3. All rights reserved.
 */
-Messages="Messages";
+"Messages" = "メッセージ";
+"Message" = "メッセージ";
+"Send" = "送信";
+"Profile" = "プロフィール";
+"Edit" = "編集";
+"Settings" = "設定";
+"Done" = "完了";
+"Learning:" = "べんきょうしています:";
+"Speaks:" = "話せる:";
+"Male" = "男";
+"Female" = "女";
+"Send Message" = "送信";
+"Flashcards" = "フラッシュカード";
+"Display Name:" = "ニックネーム:";
+"Bio:" = "バイオグラフィー:";
+"None" = "何も";
+"Cannot connect" = "接続できない";
+"Our server seems to be down. Please try again later" = "すみません、サーバーには接続できません。後でやり直してください。";

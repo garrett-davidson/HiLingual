@@ -21,13 +21,13 @@
 "Jyl-fK-C4p.accessibilityIdentifier" = "DisplayNameLabel";
 
 /* Class = "UILabel"; text = "Display Name:"; ObjectID = "Jyl-fK-C4p"; */
-"Jyl-fK-C4p.text" = "Display Name:";
+"Jyl-fK-C4p.text" = "ニックネーム:";
 
 /* Class = "UILabel"; accessibilityIdentifier = "SpeaksLabel"; ObjectID = "L5Z-TO-ooy"; */
 "L5Z-TO-ooy.accessibilityIdentifier" = "SpeaksLabel";
 
 /* Class = "UILabel"; text = "Speaks:"; ObjectID = "L5Z-TO-ooy"; */
-"L5Z-TO-ooy.text" = "Speaks:";
+"L5Z-TO-ooy.text" = "話せる:";
 
 /* Class = "UILabel"; accessibilityIdentifier = "NameLabel"; ObjectID = "M4a-zz-yy0"; */
 "M4a-zz-yy0.accessibilityIdentifier" = "NameLabel";
@@ -51,19 +51,19 @@
 "eee-T1-hMX.accessibilityIdentifier" = "GenderLabel";
 
 /* Class = "UILabel"; text = "Gender:"; ObjectID = "eee-T1-hMX"; */
-"eee-T1-hMX.text" = "Gender:";
+"eee-T1-hMX.text" = "性別:";
 
 /* Class = "UILabel"; accessibilityIdentifier = "BioLabel"; ObjectID = "hOp-P2-QLR"; */
 "hOp-P2-QLR.accessibilityIdentifier" = "BioLabel";
 
 /* Class = "UILabel"; text = "Bio:"; ObjectID = "hOp-P2-QLR"; */
-"hOp-P2-QLR.text" = "Bio:";
+"hOp-P2-QLR.text" = "バイオグラフィー:";
 
 /* Class = "UILabel"; accessibilityIdentifier = "AgeLabel"; ObjectID = "hYi-cj-msg"; */
 "hYi-cj-msg.accessibilityIdentifier" = "AgeLabel";
 
 /* Class = "UILabel"; text = "Age:"; ObjectID = "hYi-cj-msg"; */
-"hYi-cj-msg.text" = "Age:";
+"hYi-cj-msg.text" = "年齢:";
 
 /* Class = "UIImageView"; accessibilityIdentifier = "ProfileImageView"; ObjectID = "odi-Bj-nAX"; */
 "odi-Bj-nAX.accessibilityIdentifier" = "ProfileImageView";

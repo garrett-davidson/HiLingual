@@ -174,7 +174,7 @@ class HLMessage: NSObject, NSCoding {
                         let editText: String?
 
                         if let encodedEditText = messageDict["editData"] as? String {
-                            editText = (NSString(data: NSData(base64EncodedString: encodedEditText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
+                            editText = encodedEditText.fromBase64()
                         }
                         else {
                             editText = nil
@@ -182,22 +182,25 @@ class HLMessage: NSObject, NSCoding {
 
                         if let encodedText = messageDict["content"] as? String {
 
-                            let text = NSString(data: NSData(base64EncodedString: encodedText, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String
+                            if let text = encodedText.fromBase64() {
 
-                            let audioURLString: String?
-                            if let audio = messageDict["audio"] as? String {
-                                if audio == "" {
-                                    audioURLString = nil
+                                let audioURLString: String?
+                                if let audio = messageDict["audio"] as? String {
+                                    if audio == "" {
+                                        audioURLString = nil
+                                    }
+                                    else {
+                                        audioURLString = audio
+                                    }
                                 }
                                 else {
-                                    audioURLString = audio
+                                    audioURLString = nil
                                 }
-                            }
-                            else {
-                                audioURLString = nil
-                            }
 
-                            return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, translatedText: nil, showTranslation: false, audioURLString: audioURLString)
+                                return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, translatedText: nil, showTranslation: false, audioURLString: audioURLString)
+                            } else {
+                                print("Message text not base64")
+                            }
                         }
                     }
                 }

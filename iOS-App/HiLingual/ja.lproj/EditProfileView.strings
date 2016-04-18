@@ -21,13 +21,13 @@
 "Fwc-fh-aKk.accessibilityIdentifier" = "GenderLabel";
 
 /* Class = "UILabel"; text = "Gender: "; ObjectID = "Fwc-fh-aKk"; */
-"Fwc-fh-aKk.text" = "Gender: ";
+"Fwc-fh-aKk.text" = "性別:";
 
 /* Class = "UILabel"; accessibilityIdentifier = "AgeLabel"; ObjectID = "OKn-yi-esB"; */
 "OKn-yi-esB.accessibilityIdentifier" = "AgeLabel";
 
 /* Class = "UILabel"; text = "Age:"; ObjectID = "OKn-yi-esB"; */
-"OKn-yi-esB.text" = "Age:";
+"OKn-yi-esB.text" = "年齢:";
 
 /* Class = "UITextView"; accessibilityIdentifier = "BioTextView"; ObjectID = "VCT-Qw-TZ1"; */
 "VCT-Qw-TZ1.accessibilityIdentifier" = "BioTextView";
@@ -39,7 +39,7 @@
 "bMO-ri-N1e.accessibilityIdentifier" = "BioLabel";
 
 /* Class = "UILabel"; text = "Bio:"; ObjectID = "bMO-ri-N1e"; */
-"bMO-ri-N1e.text" = "Bio:";
+"bMO-ri-N1e.text" = "バイオグラフィー:";
 
 /* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "g3o-wo-TLm"; */
 "g3o-wo-TLm.title" = "Done";
@@ -60,7 +60,7 @@
 "qKJ-ua-Xsy.accessibilityIdentifier" = "DisplayNameLabel";
 
 /* Class = "UILabel"; text = "Display Name:"; ObjectID = "qKJ-ua-Xsy"; */
-"qKJ-ua-Xsy.text" = "Display Name:";
+"qKJ-ua-Xsy.text" = "ニックネーム:";
 
 /* Class = "UILabel"; accessibilityIdentifier = "AgeSelectionLabel"; ObjectID = "thM-fQ-h5b"; */
 "thM-fQ-h5b.accessibilityIdentifier" = "AgeSelectionLabel";

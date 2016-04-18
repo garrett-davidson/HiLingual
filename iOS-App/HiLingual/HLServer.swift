@@ -53,6 +53,9 @@ class HLServer {
                         print("Result redirected")
                         print("Was that supposed to happen...? 🤔")
 
+                    case 401:
+                        print("You aren't authorized to do that 🖕")
+
                     case 400..<500:
                         print("You probably fucked up the request 😓")
 
@@ -151,7 +154,7 @@ class HLServer {
         if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate", withParameterString: edit ? "?edit=true" : "") {
 
             if let encodedTranslation = ret[0]["translatedContent"] as? String {
-                return (NSString(data: NSData(base64EncodedString: encodedTranslation, options: NSDataBase64DecodingOptions(rawValue: 0))!, encoding: NSUTF8StringEncoding) as! String)
+                return encodedTranslation.fromBase64()
             }
 
             else {
@@ -163,7 +166,7 @@ class HLServer {
     }
 
     static func saveEdit(editedText: String, forMessage message: HLMessage) -> Bool {
-        if let encodedEdit = editedText.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)) {
+        if let encodedEdit = editedText.toBase64() {
             if sendRequestToEndpoint("chat/\(message.senderID)/message/\(message.messageUUID!)", method: "PATCH", withDictionary: ["editData" : encodedEdit]) != nil {
                 return true
             }
@@ -201,7 +204,7 @@ class HLServer {
 
     static func sendMessageWithText(text: String, receiverID: Int64) -> HLMessage? {
 
-        if let encodedString = text.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)) {
+        if let encodedString = text.toBase64() {
             if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["content": encodedString]) {
                 return HLMessage.fromDict(messageDict[0])
             }
@@ -219,7 +222,7 @@ class HLServer {
     }
     
     static func sendImageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
-        print("string length: ",data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)).characters.count)
+        print("string length: ", data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)).characters.count)
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["image": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
             return HLMessage.fromDict(messageDict[0])
         } //this needs to be asynchronous so bad pls
@@ -313,5 +316,9 @@ class HLServer {
 
     static func deleteRequestFromUser(userId: Int64) -> Bool {
         return sendRequestToEndpoint("chat/\(userId)/request", method: "DELETE") != nil
+    }
+
+    static func acceptRequestFromUser(userId: Int64) -> Bool {
+        return sendRequestToEndpoint("chat/\(userId)/accept", method: "POST") != nil
     }
 }
