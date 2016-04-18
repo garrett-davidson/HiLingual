@@ -12,12 +12,21 @@ import UIKit
 //Displays all user's chats
 //Displays a list of users conversed with, even if the chat has been deleted
 
+struct HLChat {
+    let receiverId: UInt64
+    var lastReceivedMessageId: UInt64
+    var lastAckedMessageId: UInt64
+    var lastPartnerAckedMessageId: UInt64
+}
+
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var converstationTable: UITableView!
     var messages = [HLMessage]()
 
     let currentUser = HLUser.getCurrentUser()
     let timestampFormamter = NSDateFormatter()
+
+    var currentChats = [HLChat]()
 
     var hasPendingChats: Bool {
         get {
@@ -48,10 +57,10 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return hasPendingChats ? currentUser.pendingChats.count : currentUser.usersChattedWith.count
+            return hasPendingChats ? currentUser.pendingChats.count : currentChats.count
 
         case 1:
-            return currentUser.usersChattedWith.count
+            return currentChats.count
         default:
             print("Invalid section number")
             return 0
@@ -75,12 +84,23 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 })
             }
 
-            if let acceptedChats = chats["currentChats"] as? [Int] {
-                HLUser.getCurrentUser().usersChattedWith = acceptedChats.map({ (i) -> Int64 in
-                    Int64(i)
-                })
+            if let acceptedChats = chats["currentChats"] as? [NSDictionary] {
+                currentChats = []
+                for chat in acceptedChats {
+                    if let ackDict = chat["ack"] as? NSDictionary {
+                        if let lastAckedId = (ackDict["lastAckedMessage"] as? NSNumber)?.unsignedLongLongValue {
+                            if let lastPartnerAckedId = (ackDict["lastPartnerAckedMessage"] as? NSNumber)?.unsignedLongLongValue {
+                                if let lastReceivedId = (chat["lastReceivedMessage"] as? NSNumber)?.unsignedLongLongValue {
+                                    if let receiverId = (chat["receiver"] as? NSNumber)?.unsignedLongLongValue {
+                                        let chat = HLChat(receiverId: receiverId, lastReceivedMessageId: lastReceivedId, lastAckedMessageId: lastAckedId, lastPartnerAckedMessageId: lastPartnerAckedId)
+                                        currentChats.append(chat)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
             converstationTable.reloadData()
         }
     }
@@ -106,7 +126,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cellIdentity = "ConversationTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
-            if let user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row]) {
+            if let user = HLServer.getUserById(Int64(currentChats[indexPath.row].receiverId)) {
 
                 cell.name.text = user.name
                 cell.profilePicture.layer.masksToBounds = false
@@ -122,6 +142,12 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
                 if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
                     cell.lastMessage.text = lastMessage.text
+
+                    if UInt64(lastMessage.messageUUID!) < currentChats[indexPath.row].lastAckedMessageId {
+                        cell.backgroundColor = UIColor.blueColor()
+                    } else {
+                        cell.backgroundColor = UIColor.clearColor()
+                    }
 
                     if NSCalendar.currentCalendar().isDateInToday(lastMessage.sentTimestamp) {
                         timestampFormamter.timeStyle = .ShortStyle
@@ -218,8 +244,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.user = HLServer.getUserById(currentUser.usersChattedWith[indexPath.row])
-                messageDetailViewController.recipientId = currentUser.usersChattedWith[indexPath.row]
+                messageDetailViewController.user = HLServer.getUserById(Int64(currentChats[indexPath.row].receiverId))
+                messageDetailViewController.recipientId = Int64(currentChats[indexPath.row].receiverId)
                 //Once messages is complete I can use that
                 
             }

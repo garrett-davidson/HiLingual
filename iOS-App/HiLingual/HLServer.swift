@@ -54,7 +54,7 @@ class HLServer {
                         print("Was that supposed to happen...? 🤔")
 
                     case 401:
-                        print("You aren't authorized to do that 🖕")
+                        print("You aren't authorized to do that bitch🖕")
 
                     case 400..<500:
                         print("You probably fucked up the request 😓")
