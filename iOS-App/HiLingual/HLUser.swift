@@ -201,51 +201,53 @@ enum Gender: Int {
         return userArray
     }
 
-    func save(session: HLUserSession=HLUser.getCurrentUser().session!) {
+    func save(session: HLUserSession=HLUser.getCurrentUser().session!, toServer:Bool=true) {
         //This should only be called on the current user
 
         HLUser.currentUser = self
         self.session = session
 
-//        var size = CGSize(width: 150, height: 150)
-//        
-//        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
-//        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
-//        if let session = HLUser.getCurrentUser().getSession() {
-//            
-//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-//            request.HTTPMethod = "POST"
-//            
-//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
-//            
-//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-//                print(returnedData)
-//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-//                    print(returnString)
-//                }
-//            }
-//        }
+        if toServer {
+    //        var size = CGSize(width: 150, height: 150)
+    //        
+    //        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
+    //        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+    //        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
+    //        if let session = HLUser.getCurrentUser().getSession() {
+    //            
+    //            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+    //            request.HTTPMethod = "POST"
+    //            
+    //            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
+    //            
+    //            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+    //                print(returnedData)
+    //                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+    //                    print(returnString)
+    //                }
+    //            }
+    //        }
 
 
-        
-        
-        
+            
+            
+            
 
-        let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
-        NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
-//
-//        //TODO: Implement creating a loggin in to server user
-//        //That way this doesn't have to be hard-coded
-        if let userJSONData = self.toJSON() {
-            let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "PATCH"
-            request.HTTPBody = userJSONData
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
+            let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
+            NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
+    //
+    //        //TODO: Implement creating a loggin in to server user
+    //        //That way this doesn't have to be hard-coded
+            if let userJSONData = self.toJSON() {
+                let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
+                request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+                request.HTTPMethod = "PATCH"
+                request.HTTPBody = userJSONData
+                if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+                    print(returnedData)
+                    if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+                        print(returnString)
+                    }
                 }
             }
         }

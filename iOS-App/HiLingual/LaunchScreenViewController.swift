@@ -140,7 +140,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         user.displayName = userName
         user.profilePicture = picture
 
-        user.save()
+        user.save(toServer: false)
     }
 
     func didRegisterWithSession(session: HLUserSession) {

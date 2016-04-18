@@ -342,7 +342,7 @@ class HLServer {
 
                     if let sessionString = authDictArray[0]["sessionToken"] as? String {
                         let session = HLUserSession(userId: authedUser.userId, sessionId: sessionString)
-                        authedUser.save(session)
+                        authedUser.save(session, toServer: false)
                         return true
                     }
                 }
