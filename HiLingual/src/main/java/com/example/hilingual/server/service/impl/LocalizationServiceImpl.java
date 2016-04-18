@@ -30,7 +30,7 @@ public class LocalizationServiceImpl implements LocalizationService {
                 try {
                     //  Try loading a bundle
                     ResourceBundle candidate =
-                            ResourceBundle.getBundle("com.example.hilingual.server.localization.locale.properties", locale);
+                            ResourceBundle.getBundle("com.example.hilingual.server.localization.locale", locale);
                     bundle = candidate;
                     bundles.put(locale, candidate);
                 } catch (MissingResourceException mre) {
@@ -72,7 +72,7 @@ public class LocalizationServiceImpl implements LocalizationService {
 
     @Override
     public void start() throws Exception {
-        defaultLocale = ResourceBundle.getBundle("com.example.hilingual.server.localization.locale.properties");
+        defaultLocale = ResourceBundle.getBundle("com.example.hilingual.server.localization.locale");
     }
 
     @Override
