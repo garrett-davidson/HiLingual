@@ -1146,12 +1146,12 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="hXw-zk-jRv">
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" id="yfp-mJ-ZoY">
+                            <barButtonItem id="yfp-mJ-ZoY">
                                 <connections>
                                     <action selector="shuffles:" destination="R77-4U-dP5" id="Clv-O2-L1z"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="CYi-EC-RKz">
+                            <barButtonItem id="CYi-EC-RKz">
                                 <connections>
                                     <action selector="refresh:" destination="R77-4U-dP5" id="O8Z-6r-XTq"/>
                                 </connections>
@@ -1161,6 +1161,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="carousel" destination="2v1-nQ-14l" id="GCh-OM-px0"/>
+                        <outlet property="refresh" destination="CYi-EC-RKz" id="N76-cy-vOw"/>
                         <outlet property="shuffle" destination="yfp-mJ-ZoY" id="lx1-ee-rkA"/>
                     </connections>
                 </viewController>

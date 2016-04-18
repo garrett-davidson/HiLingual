@@ -14,6 +14,7 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
     var random = [HLFlashCard]()
     var flipped = [Bool]()
     var isRandom = false
+    @IBOutlet weak var refresh: UIBarButtonItem!
     
     @IBOutlet weak var shuffle: UIBarButtonItem!
     @IBOutlet weak var carousel: iCarousel!
@@ -63,7 +64,10 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         }
         random = flashcards
         shuffle.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "fontAwesome", size: 24)!], forState: UIControlState.Normal)
-        self.navigationItem.rightBarButtonItem?.title = "\u{f074}"
+        shuffle.title = "\u{f074}"
+        //self.navigationItem.rightBarButtonItem?.title = "\u{f074}"
+        refresh.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "fontAwesome", size: 24)!], forState: UIControlState.Normal)
+        refresh.title = "\u{f021}"
 
         carousel.bounceDistance = 0.1;
         carousel.decelerationRate = 0.2;
