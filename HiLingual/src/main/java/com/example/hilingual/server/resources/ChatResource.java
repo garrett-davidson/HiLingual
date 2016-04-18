@@ -239,7 +239,8 @@ public class ChatResource {
         requester.getUsersChattedWith().add(receiverId);
         userDAO.updateUser(requester);
         chatMessageDAO.addRequest(requesterId, receiverId);
-        sendNotification(receiverId, String.format("%s wants to start a conversation with you!",
+        sendNotification(receiverId, String.format(
+                localizationService.localize("chat.request.request_receive", receiverId),
                 requester.getDisplayName()),
                 NotificationType.REQUEST_RECEIVED,
                 getBadgeNumber(receiverId));
@@ -280,7 +281,8 @@ public class ChatResource {
         chatMessageDAO.acceptRequest(accepterId, requesterId);
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
-        sendNotification(requesterId, String.format("<LOCALIZE ME>%s has accepted your conversation request.",
+        sendNotification(requesterId, String.format(
+                localizationService.localize("chat.request.request_accept", requesterId),
                 accepter.getDisplayName()),
                 NotificationType.REQUEST_ACCEPTED,
                 getBadgeNumber(requesterId));
@@ -347,7 +349,8 @@ public class ChatResource {
             URI uri = getAudioUrl(senderId, assetId);
             //  New messages only have content field set
             Message ret = chatMessageDAO.newAudioMessage(senderId, receiverId, uri.toASCIIString());
-            sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a voice clip.",
+            sendNotification(receiverId, String.format(
+                    localizationService.localize("chat.message.new_voice_message", receiverId),
                     sender.getDisplayName()),
                     NotificationType.NEW_MESSAGE,
                     getBadgeNumber(receiverId));
@@ -355,7 +358,8 @@ public class ChatResource {
         } else {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
-            sendNotification(receiverId, String.format("%s: %s",
+            sendNotification(receiverId, String.format(
+                    localizationService.localize("chat.message.new_text_message", receiverId),
                     sender.getDisplayName(), base64Decode(message.getContent())),
                     NotificationType.NEW_MESSAGE,
                     getBadgeNumber(receiverId));
@@ -398,7 +402,8 @@ public class ChatResource {
         URI uri = getImageUrl(senderId, assetId);
         //  New messages only have content field set
         Message ret = chatMessageDAO.newImageMessage(senderId, receiverId, uri.toASCIIString());
-        sendNotification(receiverId, String.format("<LOCALIZE ME>%s sent you a picture.",
+        sendNotification(receiverId, String.format(
+                localizationService.localize("chat.message.new_picture_message", receiverId),
                 sender.getDisplayName()),
                 NotificationType.NEW_MESSAGE,
                 getBadgeNumber(receiverId));
@@ -438,7 +443,8 @@ public class ChatResource {
         }
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
-        sendNotification(receiverId, String.format("%s edited: %s",
+        sendNotification(receiverId, String.format(
+                localizationService.localize("chat.message.edited_message", receiverId),
                 editor.getDisplayName(), base64Decode(editedMessage.getEditData())),
                 NotificationType.EDITED_MESSAGE,
                 getBadgeNumber(receiverId));

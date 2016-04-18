@@ -90,6 +90,9 @@ public class ServerModule extends AbstractModule {
         bind(IdentifierService.class).
                 to(IdentifierServiceImpl.class).
                 in(Scopes.SINGLETON);
+        bind(LocalizationService.class).
+                to(LocalizationServiceImpl.class).
+                in(Scopes.SINGLETON);
     }
 
 
