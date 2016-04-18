@@ -207,6 +207,9 @@ enum Gender: Int {
         HLUser.currentUser = self
         self.session = session
 
+        let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
+        NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
+
         if toServer {
     //        var size = CGSize(width: 150, height: 150)
     //        
@@ -233,8 +236,7 @@ enum Gender: Int {
             
             
 
-            let userData = NSKeyedArchiver.archivedDataWithRootObject(self)
-            NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
+
     //
     //        //TODO: Implement creating a loggin in to server user
     //        //That way this doesn't have to be hard-coded
