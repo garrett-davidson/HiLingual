@@ -240,7 +240,7 @@ public class ChatResource {
         userDAO.updateUser(requester);
         chatMessageDAO.addRequest(requesterId, receiverId);
         sendNotification(receiverId, String.format(
-                localizationService.localize("chat.request.request_receive", receiverId),
+                localizationService.localize("chat.request.request_receive", receiverId, receiver.getGender()),
                 requester.getDisplayName()),
                 NotificationType.REQUEST_RECEIVED,
                 getBadgeNumber(receiverId));
@@ -282,7 +282,7 @@ public class ChatResource {
         userDAO.updateUser(accepter);
         userDAO.updateUser(requester);
         sendNotification(requesterId, String.format(
-                localizationService.localize("chat.request.request_accept", requesterId),
+                localizationService.localize("chat.request.request_accept", requesterId, requester.getGender()),
                 accepter.getDisplayName()),
                 NotificationType.REQUEST_ACCEPTED,
                 getBadgeNumber(requesterId));
@@ -359,7 +359,7 @@ public class ChatResource {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             sendNotification(receiverId, String.format(
-                    localizationService.localize("chat.message.new_text_message", receiverId),
+                    localizationService.localize("chat.message.new_text_message", receiverId, reciever.getGender()),
                     sender.getDisplayName(), base64Decode(message.getContent())),
                     NotificationType.NEW_MESSAGE,
                     getBadgeNumber(receiverId));
@@ -381,8 +381,8 @@ public class ChatResource {
             throw new NotAuthorizedException("Bad session token");
         }
         User sender = userDAO.getUser(senderId);
-        User reciever = userDAO.getUser(receiverId);
-        if (reciever == null) {
+        User receiver = userDAO.getUser(receiverId);
+        if (receiver == null) {
             throw new NotFoundException("No such receiver");
         }
         if (!sender.getUsersChattedWith().contains(receiverId)) {
@@ -403,7 +403,7 @@ public class ChatResource {
         //  New messages only have content field set
         Message ret = chatMessageDAO.newImageMessage(senderId, receiverId, uri.toASCIIString());
         sendNotification(receiverId, String.format(
-                localizationService.localize("chat.message.new_picture_message", receiverId),
+                localizationService.localize("chat.message.new_picture_message", receiverId, receiver.getGender()),
                 sender.getDisplayName()),
                 NotificationType.NEW_MESSAGE,
                 getBadgeNumber(receiverId));
@@ -444,7 +444,7 @@ public class ChatResource {
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
         sendNotification(receiverId, String.format(
-                localizationService.localize("chat.message.edited_message", receiverId),
+                localizationService.localize("chat.message.edited_message", receiverId, receiver.getGender()),
                 editor.getDisplayName(), base64Decode(editedMessage.getEditData())),
                 NotificationType.EDITED_MESSAGE,
                 getBadgeNumber(receiverId));

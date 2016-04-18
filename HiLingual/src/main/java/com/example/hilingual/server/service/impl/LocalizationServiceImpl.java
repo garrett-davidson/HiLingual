@@ -1,5 +1,6 @@
 package com.example.hilingual.server.service.impl;
 
+import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.service.LocalizationService;
 import com.google.inject.Inject;
 import redis.clients.jedis.Jedis;
@@ -20,7 +21,7 @@ public class LocalizationServiceImpl implements LocalizationService {
     }
 
     @Override
-    public String localize(String key, Locale locale) {
+    public String localize(String key, Locale locale, Gender gender) {
         ResourceBundle bundle;
         if (locale == null) {
             bundle = defaultLocale;
@@ -39,9 +40,14 @@ public class LocalizationServiceImpl implements LocalizationService {
             }
         }
         try {
-            return bundle.getString(key);
+            return bundle.getString(key + gender.getLocalizationSuffix());
         } catch (MissingResourceException mre) {
-            return key;
+            try {
+                //  Try neuter
+                return bundle.getString(key);
+            } catch (MissingResourceException mre2) {
+                return key;
+            }
         }
     }
 
