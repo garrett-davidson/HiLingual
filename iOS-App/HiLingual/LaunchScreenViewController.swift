@@ -73,8 +73,19 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         print("Login complete.")
         getUserInfo()
-        
-        requestFromServer("https://gethilingual.com/api/auth/register", authority: "FACEBOOK", signIn: nil)
+
+        if (HLServer.authenticate(authority: .Facebook, authorityAccountId: FBSDKAccessToken.currentAccessToken().userID, authorityToken: FBSDKAccessToken.currentAccessToken().tokenString, deviceToken: (UIApplication.sharedApplication().delegate as! AppDelegate).apnsToken)) {
+            if HLUser.getCurrentUser().gender == Gender.Not_Set {
+                //Initial register
+                //Because don't allow NotSpecified as an option
+                self.populateUserFromFacebook(HLUser.getCurrentUser())
+                self.performSegueWithIdentifier("InitialLogin", sender: nil)
+
+            } else {
+                //Logging in to existing user
+                self.performSegueWithIdentifier("previousLogin", sender: nil)
+            }
+        }
     }
 
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
@@ -112,8 +123,115 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
                 } else {
                     //Logging in to existing user
+                    self.performSegueWithIdentifier("previousLogin", sender: nil)
                 }
             }
+        })
+    }
+
+    func populateUserFromFacebook(user: HLUser) {
+        let halfScreenWidth = Int(view.frame.size.width/2)
+        let fields = ["fields": "bio,birthday,first_name,gender,languages,last_name,link,picture.width(\(halfScreenWidth)).height(\(halfScreenWidth))"];
+        let request = FBSDKGraphRequest(graphPath: "me", parameters: fields)
+
+        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+            guard error == nil else {
+                print("Error: \(error!)")
+                return
+            }
+
+            print("fetched user: \(result)")
+
+            let bio: String
+            let birthday: NSDate
+            let firstName: String
+            let gender: Gender
+            var languages: [Languages]
+            let lastName: String
+            let picture: UIImage
+
+            //Bio
+            if let bioString = result.valueForKey("bio") as? String {
+                bio = bioString
+            }
+            else {
+                bio = "Bio".localized
+            }
+
+            //Birthday
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MM/dd/yyyy"
+            if let birthdayString = result.valueForKey("birthday") as? String {
+                if let fbBirthday = formatter.dateFromString(birthdayString) {
+                    birthday = fbBirthday
+                }
+                else {
+                    birthday = NSDate()
+                }
+            }
+            else {
+                birthday = NSDate()
+            }
+
+
+            //First name
+            if let fbFirstName = result.valueForKey("first_name") as? String {
+                firstName = fbFirstName
+            }
+            else {
+                firstName = ""
+            }
+
+            //Gender
+            if let genderString = result.valueForKey("gender") as? String {
+                switch (genderString) {
+                case "male":
+                    gender = .Male
+
+                case "female":
+                    gender = .Female
+
+                default:
+                    gender = .Not_Set
+                }
+            }
+            else {
+                gender = .Not_Set
+            }
+
+            //Languages
+            languages = []
+            if let languageStrings = result.valueForKey("languages")?.valueForKey("name") as? [String] {
+                for langString in languageStrings {
+                    if let lang = Languages(rawValue: langString) {
+                        languages.append(lang)
+                    }
+                }
+            }
+
+            //Last name
+            if let fbLastName = result.valueForKey("last_name") as? String {
+                lastName = fbLastName
+            }
+            else {
+                lastName = ""
+            }
+
+            //Profile picture
+            //Written this way for debug purposes
+            //I don't think this can be nil, so we're leaving it like this for now
+            let profilePictureURLString = result.valueForKey("picture")?.valueForKey("data")?.valueForKey("url") as! String
+            let profilePictureURL = NSURL(string: profilePictureURLString)!
+            let profilePictureData = NSData(contentsOfURL: profilePictureURL)!
+            picture = UIImage(data: profilePictureData)!
+
+            user.name = firstName + " " + lastName
+            user.displayName = firstName+lastName
+            user.knownLanguages = languages
+            user.bio = bio
+            user.gender = gender
+            user.birthdate = birthday
+            user.profilePicture = picture
         })
     }
 
