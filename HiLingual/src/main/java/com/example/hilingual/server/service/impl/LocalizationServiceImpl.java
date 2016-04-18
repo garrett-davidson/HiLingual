@@ -26,16 +26,16 @@ public class LocalizationServiceImpl implements LocalizationService {
             bundle = defaultLocale;
         } else {
             bundle = bundles.get(locale);
-        }
-        if (bundle == null) {
-            try {
-                //  Try loading a bundle
-                ResourceBundle candidate =
-                        ResourceBundle.getBundle("com.example.hilingual.server.localization.locale.properties", locale);
-                bundle = candidate;
-                bundles.put(locale, candidate);
-            } catch (MissingResourceException mre) {
-                bundle = defaultLocale;
+            if (bundle == null) {
+                try {
+                    //  Try loading a bundle
+                    ResourceBundle candidate =
+                            ResourceBundle.getBundle("com.example.hilingual.server.localization.locale.properties", locale);
+                    bundle = candidate;
+                    bundles.put(locale, candidate);
+                } catch (MissingResourceException mre) {
+                    bundle = defaultLocale;
+                }
             }
         }
         try {

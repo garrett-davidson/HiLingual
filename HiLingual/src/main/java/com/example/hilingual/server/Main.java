@@ -16,6 +16,7 @@ import com.example.hilingual.server.dao.*;
 import com.example.hilingual.server.health.JedisHealthCheck;
 import com.example.hilingual.server.resources.*;
 import com.example.hilingual.server.service.APNsService;
+import com.example.hilingual.server.service.LocalizationService;
 import com.example.hilingual.server.service.MsftTranslateService;
 import com.example.hilingual.server.service.SlackStatusInformationService;
 import com.example.hilingual.server.task.ApnsTestTask;
@@ -114,6 +115,7 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(APNsService.class));
         l.manage(create(MsftTranslateService.class));
         l.manage(create(SlackStatusInformationService.class));
+        l.manage(create(LocalizationService.class));
 
         //  Tasks
         LOGGER.info("Registering tasks");
