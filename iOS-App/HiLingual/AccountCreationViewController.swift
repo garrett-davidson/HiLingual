@@ -15,21 +15,14 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
 
     var user: HLUser?
     var selectedLanguages: [Languages]?
-    var session: HLUserSession?
 
     override func viewDidLoad() {
         editProfileView.languageSelectionDelegate = self
+    }
 
-        switch session?.authority {
-        case .None:
-            break
-
-        case .Some(.Facebook):
-            loadFacebookData()
-
-        case .Some(.Google):
-            loadGoogleData()
-        }
+    override func viewWillAppear(animated: Bool) {
+        user = HLUser.getCurrentUser()
+        editProfileView.user = user
     }
 
     @IBAction func saveUser(sender: AnyObject) {
@@ -38,10 +31,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
         //Be sure to call user.save() !!
 
         if isValidUser(editProfileView.user) {
-
-            editProfileView.user.setSession(session)
-            editProfileView.user.userId = session!.userId
-            editProfileView.user.save(session!)
+            editProfileView.user.save()
 
             performSegueWithIdentifier("DoneEditing", sender: self)
         }
@@ -177,11 +167,11 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
                     gender = .Female
 
                 default:
-                    gender = .NotSpecified
+                    gender = .Not_Set
                 }
             }
             else {
-                gender = .NotSpecified
+                gender = .Not_Set
             }
 
             //Languages
@@ -211,32 +201,6 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
                 picture = UIImage(data: profilePictureData)!
 
             let user = HLUser(userId: 5, name: firstName + " " + lastName, displayName: firstName+lastName, knownLanguages: languages, learningLanguages: [], bio: bio, gender: gender, birthdate: birthday, profilePicture: picture)
-            self.editProfileView.user = user
-        })
-    }
-
-    func loadGoogleData() {
-
-        //TODO: Fix this 💩
-        //Lazy way to fix race condition
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            while GIDSignIn.sharedInstance().currentUser == nil {
-                sleep(1)
-            }
-
-            let googleUser = GIDSignIn.sharedInstance().currentUser
-
-            let picture: UIImage?
-            let userName = googleUser.profile.name
-
-            if googleUser.profile.hasImage {
-                picture = UIImage(data: NSData(contentsOfURL: googleUser.profile.imageURLWithDimension(100))!)
-            }
-            else {
-                picture = nil
-            }
-
-            let user = HLUser(userId: 1, name: userName, displayName: userName, knownLanguages: nil, learningLanguages: nil, bio: nil, gender: nil, birthdate: nil, profilePicture: picture)
             self.editProfileView.user = user
         })
     }

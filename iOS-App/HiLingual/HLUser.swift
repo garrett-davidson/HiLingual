@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum Gender: Int {
-    case Male = 0, Female, NotSpecified
+    case Male = 0, Female, Not_Set
 
     //It is important that these are in the same order as declared in the line above
     //We're currently not allowing "Not Specified" as an option
@@ -132,11 +132,11 @@ enum Gender: Int {
             else if genderString == "FEMALE" {
                 gender = Gender.Female
             } else {
-                gender = Gender.NotSpecified
+                gender = Gender.Not_Set
                 print("Uncrecognized gender")
             }
         } else {
-            gender = .NotSpecified
+            gender = .Not_Set
             print("No gender returned")
         }
 
@@ -156,7 +156,6 @@ enum Gender: Int {
 
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
         let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
-        //TODO: ^^ This doesn't quite work
 
         //TODO: Load this image
         let imageURL = userDict["imageURL"]
@@ -204,27 +203,29 @@ enum Gender: Int {
 
     func save(session: HLUserSession=HLUser.getCurrentUser().session!) {
         //This should only be called on the current user
-        
+
         HLUser.currentUser = self
-        var size = CGSize(width: 150, height: 150)
-        
-        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
-        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
-        if let session = HLUser.getCurrentUser().getSession() {
-            
-            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
-            request.HTTPMethod = "POST"
-            
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
-            
-            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
-                print(returnedData)
-                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                    print(returnString)
-                }
-            }
-        }
+        self.session = session
+
+//        var size = CGSize(width: 150, height: 150)
+//        
+//        let imageData = UIImagePNGRepresentation(scaleImage(HLUser.getCurrentUser().profilePicture!, toSize: size))
+//        let base64String = imageData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+//        let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/asset/avatar/\(HLUser.currentUser!.userId)")!)
+//        if let session = HLUser.getCurrentUser().getSession() {
+//            
+//            request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
+//            request.HTTPMethod = "POST"
+//            
+//            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: ["image": base64String]), options: NSJSONWritingOptions(rawValue: 0))
+//            
+//            if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil) {
+//                print(returnedData)
+//                if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
+//                    print(returnString)
+//                }
+//            }
+//        }
 
 
         
@@ -275,7 +276,7 @@ enum Gender: Int {
             userDict.setObject(bio!.toBase64()!, forKey: "bio")
         }
         if gender != nil {
-            userDict.setObject("\(gender!)".capitalizedString, forKey: "gender")
+            userDict.setObject("\(gender!)".uppercaseString, forKey: "gender")
         }
         if birthdate != nil {
             userDict.setObject(birthdate!.timeIntervalSince1970 * 1000, forKey: "birthdate")

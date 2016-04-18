@@ -98,7 +98,49 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
     func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
         viewController.dismissViewControllerAnimated(true, completion: nil)
-        requestFromServer("https://gethilingual.com/api/auth/register", authority: "GOOGLE", signIn: signIn)
+//        requestFromServer("https://gethilingual.com/api/auth/register", authority: "GOOGLE", signIn: signIn)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            while GIDSignIn.sharedInstance().currentUser == nil {
+                sleep(1)
+            }
+            if (HLServer.authenticate(authority: .Google, authorityAccountId: signIn.currentUser.userID, authorityToken: signIn.currentUser.authentication.idToken, deviceToken: (UIApplication.sharedApplication().delegate as! AppDelegate).apnsToken)) {
+                if HLUser.getCurrentUser().gender == Gender.Not_Set {
+                    //Initial register
+                    //Because don't allow NotSpecified as an option
+                    self.populateUserFromGoogle(user: HLUser.getCurrentUser())
+                    self.performSegueWithIdentifier("InitialLogin", sender: nil)
+
+                } else {
+                    //Logging in to existing user
+                }
+            }
+        })
+    }
+
+    func populateUserFromGoogle(user user: HLUser) {
+        //TODO: Fix this 💩
+        //Lazy way to fix race condition
+        while GIDSignIn.sharedInstance().currentUser == nil {
+            sleep(1)
+        }
+
+        let googleUser = GIDSignIn.sharedInstance().currentUser
+
+        let picture: UIImage?
+        let userName = googleUser.profile.name
+
+        if googleUser.profile.hasImage {
+            picture = UIImage(data: NSData(contentsOfURL: googleUser.profile.imageURLWithDimension(100))!)
+        }
+        else {
+            picture = nil
+        }
+
+        user.name = userName
+        user.displayName = userName
+        user.profilePicture = picture
+
+        user.save()
     }
 
     func didRegisterWithSession(session: HLUserSession) {
@@ -154,9 +196,9 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                             print(returnString)
                             if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
                                 if url == "https://gethilingual.com/api/auth/register" {
-                                    self.didRegisterWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: LoginAuthority(rawValue: authority)!,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+//                                    self.didRegisterWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: LoginAuthority(rawValue: authority)!,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
                                 }else if  url == "https://gethilingual.com/api/auth/login"{
-                                    self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: LoginAuthority(rawValue: authority)!,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
+//                                    self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int)))
                                 }
                             } else {
                                 print("Couldn't parse return value")
@@ -170,13 +212,13 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         
         })
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let destNav = segue.destinationViewController as? UINavigationController {
-            if let dest = destNav.topViewController as? AccountCreationViewController {
-                if let session = sender as? HLUserSession {
-                    dest.session = session
-                }
-            }
-        }
-    }
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if let destNav = segue.destinationViewController as? UINavigationController {
+//            if let dest = destNav.topViewController as? AccountCreationViewController {
+//                if let session = sender as? HLUserSession {
+//                    dest.session = session
+//                }
+//            }
+//        }
+//    }
 }

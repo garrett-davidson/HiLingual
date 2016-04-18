@@ -321,4 +321,35 @@ class HLServer {
     static func acceptRequestFromUser(userId: Int64) -> Bool {
         return sendRequestToEndpoint("chat/\(userId)/accept", method: "POST") != nil
     }
+
+    enum LoginAuthority: String {
+        case Facebook = "FACEBOOK"
+        case Google = "GOOGLE"
+    }
+
+    static func authenticate(authority authority: LoginAuthority, authorityAccountId: String, authorityToken: String, deviceToken: String?) -> Bool {
+
+        var bodyDict = ["authority": authority.rawValue, "authorityAccountId": authorityAccountId, "authorityToken": authorityToken]
+
+        if deviceToken != nil {
+            bodyDict["deviceToken"] = deviceToken!
+        }
+
+        if let authDictArray = sendRequestToEndpoint("auth", method: "POST", withDictionary: bodyDict, authenticated: false) {
+            if authDictArray.count == 1 {
+                if let userDict = authDictArray[0]["user"] as? NSDictionary {
+                    let authedUser = HLUser.fromDict(userDict)
+
+                    if let sessionString = authDictArray[0]["sessionToken"] as? String {
+                        let session = HLUserSession(userId: authedUser.userId, sessionId: sessionString)
+                        authedUser.save(session)
+                        return true
+                    }
+                }
+            }
+        }
+
+
+        return false
+    }
 }
