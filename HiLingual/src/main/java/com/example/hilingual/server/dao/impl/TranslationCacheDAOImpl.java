@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class TranslationCacheDAOImpl implements TranslationCacheDAO {
 
     public static final int EXPIRY_TIME = (int) TimeUnit.MINUTES.toSeconds(30);
-    private static String HL_CACHE_BASE = "hl.cache.translation.";
+    private static String HL_CACHE_BASE = "hl:cache:translation.";
 
     private JedisPool pool;
 
