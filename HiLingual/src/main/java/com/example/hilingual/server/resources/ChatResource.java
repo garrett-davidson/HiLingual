@@ -358,9 +358,12 @@ public class ChatResource {
         } else {
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
+            String decoded = base64Decode(message.getContent());
             sendNotification(receiverId, String.format(
                     localizationService.localize("chat.message.new_text_message", receiverId, reciever.getGender()),
-                    sender.getDisplayName(), base64Decode(message.getContent())),
+                    sender.getDisplayName(), decoded),
+                    sender.getDisplayName(),
+                    decoded,
                     NotificationType.NEW_MESSAGE,
                     getBadgeNumber(receiverId));
             return ret;
@@ -443,9 +446,12 @@ public class ChatResource {
         }
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
+        String decoded = base64Decode(editedMessage.getEditData());
         sendNotification(receiverId, String.format(
                 localizationService.localize("chat.message.edited_message", receiverId, receiver.getGender()),
-                editor.getDisplayName(), base64Decode(editedMessage.getEditData())),
+                editor.getDisplayName(), decoded),
+                editor.getDisplayName(),
+                decoded,
                 NotificationType.EDITED_MESSAGE,
                 getBadgeNumber(receiverId));
         return editedMessage;
@@ -554,6 +560,25 @@ public class ChatResource {
                 setBadgeNumber(badgeNumber).
                 setSoundFileName("default").
                 addCustomProperty("type", type.name()).
+                buildWithDefaultMaximumLength();
+        Set<String> tokens = deviceTokenDAO.getUserDeviceTokens(user);
+        if (tokens == null) {
+            return;
+        }
+        tokens.stream().
+                forEach(token -> apnsService.sendNotification(token, builtBody));
+    }
+
+    private void sendNotification(long user, String body, String senderName, String msgContent,
+                                  NotificationType type, Integer badgeNumber) {
+        String builtBody = new ApnsPayloadBuilder().
+                setAlertTitle("HiLingual Chat").
+                setAlertBody(body).
+                setBadgeNumber(badgeNumber).
+                setSoundFileName("default").
+                addCustomProperty("type", type.name()).
+                addCustomProperty("sender", senderName).
+                addCustomProperty("msgContent", msgContent).
                 buildWithDefaultMaximumLength();
         Set<String> tokens = deviceTokenDAO.getUserDeviceTokens(user);
         if (tokens == null) {
