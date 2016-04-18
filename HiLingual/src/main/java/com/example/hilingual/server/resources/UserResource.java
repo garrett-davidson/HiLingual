@@ -9,9 +9,11 @@
 
 package com.example.hilingual.server.resources;
 
+import com.example.hilingual.server.api.LocaleSetting;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.service.LocalizationService;
 import com.google.inject.Inject;
 import io.dropwizard.jersey.PATCH;
 
@@ -33,12 +35,14 @@ public class UserResource {
 
     private final SessionDAO sessionDAO;
     private final UserDAO userDAO;
+    private final LocalizationService localizationService;
 
 
     @Inject
-    public UserResource(SessionDAO sessionDAO, UserDAO userDAO) {
+    public UserResource(SessionDAO sessionDAO, UserDAO userDAO, LocalizationService localizationService) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
+        this.localizationService = localizationService;
     }
 
     @GET
@@ -160,5 +164,29 @@ public class UserResource {
         }
         User invoker = userDAO.getUser(authUserId);
         return userDAO.findMatches(invoker);
+    }
+
+    @GET
+    @Path("me/locale")
+    public LocaleSetting getLocale(@HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        return new LocaleSetting(localizationService.getUserLocale(authUserId));
+    }
+
+    @POST
+    @Path("me/locale")
+    public void setLocale(@HeaderParam("Authorization") String hlat, LocaleSetting body) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        localizationService.setUserLocale(authUserId, body.getAsLocale());
     }
 }

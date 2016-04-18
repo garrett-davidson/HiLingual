@@ -4,6 +4,7 @@ import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
+import com.example.hilingual.server.service.LocalizationService;
 import com.google.common.net.HttpHeaders;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.assertj.core.api.Assertions;
@@ -27,9 +28,10 @@ public class UserResourceTest {
     public static final String SEARCH_QUERY = "potato";
     private static SessionDAO sessionDAO = mock(SessionDAO.class);
     private static UserDAO userDAO = mock(UserDAO.class);
+    private static LocalizationService localizationService = mock(LocalizationService.class);
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder().
-            addResource(new UserResource(sessionDAO, userDAO)).
+            addResource(new UserResource(sessionDAO, userDAO, localizationService)).
             build();
     private static User JIMMY = new User(JIMMY_ID, "Jimmy", "jjim", "potato", Gender.MALE, 2000, null,
             new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), true);
