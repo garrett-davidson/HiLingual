@@ -46,6 +46,10 @@
 		72A640851CBD79DF00EFFEEE /* FlashCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640841CBD79DF00EFFEEE /* FlashCardViewController.swift */; };
 		72A640891CC0216800EFFEEE /* HLFlashCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640881CC0216800EFFEEE /* HLFlashCard.swift */; };
 		72A6408B1CC19B5000EFFEEE /* FlashcardSetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A6408A1CC19B5000EFFEEE /* FlashcardSetViewController.swift */; };
+		72A6408F1CC414F600EFFEEE /* FlashcardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A6408E1CC414F600EFFEEE /* FlashcardTableViewController.swift */; };
+		72A640911CC415DB00EFFEEE /* FlashcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640901CC415DB00EFFEEE /* FlashcardCell.swift */; };
+		72A640931CC4460400EFFEEE /* FlashcardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72A640921CC4460400EFFEEE /* FlashcardView.xib */; };
+		72A640951CC4465900EFFEEE /* FlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640941CC4465900EFFEEE /* FlashcardView.swift */; };
 		72DAA67D1C9BA1F70093B51C /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */; };
 		72F621571C7F977700A8A489 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F621561C7F977700A8A489 /* EditProfileView.swift */; };
 		7CF1F1931C875BCA00BC258A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */; };
@@ -144,6 +148,10 @@
 		72A640841CBD79DF00EFFEEE /* FlashCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardViewController.swift; sourceTree = "<group>"; };
 		72A640881CC0216800EFFEEE /* HLFlashCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HLFlashCard.swift; sourceTree = "<group>"; };
 		72A6408A1CC19B5000EFFEEE /* FlashcardSetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashcardSetViewController.swift; sourceTree = "<group>"; };
+		72A6408E1CC414F600EFFEEE /* FlashcardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashcardTableViewController.swift; sourceTree = "<group>"; };
+		72A640901CC415DB00EFFEEE /* FlashcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashcardCell.swift; sourceTree = "<group>"; };
+		72A640921CC4460400EFFEEE /* FlashcardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashcardView.xib; sourceTree = "<group>"; };
+		72A640941CC4465900EFFEEE /* FlashcardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashcardView.swift; sourceTree = "<group>"; };
 		72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		72F621561C7F977700A8A489 /* EditProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -229,6 +237,8 @@
 				72F621561C7F977700A8A489 /* EditProfileView.swift */,
 				686E51201CBCA2CD00EFD2ED /* EditProfileView.xib */,
 				72A6408A1CC19B5000EFFEEE /* FlashcardSetViewController.swift */,
+				72A6408E1CC414F600EFFEEE /* FlashcardTableViewController.swift */,
+				72A640901CC415DB00EFFEEE /* FlashcardCell.swift */,
 				72A640841CBD79DF00EFFEEE /* FlashCardViewController.swift */,
 				68876F131CC01DEA00886E21 /* FontAwesome.otf */,
 				683815301C73C2A900BBC7E7 /* HiLingual-Bridging-Header.h */,
@@ -248,6 +258,8 @@
 				4CEEACF21CADD07A00A16DC6 /* PlayButton@2x.png */,
 				682D14841C76620600443B7D /* ProfileView.swift */,
 				686E51251CBCA2E200EFD2ED /* ProfileView.xib */,
+				72A640921CC4460400EFFEEE /* FlashcardView.xib */,
+				72A640941CC4465900EFFEEE /* FlashcardView.swift */,
 				680F244F1C7168D6009F4EE8 /* ProfileViewController.swift */,
 				7259F1521C7669C3004C0A7E /* SearchTableViewCell.swift */,
 				7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */,
@@ -417,6 +429,7 @@
 				684A89131CBCAA7B00EB0A33 /* AccessoryView.xib in Resources */,
 				6876D9A11C5A87A90097332A /* LaunchScreen.storyboard in Resources */,
 				686E51231CBCA2E200EFD2ED /* ProfileView.xib in Resources */,
+				72A640931CC4460400EFFEEE /* FlashcardView.xib in Resources */,
 				6876D99E1C5A87A90097332A /* Assets.xcassets in Resources */,
 				6876D99C1C5A87A90097332A /* Main.storyboard in Resources */,
 				686E510F1CBC9E0400EFD2ED /* Localizable.strings in Resources */,
@@ -541,9 +554,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				72F621571C7F977700A8A489 /* EditProfileView.swift in Sources */,
+				72A640951CC4465900EFFEEE /* FlashcardView.swift in Sources */,
 				686E4A441CB1578C00152C69 /* ChatEditedTableViewCell.swift in Sources */,
 				680F24461C7164C3009F4EE8 /* HLUserSession.swift in Sources */,
 				680F24501C7168D6009F4EE8 /* ProfileViewController.swift in Sources */,
+				72A6408F1CC414F600EFFEEE /* FlashcardTableViewController.swift in Sources */,
 				680F244E1C716875009F4EE8 /* MessagesViewController.swift in Sources */,
 				7CF1F1931C875BCA00BC258A /* SettingsViewController.swift in Sources */,
 				682D14851C76620600443B7D /* ProfileView.swift in Sources */,
@@ -563,6 +578,7 @@
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
 				720F002C1C7E3F3300DA197E /* DetailViewController.swift in Sources */,
 				72A640891CC0216800EFFEEE /* HLFlashCard.swift in Sources */,
+				72A640911CC415DB00EFFEEE /* FlashcardCell.swift in Sources */,
 				72A6408B1CC19B5000EFFEEE /* FlashcardSetViewController.swift in Sources */,
 				72DAA67D1C9BA1F70093B51C /* ChatTableViewCell.swift in Sources */,
 				688FECFD1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift in Sources */,

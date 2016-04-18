@@ -14,10 +14,9 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
     var flashcards = [[HLFlashCard]]()
     
     @IBOutlet weak var flashcardTable: UITableView!
-    
+    var sent = 0
     
     override func viewDidLoad() {
-        loadTest();
         navigationItem.leftBarButtonItem = editButtonItem()
     }
     @IBAction func AddFlashCard(sender: AnyObject) {
@@ -26,6 +25,7 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.text = ""
         })
+        
         alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action) -> Void in
 
             let textField = alert.textFields![0] as UITextField
@@ -65,19 +65,28 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toFlashcardRing" {
-            let messageDetailViewController = segue.destinationViewController as! FlashcardSetViewController
+            let messageDetailViewController = segue.destinationViewController as! FlashcardTableViewController
             print(sender)
             if let selectedMessageCell = sender as? UITableViewCell {
                 let indexPath = flashcardTable.indexPathForCell(selectedMessageCell)!
                 flashcardTable.deselectRowAtIndexPath(indexPath, animated: false)
                 messageDetailViewController.flashcards = flashcards[indexPath.row]
-                messageDetailViewController.title = flashcardTitle[indexPath.row]
+                sent = indexPath.row
+                //messageDetailViewController.title = flashcardTitle[indexPath.row]
                 
             }
             
             
         }
         
+        
+    }
+    @IBAction func unwindFlashCard(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.sourceViewController as? FlashcardTableViewController {
+            flashcards[sent] = sourceViewController.flashcards
+            flashcardTable.reloadData()
+            
+        }
         
     }
     func tableView(tableView: UITableView,
@@ -99,14 +108,6 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.detailTextLabel?.text = "\(flashcards[indexPath.row].count)"
         return cell
     }
-    func loadTest(){
-        flashcardTitle = ["Japanese", "Chinese", "Stupid"]
-        let flash = HLFlashCard(frontText: "nothing", backText: "Nothing")
 
-        flashcards.insert([flash,flash,flash], atIndex: 0)
-        flashcards.insert([flash], atIndex: 1)
-        flashcards.insert([flash,flash,flash,flash], atIndex: 2)
-        
-    }
     
 }
