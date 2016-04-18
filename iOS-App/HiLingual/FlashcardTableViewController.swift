@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var flashcards = [HLFlashCard]()
     
     
@@ -26,6 +26,10 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         let cell = tableView.dequeueReusableCellWithIdentifier("FlashcardCell", forIndexPath: indexPath) as! FlashcardCell
         cell.front.text = flashcards[indexPath.row].frontText
         cell.back.text = flashcards[indexPath.row].backText
+        cell.front.tag = indexPath.row
+        cell.back.tag = indexPath.row
+        cell.front.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        cell.back.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         
         return cell
     }
@@ -52,7 +56,7 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         UIView.animateWithDuration(duration) { () -> Void in
             if let height = self.navigationController?.navigationBar.frame.height {
 
-                let inset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.size.height-20, 0)
+                let inset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.size.height, 0)
                 self.tableView.contentInset = inset
                 self.tableView.scrollIndicatorInsets = inset
             }
@@ -78,13 +82,6 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         if segue.identifier == "beginViewing" {
             let messageDetailViewController = segue.destinationViewController as! FlashcardSetViewController
             print(flashcards.count)
-            for i in 0 ..< flashcards.count  {
-                
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! FlashcardCell
-                flashcards[i].frontText = cell.front.text
-                flashcards[i].backText = cell.back.text
-                
-            }
             messageDetailViewController.flashcards = flashcards
             messageDetailViewController.title = title
                 
@@ -92,18 +89,30 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
             
             
         }
-        if saveButton === sender{
-            for i in 0 ..< flashcards.count  {
-                
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! FlashcardCell
-                flashcards[i].frontText = cell.front.text
-                flashcards[i].backText = cell.back.text
-                
+        
+    }
+    func textFieldDidChange(textField: UITextField) {
+        let i = textField.tag
+        let index = NSIndexPath(forRow: i, inSection: 0)
+        tableView.scrollToRowAtIndexPath(index, atScrollPosition: .Bottom, animated: true)
+        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? FlashcardCell {
+            if textField === cell.front{
+                flashcards[i].frontText = textField.text
+            } else {
+                flashcards[i].backText = textField.text
             }
-            
         }
+    }
+    func textFieldDidEndEditing(textField: UITextField) {
+        let i = textField.tag
         
-        
+        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? FlashcardCell {
+            if textField === cell.front{
+                flashcards[i].frontText = textField.text
+            } else {
+                flashcards[i].backText = textField.text
+            }
+        }
     }
     func tableView(tableView: UITableView,
                    moveRowAtIndexPath sourceIndexPath: NSIndexPath,
