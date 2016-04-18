@@ -92,6 +92,7 @@ public class AuthResource {
         User user;
         if (userId == 0) {
             user = userDAO.createUser();
+            userId = user.getUserId();
             assignUserIdToAccount.accept(userId, authorityAccountId);
         } else {
             user = userDAO.getUser(userId);
