@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FlashcardView" customModule="HiLingual" customModuleProvider="target">
+            <connections>
+                <outlet property="label" destination="UET-0K-DIB" id="snf-jG-RtP"/>
+                <outlet property="view" destination="iN0-l3-epB" id="1Yw-PI-mTF"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UET-0K-DIB">
+                    <rect key="frame" x="300" y="300" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="UET-0K-DIB" secondAttribute="trailing" id="Ds3-kK-t56"/>
+                <constraint firstItem="UET-0K-DIB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" id="gel-eT-oc9"/>
+                <constraint firstItem="UET-0K-DIB" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="tMt-81-9qP"/>
+                <constraint firstItem="UET-0K-DIB" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="yTg-Id-WAR"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

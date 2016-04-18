@@ -133,7 +133,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
         else {
             profileViewCell = MatchProfileView()
-
+            
             profileViewCell.sendMessageButton = UIButton(type: .System)
 
             profileViewCell.sendMessageButton.setTitle("Send Message".localized, forState: .Normal)

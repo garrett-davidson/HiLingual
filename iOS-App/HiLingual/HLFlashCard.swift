@@ -14,8 +14,8 @@ class HLFlashCard: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         
-        frontText = aDecoder.decodeObjectForKey("front") as! String
-        backText = aDecoder.decodeObjectForKey("back") as! String
+        frontText = aDecoder.decodeObjectForKey("front") as? String
+        backText = aDecoder.decodeObjectForKey("back") as? String
         
     }
     func encodeWithCoder(aCoder: NSCoder) {

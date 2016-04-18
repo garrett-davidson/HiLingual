@@ -1115,5 +1115,4 @@ class HiLingualUITests: XCTestCase {
         
         sleep(10)
     }
-    
 }
