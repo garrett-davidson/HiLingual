@@ -289,7 +289,7 @@ enum Gender: Int {
         let knownLanguagesStrings = knownLanguages.map { (language) -> String in
             language.rawValue
         }
-        userDict.setObject(knownLanguagesStrings, forKey: "learningLanguages")
+        userDict.setObject(knownLanguagesStrings, forKey: "knownLanguages")
 
         return try? NSJSONSerialization.dataWithJSONObject(userDict, options: NSJSONWritingOptions(rawValue: 0))
     }
