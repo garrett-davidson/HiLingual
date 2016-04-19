@@ -385,8 +385,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 shownPicture = cell.rightPicture
                 hiddenPicture = cell.leftPicture
             } else {
-                shownPicture = cell.rightPicture
-                hiddenPicture = cell.leftPicture
+                shownPicture = cell.leftPicture
+                hiddenPicture = cell.rightPicture
             }
             
             shownPicture.hidden = false

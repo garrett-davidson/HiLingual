@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F18b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -219,8 +219,104 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatTableViewCell" id="u8e-U8-Zib" customClass="ChatTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u8e-U8-Zib" id="AMw-Yv-49J">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z3R-nL-vUC">
+                                                    <rect key="frame" x="13" y="6" width="21.5" height="32"/>
+                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HVE-Uz-kPg">
+                                                    <rect key="frame" x="565.5" y="6" width="21.5" height="32"/>
+                                                    <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2l-KZ-MB0">
+                                                    <rect key="frame" x="18" y="8" width="11.5" height="28"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="ChatBubbleLeftLabel"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLd-4n-QP7">
+                                                    <rect key="frame" x="570.5" y="8" width="11.5" height="28"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="ChatBubbleRightLabel"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="trailing" secondItem="AMw-Yv-49J" secondAttribute="trailingMargin" constant="-5" id="3dX-tX-vby"/>
+                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-2" id="6oh-Ow-5DW"/>
+                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="5" id="7DZ-R2-K1D"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R2l-KZ-MB0" secondAttribute="trailing" constant="80" id="7hD-h5-Pbe"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="10" id="G22-Ee-whZ"/>
+                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="leading" secondItem="xLd-4n-QP7" secondAttribute="leading" constant="-5" id="Glh-Hz-Mff"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="R2l-KZ-MB0" secondAttribute="bottom" id="NxH-ZL-rVH"/>
+                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-2" id="RLo-Zt-B57"/>
+                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="bottom" secondItem="AMw-Yv-49J" secondAttribute="bottomMargin" constant="2" id="SWd-wA-i5V"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="HVE-Uz-kPg" secondAttribute="bottom" constant="-2" id="SXq-Yj-P8w"/>
+                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="WZZ-hd-UmJ"/>
+                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="80" id="aF9-Tw-d5P"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="trailing" secondItem="z3R-nL-vUC" secondAttribute="trailing" constant="-5" id="ho2-XS-7CY"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xLd-4n-QP7" secondAttribute="trailing" constant="10" id="hpi-ti-771"/>
+                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="juz-ld-ZdP"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="xLd-4n-QP7" secondAttribute="bottom" id="sd6-VB-MAW"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="ChatTableViewCell"/>
+                                        <connections>
+                                            <outlet property="chatBubbleLeft" destination="R2l-KZ-MB0" id="Y7a-lG-FZn"/>
+                                            <outlet property="chatBubbleRight" destination="xLd-4n-QP7" id="egX-eI-F1k"/>
+                                            <outlet property="chatLeftImage" destination="z3R-nL-vUC" id="jTr-If-kNa"/>
+                                            <outlet property="chatRightImage" destination="HVE-Uz-kPg" id="g52-Wh-fah"/>
+                                            <outlet property="leftConstraintMessageequal" destination="G22-Ee-whZ" id="w1M-Gd-8Ug"/>
+                                            <outlet property="rightConstraintMessageEqualOrLess" destination="7hD-h5-Pbe" id="8Td-kG-651"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatPictureTableViewCell" rowHeight="280" id="nKA-Qc-raJ" customClass="ChatPictureTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="280"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nKA-Qc-raJ" id="p0n-Qg-z3O">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="280"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
+                                                    <rect key="frame" x="394" y="18" width="198" height="244"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="198" id="CiP-fT-Exw"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="244" id="Wdy-t8-Zmz"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
+                                                    <rect key="frame" x="8" y="18" width="198" height="244"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="198" id="9Ii-iq-qo2"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="244" id="xUU-5q-gGS"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="pzy-rh-QT1" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" constant="10" id="HSF-pv-WlZ"/>
+                                                <constraint firstItem="xOK-GG-AwJ" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" constant="10" id="MDi-eg-52T"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="xOK-GG-AwJ" secondAttribute="bottom" constant="10" id="XOi-DB-1Ca"/>
+                                                <constraint firstItem="xOK-GG-AwJ" firstAttribute="trailing" secondItem="p0n-Qg-z3O" secondAttribute="trailingMargin" id="YJT-Fu-xMR"/>
+                                                <constraint firstItem="pzy-rh-QT1" firstAttribute="leading" secondItem="p0n-Qg-z3O" secondAttribute="leadingMargin" id="iUR-Jr-s84"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="pzy-rh-QT1" secondAttribute="bottom" constant="10" id="vyW-rq-iIC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="ChatEditedTableViewCell"/>
+                                        <connections>
+                                            <outlet property="leftPicture" destination="pzy-rh-QT1" id="fSR-8C-3MR"/>
+                                            <outlet property="rightPicture" destination="xOK-GG-AwJ" id="5Lh-tK-TwQ"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatVoiceTableViewCell" rowHeight="46" id="xPx-jD-MEk" customClass="ChatVoiceTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="46"/>
+                                        <rect key="frame" x="0.0" y="352" width="600" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPx-jD-MEk" id="WZt-bm-o9v">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
@@ -242,7 +338,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGm-K1-MVc">
-                                                    <rect key="frame" x="567" y="8" width="30" height="30"/>
+                                                    <rect key="frame" x="557" y="8" width="30" height="30"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="PlaybackButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="0CE-NQ-tnl"/>
@@ -262,7 +358,7 @@
                                                 <constraint firstItem="9AS-S7-Cqc" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="HuH-cs-1LH"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="RGm-K1-MVc" secondAttribute="bottom" id="QTq-iW-aa1"/>
                                                 <constraint firstItem="RGm-K1-MVc" firstAttribute="top" secondItem="WZt-bm-o9v" secondAttribute="topMargin" id="V5E-OT-Egp"/>
-                                                <constraint firstItem="RGm-K1-MVc" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="5" id="inm-mJ-Qtx"/>
+                                                <constraint firstItem="RGm-K1-MVc" firstAttribute="trailing" secondItem="WZt-bm-o9v" secondAttribute="trailingMargin" constant="-5" id="inm-mJ-Qtx"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="9AS-S7-Cqc" secondAttribute="bottom" id="wRV-Ip-hZp"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -272,67 +368,8 @@
                                             <outlet property="rightButton" destination="RGm-K1-MVc" id="MhJ-Dc-8mW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatTableViewCell" id="u8e-U8-Zib" customClass="ChatTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="74" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u8e-U8-Zib" id="AMw-Yv-49J">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z3R-nL-vUC">
-                                                    <rect key="frame" x="13" y="6" width="21.5" height="32"/>
-                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HVE-Uz-kPg">
-                                                    <rect key="frame" x="570.5" y="6" width="21.5" height="32"/>
-                                                    <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2l-KZ-MB0">
-                                                    <rect key="frame" x="18" y="8" width="11.5" height="28"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="ChatBubbleLeftLabel"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLd-4n-QP7">
-                                                    <rect key="frame" x="575.5" y="8" width="11.5" height="28"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="ChatBubbleRightLabel"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="trailing" secondItem="AMw-Yv-49J" secondAttribute="trailingMargin" id="3dX-tX-vby"/>
-                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-2" id="6oh-Ow-5DW"/>
-                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="5" id="7DZ-R2-K1D"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R2l-KZ-MB0" secondAttribute="trailing" constant="80" id="7hD-h5-Pbe"/>
-                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="leading" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="10" id="G22-Ee-whZ"/>
-                                                <constraint firstItem="HVE-Uz-kPg" firstAttribute="leading" secondItem="xLd-4n-QP7" secondAttribute="leading" constant="-5" id="Glh-Hz-Mff"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="R2l-KZ-MB0" secondAttribute="bottom" id="NxH-ZL-rVH"/>
-                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" constant="-2" id="RLo-Zt-B57"/>
-                                                <constraint firstItem="z3R-nL-vUC" firstAttribute="bottom" secondItem="AMw-Yv-49J" secondAttribute="bottomMargin" constant="2" id="SWd-wA-i5V"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="HVE-Uz-kPg" secondAttribute="bottom" constant="-2" id="SXq-Yj-P8w"/>
-                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="WZZ-hd-UmJ"/>
-                                                <constraint firstItem="xLd-4n-QP7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AMw-Yv-49J" secondAttribute="leadingMargin" constant="80" id="aF9-Tw-d5P"/>
-                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="trailing" secondItem="z3R-nL-vUC" secondAttribute="trailing" constant="-5" id="ho2-XS-7CY"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="xLd-4n-QP7" secondAttribute="trailing" constant="5" id="hpi-ti-771"/>
-                                                <constraint firstItem="R2l-KZ-MB0" firstAttribute="top" secondItem="AMw-Yv-49J" secondAttribute="topMargin" id="juz-ld-ZdP"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="xLd-4n-QP7" secondAttribute="bottom" id="sd6-VB-MAW"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" identifier="ChatTableViewCell"/>
-                                        <connections>
-                                            <outlet property="chatBubbleLeft" destination="R2l-KZ-MB0" id="Y7a-lG-FZn"/>
-                                            <outlet property="chatBubbleRight" destination="xLd-4n-QP7" id="egX-eI-F1k"/>
-                                            <outlet property="chatLeftImage" destination="z3R-nL-vUC" id="jTr-If-kNa"/>
-                                            <outlet property="chatRightImage" destination="HVE-Uz-kPg" id="g52-Wh-fah"/>
-                                            <outlet property="leftConstraintMessageequal" destination="G22-Ee-whZ" id="w1M-Gd-8Ug"/>
-                                            <outlet property="rightConstraintMessageEqualOrLess" destination="7hD-h5-Pbe" id="8Td-kG-651"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatEditedTableViewCell" rowHeight="63" id="jYI-JC-IST" customClass="ChatEditedTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="118" width="600" height="63"/>
+                                        <rect key="frame" x="0.0" y="398" width="600" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jYI-JC-IST" id="JRc-cy-5by">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="63"/>
@@ -444,43 +481,6 @@
                                             <outlet property="rightMessageLabel" destination="dpO-eU-jNx" id="VzY-SO-ICv"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatPictureTableViewCell" rowHeight="280" id="nKA-Qc-raJ" customClass="ChatPictureTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="181" width="600" height="280"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nKA-Qc-raJ" id="p0n-Qg-z3O">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="280"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
-                                                    <rect key="frame" x="394" y="18" width="198" height="244"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="198" id="CiP-fT-Exw"/>
-                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="244" id="Wdy-t8-Zmz"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
-                                                    <rect key="frame" x="8" y="18" width="198" height="244"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="198" id="9Ii-iq-qo2"/>
-                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="244" id="xUU-5q-gGS"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="pzy-rh-QT1" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" constant="10" id="HSF-pv-WlZ"/>
-                                                <constraint firstItem="xOK-GG-AwJ" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" constant="10" id="MDi-eg-52T"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="xOK-GG-AwJ" secondAttribute="bottom" constant="10" id="XOi-DB-1Ca"/>
-                                                <constraint firstItem="xOK-GG-AwJ" firstAttribute="trailing" secondItem="p0n-Qg-z3O" secondAttribute="trailingMargin" id="YJT-Fu-xMR"/>
-                                                <constraint firstItem="pzy-rh-QT1" firstAttribute="leading" secondItem="p0n-Qg-z3O" secondAttribute="leadingMargin" id="iUR-Jr-s84"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="pzy-rh-QT1" secondAttribute="bottom" constant="10" id="vyW-rq-iIC"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration" identifier="ChatEditedTableViewCell"/>
-                                        <connections>
-                                            <outlet property="leftPicture" destination="pzy-rh-QT1" id="fSR-8C-3MR"/>
-                                            <outlet property="rightPicture" destination="xOK-GG-AwJ" id="5Lh-tK-TwQ"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="nBC-Zq-2jE" id="G2K-Vg-dga"/>
@@ -526,7 +526,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5314" y="-651"/>
+            <point key="canvasLocation" x="5001" y="-655"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="3Id-wU-drU">
