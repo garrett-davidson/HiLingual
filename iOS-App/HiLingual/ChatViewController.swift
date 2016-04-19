@@ -37,6 +37,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var hiddenTextField: UITextField!
 
+    let tapRec = UITapGestureRecognizer()
+    
     @IBOutlet weak var testView: AccessoryView!
     var selectedCellIndex: Int?
     
@@ -53,7 +55,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(ChatViewController.loadMoreMessages(_:)), forControlEvents: .ValueChanged)
         tableView.addSubview(refreshControl)
-
+        
         self.title = user.name
         print(user.name)
         print(user.userId)
@@ -81,6 +83,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         chatTableView.scrollToBottom(animated: true)
     }
 
+    
+    
+    func tappedView(){
+        print("image tapped")
+    }
+
+    
     override func viewWillDisappear(animated: Bool) {
         let chatURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(recipientId).chat")
         let count = messages.count
@@ -398,6 +407,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             shownPicture.tag = indexPath.row
             shownPicture.image = message.image
             
+            tapRec.addTarget(self, action: "tappedImage")
+            cell.rightPicture.addGestureRecognizer(tapRec)
+            cell.leftPicture.addGestureRecognizer(tapRec)
+
             return cell
 
         } else if message.editedText == nil {
