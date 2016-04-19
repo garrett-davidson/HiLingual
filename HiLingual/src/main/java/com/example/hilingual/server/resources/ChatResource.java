@@ -7,6 +7,9 @@ import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.IdentifierService;
 import com.example.hilingual.server.service.LocalizationService;
 import com.example.hilingual.server.service.MsftTranslateService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.LongSerializationPolicy;
 import com.google.inject.Inject;
 import com.relayrides.pushy.apns.util.ApnsPayloadBuilder;
 import io.dropwizard.jersey.PATCH;
@@ -50,6 +53,7 @@ public class ChatResource {
     private final LocalizationService localizationService;
     private final ServerConfig config;
     private final Random random;
+    private final Gson gson;
 
     @Inject
     public ChatResource(SessionDAO sessionDAO,
@@ -77,6 +81,9 @@ public class ChatResource {
         //  Force secure seeding
         byte[] temp = new byte[128];
         random.nextBytes(temp);
+
+        gson = new GsonBuilder().setLongSerializationPolicy(LongSerializationPolicy.DEFAULT).
+                create();
     }
 
     //  TODO
@@ -362,9 +369,7 @@ public class ChatResource {
             sendNotification(receiverId, String.format(
                     localizationService.localize("chat.message.new_text_message", receiverId, reciever.getGender()),
                     sender.getDisplayName(), decoded),
-                    sender.getDisplayName(),
-                    senderId,
-                    decoded,
+                    gson.toJson(ret),
                     NotificationType.NEW_MESSAGE,
                     getBadgeNumber(receiverId));
             return ret;
@@ -451,9 +456,7 @@ public class ChatResource {
         sendNotification(receiverId, String.format(
                 localizationService.localize("chat.message.edited_message", receiverId, receiver.getGender()),
                 editor.getDisplayName(), decoded),
-                editor.getDisplayName(),
-                editorId,
-                decoded,
+                gson.toJson(editedMessage),
                 NotificationType.EDITED_MESSAGE,
                 getBadgeNumber(receiverId));
         return editedMessage;
@@ -571,7 +574,7 @@ public class ChatResource {
                 forEach(token -> apnsService.sendNotification(token, builtBody));
     }
 
-    private void sendNotification(long user, String body, String senderName, long senderId, String msgContent,
+    private void sendNotification(long user, String body, String msgContentJson,
                                   NotificationType type, Integer badgeNumber) {
         String builtBody = new ApnsPayloadBuilder().
                 setAlertTitle("HiLingual Chat").
@@ -579,9 +582,7 @@ public class ChatResource {
                 setBadgeNumber(badgeNumber).
                 setSoundFileName("default").
                 addCustomProperty("type", type.name()).
-                addCustomProperty("sender", senderName).
-                addCustomProperty("senderId", Long.toUnsignedString(senderId)).
-                addCustomProperty("msgContent", msgContent).
+                addCustomProperty("msgContent", msgContentJson).
                 buildWithDefaultMaximumLength();
         Set<String> tokens = deviceTokenDAO.getUserDeviceTokens(user);
         if (tokens == null) {
