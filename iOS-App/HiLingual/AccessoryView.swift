@@ -201,8 +201,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         var selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         selectedImage = UIImage(CGImage: selectedImage.CGImage!, scale: 0.02, orientation: UIImageOrientation.Up)
 
-        let imageData = UIImagePNGRepresentation(selectedImage)
-        chatViewController!.sendImageWithData(imageData!)
+        chatViewController?.sendImage(selectedImage)
         
         //post to server
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController

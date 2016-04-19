@@ -54,7 +54,7 @@ class HLServer {
                         print("Was that supposed to happen...? 🤔")
 
                     case 401:
-                        print("You aren't authorized to do that 🖕")
+                        print("You aren't authorized to do that bitch🖕")
 
                     case 400..<500:
                         print("You probably fucked up the request 😓")
@@ -76,10 +76,7 @@ class HLServer {
                     default:
                         print("Wtf just happened???  ?¿💩")
                     }
-                }
-
-
-                else {
+                } else {
                     print("Couldn't parse return dictionary")
                 }
             }
@@ -99,11 +96,19 @@ class HLServer {
         return nil
     }
 
-    static func sendRequestToEndpoint(endpoint: String, method: String, withDictionary dict: Dictionary<String, AnyObject>?=nil, authenticated: Bool=true) -> [NSDictionary]? {
+    static func sendRequestToEndpoint(endpoint: String, method: String, contentType:String="application/json", withDictionary dict: Dictionary<String, AnyObject>?=nil, withData data: NSData?=nil, authenticated: Bool=true) -> [NSDictionary]? {
+
         let request = NSMutableURLRequest(URL: NSURL(string: apiBase + endpoint)!)
 
-        var headerFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = method
 
+        if dict != nil {
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: dict!), options: NSJSONWritingOptions(rawValue: 0))
+        } else if data != nil {
+            request.HTTPBody = data!
+        }
+
+        var headerFields = ["Content-Type": contentType]
         if authenticated {
             if let session = HLUser.getCurrentUser().getSession() {
                 headerFields["Authorization"] = "HLAT " + session.sessionId
@@ -115,14 +120,11 @@ class HLServer {
             }
         }
 
-        request.allHTTPHeaderFields = headerFields
-
-        request.HTTPMethod = method
-
-        if dict != nil {
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: dict!), options: NSJSONWritingOptions(rawValue: 0))
+        if request.HTTPBody != nil {
+            headerFields["Content-Length"] = "\(request.HTTPBody!.length)"
         }
 
+        request.allHTTPHeaderFields = headerFields
 
         return sendRequest(request)
     }
@@ -320,5 +322,56 @@ class HLServer {
 
     static func acceptRequestFromUser(userId: Int64) -> Bool {
         return sendRequestToEndpoint("chat/\(userId)/accept", method: "POST") != nil
+    }
+
+    enum LoginAuthority: String {
+        case Facebook = "FACEBOOK"
+        case Google = "GOOGLE"
+    }
+
+    static func authenticate(authority authority: LoginAuthority, authorityAccountId: String, authorityToken: String, deviceToken: String?) -> Bool {
+
+        var bodyDict = ["authority": authority.rawValue, "authorityAccountId": authorityAccountId, "authorityToken": authorityToken]
+
+        if deviceToken != nil {
+            bodyDict["deviceToken"] = deviceToken!
+        }
+
+        if let authDictArray = sendRequestToEndpoint("auth", method: "POST", withDictionary: bodyDict, authenticated: false) {
+            if authDictArray.count == 1 {
+                if let userDict = authDictArray[0]["user"] as? NSDictionary {
+                    let authedUser = HLUser.fromDict(userDict)
+
+                    if let sessionString = authDictArray[0]["sessionToken"] as? String {
+                        let session = HLUserSession(userId: authedUser.userId, sessionId: sessionString)
+                        authedUser.save(session, toServer: false)
+                        return true
+                    }
+                }
+            }
+        }
+
+
+        return false
+    }
+
+    static func sendImage(image: UIImage, toUser userId:UInt64) -> Bool {
+
+        let boundary = "unique-consistent-string"
+
+        let body = NSMutableData()
+        if let imageData = UIImagePNGRepresentation(image) {
+            body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Disposition: form-data; name=file\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Type: image/png\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData(imageData)
+            body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        } else {
+            return false
+        }
+        
+        body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+
+        return sendRequestToEndpoint("chat/\(userId)/message/image", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body) != nil
     }
 }

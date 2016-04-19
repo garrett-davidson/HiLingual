@@ -35,6 +35,24 @@ class HLMessage: NSObject, NSCoding {
 
     var showTranslation: Bool
 
+    private var cachedImage: UIImage?
+
+    var image: UIImage? {
+        get {
+            if pictureURL != nil {
+                if cachedImage != nil {
+                    return cachedImage!
+                } else {
+                    if let data = NSData(contentsOfURL: pictureURL!) {
+                        cachedImage = UIImage(data: data)
+                        return cachedImage
+                    }
+                }
+            }
+            return nil
+        }
+    }
+
     required init?(coder aDecoder: NSCoder) {
         messageUUID = aDecoder.decodeInt64ForKey("uuid")
         sentTimestamp = aDecoder.decodeObjectForKey("sentTimestamp") as! NSDate
@@ -81,6 +99,7 @@ class HLMessage: NSObject, NSCoding {
         aCoder.encodeObject(translatedEdit, forKey: "translatedEdit")
         aCoder.encodeBool(showTranslation, forKey: "showTranslation")
         aCoder.encodeObject(attributedEditedText, forKey: "attributedEditedText")
+        aCoder.encodeObject(pictureURL, forKey: "pictureURL")
     }
 
     func saveMessageEdit() {
@@ -94,7 +113,7 @@ class HLMessage: NSObject, NSCoding {
         }
     }
 
-    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, pictureURLString: String?=nil) {
+    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, imageURLString: String?=nil) {
         self.messageUUID = UUID
         self.sentTimestamp = sentTimestamp
 
@@ -121,8 +140,8 @@ class HLMessage: NSObject, NSCoding {
             self.audioURL = nil
         }
         
-        if pictureURLString != nil {
-            self.pictureURL = NSURL(string: pictureURLString!)
+        if imageURLString != nil && imageURLString != "" {
+            self.pictureURL = NSURL(string: imageURLString!)
         }
         else {
             self.pictureURL = nil
@@ -197,7 +216,9 @@ class HLMessage: NSObject, NSCoding {
                                     audioURLString = nil
                                 }
 
-                                return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, translatedText: nil, showTranslation: false, audioURLString: audioURLString)
+                                let imageURLString = messageDict["image"] as? String
+
+                                return HLMessage(UUID: uuid, sentTimestamp: sentTimestamp, editedTimestamp: editTimestamp, text: text, editedText: editText, senderID: senderId, receiverID: HLUser.getCurrentUser().userId, translatedText: nil, showTranslation: false, audioURLString: audioURLString, imageURLString: imageURLString)
                             } else {
                                 print("Message text not base64")
                             }

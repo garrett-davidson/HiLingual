@@ -142,6 +142,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         return false
     }
+
+    func sendImage(image: UIImage) {
+        if HLServer.sendImage(image, toUser: UInt64(recipientId)) {
+            print("Sent image")
+        } else {
+            print("Failed to send image")
+        }
+    }
+
     func sendImageWithData(data: NSData) {
         if let message = HLServer.sendImageWithData(data, receiverID: recipientId) {
             print("Sent voice message")
@@ -348,9 +357,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 shownButton = cell.rightButton
                 hiddenButton = cell.leftButton
-            }
-
-            else {
+            } else {
                 shownButton = cell.leftButton
                 hiddenButton = cell.rightButton
             }
@@ -360,13 +367,14 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             shownButton.tag = indexPath.row
 
-            if(isPlayingMessage){
+            if isPlayingMessage {
                 shownButton.setImage(UIImage(named: "shittyx")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
-            }else{
+            } else {
                 shownButton.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             }
             return cell
-        }else if (message.pictureURL != nil)  {
+
+        } else if (message.pictureURL != nil) {
             let cellIdentity = "ChatPictureTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatPictureTableViewCell
             
@@ -376,23 +384,19 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 shownPicture = cell.rightPicture
                 hiddenPicture = cell.leftPicture
-            }
-                
-            else {
+            } else {
                 shownPicture = cell.rightPicture
                 hiddenPicture = cell.leftPicture
             }
             
             shownPicture.hidden = false
             hiddenPicture.hidden = true
-            
             shownPicture.tag = indexPath.row
-            
-            showPicture(shownPicture);
-        
+            shownPicture.image = message.image
             
             return cell
-        }else if message.editedText == nil {
+
+        } else if message.editedText == nil {
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             
