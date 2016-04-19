@@ -38,19 +38,47 @@ class HLMessage: NSObject, NSCoding {
     private var cachedImage: UIImage?
 
     var image: UIImage? {
-        get {
-            if pictureURL != nil {
-                if cachedImage != nil {
-                    return cachedImage!
-                } else {
-                    if let data = NSData(contentsOfURL: pictureURL!) {
-                        cachedImage = UIImage(data: data)
-                        return cachedImage
-                    }
-                }
+//        get {
+//            if pictureURL != nil {
+//                if cachedImage != nil {
+//                    return cachedImage!
+//                } else {
+//                    if let data = NSData(contentsOfURL: pictureURL!) {
+//                        cachedImage = UIImage(data: data)
+//                        return cachedImage
+//                    }
+//                }
+//            }
+//            return nil
+//        }
+//        
+//        
+        
+        let deviceURL = self.messageUUID!
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let picURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).png")
+        
+        if let data = NSData(contentsOfURL: picURL) {
+            cachedImage = UIImage(data: data)
+            return cachedImage
+            
+            //assign your image here
+        }else{
+            
+              ChatViewController.loadFileSync(pictureURL!,writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                print("downloaded to: \(picURL)")
+            })
+            
+            if let data = NSData(contentsOfURL: picURL) {
+                cachedImage = UIImage(data: data)
+                return cachedImage
+            }else{
+                return nil
             }
-            return nil
+
         }
+        
+        
     }
 
     required init?(coder aDecoder: NSCoder) {
