@@ -779,6 +779,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         return attributedDiff
     }
+    
+    func changeImageLayout(){
+        
+        
+    }
 
 
 }
