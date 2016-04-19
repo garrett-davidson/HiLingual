@@ -363,6 +363,7 @@ public class ChatResource {
                     localizationService.localize("chat.message.new_text_message", receiverId, reciever.getGender()),
                     sender.getDisplayName(), decoded),
                     sender.getDisplayName(),
+                    senderId,
                     decoded,
                     NotificationType.NEW_MESSAGE,
                     getBadgeNumber(receiverId));
@@ -451,6 +452,7 @@ public class ChatResource {
                 localizationService.localize("chat.message.edited_message", receiverId, receiver.getGender()),
                 editor.getDisplayName(), decoded),
                 editor.getDisplayName(),
+                editorId,
                 decoded,
                 NotificationType.EDITED_MESSAGE,
                 getBadgeNumber(receiverId));
@@ -569,7 +571,7 @@ public class ChatResource {
                 forEach(token -> apnsService.sendNotification(token, builtBody));
     }
 
-    private void sendNotification(long user, String body, String senderName, String msgContent,
+    private void sendNotification(long user, String body, String senderName, long senderId, String msgContent,
                                   NotificationType type, Integer badgeNumber) {
         String builtBody = new ApnsPayloadBuilder().
                 setAlertTitle("HiLingual Chat").
@@ -578,6 +580,7 @@ public class ChatResource {
                 setSoundFileName("default").
                 addCustomProperty("type", type.name()).
                 addCustomProperty("sender", senderName).
+                addCustomProperty("senderId", Long.toUnsignedString(senderId)).
                 addCustomProperty("msgContent", msgContent).
                 buildWithDefaultMaximumLength();
         Set<String> tokens = deviceTokenDAO.getUserDeviceTokens(user);
