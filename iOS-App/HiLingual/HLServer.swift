@@ -96,11 +96,19 @@ class HLServer {
         return nil
     }
 
-    static func sendRequestToEndpoint(endpoint: String, method: String, withDictionary dict: Dictionary<String, AnyObject>?=nil, authenticated: Bool=true) -> [NSDictionary]? {
+    static func sendRequestToEndpoint(endpoint: String, method: String, contentType:String="application/json", withDictionary dict: Dictionary<String, AnyObject>?=nil, withData data: NSData?=nil, authenticated: Bool=true) -> [NSDictionary]? {
+
         let request = NSMutableURLRequest(URL: NSURL(string: apiBase + endpoint)!)
 
-        var headerFields = ["Content-Type": "application/json"]
+        request.HTTPMethod = method
 
+        if dict != nil {
+            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: dict!), options: NSJSONWritingOptions(rawValue: 0))
+        } else if data != nil {
+            request.HTTPBody = data!
+        }
+
+        var headerFields = ["Content-Type": contentType]
         if authenticated {
             if let session = HLUser.getCurrentUser().getSession() {
                 headerFields["Authorization"] = "HLAT " + session.sessionId
@@ -112,14 +120,11 @@ class HLServer {
             }
         }
 
-        request.allHTTPHeaderFields = headerFields
-
-        request.HTTPMethod = method
-
-        if dict != nil {
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: dict!), options: NSJSONWritingOptions(rawValue: 0))
+        if request.HTTPBody != nil {
+            headerFields["Content-Length"] = "\(request.HTTPBody!.length)"
         }
 
+        request.allHTTPHeaderFields = headerFields
 
         return sendRequest(request)
     }
@@ -351,59 +356,22 @@ class HLServer {
     }
 
     static func sendImage(image: UIImage, toUser userId:UInt64) -> Bool {
-        let request = NSMutableURLRequest(URL: NSURL(string: apiBase + "chat/\(userId)/message/image")!)
-
-        let imageData = UIImagePNGRepresentation(image)
-
-        request.cachePolicy = .ReloadIgnoringLocalCacheData
-        request.HTTPShouldHandleCookies = false
-        request.timeoutInterval = 60
-        request.HTTPMethod = "POST"
 
         let boundary = "unique-consistent-string"
 
-        // set Content-Type in HTTP header
-
-//            headerFields["Authorization"] = "HLAT " + session.sessionId
-
-        if let session = HLUser.getCurrentUser().getSession() {
-            let contentType = "multipart/form-data; boundary=" + boundary
-            request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-            request.setValue("HLAT " + session.sessionId, forHTTPHeaderField: "Authorization")
-        }
-        // post body
         let body = NSMutableData()
-
-        // add image data
-        if (imageData != nil) {
+        if let imageData = UIImagePNGRepresentation(image) {
             body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
             body.appendData("Content-Disposition: form-data; name=file\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
             body.appendData("Content-Type: image/png\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            body.appendData(imageData!)
+            body.appendData(imageData)
             body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        } else {
+            return false
         }
+        
         body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
 
-        // setting the body of the post to the reqeust
-        request.HTTPBody = body
-        // set the content-length
-        let postLength = "\(body.length)"
-        request.setValue(postLength, forHTTPHeaderField: "Content-Length")
-        var resp: NSURLResponse?
-        if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &resp) {
-            if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
-                print(returnString)
-
-                if let response = resp as? NSHTTPURLResponse {
-                    print(response.statusCode)
-                    if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
-                        return true
-                    }
-                }
-            }
-
-        }
-
-        return false
+        return sendRequestToEndpoint("chat/\(userId)/message/image", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body) != nil
     }
 }
