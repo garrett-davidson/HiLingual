@@ -144,11 +144,15 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     func sendImage(image: UIImage) {
-        if HLServer.sendImage(image, toUser: UInt64(recipientId)) {
-            print("Sent image")
-        } else {
-            print("Failed to send image")
-        }
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            if HLServer.sendImage(image, toUser: UInt64(self.recipientId)) {
+                print("Sent image")
+            } else {
+                print("Failed to send image")
+            }
+            
+        })
     }
 
     func sendImageWithData(data: NSData) {
@@ -489,7 +493,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             sender.contentMode = .ScaleAspectFit
             sender.image = image
         }else{
-            loadFileSync(messages[sender.tag].pictureURL!,writeTo: pictureURL, completion:{(audioURL:String, error:NSError!) in
+              ChatViewController.loadFileSync(messages[sender.tag].pictureURL!,writeTo: pictureURL, completion:{(audioURL:String, error:NSError!) in
                 print("downloaded to: \(pictureURL)")
             })
             showPicture(sender)
@@ -526,7 +530,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 audioPlayer.play()
             } catch let error as NSError{
                 print("Downloading audio...",error);
-                loadFileSync(messages[sender.tag].audioURL!,writeTo: audioURL, completion:{(audioURL:String, error:NSError!) in
+                ChatViewController.loadFileSync(messages[sender.tag].audioURL!,writeTo: audioURL, completion:{(audioURL:String, error:NSError!) in
                     print("downloaded to: \(audioURL)")
                 })
                 tapPlayButton(sender)
@@ -536,7 +540,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func loadFileSync(url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
+    static func loadFileSync(url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
         //let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
         let destinationUrl = writeTo
         if NSFileManager().fileExistsAtPath(destinationUrl.path!) {
