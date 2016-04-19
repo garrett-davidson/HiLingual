@@ -278,27 +278,27 @@
                                             <outlet property="rightConstraintMessageEqualOrLess" destination="7hD-h5-Pbe" id="8Td-kG-651"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatPictureTableViewCell" rowHeight="166" id="nKA-Qc-raJ" customClass="ChatPictureTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="600" height="166"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatPictureTableViewCell" rowHeight="196" id="nKA-Qc-raJ" customClass="ChatPictureTableViewCell" customModule="HiLingual" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="196"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nKA-Qc-raJ" id="p0n-Qg-z3O">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="166"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="196"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
-                                                    <rect key="frame" x="8" y="8" width="150" height="150"/>
+                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
+                                                    <rect key="frame" x="8" y="8" width="180" height="180"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="150" id="7fo-Ec-xbj"/>
-                                                        <constraint firstAttribute="width" constant="150" id="9Ii-iq-qo2"/>
+                                                        <constraint firstAttribute="height" constant="180" id="7fo-Ec-xbj"/>
+                                                        <constraint firstAttribute="width" constant="180" id="9Ii-iq-qo2"/>
                                                         <constraint firstAttribute="width" secondItem="pzy-rh-QT1" secondAttribute="height" multiplier="1:1" id="Hvr-yz-fXT"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
-                                                    <rect key="frame" x="442" y="8" width="150" height="150"/>
+                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
+                                                    <rect key="frame" x="412" y="8" width="180" height="180"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="150" id="CiP-fT-Exw"/>
+                                                        <constraint firstAttribute="width" constant="180" id="CiP-fT-Exw"/>
                                                         <constraint firstAttribute="width" secondItem="xOK-GG-AwJ" secondAttribute="height" multiplier="1:1" id="LXR-ce-z4J"/>
-                                                        <constraint firstAttribute="height" constant="150" id="qKU-aI-ABL"/>
+                                                        <constraint firstAttribute="height" constant="180" id="qKU-aI-ABL"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -318,7 +318,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatVoiceTableViewCell" rowHeight="46" id="xPx-jD-MEk" customClass="ChatVoiceTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="238" width="600" height="46"/>
+                                        <rect key="frame" x="0.0" y="268" width="600" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPx-jD-MEk" id="WZt-bm-o9v">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
@@ -371,7 +371,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatEditedTableViewCell" rowHeight="63" id="jYI-JC-IST" customClass="ChatEditedTableViewCell" customModule="HiLingual" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="284" width="600" height="63"/>
+                                        <rect key="frame" x="0.0" y="314" width="600" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jYI-JC-IST" id="JRc-cy-5by">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="63"/>

@@ -414,10 +414,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             shownPicture.tag = indexPath.row
             shownPicture.image = message.image
             let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleTap(_:)))
-            cell.rightPicture.addGestureRecognizer(tap)
-            cell.rightPicture.userInteractionEnabled = true
+            let tap1 = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleTap(_:)))
+            cell.rightPicture.addGestureRecognizer(tap1)
             cell.leftPicture.addGestureRecognizer(tap)
-            cell.leftPicture.userInteractionEnabled = true
             cell.leftPicture.tag = indexPath.row
             cell.rightPicture.tag = indexPath.row
 
