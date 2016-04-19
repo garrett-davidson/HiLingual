@@ -285,28 +285,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="280"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
-                                                    <rect key="frame" x="394" y="18" width="198" height="244"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
+                                                    <rect key="frame" x="394" y="8" width="198" height="264"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="198" id="CiP-fT-Exw"/>
-                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="244" id="Wdy-t8-Zmz"/>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="198" id="CiP-fT-Exw"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="264" id="qKU-aI-ABL"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
-                                                    <rect key="frame" x="8" y="18" width="198" height="244"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
+                                                    <rect key="frame" x="8" y="8" width="198" height="264"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="198" id="9Ii-iq-qo2"/>
-                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="244" id="xUU-5q-gGS"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="264" id="7fo-Ec-xbj"/>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="198" id="9Ii-iq-qo2"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="pzy-rh-QT1" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" constant="10" id="HSF-pv-WlZ"/>
-                                                <constraint firstItem="xOK-GG-AwJ" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" constant="10" id="MDi-eg-52T"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="xOK-GG-AwJ" secondAttribute="bottom" constant="10" id="XOi-DB-1Ca"/>
+                                                <constraint firstItem="pzy-rh-QT1" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" id="HSF-pv-WlZ"/>
+                                                <constraint firstItem="xOK-GG-AwJ" firstAttribute="top" secondItem="p0n-Qg-z3O" secondAttribute="topMargin" id="MDi-eg-52T"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="xOK-GG-AwJ" secondAttribute="bottom" id="XOi-DB-1Ca"/>
                                                 <constraint firstItem="xOK-GG-AwJ" firstAttribute="trailing" secondItem="p0n-Qg-z3O" secondAttribute="trailingMargin" id="YJT-Fu-xMR"/>
                                                 <constraint firstItem="pzy-rh-QT1" firstAttribute="leading" secondItem="p0n-Qg-z3O" secondAttribute="leadingMargin" id="iUR-Jr-s84"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="pzy-rh-QT1" secondAttribute="bottom" constant="10" id="vyW-rq-iIC"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="pzy-rh-QT1" secondAttribute="bottom" id="vyW-rq-iIC"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <accessibility key="accessibilityConfiguration" identifier="ChatEditedTableViewCell"/>

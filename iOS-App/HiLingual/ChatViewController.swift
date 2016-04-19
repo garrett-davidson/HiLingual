@@ -390,7 +390,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
             shownPicture.hidden = false
-            hiddenPicture.hidden = true
+            //hiddenPicture.hidden = true
+            hiddenPicture.image = message.image
             shownPicture.tag = indexPath.row
             shownPicture.image = message.image
             
