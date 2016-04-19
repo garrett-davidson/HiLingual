@@ -163,6 +163,9 @@ public class UserResource {
             throw new NotAuthorizedException("Bad session token");
         }
         User invoker = userDAO.getUser(authUserId);
+        if (invoker == null) {
+            throw new InternalServerErrorException("Cannot find session");
+        }
         return userDAO.findMatches(invoker);
     }
 
