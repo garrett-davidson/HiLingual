@@ -28,8 +28,8 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         cell.back.text = flashcards[indexPath.row].backText
         cell.front.tag = indexPath.row
         cell.back.tag = indexPath.row
-        cell.front.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        cell.back.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        cell.front.addTarget(self, action: #selector(FlashcardTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        cell.back.addTarget(self, action: #selector(FlashcardTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
         
         return cell
     }
@@ -84,10 +84,6 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
             print(flashcards.count)
             messageDetailViewController.flashcards = flashcards
             messageDetailViewController.title = title
-                
-            
-            
-            
         }
         
     }
