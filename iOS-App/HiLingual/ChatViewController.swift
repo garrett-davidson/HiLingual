@@ -394,11 +394,24 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
             shownPicture.hidden = false
-            //hiddenPicture.hidden = true
+            hiddenPicture.hidden = true
+            cell.rightPicture.layer.cornerRadius = 8
+            cell.rightPicture.clipsToBounds = true
+            cell.rightPicture.layer.borderWidth = 0.5
+            cell.leftPicture.layer.cornerRadius = 8
+            cell.leftPicture.clipsToBounds = true
+            cell.leftPicture.layer.borderWidth = 0.5
             hiddenPicture.image = message.image
             shownPicture.tag = indexPath.row
             shownPicture.image = message.image
-            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleTap(_:)))
+            cell.rightPicture.addGestureRecognizer(tap)
+            cell.rightPicture.userInteractionEnabled = true
+            cell.leftPicture.addGestureRecognizer(tap)
+            cell.leftPicture.userInteractionEnabled = true
+            cell.leftPicture.tag = indexPath.row
+            cell.rightPicture.tag = indexPath.row
+
             return cell
 
         } else if message.editedText == nil {
@@ -478,6 +491,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             return cell
         }
+    }
+    //For riley
+    func handleTap(sender: AnyObject) {
+        print("tap")
     }
 
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool){
@@ -763,6 +780,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return attributedDiff
     }
 
+
 }
 
 extension UITableView {
@@ -775,6 +793,7 @@ extension UITableView {
         self.scrollToRowAtIndexPath(NSIndexPath(forItem: cellCount-1, inSection: section), atScrollPosition: .Top, animated: animated)
     }
 }
+
 
 extension String {
 
