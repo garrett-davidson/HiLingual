@@ -1,15 +1,19 @@
 package com.example.hilingual.server.resources;
 
-import com.example.hilingual.server.api.AudioData;
-import com.example.hilingual.server.api.ImageData;
+import com.example.hilingual.server.api.*;
 import com.example.hilingual.server.config.ServerConfig;
 import com.example.hilingual.server.dao.SessionDAO;
+import com.example.hilingual.server.service.IdentifierService;
 import com.google.inject.Inject;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,17 +22,22 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Random;
 
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+
 @Path("/asset")
 public class AssetResource {
 
     private final ServerConfig config;
     private final Random random;
     private final SessionDAO sessionDAO;
+    private final IdentifierService identifierService;
 
     @Inject
-    public AssetResource(ServerConfig config, SessionDAO sessionDAO) {
+    public AssetResource(ServerConfig config, SessionDAO sessionDAO, IdentifierService identifierService) {
         this.config = config;
         this.sessionDAO = sessionDAO;
+        this.identifierService = identifierService;
 
         random = new Random();
         //  Force secure seeding
@@ -36,51 +45,36 @@ public class AssetResource {
         random.nextBytes(temp);
     }
 
-    @GET
-    @Path("avatar/{user-id}/{asset-id}")
-    public Response getImage(@PathParam("user-id") long userId, @PathParam("asset-id") String assetId)
-            throws URISyntaxException {
-        //  Redirect them to our "CDN"
-        return Response.temporaryRedirect(getImageUrl(userId, assetId)).build();
-    }
-
     @POST
-    @Path("avatar/{user-id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response uploadImage(@PathParam("user-id") long userId,
-                                @HeaderParam("Authorization") String hlat,
-                                ImageData data)
-            throws URISyntaxException, IOException {
+    @Path("/avatar/{user-id}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public ImageData newImage(@HeaderParam("Authorization") String hlat,
+                            @PathParam("receiver-id") long receiverId,
+                            @FormDataParam("file") InputStream file,
+                            @FormDataParam("file") FormDataContentDisposition fileDisposition) throws Exception {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
-        long authUserId = sessionDAO.getSessionOwner(sessionId);
-        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+        long senderId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, senderId)) {
             throw new NotAuthorizedException("Bad session token");
         }
-        if (userId != authUserId) {
-            throw new ForbiddenException("You are not allowed to upload an avatar to another user's account");
-        }
-        String assetId = new BigInteger(130, random).toString(32);
-        java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(),
-                "images", Long.toString(userId), assetId + ".png");
+        String assetId = Long.toUnsignedString(identifierService.generateId(IdentifierService.TYPE_IMAGE));
+        java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "image", assetId);
         Files.createDirectories(outPath.getParent());
-        Files.write(outPath, data.toBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        return Response.seeOther(getImageUrl(userId, assetId)).build();
+        try (BufferedOutputStream outputStream =
+                     new BufferedOutputStream(Files.newOutputStream(outPath, CREATE, TRUNCATE_EXISTING))) {
+            byte[] buf = new byte[8192];
+            int len;
+            while ((len = file.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+        }
+        URI uri = getImageUrl(senderId, assetId);
+        return new ImageData(uri.toASCIIString());
     }
 
     private URI getImageUrl(long userId, String assetId) throws URISyntaxException {
-        return new URI(config.getAssetAccessBaseUrl()).
-                resolve("images").
-                resolve(Long.toString(userId)).
-                resolve(assetId + ".png");
-    }
-
-    @GET
-    @Path("audio/{user-id}/{asset-id}")
-    public Response getAudio(@PathParam("user-id") long userId, @PathParam("asset-id") String assetId)
-            throws URISyntaxException {
-        //  Redirect them to our "CDN"
-        return Response.temporaryRedirect(getAudioUrl(userId, assetId)).build();
+        return new URI(config.getAssetAccessBaseUrl() + "/image/" + assetId);
     }
 
     private URI getAudioUrl(long userId, String assetId) throws URISyntaxException {
