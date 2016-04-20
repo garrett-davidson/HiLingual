@@ -19,6 +19,45 @@ struct HLChat {
     var lastPartnerAckedMessageId: UInt64
 }
 
+extension HLChat: Equatable, Comparable { }
+
+func == (lhs: HLChat, rhs: HLChat) -> Bool {
+    if let lhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(lhs.receiverId).chat.last").path!) as? HLMessage {
+        if let rhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(rhs.receiverId).chat.last").path!) as? HLMessage {
+            return lhsMessage.sentTimestamp == rhsMessage.sentTimestamp
+        }
+    }
+    return false
+}
+
+func < (lhs: HLChat, rhs: HLChat) -> Bool {
+    if let lhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(lhs.receiverId).chat.last").path!) as? HLMessage {
+        if let rhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(rhs.receiverId).chat.last").path!) as? HLMessage {
+            return lhsMessage.sentTimestamp > rhsMessage.sentTimestamp
+        }
+        return true
+    }
+    return false
+}
+
+func >(lhs: HLChat, rhs: HLChat) -> Bool {
+    if let lhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(lhs.receiverId).chat.last").path!) as? HLMessage {
+        if let rhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(rhs.receiverId).chat.last").path!) as? HLMessage {
+            return lhsMessage.sentTimestamp < rhsMessage.sentTimestamp
+        }
+        return false
+    }
+    return true
+}
+
+func > (lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs.timeIntervalSinceReferenceDate > rhs.timeIntervalSinceReferenceDate
+}
+
+func < (lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs.timeIntervalSinceReferenceDate < rhs.timeIntervalSinceReferenceDate
+}
+
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var converstationTable: UITableView!
     var messages = [HLMessage]()
@@ -48,6 +87,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         timestampFormamter.dateStyle = .ShortStyle
         timestampFormamter.timeStyle = .ShortStyle
         timestampFormamter.doesRelativeDateFormatting = true
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessagesViewController.refreshTableView), name: AppDelegate.NotificationTypes.newMessage.rawValue, object: nil)
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -101,6 +141,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
                 }
             }
+            currentChats.sortInPlace()
             converstationTable.reloadData()
         }
     }
