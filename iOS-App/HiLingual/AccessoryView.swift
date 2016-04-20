@@ -10,9 +10,6 @@ import UIKit
 import QuartzCore
 import AVFoundation
 
-public extension String {
-    var NS: NSString { return (self as NSString) }
-}
 class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
 
     @IBOutlet weak var sendButton: UIButton!
@@ -28,11 +25,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     var recordTimer: NSTimer!
     var curURL: NSURL!
     var lines: CGFloat = 0
-    
+
     @IBOutlet var previewRecording: UIButton!
     @IBOutlet var deleteRecording: UIButton!
-    
-    
+
+
     var isSend = false
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
@@ -42,16 +39,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     var chatViewController: ChatViewController?
 
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var textViewMaxHeightConstraint: NSLayoutConstraint!
 
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
-    
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
@@ -67,7 +55,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
-        
+
         loadViews()
     }
 
@@ -96,14 +84,14 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
         let audioURL = documentsURL.URLByAppendingPathComponent(String(CACurrentMediaTime()))
         curURL = audioURL
-        
+
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: 12000.0,
             AVNumberOfChannelsKey: 1 as NSNumber,
             AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
         ]
-        
+
         do {
             audioRecorder = try AVAudioRecorder(URL: audioURL, settings: settings)
             audioRecorder.delegate = self
@@ -119,7 +107,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     }
     func finishRecording(success success: Bool) {
         audioRecorder.stop()
-        
+
         if success {
             changeToSend()
             sendButton.tintColor = UIColor.blueColor()
@@ -131,14 +119,14 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             print("somethin fucked up rip")
         }
     }
-    
+
     @IBAction func tapCameraDown(sender: AnyObject) {
-        
+
         guard !isEditing else {
             //We don't want to do anything on touch down if we're editing
             return
         }
-        
+
         textView.resignFirstResponder()
         // NOW PICTURE BUTTON TAP
         let imagePickerController = UIImagePickerController()
@@ -147,11 +135,11 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             return
         }
         alertController.addAction(cancelAction)
-        
+
         let takePictureAction = UIAlertAction(title: "Take Picture".localized, style: .Default) { (action) in
             imagePickerController.sourceType = .Camera
             imagePickerController.delegate = self
-            
+
             var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
@@ -162,7 +150,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         let usePhotoLibraryAction = UIAlertAction(title: "Photo Library".localized, style: .Default) { (action) in
             imagePickerController.sourceType = .PhotoLibrary
             imagePickerController.delegate = self
-            
+
             var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
@@ -175,34 +163,34 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             topVC = topVC!.presentedViewController
         }
         topVC?.presentViewController(alertController, animated: true, completion: nil)
-        
-        
-        
+
+
+
         //START MIC
         /*
          */
-        
-        
+
+
         //END MIC
 
     }
-    
+
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
-        
+
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
-    
+
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         var selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         selectedImage = UIImage(CGImage: selectedImage.CGImage!, scale: 0.02, orientation: UIImageOrientation.Up)
 
         chatViewController?.sendImage(selectedImage)
-        
+
         //post to server
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil){
@@ -211,14 +199,14 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    
-    
+
+
     func updateLabel() {
         curTime = CACurrentMediaTime();
         recordingTimer.text = String(format:"%.1f", curTime-origTime)
     }
-    
-    
+
+
     @IBAction func tapMicUpOut(sender: AnyObject) {
         if isSend{
             return
@@ -252,13 +240,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         previewRecording.hidden = false
         deleteRecording.hidden = false
         recordTimer.invalidate()
-        
+
         isSend = true
         changeToSend()
-        
+
         finishRecording(success: true)
     }
-    
+
     @IBAction func tapPreview(sender: AnyObject) {
         do {
             try audioPlayer = AVAudioPlayer(contentsOfURL: audioRecorder.url)
@@ -276,34 +264,32 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         previewRecording.hidden = true
         deleteRecording.hidden = true
         isRecording = false;
-        
+
         isSend = false
         changeToMicroPhone()
 
 
-        
+
     }
-    
-    
+
+
     @IBAction func sendClicked(sender: AnyObject) {
-       var data: NSData? = nil
+        var data: NSData? = nil
         print("isSend: ",isSend)
         if isSend {
             isSend = false
             changeToMicroPhone()
-            if isRecording{
+            if isRecording {
                 print("sent voice")
                 data = NSData(contentsOfURL: curURL)
                 chatViewController!.sendVoiceMessageWithData(data!)
                 tapDelete(sender)
-                
+
                 return
-            }
-            else if isEditing {
+            } else if isEditing {
                 chatViewController!.saveMessageEdit(editedText: textView.text)
                 didEndEditing()
-            }
-            else {
+            } else {
                 textView.text = textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                 if (textView.text  ?? "").isEmpty {
                     print("String is nil or empty.")
@@ -317,17 +303,17 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
                     chatViewController?.tableView.scrollToBottom()
                 }
             }
-    
-        }else {
+
+        } else {
             //RECORDING GOES IN HERE RILEY
             guard !isEditing else {
                 //We don't want to do anything on touch down if we're editing
                 return
             }
-            
+
             recordingTimer.text = "0.0"
             recordingSession = AVAudioSession.sharedInstance()
-            
+
             do {
                 try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
                 try recordingSession.setActive(true)
@@ -335,9 +321,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
                     dispatch_async(dispatch_get_main_queue()) {
                         return;
                     }
-                    
+
                 }
-                
+
                 isRecording = true;
                 recordingTimer.hidden = false
                 previewRecording.hidden = true
@@ -346,16 +332,16 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
                 textView.hidden = true
                 //textView.editable = false;
                 recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
-                
+
             } catch let error as NSError {
                 // failed to record!
-                
+
                 //If something fails, it would be nice to know...
                 print("Recording failed: ", error)
             }
-            
+
             startRecording()
-        
+
         }
     }
 
@@ -363,9 +349,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         textView.textColor = UIColor.blackColor()
         if textView.text == "" || textView.text == "Message".localized {
             textView.text = ""
-            
+
             //textView.scrollEnabled = false
-            
+
         }
     }
 
@@ -391,7 +377,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         else {
             isSend = true
             changeToSend()
-            
+
         }
         if isRecording {
             finishRecording()
@@ -428,7 +414,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     override func intrinsicContentSize() -> CGSize {
         return CGSize(width: view.frame.width, height: textView.font!.lineHeight)
     }
-    
+
     func loadViews() {
         view.backgroundColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7)
         view.layer.borderWidth = 0.4
@@ -441,7 +427,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         leftButton.setTitle("\u{f083}", forState: UIControlState.Normal)
         deleteRecording.setTitle("\u{f057}", forState: UIControlState.Normal)
         previewRecording.setTitle("\u{f144}", forState: UIControlState.Normal)
-        
+
         //textView.font = UIFont(name: "FontAwesome", size: 12)
         //textView.text = "\u{f0f9}"
     }
@@ -450,13 +436,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
         sendButton.setTitle("Send", forState: UIControlState.Normal)
     }
-    
+
     func changeToMicroPhone() {
         sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 24)
         sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
         
     }
-
+    
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }

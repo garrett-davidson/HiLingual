@@ -46,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         }
 
         registerForRemoteNotifications(application)
-        registerForLocalNotifications()
 
 
         return true
@@ -64,16 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         //        }
     }
 
-    func registerForLocalNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.newMessage.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.editedMessage.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.requestAccepted.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.receivedRemoteNotification(_:)), name: NotificationTypes.requestReceived.rawValue, object: nil)
-
-    }
-
-    func receivedRemoteNotification(notifcation: NSNotification) {
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+    func stringToDict(text: String) -> [String:AnyObject]? {
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                return try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+            } catch let error as NSError {
+                print(error)
+            }
+        }
+        return nil
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
@@ -81,7 +79,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         print(userInfo)
 
         if let typeString = userInfo["type"] as? String {
-            NSNotificationCenter.defaultCenter().postNotificationName(typeString, object: nil)
+
+            switch NotificationTypes(rawValue:typeString) {
+            case .None:
+                break
+
+            case .Some(.newMessage):
+                if let messageDictString = userInfo["msgContent"] as? String {
+                    if let messageDict = stringToDict(messageDictString) {
+                        if let message = HLMessage.fromDict(messageDict) {
+                            let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(message.senderID).chat.last")
+                            if NSKeyedArchiver.archiveRootObject(message, toFile: lastMessageURL.path!) {
+                                print("Wrote new message to disk")
+                            } else {
+                                print("Failed to write message to disk")
+                            }
+                        }
+                    }
+                }
+                break
+
+            default:
+                break
+            }
+
+            UIApplication.sharedApplication().applicationIconBadgeNumber = (userInfo["badge"] as? NSNumber)?.integerValue ?? 0
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+            NSNotificationCenter.defaultCenter().postNotificationName(typeString, object: nil, userInfo: userInfo)
         }
     }
 

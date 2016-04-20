@@ -19,6 +19,45 @@ struct HLChat {
     var lastPartnerAckedMessageId: UInt64
 }
 
+extension HLChat: Equatable, Comparable { }
+
+func == (lhs: HLChat, rhs: HLChat) -> Bool {
+    if let lhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(lhs.receiverId).chat.last").path!) as? HLMessage {
+        if let rhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(rhs.receiverId).chat.last").path!) as? HLMessage {
+            return lhsMessage.sentTimestamp == rhsMessage.sentTimestamp
+        }
+    }
+    return false
+}
+
+func < (lhs: HLChat, rhs: HLChat) -> Bool {
+    if let lhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(lhs.receiverId).chat.last").path!) as? HLMessage {
+        if let rhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(rhs.receiverId).chat.last").path!) as? HLMessage {
+            return lhsMessage.sentTimestamp > rhsMessage.sentTimestamp
+        }
+        return true
+    }
+    return false
+}
+
+func >(lhs: HLChat, rhs: HLChat) -> Bool {
+    if let lhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(lhs.receiverId).chat.last").path!) as? HLMessage {
+        if let rhsMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(rhs.receiverId).chat.last").path!) as? HLMessage {
+            return lhsMessage.sentTimestamp < rhsMessage.sentTimestamp
+        }
+        return false
+    }
+    return true
+}
+
+func > (lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs.timeIntervalSinceReferenceDate > rhs.timeIntervalSinceReferenceDate
+}
+
+func < (lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs.timeIntervalSinceReferenceDate < rhs.timeIntervalSinceReferenceDate
+}
+
 class MessagesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var converstationTable: UITableView!
     var messages = [HLMessage]()
@@ -48,6 +87,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         timestampFormamter.dateStyle = .ShortStyle
         timestampFormamter.timeStyle = .ShortStyle
         timestampFormamter.doesRelativeDateFormatting = true
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessagesViewController.refreshTableView), name: AppDelegate.NotificationTypes.newMessage.rawValue, object: nil)
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -101,6 +141,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
                 }
             }
+            currentChats.sortInPlace()
             converstationTable.reloadData()
         }
     }
@@ -141,7 +182,16 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(user.userId).chat.last")
 
                 if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
-                    cell.lastMessage.text = lastMessage.text
+                    if lastMessage.text != "" {
+                        cell.lastMessage.font = UIFont(name: "System", size: 15)
+                        cell.lastMessage.text = lastMessage.text
+                    } else if lastMessage.audioURL != nil {
+                        cell.lastMessage.font = UIFont(name: "FontAwesome", size: 24)
+                        cell.lastMessage.text = "\u{f130}"
+                    } else if lastMessage.pictureURL != nil {
+                        cell.lastMessage.font = UIFont(name: "FontAwesome", size: 24)
+                        cell.lastMessage.text = "\u{f083}"
+                    }
 
                     if UInt64(lastMessage.messageUUID!) < currentChats[indexPath.row].lastAckedMessageId {
                         cell.backgroundColor = UIColor.blueColor()
@@ -289,8 +339,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             // Delete the row from the data source
 
             if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
-                if HLServer.deleteConversationWithUser(currentUser.usersChattedWith[indexPath.row]) {
-                    currentUser.usersChattedWith.removeAtIndex(indexPath.row)
+                if HLServer.deleteConversationWithUser(Int64(currentChats[indexPath.row].receiverId)) {
+                    currentChats.removeAtIndex(indexPath.row)
                 } else {
                     print("Failed to delete chat")
                 }
