@@ -79,7 +79,6 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                 //Initial register
                 //Because don't allow NotSpecified as an option
                 self.populateUserFromFacebook(HLUser.getCurrentUser())
-                self.performSegueWithIdentifier("InitialLogin", sender: nil)
 
             } else {
                 //Logging in to existing user
@@ -232,6 +231,11 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             user.gender = gender
             user.birthdate = birthday
             user.profilePicture = picture
+
+            dispatch_async(dispatch_get_main_queue(), {
+                self.performSegueWithIdentifier("InitialLogin", sender: nil)
+
+            })
         })
     }
 
