@@ -369,7 +369,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             let shownButton: UIButton
             let hiddenButton: UIButton
-
+            
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 shownButton = cell.rightButton
                 hiddenButton = cell.leftButton
@@ -396,6 +396,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             let shownPicture: UIImageView
             let hiddenPicture: UIImageView
+            let tap = UITapGestureRecognizer(target: self, action: #selector(FlashcardSetViewController.handleTap(_:)))
+            let tap1 = UITapGestureRecognizer(target: self, action: #selector(FlashcardSetViewController.handleTap(_:)))
             
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 shownPicture = cell.rightPicture
@@ -410,9 +412,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             shownPicture.layer.cornerRadius = 8
             shownPicture.clipsToBounds = true
             shownPicture.layer.borderWidth = 0.5
-
-
+            cell.tag = indexPath.row
+            cell.leftPicture.addGestureRecognizer(tap)
+            cell.rightPicture.addGestureRecognizer(tap1)
             shownPicture.tag = indexPath.row
+            //shownPicture.addGestureRecognizer(tap)
             if let image = message.image {
                 shownPicture.image = image
             } else {
@@ -517,6 +521,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     //For riley
     @IBAction func handleTap(sender: AnyObject) {
+        print(sender.view.tag)
         print("tap")
     }
 

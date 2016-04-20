@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F18b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VV5-3k-4nK">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -312,9 +312,6 @@
                                                         <constraint firstAttribute="width" constant="180" id="9Ii-iq-qo2"/>
                                                         <constraint firstAttribute="width" secondItem="pzy-rh-QT1" secondAttribute="height" multiplier="1:1" id="Hvr-yz-fXT"/>
                                                     </constraints>
-                                                    <connections>
-                                                        <outletCollection property="gestureRecognizers" destination="Qqj-h4-NAb" appends="YES" id="2Lc-Dk-Fib"/>
-                                                    </connections>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
                                                     <rect key="frame" x="412" y="8" width="180" height="180"/>
@@ -324,9 +321,6 @@
                                                         <constraint firstAttribute="width" secondItem="xOK-GG-AwJ" secondAttribute="height" multiplier="1:1" id="LXR-ce-z4J"/>
                                                         <constraint firstAttribute="height" constant="180" id="qKU-aI-ABL"/>
                                                     </constraints>
-                                                    <connections>
-                                                        <outletCollection property="gestureRecognizers" destination="Fjt-VJ-KAA" appends="YES" id="HA4-sw-NYS"/>
-                                                    </connections>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -554,16 +548,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Fjt-VJ-KAA">
-                    <connections>
-                        <action selector="handleTap:" destination="nBC-Zq-2jE" id="ScH-0h-Atq"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="Qqj-h4-NAb">
-                    <connections>
-                        <action selector="handleTap:" destination="nBC-Zq-2jE" id="xDQ-Da-ft6"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="5001" y="-655"/>
         </scene>
@@ -1398,11 +1382,11 @@
         <image name="shittyplay" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="US8-Fg-o83"/>
         <segue reference="eTR-Rc-7JK"/>
-        <segue reference="pUm-j4-Gmq"/>
-        <segue reference="ymb-z3-U8a"/>
         <segue reference="S8b-uI-wvn"/>
         <segue reference="uD0-O0-1tF"/>
+        <segue reference="3s2-qW-3mn"/>
+        <segue reference="pUm-j4-Gmq"/>
+        <segue reference="ymb-z3-U8a"/>
     </inferredMetricsTieBreakers>
 </document>
