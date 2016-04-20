@@ -413,7 +413,27 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 
             shownPicture.tag = indexPath.row
-            shownPicture.image = message.image
+            if let image = message.image {
+                shownPicture.image = image
+            } else {
+                let spinner = UIActivityIndicatorView()
+                cell.spinner = spinner
+                spinner.center = shownPicture.center
+                spinner.activityIndicatorViewStyle = .WhiteLarge
+                shownPicture.addSubview(spinner)
+                spinner.startAnimating()
+                shownPicture.backgroundColor = UIColor.grayColor()
+                message.loadImageWithCallback({ (image) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        shownPicture.image = image
+                        cell.spinner?.stopAnimating()
+                        if cell.spinner?.superview != nil {
+                            cell.spinner?.removeFromSuperview()
+                        }
+                        cell.spinner = nil
+                    })
+                })
+            }
 
             return cell
 

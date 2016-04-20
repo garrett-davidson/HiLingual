@@ -51,32 +51,7 @@ class HLMessage: NSObject, NSCoding {
     private var cachedImage: UIImage?
 
     var image: UIImage? {
-
-        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let picURL = documentsURL.URLByAppendingPathComponent("\(messageUUID!).png")
-        
-        if let data = NSData(contentsOfURL: picURL) {
-            cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
-            return cachedImage
-            
-            //assign your image here
-        } else {
-            
-              ChatViewController.loadFileSync(pictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
-                print("downloaded to: \(picURL)")
-            })
-            
-            if let data = NSData(contentsOfURL: picURL) {
-                cachedImage = UIImage(data: data)
-
-                return cachedImage
-            } else {
-                return nil
-            }
-
-        }
-        
-        
+        return cachedImage
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -126,6 +101,35 @@ class HLMessage: NSObject, NSCoding {
         aCoder.encodeBool(showTranslation, forKey: "showTranslation")
         aCoder.encodeObject(attributedEditedText, forKey: "attributedEditedText")
         aCoder.encodeObject(pictureURL, forKey: "pictureURL")
+    }
+
+    func loadImageWithCallback(callback: (UIImage)-> ()) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let picURL = documentsURL.URLByAppendingPathComponent("\(self.messageUUID!).png")
+
+            if let data = NSData(contentsOfURL: picURL) {
+                self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
+                callback(self.cachedImage!)
+                return
+
+                //assign your image here
+            } else {
+
+                ChatViewController.loadFileSync(self.pictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                    print("downloaded to: \(picURL)")
+                })
+
+                if let data = NSData(contentsOfURL: picURL) {
+                    self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
+
+                    callback(self.cachedImage!)
+                    return
+                } else {
+                    print("Failed to load image")
+                }
+            }
+        })
     }
 
     func saveMessageEdit() {

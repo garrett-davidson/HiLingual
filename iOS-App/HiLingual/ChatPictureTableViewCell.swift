@@ -14,4 +14,6 @@ class ChatPictureTableViewCell: UITableViewCell {
     
     @IBOutlet weak var leftPicture: UIImageView!
     @IBOutlet weak var rightPicture: UIImageView!
+
+    var spinner: UIActivityIndicatorView?
 }
