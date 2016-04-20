@@ -330,8 +330,8 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             // Delete the row from the data source
 
             if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
-                if HLServer.deleteConversationWithUser(currentUser.usersChattedWith[indexPath.row]) {
-                    currentUser.usersChattedWith.removeAtIndex(indexPath.row)
+                if HLServer.deleteConversationWithUser(Int64(currentChats[indexPath.row].receiverId)) {
+                    currentChats.removeAtIndex(indexPath.row)
                 } else {
                     print("Failed to delete chat")
                 }

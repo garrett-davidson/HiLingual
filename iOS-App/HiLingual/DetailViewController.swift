@@ -20,7 +20,7 @@ class DetailViewController: UIViewController {
         if ((hiddenName) != nil && hiddenName == true){
             self.title = user.name
             profileView.hiddenName = false
-        }else {
+        } else {
             self.title = user.displayName
             
         }
