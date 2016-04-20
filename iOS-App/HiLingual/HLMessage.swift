@@ -8,6 +8,19 @@
 
 import Foundation
 
+extension UIImage {
+    func scaledToSize(width: CGFloat, height: CGFloat) -> UIImage {
+        let newSize = CGSize(width: width, height: height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        self.drawInRect(CGRectMake(0, 0, newSize.width, newSize.height))
+        let imageResized = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return imageResized
+    }
+}
+
 class HLMessage: NSObject, NSCoding {
     let messageUUID: Int64?
     let sentTimestamp: NSDate
@@ -38,41 +51,26 @@ class HLMessage: NSObject, NSCoding {
     private var cachedImage: UIImage?
 
     var image: UIImage? {
-//        get {
-//            if pictureURL != nil {
-//                if cachedImage != nil {
-//                    return cachedImage!
-//                } else {
-//                    if let data = NSData(contentsOfURL: pictureURL!) {
-//                        cachedImage = UIImage(data: data)
-//                        return cachedImage
-//                    }
-//                }
-//            }
-//            return nil
-//        }
-//        
-//        
-        
-        let deviceURL = self.messageUUID!
+
         let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let picURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).png")
+        let picURL = documentsURL.URLByAppendingPathComponent("\(messageUUID!).png")
         
         if let data = NSData(contentsOfURL: picURL) {
-            cachedImage = UIImage(data: data)
+            cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
             return cachedImage
             
             //assign your image here
-        }else{
+        } else {
             
-              ChatViewController.loadFileSync(pictureURL!,writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+              ChatViewController.loadFileSync(pictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
                 print("downloaded to: \(picURL)")
             })
             
             if let data = NSData(contentsOfURL: picURL) {
                 cachedImage = UIImage(data: data)
+
                 return cachedImage
-            }else{
+            } else {
                 return nil
             }
 

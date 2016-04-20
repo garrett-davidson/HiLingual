@@ -407,21 +407,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             shownPicture.hidden = false
             hiddenPicture.hidden = true
-            cell.rightPicture.layer.cornerRadius = 8
-            cell.rightPicture.clipsToBounds = true
-            cell.rightPicture.layer.borderWidth = 0.5
-            cell.leftPicture.layer.cornerRadius = 8
-            cell.leftPicture.clipsToBounds = true
-            cell.leftPicture.layer.borderWidth = 0.5
-            hiddenPicture.image = message.image
+            shownPicture.layer.cornerRadius = 8
+            shownPicture.clipsToBounds = true
+            shownPicture.layer.borderWidth = 0.5
+
+
             shownPicture.tag = indexPath.row
             shownPicture.image = message.image
-            let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleTap(_:)))
-            let tap1 = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.handleTap(_:)))
-            cell.rightPicture.addGestureRecognizer(tap1)
-            cell.leftPicture.addGestureRecognizer(tap)
-            cell.leftPicture.tag = indexPath.row
-            cell.rightPicture.tag = indexPath.row
 
             return cell
 
@@ -504,7 +496,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     //For riley
-    func handleTap(sender: AnyObject) {
+    @IBAction func handleTap(sender: AnyObject) {
         print("tap")
     }
 
