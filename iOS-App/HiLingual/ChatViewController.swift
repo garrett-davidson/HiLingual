@@ -522,6 +522,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //For riley
     @IBAction func handleTap(sender: AnyObject) {
         print(sender.view.tag)
+        performSegueWithIdentifier("showImage", sender: nil)
         print("tap")
     }
 
