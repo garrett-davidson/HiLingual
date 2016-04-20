@@ -418,7 +418,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             } else {
                 let spinner = UIActivityIndicatorView()
                 cell.spinner = spinner
-                spinner.center = shownPicture.center
+                spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)
                 spinner.activityIndicatorViewStyle = .WhiteLarge
                 shownPicture.addSubview(spinner)
                 spinner.startAnimating()
