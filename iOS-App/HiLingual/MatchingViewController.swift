@@ -132,7 +132,9 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         }
 
         else {
-            profileViewCell = MatchProfileView()
+            let width = self.view.frame.width - 50
+            let height = self.view.frame.height - 150
+            profileViewCell = MatchProfileView(frame: CGRect(x: 0, y: 0, width: width, height: height))
             
             profileViewCell.sendMessageButton = UIButton(type: .System)
 
@@ -170,8 +172,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 class MatchProfileView: UIView {
     var profileView: ProfileView
 
-    init() {
-        let frame = CGRectMake(0, 0, 300, 500)
+    override init(frame: CGRect) {
         self.profileView = ProfileView(decoder: nil, frame: frame)
         super.init(frame: frame)
         self.addSubview(profileView)

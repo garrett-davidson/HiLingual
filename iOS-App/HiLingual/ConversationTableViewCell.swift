@@ -16,4 +16,6 @@ class ConversationTableViewCell: UITableViewCell {
     @IBOutlet weak var lastMessage: UILabel!
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var declineButton: UIButton!
+    @IBOutlet weak var haveMessageDot: UIImageView!
+    
 }

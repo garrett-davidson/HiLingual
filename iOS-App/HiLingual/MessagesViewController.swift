@@ -168,7 +168,9 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
             if let user = HLServer.getUserById(Int64(currentChats[indexPath.row].receiverId)) {
-
+                cell.haveMessageDot.layer.cornerRadius = cell.haveMessageDot.frame.height/2 + 1
+                cell.haveMessageDot.layer.borderWidth = 0.5
+                cell.haveMessageDot.hidden = true
                 cell.name.text = user.name
                 cell.profilePicture.layer.masksToBounds = false
                 cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
@@ -226,6 +228,9 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             //Should it be displayname or name?
             let user = HLServer.getUserById(currentUser.pendingChats[indexPath.row])!
             cell.name.text = user.name
+            cell.haveMessageDot.layer.cornerRadius = cell.haveMessageDot.frame.height/2 + 1
+            cell.haveMessageDot.layer.borderWidth = 0.5
+            cell.haveMessageDot.hidden = true
             cell.profilePicture.layer.masksToBounds = false
             cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
             cell.profilePicture.clipsToBounds = true
