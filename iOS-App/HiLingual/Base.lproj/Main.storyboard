@@ -545,11 +545,12 @@
                         <outlet property="tableView" destination="Gnq-1d-QOI" id="ezE-BT-2tQ"/>
                         <outlet property="testView" destination="E7n-91-J2A" id="Xff-2g-AaA"/>
                         <outlet property="view" destination="X1a-mJ-Bwz" id="vzP-zQ-igO"/>
+                        <segue destination="N3e-Li-Lnf" kind="presentation" identifier="showImage" id="ggl-oO-LHC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOx-Na-it4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5001" y="-655"/>
+            <point key="canvasLocation" x="4909" y="-797"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="3Id-wU-drU">
@@ -585,6 +586,32 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FAb-ya-Rk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6567" y="-797"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="JWS-rv-RG6">
+            <objects>
+                <viewController id="N3e-Li-Lnf" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dBd-9s-Liv"/>
+                        <viewControllerLayoutGuide type="bottom" id="04f-G2-IPJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="alz-Ub-2pU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yJL-1Y-312">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="nBC-Zq-2jE" kind="presentation" id="N22-50-gHF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SAU-ek-Vsu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6069" y="-25"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="lIS-2g-81Y">
