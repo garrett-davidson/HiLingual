@@ -516,7 +516,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     //For riley
-    @IBAction func handleTap(sender: AnyObject) {
+    @IBAction func handleTap(sender: UIImageView) {
+        print(sender);
+        performSegueWithIdentifier("showImage", sender: nil)
+        
         print("tap")
     }
 
@@ -524,21 +527,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
     }
-    func showPicture(sender: UIImageView){
-        let deviceURL = messages[sender.tag].messageUUID!
-        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let pictureURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).png")
 
-        if let filePath = NSBundle.mainBundle().pathForResource(String(deviceURL), ofType: "png"), image = UIImage(contentsOfFile: filePath) {
-            sender.contentMode = .ScaleAspectFit
-            sender.image = image
-        }else{
-              ChatViewController.loadFileSync(messages[sender.tag].pictureURL!,writeTo: pictureURL, completion:{(audioURL:String, error:NSError!) in
-                print("downloaded to: \(pictureURL)")
-            })
-            showPicture(sender)
-        }
-    }
 
     @IBAction func tapPlayButton(sender: UIButton) {
         if isPlayingMessage == true {
