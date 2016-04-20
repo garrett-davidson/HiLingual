@@ -127,7 +127,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ConversationTableViewCell
 
             if let user = HLServer.getUserById(Int64(currentChats[indexPath.row].receiverId)) {
-
+                cell.haveMessageDot.layer.cornerRadius = 20
                 cell.name.text = user.name
                 cell.profilePicture.layer.masksToBounds = false
                 cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
