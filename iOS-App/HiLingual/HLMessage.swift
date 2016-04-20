@@ -161,7 +161,7 @@ class HLMessage: NSObject, NSCoding {
         self.translatedText = translatedText
         self.showTranslation = showTranslation
 
-        if audioURLString != nil {
+        if audioURLString != nil && audioURLString! != "" {
             self.audioURL = NSURL(string: audioURLString!)
         }
         else {

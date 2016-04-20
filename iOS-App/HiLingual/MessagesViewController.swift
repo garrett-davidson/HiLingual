@@ -182,7 +182,16 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 let lastMessageURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(user.userId).chat.last")
 
                 if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
-                    cell.lastMessage.text = lastMessage.text
+                    if lastMessage.text != "" {
+                        cell.lastMessage.font = UIFont(name: "System", size: 15)
+                        cell.lastMessage.text = lastMessage.text
+                    } else if lastMessage.audioURL != nil {
+                        cell.lastMessage.font = UIFont(name: "FontAwesome", size: 24)
+                        cell.lastMessage.text = "\u{f130}"
+                    } else if lastMessage.pictureURL != nil {
+                        cell.lastMessage.font = UIFont(name: "FontAwesome", size: 24)
+                        cell.lastMessage.text = "\u{f083}"
+                    }
 
                     if UInt64(lastMessage.messageUUID!) < currentChats[indexPath.row].lastAckedMessageId {
                         cell.backgroundColor = UIColor.blueColor()
