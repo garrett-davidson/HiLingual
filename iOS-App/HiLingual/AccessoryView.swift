@@ -162,6 +162,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
+        alertController.preferredContentSize = alertController.view.frame.size
         topVC?.presentViewController(alertController, animated: true, completion: nil)
 
 
@@ -317,7 +318,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             do {
                 try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
                 try recordingSession.setActive(true)
-                recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
+                recordingSession.requestRecordPermission() { (allowed: Bool) -> Void in
                     dispatch_async(dispatch_get_main_queue()) {
                         return;
                     }

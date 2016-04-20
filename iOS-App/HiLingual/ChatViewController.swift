@@ -157,6 +157,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             if HLServer.sendImage(image, toUser: UInt64(self.recipientId)) {
                 print("Sent image")
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.loadMessages()
+                })
             } else {
                 print("Failed to send image")
             }
