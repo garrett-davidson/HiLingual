@@ -103,7 +103,6 @@ public class UserResource {
 
                 storedUser.setName(user.getName());
                 storedUser.setGender(user.getGender());
-                storedUser.setDisplayName(user.getDisplayName());
                 storedUser.setBirthdate(user.getBirthdate());
                 //  Lock the fields
                 storedUser.setProfileSet(true);
@@ -113,6 +112,9 @@ public class UserResource {
             }
         }
         //  Update non-null editable fields
+        if (user.getDisplayName() != null) {
+            storedUser.setDisplayName(user.getDisplayName());
+        }
         if (user.getBio() != null) {
             storedUser.setBio(user.getBio());
         }
