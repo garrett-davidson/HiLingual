@@ -304,7 +304,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="196"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
+                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pzy-rh-QT1">
                                                     <rect key="frame" x="8" y="8" width="180" height="180"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
@@ -313,7 +313,7 @@
                                                         <constraint firstAttribute="width" secondItem="pzy-rh-QT1" secondAttribute="height" multiplier="1:1" id="Hvr-yz-fXT"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
+                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-GG-AwJ">
                                                     <rect key="frame" x="412" y="8" width="180" height="180"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
@@ -1126,17 +1126,27 @@
                                                         <outlet property="delegate" destination="Ywl-5s-7ag" id="jLX-fI-VJQ"/>
                                                     </connections>
                                                 </textField>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XKl-wd-qyA">
+                                                    <rect key="frame" x="300" y="10" width="1" height="21.5"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="1" id="LMa-Ui-oBa"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Enw-kr-zHr" firstAttribute="width" secondItem="VRe-Wb-Yb7" secondAttribute="width" id="1Ps-NZ-uA1"/>
                                                 <constraint firstItem="Enw-kr-zHr" firstAttribute="top" secondItem="eN7-es-YeW" secondAttribute="topMargin" id="3G1-bn-r3T"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="VRe-Wb-Yb7" secondAttribute="bottom" constant="-8" id="JII-OX-waD"/>
+                                                <constraint firstItem="XKl-wd-qyA" firstAttribute="top" secondItem="eN7-es-YeW" secondAttribute="topMargin" constant="2" id="SUq-Qs-6cH"/>
                                                 <constraint firstItem="VRe-Wb-Yb7" firstAttribute="trailing" secondItem="eN7-es-YeW" secondAttribute="trailingMargin" id="TNq-Qz-Cz8"/>
+                                                <constraint firstItem="XKl-wd-qyA" firstAttribute="leading" secondItem="Enw-kr-zHr" secondAttribute="trailing" id="ay6-Tz-n5c"/>
                                                 <constraint firstItem="VRe-Wb-Yb7" firstAttribute="leading" secondItem="Enw-kr-zHr" secondAttribute="trailing" id="cna-pp-j0W"/>
                                                 <constraint firstItem="Enw-kr-zHr" firstAttribute="leading" secondItem="eN7-es-YeW" secondAttribute="leadingMargin" id="eaI-yO-zyi"/>
                                                 <constraint firstItem="VRe-Wb-Yb7" firstAttribute="top" secondItem="eN7-es-YeW" secondAttribute="topMargin" id="gBL-jc-4mr"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Enw-kr-zHr" secondAttribute="bottom" constant="-8" id="j9W-9A-glx"/>
                                                 <constraint firstItem="VRe-Wb-Yb7" firstAttribute="leading" secondItem="Enw-kr-zHr" secondAttribute="trailing" id="kHr-YZ-5pI"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="XKl-wd-qyA" secondAttribute="bottom" constant="2" id="zze-10-nfP"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
