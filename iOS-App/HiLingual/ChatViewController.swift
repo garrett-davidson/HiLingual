@@ -425,8 +425,12 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //shownPicture.addGestureRecognizer(tap)
             if let image = message.image {
                 shownPicture.image = image
+                shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
+
             } else {
                 shownPicture.image = message.image
+                shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
+                
                 let spinner = UIActivityIndicatorView()
                 cell.spinner = spinner
                 spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)

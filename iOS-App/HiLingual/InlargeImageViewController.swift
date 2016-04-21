@@ -14,7 +14,9 @@ class InlargeImageViewController: UIViewController {
     @IBOutlet weak var imageInView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         imageInView.image = image
+        imageInView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
 
         // Do any additional setup after loading the view.
     }
@@ -24,7 +26,6 @@ class InlargeImageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
     /*
     // MARK: - Navigation
 
