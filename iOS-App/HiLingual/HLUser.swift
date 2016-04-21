@@ -27,6 +27,8 @@ enum Gender: Int {
     var gender: Gender?
     var birthdate: NSDate?
     var profilePicture: UIImage?
+    
+    var profilePictureURL: NSURL?
 
     var blockedUsers: [HLUser]?
     var usersChattedWith: [Int64]
@@ -44,7 +46,7 @@ enum Gender: Int {
 
     private var session: HLUserSession?
 
-    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
+    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?, profilePictureURL: NSURL?) {
         self.userId = userId
         self.name = name
         self.displayName = displayName
@@ -54,6 +56,7 @@ enum Gender: Int {
         self.gender = gender
         self.birthdate = birthdate
         self.profilePicture = profilePicture
+        self.profilePictureURL = profilePictureURL
 
         self.usersChattedWith = []
         self.pendingChats = []
@@ -72,6 +75,7 @@ enum Gender: Int {
         }
         self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
         self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as? UIImage
+        self.profilePictureURL = aDecoder.decodeObjectForKey("profilePictureURL") as? NSURL
         self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
 
         if let chatted2 = (aDecoder.decodeObjectForKey("usersChattedWith2") as? [NSNumber]) {
@@ -141,8 +145,6 @@ enum Gender: Int {
         }
 
         //Not important
-        let blockedUsers = userDict["blockedUsers"]
-
 
         let bio: String?
         if let encodedBio = userDict["bio"] as? String {
@@ -152,13 +154,16 @@ enum Gender: Int {
         }
 
         //Not important
-        let usersChattedWith = userDict["usersChattedWith"]
-
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
         let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
 
         //TODO: Load this image
-        let imageURL = userDict["imageURL"]
+        let imageURL: NSURL?
+        if let tempimageURL = userDict["profilePictureURL"] as? String {
+            imageURL = NSURL(string: tempimageURL)
+        } else {
+            imageURL = nil
+        }
 
         let knownLanguagesStrings = userDict["knownLanguages"] as! [String]
         let learningLanguagesStrings = userDict["learningLanguages"] as! [String]
@@ -171,11 +176,9 @@ enum Gender: Int {
             Languages(rawValue: languageString)!
         })
 
-
-
         let name = userDict["name"] as! String
 
-        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe"))
+        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe"),profilePictureURL:imageURL)
     }
 
     static func fromJSON(jsonData: NSData) -> HLUser? {
@@ -365,8 +368,9 @@ enum Gender: Int {
         let testGender = randomGenderArray.random()
         let testBirthDate = NSDate.random()
         let testImage = UIImage(named: "person")!
+        let testImageURL = NSURL(string: "test.com")!
 
-        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage)
+        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage, profilePictureURL: testImageURL)
     }
 }
 

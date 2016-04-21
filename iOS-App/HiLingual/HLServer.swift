@@ -369,14 +369,14 @@ class HLServer {
         }
         
         body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        
+         print("before")
         
         if let resultsDicts =  sendRequestToEndpoint("asset/avatar/\(userId)", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body)  {
                 if let imageDict = resultsDicts[0]["image"] as? NSURL {
                     return imageDict
                 }
         }
-        print("issue")
+        print("here")
         return nil
 
     }
