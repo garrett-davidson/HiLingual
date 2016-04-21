@@ -18,7 +18,7 @@ class LanguageSelectionTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("languageCell")!
         let currentLanguage = Languages.allValues[indexPath.row]
-        cell.textLabel!.text = currentLanguage.rawValue
+        cell.textLabel!.text = String.localizedLanguageForLanguageName(currentLanguage.rawValue)
 
         if (selectedLanguages.contains(currentLanguage)) {
             cell.selected = true

@@ -913,7 +913,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PgP-2a-Phw">
-                                                            <rect key="frame" x="55" y="8" width="437" height="62"/>
+                                                            <rect key="frame" x="55" y="8" width="428" height="62"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzu-Zh-LvB">
                                                                     <rect key="frame" x="0.0" y="0.0" width="45" height="21"/>
@@ -943,9 +943,9 @@
                                                             </constraints>
                                                         </stackView>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPl-gv-Ufh">
-                                                            <rect key="frame" x="492" y="24" width="92" height="30"/>
+                                                            <rect key="frame" x="483" y="24" width="101" height="30"/>
                                                             <accessibility key="accessibilityConfiguration" identifier="SearchResultSendRequestButton"/>
-                                                            <state key="normal" title="Send request"/>
+                                                            <state key="normal" title="Send message"/>
                                                             <connections>
                                                                 <action selector="sendRequest:" destination="EA8-An-G2I" eventType="touchUpInside" id="vlm-JK-xMG"/>
                                                             </connections>

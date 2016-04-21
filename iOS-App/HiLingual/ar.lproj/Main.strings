@@ -200,8 +200,8 @@
 /* Class = "UIButton"; accessibilityIdentifier = "SearchResultSendRequestButton"; ObjectID = "hPl-gv-Ufh"; */
 "hPl-gv-Ufh.accessibilityIdentifier" = "SearchResultSendRequestButton";
 
-/* Class = "UIButton"; normalTitle = "Send request"; ObjectID = "hPl-gv-Ufh"; */
-"hPl-gv-Ufh.normalTitle" = "Send request";
+/* Class = "UIButton"; normalTitle = "Send message"; ObjectID = "hPl-gv-Ufh"; */
+"hPl-gv-Ufh.normalTitle" = "إرسال رسالة";
 
 /* Class = "UIImageView"; accessibilityIdentifier = "ProfilePicture"; ObjectID = "hvv-XV-Jgu"; */
 "hvv-XV-Jgu.accessibilityIdentifier" = "ProfilePicture";

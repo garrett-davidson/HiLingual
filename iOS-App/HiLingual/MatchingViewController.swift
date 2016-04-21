@@ -87,8 +87,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         cell.profilePicture.image = user.profilePicture
         cell.sendRequestButton.tag = indexPath.row
         //Mark: Fills the view
-        cell.langaugesLearning.text! = "Learning: ".localized + user.learningLanguages.toList()
-        cell.languagesSpeaks.text! = "  Speaks: ".localized + user.knownLanguages.toList()
+        cell.langaugesLearning.text! = "Learning:".localized + " " + user.learningLanguages.toList()
+        cell.languagesSpeaks.text! = "Speaks:".localized + " " + user.knownLanguages.toList()
         return cell
     }
 

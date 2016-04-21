@@ -13,11 +13,11 @@ enum Languages: String {
     case Arabic = "Arabic"
     case Russian = "Russian"
     case Japanese = "Japanese"
-    case Mandarin = "Mandarin"
+    case Chinese = "Chinese"
     case French = "French"
-    case Malayalm = "Malayalm"
+    case Malayalam = "Malayalam"
     
-    static let allValues: [Languages] = [.English, .Arabic, .Malayalm, .Mandarin, .French, .Japanese, .Russian]
+    static let allValues: [Languages] = [.English, .Arabic, .Malayalam, .Chinese, .French, .Japanese, .Russian]
 }
 
 extension _ArrayType where Generator.Element == Languages {
