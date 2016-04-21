@@ -88,6 +88,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
         timestampFormamter.timeStyle = .ShortStyle
         timestampFormamter.doesRelativeDateFormatting = true
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessagesViewController.refreshTableView), name: AppDelegate.NotificationTypes.newMessage.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessagesViewController.refreshTableView), name: AppDelegate.NotificationTypes.requestReceived.rawValue, object: nil)
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
