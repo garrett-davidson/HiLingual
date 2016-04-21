@@ -347,17 +347,17 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
                 if HLServer.deleteConversationWithUser(Int64(currentChats[indexPath.row].receiverId)) {
                     currentChats.removeAtIndex(indexPath.row)
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 } else {
                     print("Failed to delete chat")
                 }
             }
 
             else {
-                currentUser.pendingChats.removeAtIndex(indexPath.row)
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ConversationTableViewCell {
+                    decline(cell.declineButton)
+                }
             }
-
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            converstationTable.reloadData()
         }
     }
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
