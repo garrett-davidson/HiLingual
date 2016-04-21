@@ -25,6 +25,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var messageTest = [String]()
     var messages = [HLMessage]()
     var scroll = 0
+    var images: UIImage!
 
     var audioPlayer: AVAudioPlayer!
     var recordingSession: AVAudioSession!
@@ -266,6 +267,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             messageDetailViewController.user = user
             messageDetailViewController.hiddenName = true
         }
+        else if segue.identifier == "showImage"
+        {
+             let messageDetailViewController = segue.destinationViewController as! InlargeImageViewController
+            messageDetailViewController.image = self.images
+        }
     }
 
     override func canBecomeFirstResponder() -> Bool {
@@ -420,6 +426,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if let image = message.image {
                 shownPicture.image = image
             } else {
+                shownPicture.image = message.image
                 let spinner = UIActivityIndicatorView()
                 cell.spinner = spinner
                 spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)
@@ -521,8 +528,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     //For riley
     @IBAction func handleTap(sender: AnyObject) {
-        print(sender.view.tag)
-        performSegueWithIdentifier("showImage", sender: nil)
+        print(sender)
+        let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: sender.view.tag, inSection: 0)) as! ChatPictureTableViewCell
+        print(cell.leftPicture)
+        if sender.view === cell.leftPicture{
+            images = cell.leftPicture.image
+        }else{
+            images = cell.rightPicture.image
+            
+        }
+        performSegueWithIdentifier("showImage", sender: self.view)
         print("tap")
     }
 

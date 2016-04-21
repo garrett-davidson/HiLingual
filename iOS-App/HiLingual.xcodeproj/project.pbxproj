@@ -51,6 +51,7 @@
 		72A640931CC4460400EFFEEE /* FlashcardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72A640921CC4460400EFFEEE /* FlashcardView.xib */; };
 		72A640951CC4465900EFFEEE /* FlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A640941CC4465900EFFEEE /* FlashcardView.swift */; };
 		72DAA67D1C9BA1F70093B51C /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */; };
+		72EBD3541CC8501A00433287 /* InlargeImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EBD3531CC8501A00433287 /* InlargeImageViewController.swift */; };
 		72F621571C7F977700A8A489 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F621561C7F977700A8A489 /* EditProfileView.swift */; };
 		7CF1F1931C875BCA00BC258A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -153,6 +154,7 @@
 		72A640921CC4460400EFFEEE /* FlashcardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashcardView.xib; sourceTree = "<group>"; };
 		72A640941CC4465900EFFEEE /* FlashcardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashcardView.swift; sourceTree = "<group>"; };
 		72DAA67C1C9BA1F70093B51C /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		72EBD3531CC8501A00433287 /* InlargeImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlargeImageViewController.swift; sourceTree = "<group>"; };
 		72F621561C7F977700A8A489 /* EditProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		7CF1F1921C875BCA00BC258A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		83E780FFD269DC9326CA0C02 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				6876D99F1C5A87A90097332A /* LaunchScreen.storyboard */,
 				688FECFC1C7AC9DC00F58FB9 /* LaunchScreenViewController.swift */,
 				6876D99A1C5A87A90097332A /* Main.storyboard */,
+				72EBD3531CC8501A00433287 /* InlargeImageViewController.swift */,
 				680F24511C716926009F4EE8 /* MatchingViewController.swift */,
 				680F244D1C716875009F4EE8 /* MessagesViewController.swift */,
 				4CEEACF21CADD07A00A16DC6 /* PlayButton@2x.png */,
@@ -575,6 +578,7 @@
 				6853F3AB1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift in Sources */,
 				7220839D1CACBC0700609446 /* AccessoryView.swift in Sources */,
 				7259F1531C7669C3004C0A7E /* SearchTableViewCell.swift in Sources */,
+				72EBD3541CC8501A00433287 /* InlargeImageViewController.swift in Sources */,
 				680F24541C716997009F4EE8 /* ChatViewController.swift in Sources */,
 				720F002C1C7E3F3300DA197E /* DetailViewController.swift in Sources */,
 				72A640891CC0216800EFFEEE /* HLFlashCard.swift in Sources */,
