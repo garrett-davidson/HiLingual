@@ -426,11 +426,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             if let image = message.image {
                 shownPicture.image = image
                 shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
-
+                cell.spinner?.stopAnimating()
+                if cell.spinner?.superview != nil {
+                    cell.spinner?.removeFromSuperview()
+                }
+                cell.spinner = nil
             } else {
-                shownPicture.image = message.image
-                shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
-                
+                shownPicture.image = nil
                 let spinner = UIActivityIndicatorView()
                 cell.spinner = spinner
                 spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)
@@ -440,12 +442,13 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 shownPicture.backgroundColor = UIColor.grayColor()
                 message.loadImageWithCallback({ (image) in
                     dispatch_async(dispatch_get_main_queue(), {
-                        shownPicture.image = image
-                        cell.spinner?.stopAnimating()
-                        if cell.spinner?.superview != nil {
-                            cell.spinner?.removeFromSuperview()
+                        if let newCell = tableView.cellForRowAtIndexPath(indexPath) as? ChatPictureTableViewCell {
+                            newCell.spinner?.removeFromSuperview()
+                            newCell.spinner = nil
+                            let imageView = message.senderID == self.currentUser.userId ? newCell.rightPicture : newCell.leftPicture
+                            imageView.image = message.image
+                            imageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
                         }
-                        cell.spinner = nil
                     })
                 })
             }
