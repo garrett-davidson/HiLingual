@@ -425,7 +425,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //shownPicture.addGestureRecognizer(tap)
             if let image = message.image {
                 shownPicture.image = image
-                shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
                 cell.spinner?.stopAnimating()
                 if cell.spinner?.superview != nil {
                     cell.spinner?.removeFromSuperview()
@@ -447,7 +446,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                             newCell.spinner = nil
                             let imageView = message.senderID == self.currentUser.userId ? newCell.rightPicture : newCell.leftPicture
                             imageView.image = message.image
-                            imageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
                         }
                     })
                 })
