@@ -58,7 +58,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             }
 
             if (user.age != nil) {
-                ageLabel.text = "\(user.age!)".localized
+                ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
             }
             else {
                 ageLabel.text = "Not Specified".localized
@@ -219,7 +219,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch currentPickerField {
         case .Age:
-            return "\(minimunAge + row)"
+            return NSString.localizedStringWithFormat("%d", minimunAge + row) as String
 
         case .Gender:
             return "\(Gender.allValues[row])".localized

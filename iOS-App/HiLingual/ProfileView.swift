@@ -43,7 +43,7 @@ class ProfileView: UIView {
         nameLabel.text = user.name
         displayNameLabel.text = user.displayName
         if (user.age != nil) {
-            ageLabel.text = "\(user.age!)"
+            ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
         }
         else {
             ageLabel.text = "Not Specified".localized
