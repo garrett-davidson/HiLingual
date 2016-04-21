@@ -23,3 +23,6 @@
 "None" = "لا شيء";
 "Cannot connect" = "لا يمكن الاتصال";
 "Our server seems to be down. Please try again later" = "يبدو خادمنا لابد من منصبه. الرجاء معاودة المحاولة في وقت لاحق";
+"None" = "";
+"Front" = "امام";
+"Back" = "وراء";
