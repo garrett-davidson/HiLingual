@@ -11,7 +11,7 @@ import UIKit
 
 class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var flashcards = [HLFlashCard]()
-    
+    var ringTitle: String?
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -22,6 +22,23 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         navigationItem.rightBarButtonItem = editButtonItem()
         self.tableView.tableFooterView = UIView();
     }
+
+    let flashcardDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first! + "/Flashcards/"
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if !NSFileManager.defaultManager().fileExistsAtPath(flashcardDirectory) {
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtPath(flashcardDirectory, withIntermediateDirectories: false, attributes: nil)
+
+            } catch let createDirectoryError as NSError {
+                print("Error with creating directory at path: \(createDirectoryError.localizedDescription)")
+            }
+        }
+        
+        NSKeyedArchiver.archiveRootObject(flashcards, toFile: flashcardDirectory + ringTitle! + ".ring")
+    }
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("FlashcardCell", forIndexPath: indexPath) as! FlashcardCell
         cell.front.text = flashcards[indexPath.row].frontText

@@ -101,8 +101,6 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
             return defaultValue
         }
     }
-    
-    
 }
 extension CollectionType {
     /// Return a copy of `self` with its elements shuffled

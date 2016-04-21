@@ -19,6 +19,29 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = editButtonItem()
     }
+
+    let flashcardDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first! + "/Flashcards/"
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        let fileManager = NSFileManager.defaultManager()
+        if let enumerator = fileManager.enumeratorAtPath(flashcardDirectory) {
+            flashcardTitle.removeAll()
+            flashcards.removeAll()
+            while let ringFile = enumerator.nextObject() as? String {
+                if ringFile.hasSuffix(".ring") {
+                    if let ringTitle = ringFile.componentsSeparatedByString(".").first {
+                        if let ring = NSKeyedUnarchiver.unarchiveObjectWithFile(flashcardDirectory + ringFile) as? [HLFlashCard] {
+                            flashcards.append(ring)
+                            flashcardTitle.append(ringTitle)
+                            flashcardTable.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @IBAction func AddFlashCard(sender: AnyObject) {
         
         let alert = UIAlertController(title: "Flashcard Name:".localized, message: "", preferredStyle: .Alert)
@@ -65,17 +88,17 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toFlashcardRing" {
-            let messageDetailViewController = segue.destinationViewController as! FlashcardTableViewController
-            print(sender)
-            if let selectedMessageCell = sender as? UITableViewCell {
-                let indexPath = flashcardTable.indexPathForCell(selectedMessageCell)!
-                flashcardTable.deselectRowAtIndexPath(indexPath, animated: false)
-                messageDetailViewController.flashcards = flashcards[indexPath.row]
-                sent = indexPath.row
-                //messageDetailViewController.title = flashcardTitle[indexPath.row]
-                
+            if let messageDetailViewController = segue.destinationViewController as? FlashcardTableViewController {
+                print(sender)
+                if let selectedMessageCell = sender as? UITableViewCell {
+                    let indexPath = flashcardTable.indexPathForCell(selectedMessageCell)!
+                    flashcardTable.deselectRowAtIndexPath(indexPath, animated: false)
+                    messageDetailViewController.flashcards = flashcards[indexPath.row]
+                    sent = indexPath.row
+                    //messageDetailViewController.title = flashcardTitle[indexPath.row]
+                    messageDetailViewController.ringTitle = flashcardTitle[indexPath.row]
+                }
             }
-            
             
         }
         
