@@ -25,7 +25,10 @@ extension _ArrayType where Generator.Element == Languages {
         var string = ""
 
         for lang in self {
-            string += lang.rawValue + ", "
+            if let locaizedLanguage = String.localizedLanguageForLanguageName(lang.rawValue) {
+                string += locaizedLanguage + ", "
+            }
+
         }
 
         //Remove the trailing ", "
@@ -34,5 +37,11 @@ extension _ArrayType where Generator.Element == Languages {
         }
         
         return string
+    }
+}
+
+extension String {
+    static func localizedLanguageForLanguageName(languageName: String) -> String? {
+        return NSLocale.autoupdatingCurrentLocale().displayNameForKey(NSLocaleIdentifier, value: NSLocale.canonicalLanguageIdentifierFromString(languageName))
     }
 }
