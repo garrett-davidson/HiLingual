@@ -185,7 +185,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
                 if let lastMessage = NSKeyedUnarchiver.unarchiveObjectWithFile(lastMessageURL.path!) as? HLMessage {
                     if lastMessage.text != "" {
-                        cell.lastMessage.font = UIFont(name: "System", size: 15)
+                        cell.lastMessage.font = UIFont.systemFontOfSize(13)
                         cell.lastMessage.text = lastMessage.text
                     } else if lastMessage.audioURL != nil {
                         cell.lastMessage.font = UIFont(name: "FontAwesome", size: 24)
