@@ -16,7 +16,7 @@ class InlargeImageViewController: UIViewController {
         super.viewDidLoad()
         
         imageInView.image = image
-        imageInView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
+//        imageInView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
 
         // Do any additional setup after loading the view.
     }
