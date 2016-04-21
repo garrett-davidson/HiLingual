@@ -21,12 +21,12 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     @IBAction func AddFlashCard(sender: AnyObject) {
         
-        let alert = UIAlertController(title: "Flashcard Name:", message: "", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Flashcard Name:".localized, message: "", preferredStyle: .Alert)
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.text = ""
         })
         
-        alert.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (action) -> Void in
+        alert.addAction(UIAlertAction(title: "Done".localized, style: .Default, handler: { (action) -> Void in
 
             let textField = alert.textFields![0] as UITextField
             self.flashcardTitle.insert(textField.text!, atIndex: 0)
@@ -39,7 +39,7 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
             self.view.endEditing(true)
             
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+        alert.addAction(UIAlertAction(title: "Cancel".localized, style: .Default, handler: { (action) -> Void in
             self.view.endEditing(true)
         }))
         self.presentViewController(alert, animated: true, completion: nil)
