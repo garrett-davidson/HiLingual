@@ -25,6 +25,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var messageTest = [String]()
     var messages = [HLMessage]()
     var scroll = 0
+    var images: UIImage!
 
     var audioPlayer: AVAudioPlayer!
     var recordingSession: AVAudioSession!
@@ -266,6 +267,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             messageDetailViewController.user = user
             messageDetailViewController.hiddenName = true
         }
+        else if segue.identifier == "showImage"
+        {
+             let messageDetailViewController = segue.destinationViewController as! InlargeImageViewController
+            messageDetailViewController.image = self.images
+        }
     }
 
     override func canBecomeFirstResponder() -> Bool {
@@ -369,7 +375,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             let shownButton: UIButton
             let hiddenButton: UIButton
-
+            
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 shownButton = cell.rightButton
                 hiddenButton = cell.leftButton
@@ -396,6 +402,8 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             let shownPicture: UIImageView
             let hiddenPicture: UIImageView
+            let tap = UITapGestureRecognizer(target: self, action: #selector(FlashcardSetViewController.handleTap(_:)))
+            let tap1 = UITapGestureRecognizer(target: self, action: #selector(FlashcardSetViewController.handleTap(_:)))
             
             if messages[indexPath.row].senderID  ==  currentUser.userId {
                 shownPicture = cell.rightPicture
@@ -410,12 +418,19 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             shownPicture.layer.cornerRadius = 8
             shownPicture.clipsToBounds = true
             shownPicture.layer.borderWidth = 0.5
-
-
+            cell.tag = indexPath.row
+            cell.leftPicture.addGestureRecognizer(tap)
+            cell.rightPicture.addGestureRecognizer(tap1)
             shownPicture.tag = indexPath.row
+            //shownPicture.addGestureRecognizer(tap)
             if let image = message.image {
                 shownPicture.image = image
+                shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
+
             } else {
+                shownPicture.image = message.image
+                shownPicture.transform = CGAffineTransformMakeRotation(CGFloat(M_PI / 2));
+                
                 let spinner = UIActivityIndicatorView()
                 cell.spinner = spinner
                 spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)
@@ -517,6 +532,16 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     //For riley
     @IBAction func handleTap(sender: AnyObject) {
+        print(sender)
+        let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: sender.view.tag, inSection: 0)) as! ChatPictureTableViewCell
+        print(cell.leftPicture)
+        if sender.view === cell.leftPicture{
+            images = cell.leftPicture.image
+        }else{
+            images = cell.rightPicture.image
+            
+        }
+        performSegueWithIdentifier("showImage", sender: self.view)
         print("tap")
     }
 
@@ -524,21 +549,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         curPlayingMessage!.setImage(UIImage(named: "shittyplay")?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
         isPlayingMessage = false;
     }
-    func showPicture(sender: UIImageView){
-        let deviceURL = messages[sender.tag].messageUUID!
-        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let pictureURL = documentsURL.URLByAppendingPathComponent("\(deviceURL).png")
 
-        if let filePath = NSBundle.mainBundle().pathForResource(String(deviceURL), ofType: "png"), image = UIImage(contentsOfFile: filePath) {
-            sender.contentMode = .ScaleAspectFit
-            sender.image = image
-        }else{
-              ChatViewController.loadFileSync(messages[sender.tag].pictureURL!,writeTo: pictureURL, completion:{(audioURL:String, error:NSError!) in
-                print("downloaded to: \(pictureURL)")
-            })
-            showPicture(sender)
-        }
-    }
 
     @IBAction func tapPlayButton(sender: UIButton) {
         if isPlayingMessage == true {
