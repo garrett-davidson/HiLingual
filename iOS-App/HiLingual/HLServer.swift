@@ -224,7 +224,6 @@ class HLServer {
     }
     
     static func sendImageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
-        print("string length: ", data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)).characters.count)
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["image": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
             return HLMessage.fromDict(messageDict[0])
         } //this needs to be asynchronous so bad pls
@@ -353,6 +352,33 @@ class HLServer {
 
 
         return false
+    }
+    static func sendImageToProfile(image: UIImage, onUser userId:UInt64) -> NSURL! {
+        
+        let boundary = "unique-consistent-string"
+        
+        let body = NSMutableData()
+        if let imageData = UIImagePNGRepresentation(image) {
+            body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Disposition: form-data; name=file\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Type: image/png\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData(imageData)
+            body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        } else {
+            return nil
+        }
+        
+        body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        
+        
+        if let resultsDicts =  sendRequestToEndpoint("asset/avatar/\(userId)", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body)  {
+                if let imageDict = resultsDicts[0]["image"] as? NSURL {
+                    return imageDict
+                }
+        }
+        print("issue")
+        return nil
+
     }
 
     static func sendImage(image: UIImage, toUser userId:UInt64) -> Bool {

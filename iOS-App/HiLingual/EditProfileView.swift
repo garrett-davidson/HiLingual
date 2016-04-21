@@ -169,11 +169,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         profileImage.image = EditProfileView.cropToSquare(image: selectedImage);
         user.profilePicture = EditProfileView.cropToSquare(image: selectedImage);
-        
-        
-        
-        
-        //post to server
+
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil){
             topVC = topVC!.presentedViewController
