@@ -167,13 +167,18 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        profileImage.image = EditProfileView.cropToSquare(image: selectedImage);
-        user.profilePicture = EditProfileView.cropToSquare(image: selectedImage);
+        profileImage.image = EditProfileView.cropToSquare(image: selectedImage)
+        user.profilePicture = EditProfileView.cropToSquare(image: selectedImage).rotateImageByOrientation()
 
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil){
             topVC = topVC!.presentedViewController
         }
+
+        if let picurl = HLServer.sendImageToProfile(user.profilePicture!, onUser: UInt64(HLUser.getCurrentUser().userId)) {
+            user.profilePictureURL = picurl
+        }
+
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
 

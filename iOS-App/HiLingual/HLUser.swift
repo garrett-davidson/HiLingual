@@ -145,6 +145,8 @@ enum Gender: Int {
         }
 
         //Not important
+        let blockedUsers = userDict["blockedUsers"]
+
 
         let bio: String?
         if let encodedBio = userDict["bio"] as? String {
@@ -154,6 +156,8 @@ enum Gender: Int {
         }
 
         //Not important
+        let usersChattedWith = userDict["usersChattedWith"]
+
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
         let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
 
@@ -214,22 +218,6 @@ enum Gender: Int {
         NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
 
         if toServer {
-              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-               let picurl = HLServer.sendImageToProfile(HLUser.getCurrentUser().profilePicture!, onUser: UInt64(HLUser.getCurrentUser().userId))
-                print(picurl)
-               //HLUser.getCurrentUser().pro
-                //save url to HLUser here
-            })
-
-
-            
-            
-            
-
-
-    //
-    //        //TODO: Implement creating a loggin in to server user
-    //        //That way this doesn't have to be hard-coded
             if let userJSONData = self.toJSON() {
                 let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
                 request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
@@ -274,6 +262,10 @@ enum Gender: Int {
         }
         if birthdate != nil {
             userDict.setObject(birthdate!.timeIntervalSince1970 * 1000, forKey: "birthdate")
+        }
+
+        if profilePictureURL != nil {
+            userDict.setObject(profilePictureURL!.absoluteString, forKey: "imageURL")
         }
 
         let learningLanguagesStrings = learningLanguages.map { (language) -> String in
