@@ -27,5 +27,4 @@ class HLFlashCard: NSObject, NSCoding {
         self.backText = backText
         self.frontText = frontText
     }
-    
 }

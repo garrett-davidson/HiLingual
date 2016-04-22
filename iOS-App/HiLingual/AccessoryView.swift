@@ -167,13 +167,6 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
 
 
 
-        //START MIC
-        /*
-         */
-
-
-        //END MIC
-
     }
 
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {

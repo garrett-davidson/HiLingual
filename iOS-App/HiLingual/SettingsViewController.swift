@@ -45,6 +45,10 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     */
 
+    @IBAction func pressedPurchase(sender: AnyObject) {
+        
+        
+    }
     @IBAction func pressedDone(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }

@@ -90,6 +90,10 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         if segue.identifier == "toFlashcardRing" {
             if let messageDetailViewController = segue.destinationViewController as? FlashcardTableViewController {
                 print(sender)
+                //get flashcards from server
+                
+                
+                
                 if let selectedMessageCell = sender as? UITableViewCell {
                     let indexPath = flashcardTable.indexPathForCell(selectedMessageCell)!
                     flashcardTable.deselectRowAtIndexPath(indexPath, animated: false)
@@ -111,6 +115,9 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
             
         }
         
+        
+        //send to server
+        
     }
     func tableView(tableView: UITableView,
                             moveRowAtIndexPath sourceIndexPath: NSIndexPath,
@@ -131,6 +138,23 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.detailTextLabel?.text = "\(flashcards[indexPath.row].count)"
         return cell
     }
+    /*
+    func toJSON() -> NSData? {
+        let userDict = [String : [String : String]]()
+        for set:[HLFlashCard] in flashcards{
+            for card:HLFlashCard in set{
+                
+            }
+        }
+        if frontText != nil {
+            userDict.setObject(frontText!, forKey: "frontText")
+        }
+        if backText != nil {
+            userDict.setObject(backText!, forKey: "backText")
+        }
+        return try? NSJSONSerialization.dataWithJSONObject(userDict, options: NSJSONWritingOptions(rawValue: 0))
+    }*/
+    
 
     
 }
