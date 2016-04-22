@@ -214,8 +214,11 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         if message.translatedText != nil {
             message.showTranslation = !message.showTranslation
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: selectedCellIndex!, inSection: 0)], withRowAnimation: .Automatic)
-            selectedCellIndex = nil
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedCellIndex!, inSection: 0)) as? ChatTableViewCell {
+                setupTextCell(cell, forMessage: message)
+            } else if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedCellIndex!, inSection: 0)) as? ChatEditedTableViewCell {
+                setupEditedCell(cell, forMessage: message)
+            }
         }
 
         else {
@@ -365,6 +368,75 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
 
+    func setupTextCell(cell: ChatTableViewCell, forMessage message: HLMessage) {
+        if message.senderID  ==  currentUser.userId {
+            cell.chatBubbleLeft.hidden = true
+            cell.chatBubbleLeft.text = ""
+            cell.chatLeftImage.hidden = true
+            cell.chatRightImage.layer.cornerRadius = 6
+            //cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
+            cell.chatBubbleRight.text = message.showTranslation ? message.translatedText! : message.text
+            cell.chatBubbleRight.hidden = false
+            cell.chatRightImage.hidden = false
+        }
+
+        else {
+            cell.chatBubbleRight.hidden = true
+            cell.chatBubbleRight.text = ""
+            cell.chatBubbleLeft.text = ""
+            cell.chatRightImage.hidden = true
+            cell.chatLeftImage.layer.cornerRadius = 6
+            //cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
+            cell.chatBubbleLeft.text = message.showTranslation ? message.translatedText! : message.text
+            cell.chatLeftImage.hidden = false
+            cell.chatBubbleLeft.hidden = false
+        }
+    }
+
+    func setupEditedCell(cell: ChatEditedTableViewCell, forMessage message: HLMessage) {
+        if message.attributedEditedText == nil {
+            let lcs = longestCommonSubsequence(message.text, s2: message.editedText!)
+            message.attributedEditedText = getDiff(message.text, s2: message.editedText!, lcs: lcs)
+        }
+
+        if message.senderID  ==  currentUser.userId {
+            cell.chatBubbleLeft.hidden = true
+            cell.leftMessageLabel.text = ""
+            cell.leftEditedMessageLabel.text = ""
+            cell.chatBubbleLeft.frame.size.height = 0
+            cell.editChatLeftImage.hidden = true
+            cell.chatBubbleRight.hidden = false
+            cell.editChatRightImage.layer.cornerRadius = 6
+
+            cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
+            if message.showTranslation {
+                cell.rightEditedMessageLabel.text = message.translatedEdit
+            } else {
+                cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
+            }
+            cell.editChatRightImage.hidden = false
+        }
+
+        else {
+            cell.chatBubbleRight.hidden = true
+            cell.rightMessageLabel.text = ""
+            cell.rightEditedMessageLabel.text = ""
+            cell.chatBubbleLeft.hidden = false
+            cell.editChatRightImage.hidden = true
+            cell.editChatLeftImage.layer.cornerRadius = 6
+
+            cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
+            if message.showTranslation {
+                cell.leftEditedMessageLabel.text = message.translatedEdit
+            } else {
+                cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
+            }
+            cell.editChatLeftImage.hidden = false
+
+
+        }
+    }
+
     //MARK:CELL ROW
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
@@ -457,28 +529,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cellIdentity = "ChatTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatTableViewCell
             
-            if messages[indexPath.row].senderID  ==  currentUser.userId {
-                cell.chatBubbleLeft.hidden = true
-                cell.chatBubbleLeft.text = ""
-                cell.chatLeftImage.hidden = true
-                cell.chatRightImage.layer.cornerRadius = 6
-                //cell.chatBubbleRight.layer.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5).CGColor
-                cell.chatBubbleRight.text = message.showTranslation ? message.translatedText! : message.text
-                cell.chatBubbleRight.hidden = false
-                cell.chatRightImage.hidden = false
-            }
-                
-            else {
-                cell.chatBubbleRight.hidden = true
-                cell.chatBubbleRight.text = ""
-                cell.chatBubbleLeft.text = ""
-                cell.chatRightImage.hidden = true
-                cell.chatLeftImage.layer.cornerRadius = 6
-                //cell.chatBubbleLeft.layer.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.5).CGColor
-                cell.chatBubbleLeft.text = message.showTranslation ? message.translatedText! : message.text
-                cell.chatLeftImage.hidden = false
-                cell.chatBubbleLeft.hidden = false
-            }
+            setupTextCell(cell, forMessage: message)
         
             
             return cell
@@ -486,47 +537,7 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let cellIdentity = "ChatEditedTableViewCell"
             let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! ChatEditedTableViewCell
 
-            if message.attributedEditedText == nil {
-                let lcs = longestCommonSubsequence(message.text, s2: message.editedText!)
-                message.attributedEditedText = getDiff(message.text, s2: message.editedText!, lcs: lcs)
-            }
-
-            if messages[indexPath.row].senderID  ==  currentUser.userId {
-                cell.chatBubbleLeft.hidden = true
-                cell.leftMessageLabel.text = ""
-                cell.leftEditedMessageLabel.text = ""
-                cell.chatBubbleLeft.frame.size.height = 0
-                cell.editChatLeftImage.hidden = true
-                cell.chatBubbleRight.hidden = false
-                cell.editChatRightImage.layer.cornerRadius = 6
-
-                cell.rightMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                if message.showTranslation {
-                    cell.rightEditedMessageLabel.text = message.translatedEdit
-                } else {
-                    cell.rightEditedMessageLabel.attributedText = message.attributedEditedText
-                }
-                cell.editChatRightImage.hidden = false
-            }
-
-            else {
-                cell.chatBubbleRight.hidden = true
-                cell.rightMessageLabel.text = ""
-                cell.rightEditedMessageLabel.text = ""
-                cell.chatBubbleLeft.hidden = false
-                cell.editChatRightImage.hidden = true
-                cell.editChatLeftImage.layer.cornerRadius = 6
-
-                cell.leftMessageLabel.text = message.showTranslation ? message.translatedText! : message.text
-                if message.showTranslation {
-                    cell.leftEditedMessageLabel.text = message.translatedEdit
-                } else {
-                    cell.leftEditedMessageLabel.attributedText = message.attributedEditedText
-                }
-                cell.editChatLeftImage.hidden = false
-
-                
-            }
+            setupEditedCell(cell, forMessage: message)
 
             return cell
         }
