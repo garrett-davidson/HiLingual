@@ -47,6 +47,7 @@ public class AssetResource {
 
     @POST
     @Path("/avatar/{user-id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public ImageData newImage(@HeaderParam("Authorization") String hlat,
                             @PathParam("receiver-id") long receiverId,
