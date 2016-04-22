@@ -46,7 +46,14 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     func refreshUI() {
         func redraw() {
-            profileImage.image = user.profilePicture
+            if let image = user.profilePicture {
+                profileImage.image = image
+            } else {
+                user.loadImageWithCallback({ (image) in
+                    self.profileImage.image
+                })
+            }
+
             nameLabel.text = user.name
             nameText.text = user.displayName
 

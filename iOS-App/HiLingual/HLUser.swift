@@ -45,8 +45,9 @@ enum Gender: Int {
     }
 
     private var session: HLUserSession?
+    private var cachedImage: UIImage?
 
-    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?, profilePictureURL: NSURL?) {
+    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePictureURL: NSURL?) {
         self.userId = userId
         self.name = name
         self.displayName = displayName
@@ -55,11 +56,40 @@ enum Gender: Int {
         self.bio = bio
         self.gender = gender
         self.birthdate = birthdate
-        self.profilePicture = profilePicture
+        self.profilePicture = nil
         self.profilePictureURL = profilePictureURL
 
         self.usersChattedWith = []
         self.pendingChats = []
+    }
+
+    func loadImageWithCallback(callback: (UIImage)-> ()) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let picURL = documentsURL.URLByAppendingPathComponent("\(self.userId).png")
+
+            if let data = NSData(contentsOfURL: picURL) {
+                self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
+                callback(self.cachedImage!)
+                return
+
+                //assign your image here
+            } else {
+
+                ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                    print("downloaded to: \(picURL)")
+                })
+
+                if let data = NSData(contentsOfURL: picURL) {
+                    self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
+
+                    callback(self.cachedImage!)
+                    return
+                } else {
+                    print("Failed to load image")
+                }
+            }
+        })
     }
 
     @objc required init?(coder aDecoder: NSCoder) {
@@ -74,7 +104,6 @@ enum Gender: Int {
             self.gender = nil
         }
         self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
-        self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as? UIImage
         self.profilePictureURL = aDecoder.decodeObjectForKey("profilePictureURL") as? NSURL
         self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
 
@@ -161,11 +190,9 @@ enum Gender: Int {
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
         let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
 
-        //TODO: Load this image
         let imageURL: NSURL?
-        if let tempimageURL = userDict["profilePictureURL"] as? String {
+        if let tempimageURL = userDict["imageURL"] as? String {
             imageURL = NSURL(string: tempimageURL)
-            downloadProfilePicture(imageURL!,user: self.getCurrentUser());
         } else {
             imageURL = nil
         }
@@ -183,7 +210,7 @@ enum Gender: Int {
 
         let name = userDict["name"] as! String
 
-        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe"),profilePictureURL:imageURL)
+        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePictureURL:imageURL)
     }
     
     static func downloadProfilePicture(imageURL: NSURL,user: HLUser){
@@ -325,8 +352,8 @@ enum Gender: Int {
         aCoder.encodeObject(bio, forKey: "bio")
         if gender != nil { aCoder.encodeObject(gender!.rawValue, forKey: "gender") }
         aCoder.encodeObject(birthdate, forKey: "birthdate")
-        aCoder.encodeObject(profilePicture, forKey: "profilePicture")
         aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
+        aCoder.encodeObject(profilePictureURL, forKey: "profilePictureURL")
 
         let chatted2 = usersChattedWith.map { (i) -> NSNumber in
             return NSNumber(longLong: i)
@@ -383,10 +410,9 @@ enum Gender: Int {
 
         let testGender = randomGenderArray.random()
         let testBirthDate = NSDate.random()
-        let testImage = UIImage(named: "person")!
         let testImageURL = NSURL(string: "test.com")!
 
-        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage, profilePictureURL: testImageURL)
+        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePictureURL: testImageURL)
     }
 }
 
