@@ -161,6 +161,7 @@ enum Gender: Int {
         let imageURL: NSURL?
         if let tempimageURL = userDict["profilePictureURL"] as? String {
             imageURL = NSURL(string: tempimageURL)
+            downloadProfilePicture(imageURL!,user: self.getCurrentUser());
         } else {
             imageURL = nil
         }
@@ -180,7 +181,30 @@ enum Gender: Int {
 
         return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe"),profilePictureURL:imageURL)
     }
-
+    
+    static func downloadProfilePicture(imageURL: NSURL,user: HLUser){
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let picURL = documentsURL.URLByAppendingPathComponent("\(imageURL).png")
+        
+        if let data = NSData(contentsOfURL: picURL) {
+            user.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
+            return
+            //assign your image here
+        } else {
+            
+            ChatViewController.loadFileSync(imageURL, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                print("downloaded to: \(picURL)")
+            })
+            if let data = NSData(contentsOfURL: picURL) {
+                user.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
+                return
+            } else {
+                print("Failed to load image")
+            }
+        }
+        
+    }
+    
     static func fromJSON(jsonData: NSData) -> HLUser? {
         if let obj = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) {
             if let userDict = obj as? NSDictionary {
