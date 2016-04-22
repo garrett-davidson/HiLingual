@@ -50,7 +50,9 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                 profileImage.image = image
             } else {
                 user.loadImageWithCallback({ (image) in
-                    self.profileImage.image
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.profileImage.image
+                    })
                 })
             }
 

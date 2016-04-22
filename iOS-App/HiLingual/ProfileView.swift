@@ -38,7 +38,9 @@ class ProfileView: UIView {
         } else {
             imageView.image = nil
             user.loadImageWithCallback({ (image) in
-                self.imageView.image = image
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.imageView.image = image
+                })
             })
         }
 
