@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextViewDelegate {
 
     enum PickerField {
@@ -40,10 +41,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     
     var user: HLUser! {
         didSet {
-            //ageLabel.userInteractionEnabled = false;
-            //if isValidUser(user) {
-                refreshUI()
-           // }
+            ageLabel.userInteractionEnabled = false
+            refreshUI()
         }
     }
 
@@ -96,9 +95,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         case userId, name, displayName, knownLanguages, learningLanguages, bio, gender, age, profilePicture
     }
     
-    func isValidUser(user: HLUser, showDialogOnInvalid: Bool=false) -> Bool {
-        
-        let errorMessage: String
+    func isValidUser() -> Bool {
+        var errorMessage: String = ""
         
         do {
             
@@ -108,49 +106,65 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                     throw UserValidationError.userId
                 }
                 //name
-                if user.name == nil || user.name == "" {
+                if nameLabel.text == nil || nameLabel.text == "" {
                     throw UserValidationError.name
                 }
                 //display name
                 //TODO: Check unique
-                if user.displayName == nil || user.displayName == "" {
+                if nameText.text == nil || nameText.text == "" {
                     throw UserValidationError.displayName
                 }
                 //bio
-                if user.bio == nil || user.bio == "" || user.bio?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 500 {
+                if bioText.text == nil || bioText.text == "" || bioText.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 500 {
                     throw UserValidationError.bio
                 }
             }
             
             try validateUser()
+            
         }
             
         catch UserValidationError.userId {
             errorMessage = "Invalid user id"
+            print(errorMessage)
         }
             
         catch UserValidationError.name {
             errorMessage = "Invalid name"
+            print(errorMessage)
         }
             
         catch UserValidationError.displayName {
             errorMessage = "Invalid display name"
+            print(errorMessage)
         }
             
         catch UserValidationError.bio {
             errorMessage = "Invalid bio"
+            print(errorMessage)
         }
             
         catch UserValidationError.age {
             errorMessage = "Invalid age"
+            print(errorMessage)
         }
             
         catch {
-            
         }
-        
-        
-        
+        if(errorMessage != "") {
+            print("alert message")
+            let alertController = UIAlertController(title: nil, message: errorMessage.localized, preferredStyle: .ActionSheet)
+            let okayAction = UIAlertAction(title: "Okay".localized, style: .Cancel) { (action) in
+                return
+            }
+            alertController.addAction(okayAction)
+            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            while((topVC!.presentedViewController) != nil) {
+                topVC = topVC!.presentedViewController
+            }
+            topVC?.presentViewController(alertController, animated: true, completion: nil)
+            return false
+        }
         return true
     }
 

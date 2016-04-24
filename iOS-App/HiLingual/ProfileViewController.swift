@@ -28,8 +28,7 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
             profileView.hidden = true
             self.navigationItem.rightBarButtonItem?.title = "Done".localized
         }
-
-        else {
+        else if(editProfileView.isValidUser()) {
             editProfileView.dismissKeyboard(self)
             editProfileView.dismissPickerView(self)
             editProfileView.user.save()
