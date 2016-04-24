@@ -348,9 +348,6 @@ public class ChatResource {
         if (!sender.getUsersChattedWith().contains(receiverId)) {
             throw new ForbiddenException("This user is not a conversation partner");
         }
-        if (message.getContent().length() > 500) {
-            throw new ClientErrorException(Response.Status.REQUEST_ENTITY_TOO_LARGE);
-        }
         if (message.getImage() != null) {
             throw new BadRequestException("image field cannot be set");
         } else if (message.getAudio() != null) {
@@ -370,6 +367,9 @@ public class ChatResource {
         } else {
             if (message.getContent() == null || message.getContent().isEmpty()) {
                 throw new BadRequestException("Missing content");
+            }
+            if (message.getContent().length() > 500) {
+                throw new ClientErrorException(Response.Status.REQUEST_ENTITY_TOO_LARGE);
             }
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
