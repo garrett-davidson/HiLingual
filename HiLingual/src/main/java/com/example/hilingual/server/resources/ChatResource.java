@@ -19,6 +19,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -331,7 +332,8 @@ public class ChatResource {
     @POST
     @Path("/{receiver-id}/message")
     public Message newMessage(@HeaderParam("Authorization") String hlat, @PathParam("receiver-id") long receiverId,
-                              @Valid Message message) throws IOException, URISyntaxException {
+                              @Valid Message message)
+            throws IOException, URISyntaxException {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long senderId = sessionDAO.getSessionOwner(sessionId);
@@ -345,6 +347,9 @@ public class ChatResource {
         }
         if (!sender.getUsersChattedWith().contains(receiverId)) {
             throw new ForbiddenException("This user is not a conversation partner");
+        }
+        if (message.getContent().length() > 500) {
+            throw new ClientErrorException(Response.Status.REQUEST_ENTITY_TOO_LARGE);
         }
         if (message.getImage() != null) {
             throw new BadRequestException("image field cannot be set");
@@ -363,6 +368,9 @@ public class ChatResource {
                     getBadgeNumber(receiverId));
             return ret;
         } else {
+            if (message.getContent() == null || message.getContent().isEmpty()) {
+                throw new BadRequestException("Missing content");
+            }
             //  New messages only have content field set
             Message ret = chatMessageDAO.newMessage(senderId, receiverId, message.getContent());
             String decoded = base64Decode(message.getContent());
@@ -449,6 +457,12 @@ public class ChatResource {
         }
         if (messageToEdit.getReceiver() != editorId) {
             throw new ForbiddenException("You cannot edit a message that's not for you");
+        }
+        if (message.getEditData() == null || message.getEditData().isEmpty()) {
+            throw new BadRequestException("Missing edit data");
+        }
+        if (message.getEditData().length() > 500) {
+            throw new ClientErrorException(Response.Status.REQUEST_ENTITY_TOO_LARGE);
         }
         //  The received message only has the ID and editData fields set, the rest are 0 or NULL.
         Message editedMessage = chatMessageDAO.editMessage(msg, message.getEditData());
@@ -606,4 +620,5 @@ public class ChatResource {
                 mapToInt(l -> chatMessageDAO.getUnackedMessageCount(userId, l)).
                 sum() + chatMessageDAO.getRequests(userId).size();
     }
+
 }
