@@ -71,7 +71,7 @@ class HLMessage: NSObject, NSCoding {
         translatedText = aDecoder.decodeObjectForKey("translatedText") as? String
         translatedEdit = aDecoder.decodeObjectForKey("translatedEdit") as? String
 
-        showTranslation = aDecoder.decodeBoolForKey("showTranslation")
+        showTranslation = false
 
         if let audio = aDecoder.decodeObjectForKey("audioURL") as? NSURL {
             audioURL = audio
@@ -98,7 +98,6 @@ class HLMessage: NSObject, NSCoding {
         aCoder.encodeObject(audioURL, forKey: "audioURL")
         aCoder.encodeObject(translatedText, forKey: "translatedText")
         aCoder.encodeObject(translatedEdit, forKey: "translatedEdit")
-        aCoder.encodeBool(showTranslation, forKey: "showTranslation")
         aCoder.encodeObject(attributedEditedText, forKey: "attributedEditedText")
         aCoder.encodeObject(pictureURL, forKey: "pictureURL")
     }
