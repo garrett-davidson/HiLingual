@@ -179,6 +179,7 @@ public class UserResource {
 
     @GET
     @Path("names")
+    @Produces(MediaType.TEXT_PLAIN)
     public String checkDisplayNameAvailability(@QueryParam("name") String name,
                                                @HeaderParam("Authorization") String hlat) {
         return Boolean.toString(userDAO.isNameUnique(name));
