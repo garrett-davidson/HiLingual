@@ -50,9 +50,7 @@ class HLMessage: NSObject, NSCoding {
 
     private var cachedImage: UIImage?
 
-    var image: UIImage? {
-        return cachedImage
-    }
+    var image: UIImage?
 
     required init?(coder aDecoder: NSCoder) {
         messageUUID = aDecoder.decodeInt64ForKey("uuid")

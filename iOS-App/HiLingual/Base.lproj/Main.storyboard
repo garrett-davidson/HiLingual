@@ -185,8 +185,8 @@
                                             <outlet property="declineButton" destination="nAO-Cy-IOV" id="e1Z-bg-0qK"/>
                                             <outlet property="haveMessageDot" destination="JtD-Ro-hXu" id="gbK-tT-8eK"/>
                                             <outlet property="lastMessage" destination="DsD-GD-Ptj" id="Ljx-e1-dra"/>
+                                            <outlet property="loadingImageView" destination="IUP-Vd-aa4" id="b3H-b5-TgW"/>
                                             <outlet property="name" destination="J8t-oZ-gwa" id="K50-eu-YVD"/>
-                                            <outlet property="profilePicture" destination="IUP-Vd-aa4" id="hvB-px-Kvd"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

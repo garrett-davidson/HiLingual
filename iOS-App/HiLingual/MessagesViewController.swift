@@ -173,30 +173,14 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.haveMessageDot.layer.borderWidth = 0.5
                 cell.haveMessageDot.hidden = true
                 cell.name.text = user.name
-                cell.profilePicture.layer.masksToBounds = false
-                cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
-                cell.profilePicture.clipsToBounds = true
+                cell.loadingImageView.layer.masksToBounds = false
+                cell.loadingImageView.layer.cornerRadius = cell.loadingImageView.frame.height/2
+                cell.loadingImageView.clipsToBounds = true
                 if user.profilePicture != nil {
-                    cell.spinner?.removeFromSuperview()
-                    cell.spinner = nil
-                    cell.profilePicture.image = user.profilePicture
+                    cell.loadingImageView.image = user.profilePicture
                 } else {
-                    cell.profilePicture.image = nil
-                    let spinner = UIActivityIndicatorView()
-                    cell.spinner = spinner
-                    spinner.center = CGPointMake(cell.profilePicture.frame.size.width/2, cell.profilePicture.frame.size.height/2)
-                    spinner.activityIndicatorViewStyle = .WhiteLarge
-                    cell.profilePicture.addSubview(spinner)
-                    spinner.startAnimating()
-                    cell.profilePicture.backgroundColor = UIColor.grayColor()
-                    user.loadImageWithCallback({ (image) in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if let newCell = tableView.cellForRowAtIndexPath(indexPath) as? ConversationTableViewCell {
-                                newCell.spinner?.removeFromSuperview()
-                                newCell.spinner = nil
-                                newCell.profilePicture.image = image
-                            }
-                        })
+                    HLServer.loadImageWithURL(user.profilePictureURL!, forCell: cell, inTableView: tableView, atIndexPath: indexPath, withCallback: { (image) in
+                        user.profilePicture = image
                     })
                 }
                 
@@ -255,10 +239,10 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.haveMessageDot.layer.cornerRadius = cell.haveMessageDot.frame.height/2 + 1
             cell.haveMessageDot.layer.borderWidth = 0.5
             cell.haveMessageDot.hidden = true
-            cell.profilePicture.layer.masksToBounds = false
-            cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
-            cell.profilePicture.clipsToBounds = true
-            cell.profilePicture.image = user.profilePicture
+            cell.loadingImageView.layer.masksToBounds = false
+            cell.loadingImageView.layer.cornerRadius = cell.loadingImageView.frame.height/2
+            cell.loadingImageView.clipsToBounds = true
+            cell.loadingImageView.image = user.profilePicture
             cell.acceptButton.tag = indexPath.row
             cell.declineButton.tag = indexPath.row
             cell.declineButton.hidden = false

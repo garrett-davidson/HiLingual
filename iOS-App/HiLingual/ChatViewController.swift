@@ -497,29 +497,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //shownPicture.addGestureRecognizer(tap)
             if let image = message.image {
                 shownPicture.image = image
-                cell.spinner?.stopAnimating()
-                if cell.spinner?.superview != nil {
-                    cell.spinner?.removeFromSuperview()
-                }
-                cell.spinner = nil
             } else {
-                shownPicture.image = nil
-                let spinner = UIActivityIndicatorView()
-                cell.spinner = spinner
-                spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)
-                spinner.activityIndicatorViewStyle = .WhiteLarge
-                shownPicture.addSubview(spinner)
-                spinner.startAnimating()
-                shownPicture.backgroundColor = UIColor.grayColor()
-                message.loadImageWithCallback({ (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let newCell = tableView.cellForRowAtIndexPath(indexPath) as? ChatPictureTableViewCell {
-                            newCell.spinner?.removeFromSuperview()
-                            newCell.spinner = nil
-                            let imageView = message.senderID == self.currentUser.userId ? newCell.rightPicture : newCell.leftPicture
-                            imageView.image = message.image
-                        }
-                    })
+                cell.loadingImageView = shownPicture
+                HLServer.loadImageWithURL(message.pictureURL!, forCell: cell, inTableView: tableView, atIndexPath: indexPath, withCallback: { (image) in
+                    message.image = image
                 })
             }
 
