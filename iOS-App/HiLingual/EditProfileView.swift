@@ -111,12 +111,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                 }
                 //display name
                 //TODO: Check unique
-                if nameText.text == nil || nameText.text == "" {
+                if nameText.text == nil || nameText.text == "" || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 32
+                    || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) < 2  {
                     throw UserValidationError.displayName
                 }
                 //bio
                 if bioText.text == nil || bioText.text == "" || bioText.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 500 {
                     throw UserValidationError.bio
+                }
+                //speaking
+                if languagesSpeaks.text == "Speaks: None".localized || languagesLearning.text == "Speaks: None".localized {
+                    throw UserValidationError.knownLanguages
+                }
+                var index = 0
+                for _ in 0...user.knownLanguages.count{
+                    if user.learningLanguages.contains(user.knownLanguages[index]) {
+                         throw UserValidationError.learningLanguages
+                    }
+                    index += 1
                 }
             }
             
@@ -126,27 +138,30 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             
         catch UserValidationError.userId {
             errorMessage = "Invalid user id"
-            print(errorMessage)
         }
             
         catch UserValidationError.name {
-            errorMessage = "Invalid name"
-            print(errorMessage)
+            errorMessage = "Invalid Name"
         }
             
         catch UserValidationError.displayName {
-            errorMessage = "Invalid display name"
-            print(errorMessage)
+            errorMessage = "Invalid Display Name"
         }
             
         catch UserValidationError.bio {
-            errorMessage = "Invalid bio"
-            print(errorMessage)
+            errorMessage = "Invalid Bio"
         }
             
         catch UserValidationError.age {
-            errorMessage = "Invalid age"
-            print(errorMessage)
+            errorMessage = "Invalid Age"
+        }
+            
+        catch UserValidationError.knownLanguages {
+            errorMessage = "Select A Language"
+        }
+            
+        catch UserValidationError.learningLanguages {
+            errorMessage = "You cannot learn and speak the same language"
         }
             
         catch {
