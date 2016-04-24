@@ -153,11 +153,12 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
            // profileViewCell.sendMessageButton.layer.borderColor = UIColor.blackColor().CGColor
             
             
-            profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.frame.size.height / 2 - 30 ;
+            profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.frame.size.height / 2.5 ;
         }
 
         profileViewCell.sendMessageButton.tag = index
         profileViewCell.profileView.user = matches[index]
+        profileViewCell.layer.borderWidth = 1
 
 
 
