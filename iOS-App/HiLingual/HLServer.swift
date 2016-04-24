@@ -241,17 +241,24 @@ class HLServer {
         return nil
     }
 
+    static var loadedUsers = [Int64: HLUser]()
+
     static func getUserById(id: Int64, session: HLUserSession=HLUser.getCurrentUser().getSession()!) -> HLUser? {
 
         let userURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0].URLByAppendingPathComponent("\(id).user")
 
-        if let cachedUser = NSKeyedUnarchiver.unarchiveObjectWithFile(userURL.path!) as? HLUser {
-            print("Pulled user from cache")
-            return cachedUser
+//        if let cachedUser = NSKeyedUnarchiver.unarchiveObjectWithFile(userURL.path!) as? HLUser {
+//            print("Pulled user from cache")
+//            return cachedUser
+//        }
+        if let user = loadedUsers[id] {
+            return user
         }
 
         if let userDict = sendGETRequestToEndpoint("user/\(id)", withParameterString: nil, authentication: session) {
             let returnedUser = HLUser.fromDict(userDict[0])
+
+            loadedUsers[id] = returnedUser
 
 
             if NSKeyedArchiver.archiveRootObject(returnedUser, toFile: userURL.path!) {
@@ -353,7 +360,7 @@ class HLServer {
 
         return false
     }
-    static func sendImageToProfile(image: UIImage, onUser userId:UInt64) -> NSURL! {
+    static func sendImageToProfile(image: UIImage, onUser userId:UInt64) -> NSURL? {
         
         let boundary = "unique-consistent-string"
         
@@ -369,14 +376,14 @@ class HLServer {
         }
         
         body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        
+         print("before")
         
         if let resultsDicts =  sendRequestToEndpoint("asset/avatar/\(userId)", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body)  {
-                if let imageDict = resultsDicts[0]["image"] as? NSURL {
-                    return imageDict
-                }
+            if let imageURLString = resultsDicts[0]["image"] as? String {
+                return NSURL(string: imageURLString)
+            }
         }
-        print("issue")
+        print("here")
         return nil
 
     }
@@ -400,4 +407,58 @@ class HLServer {
 
         return sendRequestToEndpoint("chat/\(userId)/message/image", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body) != nil
     }
+
+    static func loadImageWithURL(url: NSURL) -> UIImage? {
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let picURL = documentsURL.URLByAppendingPathComponent("\(url.lastPathComponent!).png")
+
+        let image: UIImage?
+        if let data = NSData(contentsOfURL: picURL) {
+            image = UIImage(data: data)?.scaledToSize(180, height: 180)
+        } else {
+
+            ChatViewController.loadFileSync(url, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                print("downloaded to: \(picURL)")
+            })
+
+            if let data = NSData(contentsOfURL: picURL) {
+                image = UIImage(data: data)?.scaledToSize(180, height: 180)
+            } else {
+                print("Failed to load image")
+                image = nil
+            }
+        }
+
+        return image
+    }
+
+    static func loadImageWithURL(url: NSURL, forCell cell: ImageLoadingView, inTableView tableView: UITableView, atIndexPath indexPath: NSIndexPath, withCallback callback:(UIImage) -> ()) {
+        //This weird cell assignment stuff has to be here because of the reuse of cells as the tableview scrolls
+        //And the fact that cellForRowAtIndexPath will return nil if called recursively
+        var loadingCell = cell
+        loadingCell.spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        loadingCell.loadingImageView.image = nil
+        loadingCell.loadingImageView.backgroundColor = UIColor.grayColor()
+        loadingCell.spinner!.center = CGPointMake(loadingCell.loadingImageView.bounds.width/2, loadingCell.loadingImageView.bounds.height/2)
+        loadingCell.loadingImageView.addSubview(loadingCell.spinner!)
+        loadingCell.spinner!.startAnimating()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            if let image = loadImageWithURL(url) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    if var cell = tableView.cellForRowAtIndexPath(indexPath) as? ImageLoadingView {
+                        cell.spinner?.stopAnimating()
+                        cell.spinner?.removeFromSuperview()
+                        cell.spinner = nil
+                        cell.loadingImageView.image = image
+                        callback(image)
+                    }
+                })
+            }
+        })
+    }
+}
+
+protocol ImageLoadingView {
+    var spinner: UIActivityIndicatorView? {get set}
+    weak var loadingImageView: UIImageView! {get}
 }

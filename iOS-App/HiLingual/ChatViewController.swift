@@ -97,14 +97,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         //Caches up to 50 messages on disk
         let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
-        if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
-            //Succeeded in writing to file
-            print("Wrote message cache to disk")
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
+                //Succeeded in writing to file
+                print("Wrote message cache to disk")
+            }
 
-        else {
-            print("Failed to write chat cache")
-        }
+            else {
+                print("Failed to write chat cache")
+            }
+        })
+
 
         if let lastMessage = last50.last {
             if NSKeyedArchiver.archiveRootObject(lastMessage, toFile: chatURL.URLByAppendingPathExtension("last").path!) {
@@ -497,29 +500,10 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //shownPicture.addGestureRecognizer(tap)
             if let image = message.image {
                 shownPicture.image = image
-                cell.spinner?.stopAnimating()
-                if cell.spinner?.superview != nil {
-                    cell.spinner?.removeFromSuperview()
-                }
-                cell.spinner = nil
             } else {
-                shownPicture.image = nil
-                let spinner = UIActivityIndicatorView()
-                cell.spinner = spinner
-                spinner.center = CGPointMake(shownPicture.frame.size.width/2, shownPicture.frame.size.height/2)
-                spinner.activityIndicatorViewStyle = .WhiteLarge
-                shownPicture.addSubview(spinner)
-                spinner.startAnimating()
-                shownPicture.backgroundColor = UIColor.grayColor()
-                message.loadImageWithCallback({ (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let newCell = tableView.cellForRowAtIndexPath(indexPath) as? ChatPictureTableViewCell {
-                            newCell.spinner?.removeFromSuperview()
-                            newCell.spinner = nil
-                            let imageView = message.senderID == self.currentUser.userId ? newCell.rightPicture : newCell.leftPicture
-                            imageView.image = message.image
-                        }
-                    })
+                cell.loadingImageView = shownPicture
+                HLServer.loadImageWithURL(message.pictureURL!, forCell: cell, inTableView: tableView, atIndexPath: indexPath, withCallback: { (image) in
+                    message.image = image
                 })
             }
 
@@ -603,12 +587,20 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    static func loadFileSync(url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
+    static func loadFileSync( url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
         //let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        let urlToLoad: NSURL
+        if url.scheme == "http" {
+            let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+            components.scheme = "https"
+            urlToLoad = components.URL!
+        } else {
+            urlToLoad = url
+        }
         let destinationUrl = writeTo
         if NSFileManager().fileExistsAtPath(destinationUrl.path!) {
             completion(path: destinationUrl.path!, error:nil)
-        } else if let dataFromURL = NSData(contentsOfURL: url){
+        } else if let dataFromURL = NSData(contentsOfURL: urlToLoad){
             if dataFromURL.writeToURL(destinationUrl, atomically: true) {
                 completion(path: destinationUrl.path!, error:nil)
             } else {

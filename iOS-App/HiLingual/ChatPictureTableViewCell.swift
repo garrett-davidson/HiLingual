@@ -10,10 +10,11 @@ import Foundation
 
 import UIKit
 
-class ChatPictureTableViewCell: UITableViewCell {
+class ChatPictureTableViewCell: UITableViewCell, ImageLoadingView {
     
     @IBOutlet weak var leftPicture: UIImageView!
     @IBOutlet weak var rightPicture: UIImageView!
 
+    var loadingImageView: UIImageView!
     var spinner: UIActivityIndicatorView?
 }

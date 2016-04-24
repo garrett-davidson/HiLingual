@@ -83,15 +83,7 @@ class HiLingualUITests: XCTestCase {
         
         let app = XCUIApplication()
         sleep(1)
-        var i: UInt = 0
-        for temp in app.tables.staticTexts.allElementsBoundByIndex {
-            if temp.label == "Current chats"  {
-                i += 1
-                app.tables.staticTexts.elementBoundByIndex(i).tap()
-                break;
-            }
-            i += 1
-        }
+        app.tables.cells.elementBoundByIndex(0).tap()
         
         let element = app.childrenMatchingType(.Window).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element
         element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element.tap()
@@ -132,41 +124,7 @@ class HiLingualUITests: XCTestCase {
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
         
     }
-    func testAEditPictureNoCrash() {
-        let app = XCUIApplication()
-        let tabBarsQuery = app.tabBars
-        let profileButton = tabBarsQuery.buttons["Profile"]
-        profileButton.tap()
-        
-        let hilingualProfileviewNavigationBar = app.navigationBars["HiLingual.ProfileView"]
-        hilingualProfileviewNavigationBar.buttons["Edit"].tap()
-        XCUIApplication().images.elementBoundByIndex(3).tap()
-        
-        
-        let sheetsQuery = app.sheets
-        sheetsQuery.buttons["Cancel"].tap()
-        
-        XCUIApplication().images.elementBoundByIndex(3).tap()
-        
-        app.sheets.collectionViews.buttons["Photo Library"].tap()
-        
-        app.tables.buttons["Camera Roll"].tap()
-        
-        //tester needs to select a photo here
-        sleep(10)
-        
-        
-        XCUIApplication().images.elementBoundByIndex(3).tap()
-        sheetsQuery.collectionViews.buttons["Take Picture"].tap()
 
-        app.buttons["PhotoCapture"].tap()
-        sleep(10)
-        app.buttons["Use Photo"].tap()
-        hilingualProfileviewNavigationBar.buttons["Done"].tap()
-        tabBarsQuery.buttons["Messages"].tap()
-        profileButton.tap()
-        
-    }
     func testEditNamePlainTextSave() {
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
@@ -770,15 +728,7 @@ class HiLingualUITests: XCTestCase {
     func testEditButtonNotShowInTypingMessage() {
         let app = XCUIApplication()
         sleep(1)
-        var i: UInt = 0
-        for temp in app.tables.staticTexts.allElementsBoundByIndex {
-            if temp.label == "Current chats"  {
-                i += 1
-                app.tables.staticTexts.elementBoundByIndex(i).tap()
-                break;
-            }
-            i += 1
-        }
+        app.tables.cells.elementBoundByIndex(0).tap()
         
         let element = app.otherElements["InputView"].childrenMatchingType(.Other).element
         element.childrenMatchingType(.TextView).element.tap()
