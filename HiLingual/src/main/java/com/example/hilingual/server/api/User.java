@@ -6,20 +6,20 @@ package com.example.hilingual.server.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 
 public class User {
     private long userId;
-    @Min(2)
+//    @Min(2)
     private String name;
-    @Size(min = 2, max = 32)
+//    @Size(min = 2, max = 32)
     private String displayName;
-    @Max(500)
+//    @Max(500)
     private String bio;
     private Gender gender;
     private long birthdate;
