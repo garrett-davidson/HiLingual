@@ -43,6 +43,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     var user: HLUser! {
         didSet {
+            ageLabel.userInteractionEnabled = false
             refreshUI()
         }
     }
@@ -89,6 +90,102 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             dispatch_async(dispatch_get_main_queue(), {redraw()})
         }
     }
+    
+    enum UserValidationError: ErrorType {
+        case userId, name, displayName, knownLanguages, learningLanguages, bio, gender, age, profilePicture
+    }
+    
+    func isValidUser() -> Bool {
+        var errorMessage: String = ""
+        
+        do {
+            
+            func validateUser() throws {
+                //userId
+                if user.userId < 1 {
+                    throw UserValidationError.userId
+                }
+                //name
+                if nameLabel.text == nil || nameLabel.text == "" {
+                    throw UserValidationError.name
+                }
+                //display name
+                //TODO: Check unique
+                if nameText.text == nil || nameText.text == "" || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 32
+                    || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) < 2  {
+                    throw UserValidationError.displayName
+                }
+                //bio
+                if bioText.text == nil || bioText.text == "" || bioText.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 500 {
+                    throw UserValidationError.bio
+                }
+                //speaking
+                if languagesSpeaks.text == "Speaks: None".localized || languagesLearning.text == "Speaks: None".localized {
+                    throw UserValidationError.knownLanguages
+                }
+                var index = 0
+                for _ in 1...user.knownLanguages.count{
+                    if user.learningLanguages.contains(user.knownLanguages[index]) {
+                         throw UserValidationError.learningLanguages
+                    }
+                    index += 1
+                }
+                let nameExists = HLServer.getUniqueDisplayName(nameText.text!)
+                if nameExists == "true" {
+                    throw UserValidationError.displayName
+                }
+            }
+            
+            try validateUser()
+            
+        }
+            
+        catch UserValidationError.userId {
+            errorMessage = "Invalid user id"
+        }
+            
+        catch UserValidationError.name {
+            errorMessage = "Invalid Name"
+        }
+            
+        catch UserValidationError.displayName {
+            errorMessage = "Invalid Display Name"
+        }
+            
+        catch UserValidationError.bio {
+            errorMessage = "Invalid Bio"
+        }
+            
+        catch UserValidationError.age {
+            errorMessage = "Invalid Age"
+        }
+            
+        catch UserValidationError.knownLanguages {
+            errorMessage = "Select A Language"
+        }
+            
+        catch UserValidationError.learningLanguages {
+            errorMessage = "You Cannot Learn And Speak The Same Language"
+        }
+            
+        catch {
+        }
+        if(errorMessage != "") {
+            let alertController = UIAlertController(title: nil, message: errorMessage.localized, preferredStyle: .ActionSheet)
+            let okayAction = UIAlertAction(title: "Okay".localized, style: .Cancel) { (action) in
+                return
+            }
+            alertController.addAction(okayAction)
+            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            while((topVC!.presentedViewController) != nil) {
+                topVC = topVC!.presentedViewController
+            }
+            topVC?.presentViewController(alertController, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+
 
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)

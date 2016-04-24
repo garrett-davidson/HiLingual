@@ -25,6 +25,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
             user = HLUser.getCurrentUser()
         }
         editProfileView.user = user
+        editProfileView.ageLabel.userInteractionEnabled = true;
     }
 
     @IBAction func saveUser(sender: AnyObject) {
@@ -32,60 +33,9 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
         //Create a new HLUser user with the information from this view
         //Be sure to call user.save() !!
 
-        if isValidUser(editProfileView.user) {
-            editProfileView.user.save()
+        editProfileView.user.save()
 
-            performSegueWithIdentifier("DoneEditing", sender: self)
-        }
-    }
-
-    enum UserValidationError: ErrorType {
-        case userId, name, displayName, knownLanguages, learningLanguages, bio, gender, birthdata, profilePicture
-    }
-
-    func isValidUser(user: HLUser, showDialogOnInvalid: Bool=false) -> Bool {
-
-        let errorMessage: String
-
-        do {
-
-            func validateUser() throws {
-                //userId
-                if user.userId < 1 {
-                    throw UserValidationError.userId
-                }
-
-                if user.name == nil || user.name == "" {
-                    throw UserValidationError.name
-                }
-
-                //TODO: Check unique
-                if user.displayName == nil || user.displayName == "" {
-                    throw UserValidationError.displayName
-                }
-            }
-
-            try validateUser()
-        }
-
-        catch UserValidationError.userId {
-            errorMessage = "Invalid user id"
-        }
-
-        catch UserValidationError.name {
-        }
-
-        catch UserValidationError.displayName {
-
-        }
-
-        catch {
-
-        }
-
-            
-            
-            return true
+        performSegueWithIdentifier("DoneEditing", sender: self)
     }
 
     func setNewSelectedLanguages(selectedLanguages: [Languages]) {

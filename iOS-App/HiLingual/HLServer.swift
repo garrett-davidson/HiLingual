@@ -43,7 +43,9 @@ class HLServer {
                         else if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? [NSDictionary] {
                             return ret
                         }
-
+                        else if returnString != "" {
+                            return [["result": returnString]]
+                        }
                         else {
                             //We succeeded but the result was empty
                             return [NSDictionary()]
@@ -149,6 +151,11 @@ class HLServer {
         request.HTTPMethod = "GET"
         
         return sendRequest(request)
+    }
+    
+    static func getUniqueDisplayName(name: String) -> String {
+        let ret = sendGETRequestToEndpoint("user/names", withParameterString: "?name=\(name)")
+        return (ret![0]["result"] as? String)!
     }
 
     static func getTranslationForMessage(message: HLMessage, edit:Bool=false, fromLanguage: String?, toLangauge: String="en-US") -> String? {

@@ -95,7 +95,7 @@ class ProfileView: UIView, ImageLoadingView {
     }
 
     init(decoder: NSCoder?, frame: CGRect?) {
-        if (decoder != nil) {
+            if (decoder != nil) {
             super.init(coder: decoder!)!
         }
         else if (frame != nil) {

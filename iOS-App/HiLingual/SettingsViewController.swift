@@ -7,16 +7,73 @@
 //
 
 import UIKit
+import StoreKit
 
-class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,SKPaymentTransactionObserver, SKProductsRequestDelegate {
     
+    var product: SKProduct?
+    var productID = "TranslationsCount"
+    
+    @IBOutlet var purchaseButton: UIBarButtonItem!
     let settings = ["Show Gender".localized, "Show Age".localized, "Show Profile in Matching".localized, "Display Full Name".localized]
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        purchaseButton.enabled = false;
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        getProductInfo()
 
         // Do any additional setup after loading the view.
     }
+    
+    func getProductInfo()
+    {
+        if SKPaymentQueue.canMakePayments() {
+            let request = SKProductsRequest(productIdentifiers: NSSet(objects: self.productID) as! Set<String>)
+            request.delegate = self
+            request.start()
+        } 
+    }
+    
+    
+    func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
+        
+        var products = response.products
+        
+        if (products.count != 0) {
+            product = products[0] as SKProduct
+            purchaseButton.enabled = true
+        }
+    }
+    
+    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        
+        for transaction in transactions {
+            
+            switch transaction.transactionState {
+                
+            case SKPaymentTransactionState.Purchased:
+                self.unlockFeature()
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                
+            case SKPaymentTransactionState.Failed:
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            default:
+                break
+            }
+        }
+    }
+    
+    func unlockFeature() {
+        
+        
+        //send request to server
+        purchaseButton.enabled = false
+    }
+    
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -46,7 +103,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     */
 
     @IBAction func pressedPurchase(sender: AnyObject) {
-        
+        let payment = SKPayment(product: product!)
+        SKPaymentQueue.defaultQueue().addPayment(payment)
         
     }
     @IBAction func pressedDone(sender: AnyObject) {
