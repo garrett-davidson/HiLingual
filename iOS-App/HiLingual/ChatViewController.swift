@@ -603,12 +603,20 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    static func loadFileSync(url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
+    static func loadFileSync( url: NSURL,writeTo:NSURL, completion:(path:String, error:NSError!) -> Void) {
         //let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        let urlToLoad: NSURL
+        if url.scheme == "http" {
+            let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+            components.scheme = "https"
+            urlToLoad = components.URL!
+        } else {
+            urlToLoad = url
+        }
         let destinationUrl = writeTo
         if NSFileManager().fileExistsAtPath(destinationUrl.path!) {
             completion(path: destinationUrl.path!, error:nil)
-        } else if let dataFromURL = NSData(contentsOfURL: url){
+        } else if let dataFromURL = NSData(contentsOfURL: urlToLoad){
             if dataFromURL.writeToURL(destinationUrl, atomically: true) {
                 completion(path: destinationUrl.path!, error:nil)
             } else {

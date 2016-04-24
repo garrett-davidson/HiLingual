@@ -33,7 +33,17 @@ class ProfileView: UIView {
     }
 
     func refreshUI() {
-        imageView.image = user.profilePicture
+        if user.profilePicture != nil {
+            imageView.image = user.profilePicture
+        } else {
+            imageView.image = nil
+            user.loadImageWithCallback({ (image) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.imageView.image = image
+                })
+            })
+        }
+
         if(hiddenName){
             nameLabel.hidden = true
         }

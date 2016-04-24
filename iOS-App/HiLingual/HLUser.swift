@@ -27,6 +27,8 @@ enum Gender: Int {
     var gender: Gender?
     var birthdate: NSDate?
     var profilePicture: UIImage?
+    
+    var profilePictureURL: NSURL?
 
     var blockedUsers: [HLUser]?
     var usersChattedWith: [Int64]
@@ -43,8 +45,9 @@ enum Gender: Int {
     }
 
     private var session: HLUserSession?
+    private var cachedImage: UIImage?
 
-    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePicture: UIImage?) {
+    init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePictureURL: NSURL?) {
         self.userId = userId
         self.name = name
         self.displayName = displayName
@@ -53,10 +56,40 @@ enum Gender: Int {
         self.bio = bio
         self.gender = gender
         self.birthdate = birthdate
-        self.profilePicture = profilePicture
+        self.profilePicture = nil
+        self.profilePictureURL = profilePictureURL
 
         self.usersChattedWith = []
         self.pendingChats = []
+    }
+
+    func loadImageWithCallback(callback: (UIImage)-> ()) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let picURL = documentsURL.URLByAppendingPathComponent("\(self.userId).png")
+
+            if let data = NSData(contentsOfURL: picURL) {
+                self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
+                callback(self.cachedImage!)
+                return
+
+                //assign your image here
+            } else {
+
+                ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                    print("downloaded to: \(picURL)")
+                })
+
+                if let data = NSData(contentsOfURL: picURL) {
+                    self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
+
+                    callback(self.cachedImage!)
+                    return
+                } else {
+                    print("Failed to load image")
+                }
+            }
+        })
     }
 
     @objc required init?(coder aDecoder: NSCoder) {
@@ -71,7 +104,7 @@ enum Gender: Int {
             self.gender = nil
         }
         self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
-        self.profilePicture = aDecoder.decodeObjectForKey("profilePicture") as? UIImage
+        self.profilePictureURL = aDecoder.decodeObjectForKey("profilePictureURL") as? NSURL
         self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
 
         if let chatted2 = (aDecoder.decodeObjectForKey("usersChattedWith2") as? [NSNumber]) {
@@ -157,8 +190,12 @@ enum Gender: Int {
         let birthdayNumber = (userDict["birthdate"] as! NSNumber).doubleValue
         let birthday = NSDate(timeIntervalSince1970: birthdayNumber / 1000)
 
-        //TODO: Load this image
-        let imageURL = userDict["imageURL"]
+        let imageURL: NSURL?
+        if let tempimageURL = userDict["imageURL"] as? String {
+            imageURL = NSURL(string: tempimageURL)
+        } else {
+            imageURL = nil
+        }
 
         let knownLanguagesStrings = userDict["knownLanguages"] as! [String]
         let learningLanguagesStrings = userDict["learningLanguages"] as! [String]
@@ -171,13 +208,34 @@ enum Gender: Int {
             Languages(rawValue: languageString)!
         })
 
-
-
         let name = userDict["name"] as! String
 
-        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePicture: UIImage(named: "cantaloupe"))
+        return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePictureURL:imageURL)
     }
-
+    
+    static func downloadProfilePicture(imageURL: NSURL,user: HLUser){
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+        let picURL = documentsURL.URLByAppendingPathComponent("\(imageURL).png")
+        
+        if let data = NSData(contentsOfURL: picURL) {
+            user.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
+            return
+            //assign your image here
+        } else {
+            
+            ChatViewController.loadFileSync(imageURL, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                print("downloaded to: \(picURL)")
+            })
+            if let data = NSData(contentsOfURL: picURL) {
+                user.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
+                return
+            } else {
+                print("Failed to load image")
+            }
+        }
+        
+    }
+    
     static func fromJSON(jsonData: NSData) -> HLUser? {
         if let obj = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) {
             if let userDict = obj as? NSDictionary {
@@ -211,22 +269,6 @@ enum Gender: Int {
         NSUserDefaults.standardUserDefaults().setObject(userData, forKey: "currentUser")
 
         if toServer {
-              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-               let picurl = HLServer.sendImageToProfile(HLUser.getCurrentUser().profilePicture!, onUser: UInt64(HLUser.getCurrentUser().userId))
-                print(picurl)
-               //HLUser.getCurrentUser().pro
-                //save url to HLUser here
-            })
-
-
-            
-            
-            
-
-
-    //
-    //        //TODO: Implement creating a loggin in to server user
-    //        //That way this doesn't have to be hard-coded
             if let userJSONData = self.toJSON() {
                 let request = NSMutableURLRequest(URL: NSURL(string: "https://gethilingual.com/api/user/\(self.userId)")!)
                 request.allHTTPHeaderFields = ["Content-Type": "application/json", "Authorization": "HLAT " + session.sessionId]
@@ -273,6 +315,10 @@ enum Gender: Int {
             userDict.setObject(birthdate!.timeIntervalSince1970 * 1000, forKey: "birthdate")
         }
 
+        if profilePictureURL != nil {
+            userDict.setObject(profilePictureURL!.absoluteString, forKey: "imageURL")
+        }
+
         let learningLanguagesStrings = learningLanguages.map { (language) -> String in
             language.rawValue
         }
@@ -306,8 +352,8 @@ enum Gender: Int {
         aCoder.encodeObject(bio, forKey: "bio")
         if gender != nil { aCoder.encodeObject(gender!.rawValue, forKey: "gender") }
         aCoder.encodeObject(birthdate, forKey: "birthdate")
-        aCoder.encodeObject(profilePicture, forKey: "profilePicture")
         aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
+        aCoder.encodeObject(profilePictureURL, forKey: "profilePictureURL")
 
         let chatted2 = usersChattedWith.map { (i) -> NSNumber in
             return NSNumber(longLong: i)
@@ -364,9 +410,9 @@ enum Gender: Int {
 
         let testGender = randomGenderArray.random()
         let testBirthDate = NSDate.random()
-        let testImage = UIImage(named: "person")!
+        let testImageURL = NSURL(string: "test.com")!
 
-        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePicture: testImage)
+        return HLUser(userId: testUserId, name: testName, displayName: testDisplayName, knownLanguages: testKnown, learningLanguages: testLearning, bio: testBio, gender: testGender, birthdate: testBirthDate, profilePictureURL: testImageURL)
     }
 }
 

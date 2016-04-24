@@ -353,7 +353,7 @@ class HLServer {
 
         return false
     }
-    static func sendImageToProfile(image: UIImage, onUser userId:UInt64) -> NSURL! {
+    static func sendImageToProfile(image: UIImage, onUser userId:UInt64) -> NSURL? {
         
         let boundary = "unique-consistent-string"
         
@@ -369,14 +369,14 @@ class HLServer {
         }
         
         body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-        
+         print("before")
         
         if let resultsDicts =  sendRequestToEndpoint("asset/avatar/\(userId)", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body)  {
-                if let imageDict = resultsDicts[0]["image"] as? NSURL {
-                    return imageDict
-                }
+            if let imageURLString = resultsDicts[0]["image"] as? String {
+                return NSURL(string: imageURLString)
+            }
         }
-        print("issue")
+        print("here")
         return nil
 
     }

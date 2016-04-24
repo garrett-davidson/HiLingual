@@ -46,7 +46,16 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
     func refreshUI() {
         func redraw() {
-            profileImage.image = user.profilePicture
+            if let image = user.profilePicture {
+                profileImage.image = image
+            } else {
+                user.loadImageWithCallback({ (image) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.profileImage.image
+                    })
+                })
+            }
+
             nameLabel.text = user.name
             nameText.text = user.displayName
 
@@ -167,13 +176,18 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        profileImage.image = EditProfileView.cropToSquare(image: selectedImage);
-        user.profilePicture = EditProfileView.cropToSquare(image: selectedImage);
+        profileImage.image = EditProfileView.cropToSquare(image: selectedImage)
+        user.profilePicture = EditProfileView.cropToSquare(image: selectedImage).rotateImageByOrientation()
 
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil){
             topVC = topVC!.presentedViewController
         }
+
+        if let picurl = HLServer.sendImageToProfile(user.profilePicture!, onUser: UInt64(HLUser.getCurrentUser().userId)) {
+            user.profilePictureURL = picurl
+        }
+
         topVC?.dismissViewControllerAnimated(true, completion: nil)
     }
 
