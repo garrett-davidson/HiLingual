@@ -432,6 +432,28 @@ class HLServer {
         return image
     }
 
+    static func loadImageWithURL(url: NSURL, forView: ImageLoadingView, withCallback callback: (UIImage) -> ()) {
+        var view = forView
+        view.spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        view.loadingImageView.image = nil
+        view.loadingImageView.backgroundColor = UIColor.grayColor()
+        view.spinner!.center = CGPointMake(view.loadingImageView.bounds.width/2, view.loadingImageView.bounds.height/2)
+        view.loadingImageView.addSubview(view.spinner!)
+        view.spinner!.startAnimating()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            if let image = loadImageWithURL(url) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    view.spinner?.removeFromSuperview()
+                    view.spinner?.stopAnimating()
+                    view.spinner = nil
+                    view.spinner = nil
+                    view.loadingImageView.image = image
+                    callback(image)
+                })
+            }
+        })
+    }
+
     static func loadImageWithURL(url: NSURL, forCell cell: ImageLoadingView, inTableView tableView: UITableView, atIndexPath indexPath: NSIndexPath, withCallback callback:(UIImage) -> ()) {
         //This weird cell assignment stuff has to be here because of the reuse of cells as the tableview scrolls
         //And the fact that cellForRowAtIndexPath will return nil if called recursively

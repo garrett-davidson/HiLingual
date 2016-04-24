@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProfileView: UIView {
+class ProfileView: UIView, ImageLoadingView {
     var hiddenName = true
     @IBOutlet var view: UIView!
     @IBOutlet private weak var imageView: UIImageView!
@@ -32,16 +32,16 @@ class ProfileView: UIView {
         }
     }
 
+    var loadingImageView: UIImageView!
+    var spinner: UIActivityIndicatorView?
+
     func refreshUI() {
         func redraw() {
             if user.profilePicture != nil {
                 imageView.image = user.profilePicture
             } else {
-                imageView.image = nil
-                user.loadImageWithCallback({ (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.imageView.image = image
-                    })
+                HLServer.loadImageWithURL(user.profilePictureURL!, forView: self, withCallback: { (image) in
+                    self.user.profilePicture = image
                 })
             }
 
@@ -109,5 +109,6 @@ class ProfileView: UIView {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
+        loadingImageView = imageView
     }
 }
