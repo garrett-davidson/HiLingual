@@ -97,14 +97,17 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         //Caches up to 50 messages on disk
         let last50 = Array(messages[(count >= 50 ? count-50 : 0)..<count])
-        if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
-            //Succeeded in writing to file
-            print("Wrote message cache to disk")
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            if NSKeyedArchiver.archiveRootObject(last50, toFile: chatURL.path!) {
+                //Succeeded in writing to file
+                print("Wrote message cache to disk")
+            }
 
-        else {
-            print("Failed to write chat cache")
-        }
+            else {
+                print("Failed to write chat cache")
+            }
+        })
+
 
         if let lastMessage = last50.last {
             if NSKeyedArchiver.archiveRootObject(lastMessage, toFile: chatURL.URLByAppendingPathExtension("last").path!) {
