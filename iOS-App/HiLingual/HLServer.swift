@@ -478,6 +478,45 @@ class HLServer {
             }
         })
     }
+
+    static func saveFlaschcardRing(flashcards: [HLFlashCard], withName name: String) {
+        var ringDict: [String: AnyObject] = ["name": name]
+        let flashcardJSONArray = flashcards.map { (flashcard) -> [String: String] in
+            ["front": flashcard.frontText!.toBase64()!, "back": flashcard.backText!.toBase64()!]
+        }
+        ringDict["flashcards"] = flashcardJSONArray
+        if let data = try? NSJSONSerialization.dataWithJSONObject([ringDict], options: NSJSONWritingOptions(rawValue: 0)) {
+            sendRequestToEndpoint("user/me/cards", method: "PUT", withData: data)
+        }
+    }
+
+    static func retrieveFlashcards() -> [(String, [HLFlashCard])]? {
+
+        if let ret = sendGETRequestToEndpoint("user/me/cards") {
+            var rings = [(String, [HLFlashCard])]()
+
+            for ringDict in ret {
+                if let name = ringDict["name"] as? String {
+                    var cards = [HLFlashCard]()
+                    if let cardArray = ringDict["flashcards"] as? [NSDictionary] {
+                        for cardDict in cardArray {
+                            if let frontText = (cardDict["front"] as? String)?.fromBase64() {
+                                if let backText = (cardDict["back"] as? String)?.fromBase64() {
+                                    cards.append(HLFlashCard(frontText: frontText, backText: backText))
+                                }
+                            }
+                        }
+                    }
+
+                    rings.append((name, cards))
+                }
+            }
+
+            return rings
+        }
+
+        return nil
+    }
 }
 
 protocol ImageLoadingView {

@@ -35,8 +35,8 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
                 print("Error with creating directory at path: \(createDirectoryError.localizedDescription)")
             }
         }
-        
-        NSKeyedArchiver.archiveRootObject(flashcards, toFile: flashcardDirectory + ringTitle! + ".ring")
+        HLServer.saveFlaschcardRing(flashcards, withName: ringTitle!)
+//        NSKeyedArchiver.archiveRootObject(flashcards, toFile: flashcardDirectory + ringTitle! + ".ring")
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -136,8 +136,4 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         // insert it into the new position
         self.flashcards.insert(val1, atIndex: destinationIndexPath.row)
     }
-
-    
-    
-    
 }
