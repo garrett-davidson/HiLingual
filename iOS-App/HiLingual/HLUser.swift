@@ -45,7 +45,6 @@ enum Gender: Int {
     }
 
     private var session: HLUserSession?
-    private var cachedImage: UIImage?
 
     init(userId: Int64, name: String?, displayName: String?, knownLanguages: [Languages]?, learningLanguages: [Languages]?, bio: String?, gender: Gender?, birthdate: NSDate?, profilePictureURL: NSURL?) {
         self.userId = userId
@@ -69,25 +68,22 @@ enum Gender: Int {
             let picURL = documentsURL.URLByAppendingPathComponent("\(self.userId).png")
 
             if let data = NSData(contentsOfURL: picURL) {
-                self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
-                callback(self.cachedImage!)
+                self.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
+                callback(self.profilePicture!)
                 return
+            }
 
-                //assign your image here
+
+            ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+                print("downloaded to: \(picURL)")
+            })
+
+            if let data = NSData(contentsOfURL: picURL) {
+                self.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
+
+                callback(self.profilePicture!)
             } else {
-
-                ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
-                    print("downloaded to: \(picURL)")
-                })
-
-                if let data = NSData(contentsOfURL: picURL) {
-                    self.cachedImage = UIImage(data: data)?.scaledToSize(180, height: 180)
-
-                    callback(self.cachedImage!)
-                    return
-                } else {
-                    print("Failed to load image")
-                }
+                print("Failed to load image")
             }
         })
     }
