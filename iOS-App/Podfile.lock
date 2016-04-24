@@ -49,6 +49,7 @@ PODS:
   - GoogleUtilities (1.2.0):
     - GoogleSymbolUtilities (~> 1.0)
   - iCarousel (1.8.2)
+  - SPXRevealableView (0.2)
 
 DEPENDENCIES:
   - FBSDKCoreKit
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - Google/CloudMessaging
   - Google/SignIn
   - iCarousel
+  - SPXRevealableView
 
 SPEC CHECKSUMS:
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
@@ -75,5 +77,6 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: eb3965ea12710569c7b80db198a39e39b18613f7
   GoogleUtilities: 85f8ad6b251544286a97163133d042ec95f889c5
   iCarousel: 67c8a43da5a46795b56aadfc96cd36a16f6149b2
+  SPXRevealableView: ae690be7e9fa43d074e37e23d5a6321e01651f4c
 
 COCOAPODS: 0.39.0
