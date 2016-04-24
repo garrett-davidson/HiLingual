@@ -124,11 +124,15 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                     throw UserValidationError.knownLanguages
                 }
                 var index = 0
-                for _ in 0...user.knownLanguages.count{
+                for _ in 1...user.knownLanguages.count{
                     if user.learningLanguages.contains(user.knownLanguages[index]) {
                          throw UserValidationError.learningLanguages
                     }
                     index += 1
+                }
+                let nameExists = HLServer.getUniqueDisplayName(nameText.text!)
+                if nameExists == "true" {
+                    throw UserValidationError.displayName
                 }
             }
             
@@ -161,13 +165,12 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         }
             
         catch UserValidationError.learningLanguages {
-            errorMessage = "You cannot learn and speak the same language"
+            errorMessage = "You Cannot Learn And Speak The Same Language"
         }
             
         catch {
         }
         if(errorMessage != "") {
-            print("alert message")
             let alertController = UIAlertController(title: nil, message: errorMessage.localized, preferredStyle: .ActionSheet)
             let okayAction = UIAlertAction(title: "Okay".localized, style: .Cancel) { (action) in
                 return
