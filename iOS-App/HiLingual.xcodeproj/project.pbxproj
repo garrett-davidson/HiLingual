@@ -23,6 +23,7 @@
 		682D14851C76620600443B7D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682D14841C76620600443B7D /* ProfileView.swift */; };
 		684A89131CBCAA7B00EB0A33 /* AccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686E511B1CBCA2AE00EFD2ED /* AccessoryView.xib */; };
 		6853F3AB1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6853F3AA1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift */; };
+		685611E01CCD377B00CC0C6B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685611DF1CCD377B00CC0C6B /* StoreKit.framework */; };
 		686E4A441CB1578C00152C69 /* ChatEditedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E4A431CB1578C00152C69 /* ChatEditedTableViewCell.swift */; };
 		686E510F1CBC9E0400EFD2ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 686E51111CBC9E0400EFD2ED /* Localizable.strings */; };
 		686E51231CBCA2E200EFD2ED /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686E51251CBCA2E200EFD2ED /* ProfileView.xib */; };
@@ -101,6 +102,7 @@
 		684A89111CBCA74800EB0A33 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ProfileView.strings; sourceTree = "<group>"; };
 		684A89121CBCA74A00EB0A33 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ProfileView.strings; sourceTree = "<group>"; };
 		6853F3AA1CB5F17F00760BCF /* ChatVoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVoiceTableViewCell.swift; sourceTree = "<group>"; };
+		685611DF1CCD377B00CC0C6B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		686E4A431CB1578C00152C69 /* ChatEditedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatEditedTableViewCell.swift; sourceTree = "<group>"; };
 		686E510A1CBC9B1300EFD2ED /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		686E510B1CBC9B1300EFD2ED /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BC89A0812899C2EA9094DAD /* libPods.a in Frameworks */,
+				685611E01CCD377B00CC0C6B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +295,7 @@
 		86B540B64189528E52AF2426 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				685611DF1CCD377B00CC0C6B /* StoreKit.framework */,
 				44B4BB672C9B413EC256F1DA /* libPods.a */,
 			);
 			name = Frameworks;
@@ -382,6 +386,9 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = FL8523SFDK;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
