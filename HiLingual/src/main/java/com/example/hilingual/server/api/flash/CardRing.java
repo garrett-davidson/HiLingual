@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CardRing {
 
     private String name;
-    private Card[] ring;
+    private Card[] flashcards;
 
     public CardRing() {
     }
@@ -21,13 +21,13 @@ public class CardRing {
     }
 
     @JsonProperty
-    public Card[] getRing() {
-        return ring;
+    public Card[] getFlashcards() {
+        return flashcards;
     }
 
     @JsonProperty
-    public void setRing(Card[] ring) {
-        this.ring = ring;
+    public void setFlashcards(Card[] flashcards) {
+        this.flashcards = flashcards;
     }
 
 }
