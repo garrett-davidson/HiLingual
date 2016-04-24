@@ -65,7 +65,7 @@ enum Gender: Int {
     func loadImageWithCallback(callback: (UIImage)-> ()) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-            let picURL = documentsURL.URLByAppendingPathComponent("\(self.userId).png")
+            let picURL = documentsURL.URLByAppendingPathComponent("\(self.profilePictureURL!.lastPathComponent!).png")
 
             if let data = NSData(contentsOfURL: picURL) {
                 self.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
