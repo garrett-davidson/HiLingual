@@ -40,7 +40,10 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     
     var user: HLUser! {
         didSet {
-            refreshUI()
+            //ageLabel.userInteractionEnabled = false;
+            //if isValidUser(user) {
+                refreshUI()
+           // }
         }
     }
 
@@ -79,6 +82,69 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             dispatch_async(dispatch_get_main_queue(), {redraw()})
         }
     }
+    
+    enum UserValidationError: ErrorType {
+        case userId, name, displayName, knownLanguages, learningLanguages, bio, gender, age, profilePicture
+    }
+    
+    func isValidUser(user: HLUser, showDialogOnInvalid: Bool=false) -> Bool {
+        
+        let errorMessage: String
+        
+        do {
+            
+            func validateUser() throws {
+                //userId
+                if user.userId < 1 {
+                    throw UserValidationError.userId
+                }
+                //name
+                if user.name == nil || user.name == "" {
+                    throw UserValidationError.name
+                }
+                //display name
+                //TODO: Check unique
+                if user.displayName == nil || user.displayName == "" {
+                    throw UserValidationError.displayName
+                }
+                //bio
+                if user.bio == nil || user.bio == "" || user.bio?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 500 {
+                    throw UserValidationError.bio
+                }
+            }
+            
+            try validateUser()
+        }
+            
+        catch UserValidationError.userId {
+            errorMessage = "Invalid user id"
+        }
+            
+        catch UserValidationError.name {
+            errorMessage = "Invalid name"
+        }
+            
+        catch UserValidationError.displayName {
+            errorMessage = "Invalid display name"
+        }
+            
+        catch UserValidationError.bio {
+            errorMessage = "Invalid bio"
+        }
+            
+        catch UserValidationError.age {
+            errorMessage = "Invalid age"
+        }
+            
+        catch {
+            
+        }
+        
+        
+        
+        return true
+    }
+
 
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
