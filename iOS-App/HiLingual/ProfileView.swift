@@ -33,53 +33,61 @@ class ProfileView: UIView {
     }
 
     func refreshUI() {
-        if user.profilePicture != nil {
-            imageView.image = user.profilePicture
-        } else {
-            imageView.image = nil
-            user.loadImageWithCallback({ (image) in
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.imageView.image = image
+        func redraw() {
+            if user.profilePicture != nil {
+                imageView.image = user.profilePicture
+            } else {
+                imageView.image = nil
+                user.loadImageWithCallback({ (image) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.imageView.image = image
+                    })
                 })
-            })
-        }
+            }
 
-        if(hiddenName){
-            nameLabel.hidden = true
-        }
-        else {
+            if(hiddenName){
+                nameLabel.hidden = true
+            }
+            else {
+                nameLabel.text = user.name
+            }
             nameLabel.text = user.name
+            displayNameLabel.text = user.displayName
+            if (user.age != nil) {
+                ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
+            }
+            else {
+                ageLabel.text = "Not Specified".localized
+            }
+            
+            if user.gender != nil {
+                genderLabel.text = "\(user.gender!)".localized
+            }
+            else {
+                genderLabel.text = "Not Specified".localized
+            }
+
+            let knownList = user.knownLanguages.toList()
+            let learningList = user.learningLanguages.toList()
+
+            speaksLabel.text = "Speaks:".localized + " " + (knownList == "" ? "None".localized : knownList)
+            learningLabel.text = "Learning:".localized + " " + (learningList == "" ? "None".localized : learningList)
+            bioTextView.text = user.bio
+
+            if (!editing) {
+                bioTextView.editable = false
+            }
+            else {
+                bioTextView.editable = true
+            }
         }
-        nameLabel.text = user.name
-        displayNameLabel.text = user.displayName
-        if (user.age != nil) {
-            ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
+
+        if NSThread.isMainThread() {
+            redraw()
         }
         else {
-            ageLabel.text = "Not Specified".localized
+            dispatch_async(dispatch_get_main_queue(), {redraw()})
         }
-        
-        if user.gender != nil {
-            genderLabel.text = "\(user.gender!)".localized
-        }
-        else {
-            genderLabel.text = "Not Specified".localized
-        }
-
-        let knownList = user.knownLanguages.toList()
-        let learningList = user.learningLanguages.toList()
-
-        speaksLabel.text = "Speaks:".localized + " " + (knownList == "" ? "None".localized : knownList)
-        learningLabel.text = "Learning:".localized + " " + (learningList == "" ? "None".localized : learningList)
-        bioTextView.text = user.bio
-
-        if (!editing) {
-            bioTextView.editable = false
-        }
-        else {
-            bioTextView.editable = true
-        }
-
     }
 
     convenience required init?(coder aDecoder: NSCoder) {
