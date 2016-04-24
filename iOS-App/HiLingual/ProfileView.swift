@@ -110,5 +110,12 @@ class ProfileView: UIView, ImageLoadingView {
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
         loadingImageView = imageView
+        
+        imageView.layer.cornerRadius = imageView.frame.size.height / 2
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 0
+        imageView.layer.borderWidth = 3.0
+        imageView.layer.borderColor = UIColor.blackColor().CGColor
+
     }
 }
