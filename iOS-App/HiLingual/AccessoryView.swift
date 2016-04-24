@@ -71,8 +71,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     func didEndEditing() {
         isEditing = false
 
-        leftButton.setImage(UIImage(named: "Microphone-128"), forState: .Normal)
-        sendButton.setTitle("Send".localized, forState: .Normal)
+        leftButton.setImage(nil, forState: .Normal)
+        leftButton.setTitle("\u{f083}", forState: .Normal)
 
         textView.text = ""
         textView.scrollEnabled = false
@@ -124,6 +124,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
 
         guard !isEditing else {
             //We don't want to do anything on touch down if we're editing
+            didEndEditing()
             return
         }
 
