@@ -19,6 +19,7 @@ import com.example.hilingual.server.service.LocalizationService;
 import com.google.inject.Inject;
 import io.dropwizard.jersey.PATCH;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -28,7 +29,6 @@ import javax.ws.rs.core.MediaType;
  * <b>Endpoint base path:</b> /user/{user-id}
  * <br/>
  * <b>Endpoints:</b>
- *
  */
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
@@ -103,7 +103,7 @@ public class UserResource {
 
     @PUT
     @Path("me/cards")
-    public CardRing[] putCards( @HeaderParam("Authorization") String hlat,
+    public CardRing[] putCards(@HeaderParam("Authorization") String hlat,
                                CardRing[] rings) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
@@ -117,7 +117,8 @@ public class UserResource {
 
     @PATCH
     @Path("{user-id}")
-    public User updateUser(@PathParam("user-id") long userId, User user, @HeaderParam("Authorization") String hlat) {
+    public User updateUser(@PathParam("user-id") long userId, @Valid User user,
+                           @HeaderParam("Authorization") String hlat) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
         long authUserId = sessionDAO.getSessionOwner(sessionId);
@@ -146,7 +147,10 @@ public class UserResource {
         }
         //  Update non-null editable fields
         if (user.getDisplayName() != null) {
-            storedUser.setDisplayName(user.getDisplayName());
+            //  Check if unique
+            if (userDAO.isNameUnique(user.getDisplayName())) {
+                storedUser.setDisplayName(user.getDisplayName());
+            }
         }
         if (user.getBio() != null) {
             storedUser.setBio(user.getBio());
@@ -171,6 +175,13 @@ public class UserResource {
         }
         userDAO.updateUser(storedUser);
         return storedUser;
+    }
+
+    @GET
+    @Path("names")
+    public String checkDisplayNameAvailability(@QueryParam("name") String name,
+                                               @HeaderParam("Authorization") String hlat) {
+        return Boolean.toString(userDAO.isNameUnique(name));
     }
 
 

@@ -30,4 +30,6 @@ public interface UserDAO extends Managed {
 
     void truncate();
 
+    boolean isNameUnique(String name);
+
 }

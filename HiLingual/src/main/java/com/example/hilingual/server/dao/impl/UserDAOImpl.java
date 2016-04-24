@@ -132,6 +132,14 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public boolean isNameUnique(String name) {
+        return handle.createQuery("SELECT * FROM hl_users WHERE display_name = :displayname").
+                bind("displayname", name).
+                map(new UserMapper()).
+                first() == null;
+    }
+
+    @Override
     public void start() throws Exception {
         handle = dbi.open();
         init();
