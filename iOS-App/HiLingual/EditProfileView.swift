@@ -131,7 +131,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                     index += 1
                 }
                 let nameExists = HLServer.getUniqueDisplayName(nameText.text!)
-                if nameExists == "true" &&  nameText.text != user.displayName {
+                if nameExists == "true" {
                     throw UserValidationError.displayName
                 }
             }
