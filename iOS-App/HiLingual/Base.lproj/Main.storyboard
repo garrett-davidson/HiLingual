@@ -893,7 +893,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVZ-WE-2Oy" customClass="iCarousel">
                                 <rect key="frame" x="0.0" y="72" width="600" height="479"/>
-                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.019607843140000001" green="0.40000000000000002" blue="0.55294117649999996" alpha="1" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="Carousel"/>
                                 <connections>
                                     <outlet property="dataSource" destination="EA8-An-G2I" id="QCN-rB-Pd7"/>
