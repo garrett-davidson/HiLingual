@@ -24,6 +24,7 @@ public class TruncateTask extends Task {
     private final SessionDAO sessionDAO;
     private final ChatMessageDAO chatMessageDAO;
     private final DeviceTokenDAO deviceTokenDAO;
+    private final CardDAO cardDAO;
 
     @Inject
     public TruncateTask(UserDAO userDAO,
@@ -31,7 +32,8 @@ public class TruncateTask extends Task {
                         GoogleIntegrationDAO googleIntegrationDAO,
                         SessionDAO sessionDAO,
                         ChatMessageDAO chatMessageDAO,
-                        DeviceTokenDAO deviceTokenDAO) {
+                        DeviceTokenDAO deviceTokenDAO,
+                        CardDAO cardDAO) {
         super("truncate-databases");
         this.userDAO = userDAO;
         this.facebookIntegrationDAO = facebookIntegrationDAO;
@@ -39,6 +41,7 @@ public class TruncateTask extends Task {
         this.sessionDAO = sessionDAO;
         this.chatMessageDAO = chatMessageDAO;
         this.deviceTokenDAO = deviceTokenDAO;
+        this.cardDAO = cardDAO;
     }
 
     @Override
@@ -51,18 +54,21 @@ public class TruncateTask extends Task {
             output.flush();
             return;
         }
-        output.println("Truncating user database (1/6)...");
+        output.println("Truncating user database (1/7)...");
         userDAO.truncate();
-        output.println("Truncating Facebook database (2/6)...");
+        output.println("Truncating Facebook database (2/7)...");
         facebookIntegrationDAO.truncate();
-        output.println("Truncating Google database (3/6)...");
+        output.println("Truncating Google database (3/7)...");
         googleIntegrationDAO.truncate();
-        output.println("Truncating session database (4/6)...");
+        output.println("Truncating session database (4/7)...");
         sessionDAO.truncate();
-        output.println("Truncating chat database (5/6)...");
+        output.println("Truncating chat database (5/7)...");
         chatMessageDAO.truncate();
-        output.println("Truncating device token database (6/6)...");
+        output.println("Truncating device token database (6/7)...");
         deviceTokenDAO.truncate();
+        output.println("Truncating card database (7/7)...");
+        cardDAO.truncate();
+
         output.println("Databases truncated. I hope you knew what you were doing.");
     }
 }

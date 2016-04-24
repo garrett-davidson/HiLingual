@@ -116,6 +116,7 @@ public class Main extends Application<ServerConfig> {
         l.manage(create(MsftTranslateService.class));
         l.manage(create(SlackStatusInformationService.class));
         l.manage(create(LocalizationService.class));
+        l.manage(create(CardDAO.class));
 
         //  Tasks
         LOGGER.info("Registering tasks");

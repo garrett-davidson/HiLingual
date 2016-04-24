@@ -11,6 +11,8 @@ package com.example.hilingual.server.resources;
 
 import com.example.hilingual.server.api.LocaleSetting;
 import com.example.hilingual.server.api.User;
+import com.example.hilingual.server.api.flash.CardRing;
+import com.example.hilingual.server.dao.CardDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.service.LocalizationService;
@@ -35,13 +37,18 @@ public class UserResource {
 
     private final SessionDAO sessionDAO;
     private final UserDAO userDAO;
+    private final CardDAO cardDAO;
     private final LocalizationService localizationService;
 
 
     @Inject
-    public UserResource(SessionDAO sessionDAO, UserDAO userDAO, LocalizationService localizationService) {
+    public UserResource(SessionDAO sessionDAO,
+                        UserDAO userDAO,
+                        CardDAO cardDAO,
+                        LocalizationService localizationService) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
+        this.cardDAO = cardDAO;
         this.localizationService = localizationService;
     }
 
@@ -80,6 +87,32 @@ public class UserResource {
             return user;
         }
         throw new NotFoundException();
+    }
+
+    @GET
+    @Path("me/cards")
+    public CardRing[] getCards(@HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        return cardDAO.getCards(authUserId);
+    }
+
+    @PUT
+    @Path("me/cards")
+    public CardRing[] putCards( @HeaderParam("Authorization") String hlat,
+                               CardRing[] rings) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        cardDAO.setCards(rings, authUserId);
+        return cardDAO.getCards(authUserId);
     }
 
     @PATCH

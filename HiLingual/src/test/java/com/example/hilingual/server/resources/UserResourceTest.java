@@ -2,6 +2,7 @@ package com.example.hilingual.server.resources;
 
 import com.example.hilingual.server.api.Gender;
 import com.example.hilingual.server.api.User;
+import com.example.hilingual.server.dao.CardDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.service.LocalizationService;
@@ -28,10 +29,11 @@ public class UserResourceTest {
     public static final String SEARCH_QUERY = "potato";
     private static SessionDAO sessionDAO = mock(SessionDAO.class);
     private static UserDAO userDAO = mock(UserDAO.class);
+    private static CardDAO cardDAO = mock(CardDAO.class);
     private static LocalizationService localizationService = mock(LocalizationService.class);
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder().
-            addResource(new UserResource(sessionDAO, userDAO, localizationService)).
+            addResource(new UserResource(sessionDAO, userDAO, cardDAO, localizationService)).
             build();
     private static User JIMMY = new User(JIMMY_ID, "Jimmy", "jjim", "potato", Gender.MALE, 2000, null,
             new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), true);
