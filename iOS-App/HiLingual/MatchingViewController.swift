@@ -137,17 +137,23 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             profileViewCell = MatchProfileView(frame: CGRect(x: 0, y: 0, width: width, height: height))
             
             profileViewCell.sendMessageButton = UIButton(type: .System)
+            profileViewCell.sendMessageButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 48)
+            profileViewCell.sendMessageButton.setTitle("\u{f086}", forState: UIControlState.Normal)
 
-            profileViewCell.sendMessageButton.setTitle("Send Message".localized, forState: .Normal)
             profileViewCell.sendMessageButton.addTarget(self, action: #selector(MatchingViewController.sendMessageButtonPressed(_:)), forControlEvents: .TouchUpInside)
 
             profileViewCell.profileView.addSubview(profileViewCell.sendMessageButton)
 
             //Yay magic numbers! 💩
             //We'll change this when we convert this to a scroll view
-            profileViewCell.sendMessageButton.frame.size = CGSize(width: profileViewCell.profileView.frame.size.width, height: 12)
-            profileViewCell.sendMessageButton.center.x = profileViewCell.profileView.frame.size.width/2
-            profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.frame.size.height - 20;
+            profileViewCell.sendMessageButton.frame.size = CGSize(width: profileViewCell.profileView.frame.size.width/3, height: 30)
+            profileViewCell.sendMessageButton.center.x = profileViewCell.profileView.frame.size.width/1.2
+           // profileViewCell.sendMessageButton.layer.cornerRadius = 5
+            //profileViewCell.sendMessageButton.layer.borderWidth = 1
+           // profileViewCell.sendMessageButton.layer.borderColor = UIColor.blackColor().CGColor
+            
+            
+            profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.frame.size.height / 2 - 30 ;
         }
 
         profileViewCell.sendMessageButton.tag = index

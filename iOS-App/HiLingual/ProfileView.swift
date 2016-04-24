@@ -87,7 +87,7 @@ class ProfileView: UIView {
     }
 
     init(decoder: NSCoder?, frame: CGRect?) {
-        if (decoder != nil) {
+            if (decoder != nil) {
             super.init(coder: decoder!)!
         }
         else if (frame != nil) {
@@ -101,5 +101,12 @@ class ProfileView: UIView {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
+        
+        imageView.layer.cornerRadius = imageView.frame.size.height / 2
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 0
+        imageView.layer.borderWidth = 3.0
+        imageView.layer.borderColor = UIColor.blackColor().CGColor
+
     }
 }
