@@ -24,22 +24,29 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let fileManager = NSFileManager.defaultManager()
-        if let enumerator = fileManager.enumeratorAtPath(flashcardDirectory) {
+//        let fileManager = NSFileManager.defaultManager()
+//        if let enumerator = fileManager.enumeratorAtPath(flashcardDirectory) {
             flashcardTitle.removeAll()
             flashcards.removeAll()
-            while let ringFile = enumerator.nextObject() as? String {
-                if ringFile.hasSuffix(".ring") {
-                    if let ringTitle = ringFile.componentsSeparatedByString(".").first {
-                        if let ring = NSKeyedUnarchiver.unarchiveObjectWithFile(flashcardDirectory + ringFile) as? [HLFlashCard] {
-                            flashcards.append(ring)
-                            flashcardTitle.append(ringTitle)
-                            flashcardTable.reloadData()
-                        }
-                    }
-                }
+        if let rings = HLServer.retrieveFlashcards() {
+            for (ringName, cards) in rings {
+                flashcardTitle.append(ringName)
+                flashcards.append(cards)
             }
+            flashcardTable.reloadData()
         }
+//            while let ringFile = enumerator.nextObject() as? String {
+//                if ringFile.hasSuffix(".ring") {
+//                    if let ringTitle = ringFile.componentsSeparatedByString(".").first {
+//                        if let ring = NSKeyedUnarchiver.unarchiveObjectWithFile(flashcardDirectory + ringFile) as? [HLFlashCard] {
+//                            flashcards.append(ring)
+//                            flashcardTitle.append(ringTitle)
+//                            flashcardTable.reloadData()
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     @IBAction func AddFlashCard(sender: AnyObject) {
@@ -119,9 +126,7 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         //send to server
         
     }
-    func tableView(tableView: UITableView,
-                            moveRowAtIndexPath sourceIndexPath: NSIndexPath,
-                                               toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         // remove the dragged row's model
         let val = self.flashcardTitle.removeAtIndex(sourceIndexPath.row)
         let val1 = self.flashcards.removeAtIndex(sourceIndexPath.row)

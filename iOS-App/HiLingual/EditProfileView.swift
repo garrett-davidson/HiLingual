@@ -8,8 +8,7 @@
 
 import UIKit
 
-
-class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextViewDelegate {
+class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextViewDelegate, ImageLoadingView {
 
     enum PickerField {
         case Gender, Age
@@ -38,7 +37,10 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     @IBOutlet weak var languagesSpeaks: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var toolBar: UIToolbar!
-    
+
+    var loadingImageView: UIImageView!
+    var spinner: UIActivityIndicatorView?
+
     var user: HLUser! {
         didSet {
             ageLabel.userInteractionEnabled = false
@@ -51,10 +53,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             if let image = user.profilePicture {
                 profileImage.image = image
             } else {
-                user.loadImageWithCallback({ (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.profileImage.image
-                    })
+                HLServer.loadImageWithURL(user.profilePictureURL!, forView: self, withCallback: { (image) in
+                    self.user.profilePicture = image
                 })
             }
 
@@ -417,7 +417,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         languagesSpeaks.layer.borderColor = UIColor.grayColor().CGColor
         languagesSpeaks.layer.cornerRadius = 5
          */
-        
+
+        loadingImageView = profileImage
     }
     
     

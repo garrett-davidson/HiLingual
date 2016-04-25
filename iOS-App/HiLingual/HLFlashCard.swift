@@ -27,4 +27,18 @@ class HLFlashCard: NSObject, NSCoding {
         self.backText = backText
         self.frontText = frontText
     }
+
+    func toJSON() -> NSData? {
+        let userDict = NSMutableDictionary()
+
+        if frontText != nil {
+            userDict.setObject(frontText!, forKey: "front")
+        }
+
+        if backText != nil {
+            userDict.setObject(backText!, forKey: "back")
+        }
+
+        return try? NSJSONSerialization.dataWithJSONObject(userDict, options: NSJSONWritingOptions(rawValue: 0))
+    }
 }

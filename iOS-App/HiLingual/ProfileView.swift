@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProfileView: UIView {
+class ProfileView: UIView, ImageLoadingView {
     var hiddenName = true
     @IBOutlet var view: UIView!
     @IBOutlet private weak var imageView: UIImageView!
@@ -32,54 +32,62 @@ class ProfileView: UIView {
         }
     }
 
+    var loadingImageView: UIImageView!
+    var spinner: UIActivityIndicatorView?
+
     func refreshUI() {
-        if user.profilePicture != nil {
-            imageView.image = user.profilePicture
-        } else {
-            imageView.image = nil
-            user.loadImageWithCallback({ (image) in
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.imageView.image = image
+        func redraw() {
+            if user.profilePicture != nil {
+                imageView.image = user.profilePicture
+            } else {
+                HLServer.loadImageWithURL(user.profilePictureURL!, forView: self, withCallback: { (image) in
+                    self.user.profilePicture = image
                 })
-            })
-        }
+            }
 
-        if(hiddenName){
-            nameLabel.hidden = true
-        }
-        else {
+            if(hiddenName){
+                nameLabel.hidden = true
+            }
+            else {
+                nameLabel.text = user.name
+            }
             nameLabel.text = user.name
+            displayNameLabel.text = user.displayName
+            if (user.age != nil) {
+                ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
+            }
+            else {
+                ageLabel.text = "Not Specified".localized
+            }
+            
+            if user.gender != nil {
+                genderLabel.text = "\(user.gender!)".localized
+            }
+            else {
+                genderLabel.text = "Not Specified".localized
+            }
+
+            let knownList = user.knownLanguages.toList()
+            let learningList = user.learningLanguages.toList()
+
+            speaksLabel.text = "Speaks:".localized + " " + (knownList == "" ? "None".localized : knownList)
+            learningLabel.text = "Learning:".localized + " " + (learningList == "" ? "None".localized : learningList)
+            bioTextView.text = user.bio
+
+            if (!editing) {
+                bioTextView.editable = false
+            }
+            else {
+                bioTextView.editable = true
+            }
         }
-        nameLabel.text = user.name
-        displayNameLabel.text = user.displayName
-        if (user.age != nil) {
-            ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
+
+        if NSThread.isMainThread() {
+            redraw()
         }
         else {
-            ageLabel.text = "Not Specified".localized
+            dispatch_async(dispatch_get_main_queue(), {redraw()})
         }
-        
-        if user.gender != nil {
-            genderLabel.text = "\(user.gender!)".localized
-        }
-        else {
-            genderLabel.text = "Not Specified".localized
-        }
-
-        let knownList = user.knownLanguages.toList()
-        let learningList = user.learningLanguages.toList()
-
-        speaksLabel.text = "Speaks:".localized + " " + (knownList == "" ? "None".localized : knownList)
-        learningLabel.text = "Learning:".localized + " " + (learningList == "" ? "None".localized : learningList)
-        bioTextView.text = user.bio
-
-        if (!editing) {
-            bioTextView.editable = false
-        }
-        else {
-            bioTextView.editable = true
-        }
-
     }
 
     convenience required init?(coder aDecoder: NSCoder) {
@@ -101,6 +109,7 @@ class ProfileView: UIView {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
+        loadingImageView = imageView
         
         imageView.layer.cornerRadius = imageView.frame.size.height / 2
         imageView.layer.masksToBounds = true

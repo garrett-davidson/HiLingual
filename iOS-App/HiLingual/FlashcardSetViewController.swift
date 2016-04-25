@@ -35,10 +35,10 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
             }else{
                 view.flashcardView.label.text = random[index].backText
             }
-        }else{
+        } else {
             if flipped[index] == false {
                 view.flashcardView.label.text = flashcards[index].frontText
-            }else{
+            } else {
                 view.flashcardView.label.text = flashcards[index].backText
             }
         }
@@ -53,7 +53,7 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         
         if flipped[index] == true{
             flipped[index] = false
-        }else{
+        } else {
             flipped[index] = true
         }
         carousel.reloadItemAtIndex(index, animated: true)
