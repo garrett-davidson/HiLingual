@@ -255,6 +255,10 @@ class HLServer {
     static func unblockUser(userID: Int64) {
         sendRequestToEndpoint("user/\(userID)/block", method: "DELETE")
     }
+    
+    static func reportUser(userID: Int64, reason: String!) {
+        sendRequestToEndpoint("user/\(userID)/report", method: "POST", withDictionary: ["reason": reason])
+    }
 
     static var loadedUsers = [Int64: HLUser]()
 
