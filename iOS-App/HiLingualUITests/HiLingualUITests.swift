@@ -999,22 +999,6 @@ class HiLingualUITests: XCTestCase {
             tempElement = app.tables.childrenMatchingType(.Cell).matchingIdentifier("ChatTableViewCell").elementBoundByIndex(j)
         }
     }
-    
-    func testAappCreation() {
-        
-//        let app = XCUIApplication()
-//        app.buttons["GoogleSignButton"].tap()
-//        let webViewsQuery = app.webViews
-//        webViewsQuery.textFields["Enter your email"].tap()
-//        webViewsQuery.textFields["Enter your email"].typeText("sirjosephsavastano@gmail.com")
-//        XCUIApplication().buttons["Go"].tap()
-//        webViewsQuery.secureTextFields["Password"].tap()
-//        webViewsQuery.secureTextFields["Password"].typeText("ifucking")
-//        XCUIApplication().buttons["Go"].tap()
-//        sleep(10)
-//        app.tabBars.buttons["Profile"].tap()
-//        
-    }
     func testFlashCardNoCrash() {
         let app = XCUIApplication()
         let tabBarsQuery = app.tabBars
