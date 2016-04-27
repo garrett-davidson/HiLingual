@@ -28,5 +28,18 @@ class DetailViewController: UIViewController {
         profileView.user = user
         
     }
+    @IBAction func tapReport(sender: AnyObject) {
+        if(self.navigationItem.rightBarButtonItem?.title == "Report/Block".localized){
+            self.navigationItem.rightBarButtonItem?.title = "Unblock".localized
+            HLServer.blockUser(user.userId)
+        }
+        else {
+            self.navigationItem.rightBarButtonItem?.title = "Report/Block".localized
+            HLServer.unblockUser(user.userId)
+        }
+    }
+
+    
+    
 
 }
