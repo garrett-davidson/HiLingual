@@ -933,14 +933,14 @@
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1of-ER-rhA">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" ambiguous="YES" misplaced="YES" text="Learning:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1of-ER-rhA">
                                                                     <rect key="frame" x="0.0" y="21" width="71" height="21"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="SearchResultLanguageLearningLabel"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" ambiguous="YES" misplaced="YES" text="  Speaks:" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xd6-Dl-92U">
                                                                     <rect key="frame" x="0.0" y="41" width="70" height="21"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="SearchResultLanguageSpeakingLabel"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -948,10 +948,6 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
-                                                            <constraints>
-                                                                <constraint firstItem="Kzu-Zh-LvB" firstAttribute="height" secondItem="1of-ER-rhA" secondAttribute="height" id="4ft-d5-SB3"/>
-                                                                <constraint firstItem="1of-ER-rhA" firstAttribute="height" secondItem="Xd6-Dl-92U" secondAttribute="height" id="MVf-5J-d8W"/>
-                                                            </constraints>
                                                         </stackView>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPl-gv-Ufh">
                                                             <rect key="frame" x="483" y="24" width="101" height="30"/>
@@ -975,8 +971,8 @@
                                         <connections>
                                             <outlet property="langaugesLearning" destination="1of-ER-rhA" id="ZZ1-Tg-vGL"/>
                                             <outlet property="languagesSpeaks" destination="Xd6-Dl-92U" id="CyU-Ns-qDr"/>
+                                            <outlet property="loadingImageView" destination="hvv-XV-Jgu" id="Smb-eY-vpz"/>
                                             <outlet property="name" destination="Kzu-Zh-LvB" id="3YX-s5-m5J"/>
-                                            <outlet property="profilePicture" destination="hvv-XV-Jgu" id="qaW-46-GjT"/>
                                             <outlet property="sendRequestButton" destination="hPl-gv-Ufh" id="P0l-VP-TJh"/>
                                         </connections>
                                     </tableViewCell>

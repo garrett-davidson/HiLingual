@@ -30,6 +30,9 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchResults = []
+        searchTable.reloadData()
         searchTable.hidden = true
         searchBar.showsCancelButton = false
         searchBar.showsSearchResultsButton = false
@@ -58,6 +61,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         }
     }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchResults = []
+        searchTable.reloadData()
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -80,11 +88,20 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         let cellIdentity = "SearchTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
         let user = searchResults[indexPath.row]
+        
         cell.name.text = user.displayName
-        cell.profilePicture.layer.masksToBounds = false
-        cell.profilePicture.layer.cornerRadius = cell.profilePicture.frame.height/2
-        cell.profilePicture.clipsToBounds = true
-        cell.profilePicture.image = user.profilePicture
+        cell.loadingImageView.layer.masksToBounds = false
+        cell.loadingImageView.layer.cornerRadius = cell.loadingImageView.frame.height/2
+        cell.loadingImageView.clipsToBounds = true
+        if user.profilePicture != nil {
+            cell.loadingImageView.image = user.profilePicture
+        } else {
+            HLServer.loadImageWithURL(user.profilePictureURL!, forCell: cell, inTableView: tableView, atIndexPath: indexPath, withCallback: { (image) in
+                user.profilePicture = image
+            })
+        }
+        cell.sendRequestButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 28)
+        cell.sendRequestButton.setTitle("\u{f086}", forState: UIControlState.Normal)
         cell.sendRequestButton.tag = indexPath.row
         //Mark: Fills the view
         cell.langaugesLearning.text! = "Learning:".localized + " " + user.learningLanguages.toList()
@@ -153,7 +170,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
            // profileViewCell.sendMessageButton.layer.borderColor = UIColor.blackColor().CGColor
             
             
-            profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.frame.size.height / 2.5 ;
+            profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.loadingImageView.center.y + 120
         }
 
         profileViewCell.sendMessageButton.tag = index
