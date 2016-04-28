@@ -289,7 +289,7 @@ public class UserResource {
     }
 
     @POST
-    @Path("{user-id}/block")
+    @Path("{user-id}/report")
     public void reportUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat, @Valid Report report) {
         //  Check auth
         String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
