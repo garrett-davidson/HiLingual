@@ -244,6 +244,10 @@ public class ChatResource {
         if (receiver.getUsersChattedWith().contains(requesterId)) {
             return;
         }
+        //  Deny permission to a user that has been blocked or is blocking
+        if (requester.isUserBlocked(receiver) || receiver.isUserBlocked(requester)) {
+            throw new ForbiddenException("Blocked");
+        }
         requester.getUsersChattedWith().add(receiverId);
         userDAO.updateUser(requester);
         chatMessageDAO.addRequest(requesterId, receiverId);
@@ -283,6 +287,10 @@ public class ChatResource {
         }
         if (!found) {
             throw new NotFoundException("Request " + requesterId + " not found");
+        }
+        //  Deny permission to a user that has been blocked or is blocking
+        if (requester.isUserBlocked(accepter) || accepter.isUserBlocked(requester)) {
+            throw new ForbiddenException("Blocked");
         }
         accepter.getUsersChattedWith().add(requesterId);
         requester.getUsersChattedWith().add(accepterId);
@@ -348,6 +356,10 @@ public class ChatResource {
         if (!sender.getUsersChattedWith().contains(receiverId)) {
             throw new ForbiddenException("This user is not a conversation partner");
         }
+        //  Deny permission to a user that has been blocked or is blocking
+        if (sender.isUserBlocked(reciever) || reciever.isUserBlocked(sender)) {
+            throw new ForbiddenException("Blocked");
+        }
         if (message.getImage() != null) {
             throw new BadRequestException("image field cannot be set");
         } else if (message.getAudio() != null) {
@@ -405,6 +417,10 @@ public class ChatResource {
         if (!sender.getUsersChattedWith().contains(receiverId)) {
             throw new ForbiddenException("This user is not a conversation partner");
         }
+        //  Deny permission to a user that has been blocked or is blocking
+        if (sender.isUserBlocked(receiver) || receiver.isUserBlocked(sender)) {
+            throw new ForbiddenException("Blocked");
+        }
         String assetId = Long.toUnsignedString(identifierService.generateId(IdentifierService.TYPE_IMAGE));
         java.nio.file.Path outPath = Paths.get(config.getAssetAccessPath(), "image", assetId);
         Files.createDirectories(outPath.getParent());
@@ -458,6 +474,10 @@ public class ChatResource {
         if (messageToEdit.getReceiver() != editorId) {
             throw new ForbiddenException("You cannot edit a message that's not for you");
         }
+        //  Deny permission to a user that has been blocked or is blocking
+        if (editor.isUserBlocked(receiver) || receiver.isUserBlocked(editor)) {
+            throw new ForbiddenException("Blocked");
+        }
         if (message.getEditData() == null || message.getEditData().isEmpty()) {
             throw new BadRequestException("Missing edit data");
         }
@@ -491,6 +511,7 @@ public class ChatResource {
             throw new NotAuthorizedException("Bad session token");
         }
         User me = userDAO.getUser(authUserId);
+        User partner = userDAO.getUser(receiverId);
         if (!me.getUsersChattedWith().contains(receiverId)) {
             throw new NotFoundException("Conversation not found");
         }

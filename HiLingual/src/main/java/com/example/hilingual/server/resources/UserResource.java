@@ -84,7 +84,12 @@ public class UserResource {
         }
         //  Find the user
         User user = userDAO.getUser(userId);
+
         if (user != null) {
+            //  If the user has blocked the requester, deny
+            if (user.isUserBlocked(authUserId)) {
+                throw new ForbiddenException("Blocked");
+            }
             //  Skip scrubbing if its ourselves
             if (user.getUserId() != authUserId) {
                 //  TODO Determine how much info needs to be scrubbed and scrub it
