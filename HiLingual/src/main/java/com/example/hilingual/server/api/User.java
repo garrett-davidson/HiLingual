@@ -222,6 +222,16 @@ public class User {
     }
 
     @JsonIgnore
+    public boolean isUserBlocked(long userId) {
+        return blockedUsers.contains(userId);
+    }
+
+    @JsonIgnore
+    public boolean isUserBlocked(User user) {
+        return blockedUsers.contains(user.getUserId());
+    }
+
+    @JsonIgnore
     public void addusersChattedWith(User user) {
         usersChattedWith.add(user.getUserId());
     }

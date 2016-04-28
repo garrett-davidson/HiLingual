@@ -4,4 +4,6 @@ import io.dropwizard.lifecycle.Managed;
 
 public interface SlackStatusInformationService extends Managed {
 
+    void sendMessage(String text);
+
 }

@@ -23,14 +23,23 @@ public class SlackStatusInformationServiceImpl implements SlackStatusInformation
     }
 
     @Override
-    public void start() throws Exception {
+    public void sendMessage(String text) {
+        JSONObject req = new JSONObject();
+        req.put("text", text);
         try {
-            JSONObject req = new JSONObject();
-            req.put("text", "Server is starting");
             Unirest.post(config.getSlackIncomingWebhookUrl()).
                     body(new JsonNode(req.toString())).
                     asString();
         } catch (UnirestException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void start() throws Exception {
+        try {
+            sendMessage("Server is starting");
+        } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to notify slack of server start", e);
         }
     }
@@ -38,12 +47,8 @@ public class SlackStatusInformationServiceImpl implements SlackStatusInformation
     @Override
     public void stop() throws Exception {
         try {
-            JSONObject req = new JSONObject();
-            req.put("text", "Server is stopping");
-            Unirest.post(config.getSlackIncomingWebhookUrl()).
-                    body(new JsonNode(req.toString())).
-                    asString();
-        } catch (UnirestException e) {
+            sendMessage("Server is stopping");
+        } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to notify slack of server stop", e);
         }
     }

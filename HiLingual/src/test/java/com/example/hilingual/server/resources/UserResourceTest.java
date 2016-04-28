@@ -6,6 +6,7 @@ import com.example.hilingual.server.dao.CardDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.service.LocalizationService;
+import com.example.hilingual.server.service.SlackStatusInformationService;
 import com.google.common.net.HttpHeaders;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.assertj.core.api.Assertions;
@@ -31,9 +32,12 @@ public class UserResourceTest {
     private static UserDAO userDAO = mock(UserDAO.class);
     private static CardDAO cardDAO = mock(CardDAO.class);
     private static LocalizationService localizationService = mock(LocalizationService.class);
+    private static SlackStatusInformationService slackStatusInformationService =
+            mock(SlackStatusInformationService.class);
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder().
-            addResource(new UserResource(sessionDAO, userDAO, cardDAO, localizationService)).
+            addResource(new UserResource(sessionDAO, userDAO, cardDAO, localizationService,
+                    slackStatusInformationService)).
             build();
     private static User JIMMY = new User(JIMMY_ID, "Jimmy", "jjim", "potato", Gender.MALE, 2000, null,
             new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), true);

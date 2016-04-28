@@ -10,12 +10,14 @@
 package com.example.hilingual.server.resources;
 
 import com.example.hilingual.server.api.LocaleSetting;
+import com.example.hilingual.server.api.Report;
 import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.api.flash.CardRing;
 import com.example.hilingual.server.dao.CardDAO;
 import com.example.hilingual.server.dao.SessionDAO;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.service.LocalizationService;
+import com.example.hilingual.server.service.SlackStatusInformationService;
 import com.google.inject.Inject;
 import io.dropwizard.jersey.PATCH;
 
@@ -39,17 +41,20 @@ public class UserResource {
     private final UserDAO userDAO;
     private final CardDAO cardDAO;
     private final LocalizationService localizationService;
+    private final SlackStatusInformationService slackStatusInformationService;
 
 
     @Inject
     public UserResource(SessionDAO sessionDAO,
                         UserDAO userDAO,
                         CardDAO cardDAO,
-                        LocalizationService localizationService) {
+                        LocalizationService localizationService,
+                        SlackStatusInformationService slackStatusInformationService) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.cardDAO = cardDAO;
         this.localizationService = localizationService;
+        this.slackStatusInformationService = slackStatusInformationService;
     }
 
     @GET
@@ -238,5 +243,63 @@ public class UserResource {
             throw new NotAuthorizedException("Bad session token");
         }
         localizationService.setUserLocale(authUserId, body.getAsLocale());
+    }
+
+    @POST
+    @Path("{user-id}/block")
+    public User blockUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User user = userDAO.getUser(authUserId);
+        User blocked = userDAO.getUser(userId);
+        if (blocked == null) {
+            throw new NotFoundException("Cannot find user " + userId);
+        }
+        user.addBlockedUser(blocked);
+        userDAO.updateUser(user);
+        return user;
+    }
+
+    @DELETE
+    @Path("{user-id}/block")
+    public User unblockUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User user = userDAO.getUser(authUserId);
+        User blocked = userDAO.getUser(userId);
+        if (blocked == null) {
+            throw new NotFoundException("Cannot find user " + userId);
+        }
+        user.removeBlockedUser(blocked);
+        userDAO.updateUser(user);
+        return user;
+    }
+
+    @POST
+    @Path("{user-id}/block")
+    public void reportUser(@PathParam("user-id") long userId, @HeaderParam("Authorization") String hlat, @Valid Report report) {
+        //  Check auth
+        String sessionId = SessionDAO.getSessionIdFromHLAT(hlat);
+        long authUserId = sessionDAO.getSessionOwner(sessionId);
+        if (!sessionDAO.isValidSession(sessionId, authUserId)) {
+            throw new NotAuthorizedException("Bad session token");
+        }
+        User user = userDAO.getUser(authUserId);
+        User reported = userDAO.getUser(userId);
+        if (reported == null) {
+            throw new NotFoundException("Cannot find user " + userId);
+        }
+        report.setReportedUserId(reported.getUserId());
+        report.setReportedByUserId(user.getUserId());
+        //  Send to slack!
+        slackStatusInformationService.sendMessage("Reported: " + report.toString());
     }
 }
