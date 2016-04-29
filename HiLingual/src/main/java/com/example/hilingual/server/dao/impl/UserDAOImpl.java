@@ -14,6 +14,8 @@ import com.example.hilingual.server.api.User;
 import com.example.hilingual.server.dao.UserDAO;
 import com.example.hilingual.server.dao.impl.annotation.BindUser;
 import com.example.hilingual.server.service.IdentifierService;
+import com.example.hilingual.server.util.RateLimiter;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -22,6 +24,8 @@ import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +33,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -37,15 +42,20 @@ public class UserDAOImpl implements UserDAO {
 
 
     private final DBI dbi;
+    private final JedisPool jedisPool;
     private final IdentifierService identifierService;
     private Handle handle;
     private Update u;
 
+    private static final String HL_USERS_TRANSLATION_LIMIT_FMT = "hl:user:%s:translationlimits";
+
     private static Logger LOGGER = Logger.getLogger(UserDAOImpl.class.getName());
+    private Gson gson = new Gson();;
 
     @Inject
-    public UserDAOImpl(DBI dbi, IdentifierService identifierService) {
+    public UserDAOImpl(DBI dbi, JedisPool jedisPool, IdentifierService identifierService) {
         this.dbi = dbi;
+        this.jedisPool = jedisPool;
         this.identifierService = identifierService;
     }
 
@@ -137,6 +147,41 @@ public class UserDAOImpl implements UserDAO {
                 bind("displayname", name).
                 map(new UserMapper()).
                 first() == null;
+    }
+
+    @Override
+    public RateLimiter getTranslationRateLimiter(long userId) {
+        Jedis jedis = jedisPool.getResource();
+        try {
+            String key = key(userId);
+            String val = jedis.get(key);
+            RateLimiter ret;
+            if (val == null) {
+                 ret = new RateLimiter(Long.toUnsignedString(userId), TimeUnit.DAYS.toMillis(1), 50);
+                updateTranslationRateLimiter(userId, ret);
+            } else {
+                ret = gson.fromJson(val, RateLimiter.class);
+            }
+            return ret;
+        } finally {
+            jedisPool.returnResourceObject(jedis);
+        }
+    }
+
+    @Override
+    public void updateTranslationRateLimiter(long userId, RateLimiter rateLimiter) {
+        Jedis jedis = jedisPool.getResource();
+        try {
+            String key = key(userId);
+            jedis.set(key, gson.toJson(rateLimiter));
+            jedis.expire(key, (int) TimeUnit.DAYS.toSeconds(1));
+        } finally {
+            jedisPool.returnResourceObject(jedis);
+        }
+    }
+
+    private String key(long userId) {
+        return String.format(HL_USERS_TRANSLATION_LIMIT_FMT, Long.toUnsignedString(userId));
     }
 
     @Override

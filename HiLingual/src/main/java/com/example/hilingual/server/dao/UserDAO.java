@@ -10,6 +10,7 @@
 package com.example.hilingual.server.dao;
 
 import com.example.hilingual.server.api.User;
+import com.example.hilingual.server.util.RateLimiter;
 import io.dropwizard.lifecycle.Managed;
 
 public interface UserDAO extends Managed {
@@ -31,5 +32,9 @@ public interface UserDAO extends Managed {
     void truncate();
 
     boolean isNameUnique(String name);
+
+    RateLimiter getTranslationRateLimiter(long userId);
+
+    void updateTranslationRateLimiter(long userId, RateLimiter rateLimiter);
 
 }

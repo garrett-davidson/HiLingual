@@ -7,6 +7,7 @@ import com.example.hilingual.server.service.APNsService;
 import com.example.hilingual.server.service.IdentifierService;
 import com.example.hilingual.server.service.LocalizationService;
 import com.example.hilingual.server.service.MsftTranslateService;
+import com.example.hilingual.server.util.RateLimiter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
@@ -32,6 +33,7 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -533,7 +535,7 @@ public class ChatResource {
 
     @GET
     @Path("/{receiver-id}/message/{message-id}/translate")
-    public TranslationResponse getTranslation(@HeaderParam("Authorization") String hlat,
+    public Response getTranslation(@HeaderParam("Authorization") String hlat,
                                               @PathParam("receiver-id") long receiverId,
                                               @PathParam("message-id") long msgId,
                                               @QueryParam("to") @DefaultValue("en") String toLanguage,
@@ -562,11 +564,20 @@ public class ChatResource {
         }
         String translated = translationCacheDAO.getCached(locale, decoded);
         if (translated == null) {
+            //  Since its not a cache hit, we charge for this
+            RateLimiter rateLimiter = userDAO.getTranslationRateLimiter(authUserId);
+            long millis = rateLimiter.tryMark();
+            if (millis > 0) {
+                //  We've hit our limit
+                return Response.status(429).
+                        header("Retry-After", TimeUnit.MILLISECONDS.toSeconds(millis)).
+                        build();
+            }
             translated = translateService.translate(decoded, locale);
             translationCacheDAO.cache(locale, decoded, translated);
         }
         String encoded = base64Encode(translated);
-        return new TranslationResponse(encoded, msgId, translateEdit);
+        return Response.ok(new TranslationResponse(encoded, msgId, translateEdit)).build();
     }
 
     @DELETE
