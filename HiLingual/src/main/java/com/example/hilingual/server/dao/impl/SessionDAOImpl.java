@@ -150,29 +150,6 @@ public class SessionDAOImpl implements SessionDAO {
         }
     }
 
-    @Override
-    public int getTranslationCount(long userId) {
-        Jedis jedis = pool.getResource();
-        int translationCount = 0;
-        //get set of translation timestamps for userId
-
-        //if any are more than 24 hours old: discard
-
-        //count translations
-
-        return translationCount;
-    }
-
-    @Override
-    public void addTranslationRecord(long userId) {
-        Jedis jedis = pool.getResource();
-        //get set of translation timestamps for userId
-
-        //add new Date.valueOf() to set
-
-        //update set in redis
-    }
-
 
     @Override
     public void start() throws Exception {
