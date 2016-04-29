@@ -30,7 +30,7 @@ enum Gender: Int {
     
     var profilePictureURL: NSURL?
 
-    var blockedUsers: [HLUser]?
+    var blockedUsers: [Int64]
     var usersChattedWith: [Int64]
 
     var pendingChats: [Int64]
@@ -60,6 +60,7 @@ enum Gender: Int {
 
         self.usersChattedWith = []
         self.pendingChats = []
+        self.blockedUsers = []
     }
 
     func loadImageWithCallback(callback: (UIImage)-> ()) {
@@ -101,8 +102,17 @@ enum Gender: Int {
         }
         self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
         self.profilePictureURL = aDecoder.decodeObjectForKey("profilePictureURL") as? NSURL
-        self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
-
+        //self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
+        
+        if let blocked = (aDecoder.decodeObjectForKey("blockedUsers") as? [NSNumber]) {
+            self.blockedUsers = blocked.map({ (num) -> Int64 in
+                return num.longLongValue
+            })
+        }
+        else {
+            self.blockedUsers = []
+        }
+        
         if let chatted2 = (aDecoder.decodeObjectForKey("usersChattedWith2") as? [NSNumber]) {
             self.usersChattedWith = chatted2.map({ (num) -> Int64 in
                 return num.longLongValue
@@ -348,12 +358,17 @@ enum Gender: Int {
         aCoder.encodeObject(bio, forKey: "bio")
         if gender != nil { aCoder.encodeObject(gender!.rawValue, forKey: "gender") }
         aCoder.encodeObject(birthdate, forKey: "birthdate")
-        aCoder.encodeObject(blockedUsers, forKey: "blockedUsers")
         aCoder.encodeObject(profilePictureURL, forKey: "profilePictureURL")
+        
+        let blocked = blockedUsers.map { (i) -> NSNumber in
+            return NSNumber(longLong: i)
+        }
+        aCoder.encodeObject(blocked, forKey: "blockedUsers")
 
         let chatted2 = usersChattedWith.map { (i) -> NSNumber in
             return NSNumber(longLong: i)
         }
+        
         aCoder.encodeObject(chatted2, forKey: "usersChattedWith2")
 
         let pending = pendingChats.map { (i) -> NSNumber in
