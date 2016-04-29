@@ -12,6 +12,7 @@ class DetailViewController: UIViewController {
     
     var user: HLUser!
     var hiddenName: Bool!
+    var spot = 0
     
     @IBOutlet weak var profileView: ProfileView!
     
@@ -22,6 +23,13 @@ class DetailViewController: UIViewController {
             profileView.hiddenName = false
         } else {
             self.title = user.displayName
+            
+        }
+        for i in 0..<HLUser.getCurrentUser().blockedUsers.count{
+            if HLUser.getCurrentUser().blockedUsers[i] == user.userId{
+                self.navigationItem.rightBarButtonItem?.title = "Unblock".localized
+                spot = i;
+            }
             
         }
         print(user.displayName)
@@ -43,6 +51,7 @@ class DetailViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem?.title = "Unblock".localized
                 HLServer.blockUser(self.user.userId)
                 HLServer.reportUser(self.user.userId, reason: input.text!)
+                HLUser.getCurrentUser().blockedUsers = [self.user.userId]
                 print(input.text)
             }
             alert.addAction(reportAction)
@@ -57,8 +66,10 @@ class DetailViewController: UIViewController {
             let unblockAction = UIAlertAction(title: "Yes".localized, style: .Default) { (action) in
                 self.navigationItem.rightBarButtonItem?.title = "Report/Block".localized
                 HLServer.unblockUser(self.user.userId)
+                HLUser.getCurrentUser().blockedUsers.removeAtIndex(self.spot)
             }
             alertController.addAction(unblockAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
 
