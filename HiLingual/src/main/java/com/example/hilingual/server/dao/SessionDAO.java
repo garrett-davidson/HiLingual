@@ -76,6 +76,24 @@ public interface SessionDAO extends Managed {
      */
     long getSessionOwner(String sessionId);
 
+    /**
+     * Determines how many translations the user has requested
+     * in the past 24 hours
+     * @param userId userId to check
+     * @return number of translations in past 24 hours
+     */
+    int getTranslationCount(long userId);
+
+
+    /**
+     * Adds a translation record with the current timestamp to
+     * the specified userId
+     * @param userId
+     * @return void
+     */
+    void addTranslationRecord(long userId);
+
+
     static String getSessionIdFromHLAT(String hlat) {
         if (hlat == null) {
             throw new NotAuthorizedException("Missing session token");

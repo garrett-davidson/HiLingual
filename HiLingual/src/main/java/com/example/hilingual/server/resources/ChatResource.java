@@ -553,6 +553,14 @@ public class ChatResource {
         if (translateEdit && message.getEditData() == null) {
             throw new NotFoundException("Message " + msgId + " has no edit data");
         }
+        /*
+        if (sessionDAO.getTranslationCount(authUserId) > 50) {
+            throw new ForbiddenException("User reached translation limit");
+        } else {
+            sessionDAO.addTranslationRecord(userId);
+        }
+
+        */
         Locale locale = Locale.forLanguageTag(toLanguage);
         String decoded;
         if (translateEdit) {
