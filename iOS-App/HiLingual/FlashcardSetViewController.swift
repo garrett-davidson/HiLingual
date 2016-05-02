@@ -32,7 +32,7 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         if isRandom{
             if flipped[index] == false {
                 view.flashcardView.label.text = random[index].frontText
-            }else{
+            } else {
                 view.flashcardView.label.text = random[index].backText
             }
         } else {
