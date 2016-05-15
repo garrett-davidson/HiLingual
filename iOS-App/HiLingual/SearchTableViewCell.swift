@@ -9,13 +9,13 @@
 import UIKit
 
 class SearchTableViewCell: UITableViewCell, ImageLoadingView {
-    
+
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var langaugesLearning: UILabel!
     @IBOutlet weak var languagesSpeaks: UILabel!
     @IBOutlet weak var loadingImageView: UIImageView!
     @IBOutlet weak var sendRequestButton: UIButton!
-    
+
     var spinner: UIActivityIndicatorView?
-    
+
 }

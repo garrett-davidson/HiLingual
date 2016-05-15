@@ -94,7 +94,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return hasPendingChats ? 2 : 1
     }
-    
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
@@ -154,13 +154,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
         if section == 1 || section == 0 && !hasPendingChats {
             return "Current chats".localized
-        }
-
-        else {
+        } else {
             return "Pending chats".localized
         }
     }
-    
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         //Accepted chat
@@ -183,7 +181,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                         user.profilePicture = image
                     })
                 }
-                
+
                 cell.acceptButton.tag = indexPath.row
                 cell.declineButton.tag = indexPath.row
                 cell.declineButton.hidden = true
@@ -218,9 +216,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
 
                     cell.date.text = timestampFormamter.stringFromDate(lastMessage.sentTimestamp)
-                }
-
-                else {
+                } else {
                     cell.lastMessage.text = ""
                     cell.date.text = ""
                 }
@@ -287,7 +283,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SegueToProfile"{
             let messageDetailViewController = segue.destinationViewController as! DetailViewController
@@ -296,13 +292,11 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
                 messageDetailViewController.user = HLServer.getUserById(currentUser.pendingChats[indexPath.row])
                 //Once messages is complete I can use that
-                
+
             }
 
-            
-        }
-            
-        else if segue.identifier == "SegueToMessages" {
+
+        } else if segue.identifier == "SegueToMessages" {
             let messageDetailViewController = segue.destinationViewController as! ChatViewController
             if let selectedMessageCell = sender as? ConversationTableViewCell {
                 let indexPath = converstationTable.indexPathForCell(selectedMessageCell)!
@@ -310,23 +304,22 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 messageDetailViewController.user = HLServer.getUserById(Int64(currentChats[indexPath.row].receiverId))
                 messageDetailViewController.recipientId = Int64(currentChats[indexPath.row].receiverId)
                 //Once messages is complete I can use that
-                
+
             }
         }
-    
+
     }
-    
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = converstationTable.cellForRowAtIndexPath(indexPath)
         if indexPath.section == 1 || indexPath.section == 0 && !hasPendingChats {
             self.performSegueWithIdentifier("SegueToMessages", sender: cell)
             print("ACCEPTED")
-        }
-        else{
-            
+        } else {
+
             self.performSegueWithIdentifier("SegueToProfile", sender: cell)
         }
-        
+
     }
     /*
     override func performSegueWithIdentifier(identifier: String, sender: AnyObject?) {
@@ -337,14 +330,14 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 converstationTable.deselectRowAtIndexPath(indexPath, animated: false)
                 //let selectedMessage = converstaions[indexPath.row]
                 messageDetailViewController.message = conversations[indexPath.row].name
-                
+
                 //Once messages is complete I can use that
-                
+
             }
-            
+
         }
-        
-        
+
+
     }
     */
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -358,9 +351,7 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
                 } else {
                     print("Failed to delete chat")
                 }
-            }
-
-            else {
+            } else {
                 if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ConversationTableViewCell {
                     decline(cell.declineButton)
                 }

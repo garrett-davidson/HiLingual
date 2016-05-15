@@ -9,7 +9,7 @@
 import UIKit
 
 class ConversationTableViewCell: UITableViewCell, ImageLoadingView {
-    
+
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var loadingImageView: UIImageView!

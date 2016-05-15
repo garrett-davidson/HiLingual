@@ -7,7 +7,7 @@
 //
 
 class ChatEditedTableViewCell: UITableViewCell {
-    
+
     @IBOutlet weak var chatBubbleLeft: UIView!
     @IBOutlet weak var chatBubbleRight: UIView!
 
@@ -15,7 +15,7 @@ class ChatEditedTableViewCell: UITableViewCell {
     @IBOutlet weak var leftEditedMessageLabel: UILabel!
     @IBOutlet weak var rightMessageLabel: UILabel!
     @IBOutlet weak var rightEditedMessageLabel: UILabel!
-    
+
     @IBOutlet weak var editChatLeftImage: UIImageView!
     @IBOutlet weak var editChatRightImage: UIImageView!
     @IBOutlet weak var rightConstraintMessageEqualOrLess: NSLayoutConstraint!

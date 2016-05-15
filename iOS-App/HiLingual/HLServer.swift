@@ -38,15 +38,11 @@ class HLServer {
                     case 200..<300:
                         if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
                             return [ret]
-                        }
-
-                        else if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? [NSDictionary] {
+                        } else if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? [NSDictionary] {
                             return ret
-                        }
-                        else if returnString != "" {
+                        } else if returnString != "" {
                             return [["result": returnString]]
-                        }
-                        else {
+                        } else {
                             //We succeeded but the result was empty
                             return [NSDictionary()]
                         }
@@ -68,7 +64,7 @@ class HLServer {
                         if let topVC = getTopViewController() {
                             topVC.presentViewController(alertController, animated: true, completion: nil)
                         }
-                        
+
                         //We don't need to run the diagnostic stuff below if we get here
                         return nil
 
@@ -81,13 +77,10 @@ class HLServer {
                 } else {
                     print("Couldn't parse return dictionary")
                 }
-            }
-
-            else {
+            } else {
                 print("Response not a string")
             }
-        }
-        else {
+        } else {
             print("Served returned no data")
         }
 
@@ -98,7 +91,7 @@ class HLServer {
         return nil
     }
 
-    static func sendRequestToEndpoint(endpoint: String, method: String, contentType:String="application/json", withDictionary dict: Dictionary<String, AnyObject>?=nil, withData data: NSData?=nil, authenticated: Bool=true) -> [NSDictionary]? {
+    static func sendRequestToEndpoint(endpoint: String, method: String, contentType: String="application/json", withDictionary dict: Dictionary<String, AnyObject>?=nil, withData data: NSData?=nil, authenticated: Bool=true) -> [NSDictionary]? {
 
         let request = NSMutableURLRequest(URL: NSURL(string: apiBase + endpoint)!)
 
@@ -114,9 +107,7 @@ class HLServer {
         if authenticated {
             if let session = HLUser.getCurrentUser().getSession() {
                 headerFields["Authorization"] = "HLAT " + session.sessionId
-            }
-
-            else {
+            } else {
                 print("Could not authenticate")
                 return nil
             }
@@ -149,24 +140,22 @@ class HLServer {
         request.allHTTPHeaderFields = headerFields
 
         request.HTTPMethod = "GET"
-        
+
         return sendRequest(request)
     }
-    
+
     static func getUniqueDisplayName(name: String) -> String {
         let ret = sendGETRequestToEndpoint("user/names", withParameterString: "?name=\(name)")
         return (ret![0]["result"] as? String)!
     }
 
-    static func getTranslationForMessage(message: HLMessage, edit:Bool=false, fromLanguage: String?, toLangauge: String="en-US") -> String? {
+    static func getTranslationForMessage(message: HLMessage, edit: Bool=false, fromLanguage: String?, toLangauge: String="en-US") -> String? {
 
         if let ret = sendGETRequestToEndpoint("chat/\(message.receiverID)/message/\(message.messageUUID!)/translate", withParameterString: edit ? "?edit=true" : "") {
 
             if let encodedTranslation = ret[0]["translatedContent"] as? String {
                 return encodedTranslation.fromBase64()
-            }
-
-            else {
+            } else {
                 print("Did not receive translation")
             }
         }
@@ -184,7 +173,7 @@ class HLServer {
         return false
     }
 
-    static func retrieveMessageFromUser(user:Int64, before: Int64, max: Int64=50) -> [HLMessage]? {
+    static func retrieveMessageFromUser(user: Int64, before: Int64, max: Int64=50) -> [HLMessage]? {
 
         if let messagesDicts = sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(before)&limit=\(max)") {
 
@@ -196,18 +185,18 @@ class HLServer {
         return nil
     }
 
-    static func retrieveMessageFromUser(user:Int64, after: Int64, max: Int64=50) -> [HLMessage]? {
+    static func retrieveMessageFromUser(user: Int64, after: Int64, max: Int64=50) -> [HLMessage]? {
         if let messagesDicts = sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?after=\(after)&limit=\(max)") {
 
             return messagesDicts.map({ (messageDict) -> HLMessage in
                 return HLMessage.fromDict(messageDict)!
             })
         }
-        
+
         return nil
     }
 
-    static func retrieveEditedMessages(user:Int64, before: Int64, max: Int64=50) -> [NSDictionary]? {
+    static func retrieveEditedMessages(user: Int64, before: Int64, max: Int64=50) -> [NSDictionary]? {
         return sendGETRequestToEndpoint("chat/\(user)/message", withParameterString: "?before=\(before+1)&limit=\(max)&e=true")
     }
 
@@ -216,25 +205,21 @@ class HLServer {
         if let encodedString = text.toBase64() {
             if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["content": encodedString]) {
                 return HLMessage.fromDict(messageDict[0])
-            }
-
-            else {
+            } else {
                 print("Couldn't send message")
             }
-        }
-
-        else {
+        } else {
             print("Couldn't base64 encode message text")
         }
 
         return nil
     }
-    
+
     static func sendImageWithData(data: NSData, receiverID: Int64) -> HLMessage? {
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["image": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
             return HLMessage.fromDict(messageDict[0])
         } //this needs to be asynchronous so bad pls
-        
+
         return nil
     }
 
@@ -244,18 +229,18 @@ class HLServer {
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["audio": data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))]) {
             return HLMessage.fromDict(messageDict[0])
         }
-        
+
         return nil
     }
-    
+
     static func blockUser(userID: Int64) {
         sendRequestToEndpoint("user/\(userID)/block", method: "POST")
     }
-    
+
     static func unblockUser(userID: Int64) {
         sendRequestToEndpoint("user/\(userID)/block", method: "DELETE")
     }
-    
+
     static func reportUser(userID: Int64, reason: String!) {
         sendRequestToEndpoint("user/\(userID)/report", method: "POST", withDictionary: ["reason": reason])
     }
@@ -379,10 +364,10 @@ class HLServer {
 
         return false
     }
-    static func sendImageToProfile(image: UIImage, onUser userId:UInt64) -> NSURL? {
-        
+    static func sendImageToProfile(image: UIImage, onUser userId: UInt64) -> NSURL? {
+
         let boundary = "unique-consistent-string"
-        
+
         let body = NSMutableData()
         if let imageData = UIImagePNGRepresentation(image) {
             body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
@@ -393,11 +378,11 @@ class HLServer {
         } else {
             return nil
         }
-        
+
         body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
          print("before")
-        
-        if let resultsDicts =  sendRequestToEndpoint("asset/avatar/\(userId)", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body)  {
+
+        if let resultsDicts =  sendRequestToEndpoint("asset/avatar/\(userId)", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body) {
             if let imageURLString = resultsDicts[0]["image"] as? String {
                 return NSURL(string: imageURLString)
             }
@@ -407,7 +392,7 @@ class HLServer {
 
     }
 
-    static func sendImage(image: UIImage, toUser userId:UInt64) -> Bool {
+    static func sendImage(image: UIImage, toUser userId: UInt64) -> Bool {
 
         let boundary = "unique-consistent-string"
 
@@ -421,7 +406,7 @@ class HLServer {
         } else {
             return false
         }
-        
+
         body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
 
         return sendRequestToEndpoint("chat/\(userId)/message/image", method: "POST", contentType:"multipart/form-data; boundary=" + boundary, withData: body) != nil
@@ -436,7 +421,7 @@ class HLServer {
             image = UIImage(data: data)?.scaledToSize(180, height: 180)
         } else {
 
-            ChatViewController.loadFileSync(url, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+            ChatViewController.loadFileSync(url, writeTo: picURL, completion: {(picURL: String, error: NSError!) in
                 print("downloaded to: \(picURL)")
             })
 
@@ -473,7 +458,7 @@ class HLServer {
         })
     }
 
-    static func loadImageWithURL(url: NSURL, forCell cell: ImageLoadingView, inTableView tableView: UITableView, atIndexPath indexPath: NSIndexPath, withCallback callback:(UIImage) -> ()) {
+    static func loadImageWithURL(url: NSURL, forCell cell: ImageLoadingView, inTableView tableView: UITableView, atIndexPath indexPath: NSIndexPath, withCallback callback: (UIImage) -> ()) {
         //This weird cell assignment stuff has to be here because of the reuse of cells as the tableview scrolls
         //And the fact that cellForRowAtIndexPath will return nil if called recursively
         var loadingCell = cell

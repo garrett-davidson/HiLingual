@@ -21,14 +21,14 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
     var matches = [HLUser]()
 
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool{
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         searchTable.hidden = false
         searchBar.showsCancelButton = true
         searchBar.showsSearchResultsButton = true
         return true
-        
+
     }
-    
+
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.text = ""
         searchResults = []
@@ -37,7 +37,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         searchBar.showsCancelButton = false
         searchBar.showsSearchResultsButton = false
         searchBar.resignFirstResponder()
-        
+
     }
     /*
     func searchBar(searchBar: UISearchBar,
@@ -60,20 +60,20 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             }
         }
     }
-    
+
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         searchResults = []
         searchTable.reloadData()
     }
-    
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
-    
+
     @IBAction func sendRequest(sender: UIButton) {
         //From search bar
 
@@ -83,12 +83,12 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             print("Failed to send request")
         }
     }
-    
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentity = "SearchTableViewCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
         let user = searchResults[indexPath.row]
-        
+
         cell.name.text = user.displayName
         cell.loadingImageView.layer.masksToBounds = false
         cell.loadingImageView.layer.cornerRadius = cell.loadingImageView.frame.height/2
@@ -113,8 +113,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         super.viewDidLoad()
         self.searchTable.estimatedRowHeight = 40
         self.searchTable.rowHeight = UITableViewAutomaticDimension
-        carousel.bounceDistance = 0.1;
-        carousel.decelerationRate = 0.2;
+        carousel.bounceDistance = 0.1
+        carousel.decelerationRate = 0.2
         carousel.reloadData()
     }
 
@@ -146,13 +146,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
         if let cell = view as? MatchProfileView {
             profileViewCell = cell
-        }
-
-        else {
+        } else {
             let width = self.view.frame.width - 50
             let height = self.view.frame.height - 150
             profileViewCell = MatchProfileView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-            
+
             profileViewCell.sendMessageButton = UIButton(type: .System)
             profileViewCell.sendMessageButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 48)
             profileViewCell.sendMessageButton.setTitle("\u{f086}", forState: UIControlState.Normal)
@@ -168,8 +166,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
            // profileViewCell.sendMessageButton.layer.cornerRadius = 5
             //profileViewCell.sendMessageButton.layer.borderWidth = 1
            // profileViewCell.sendMessageButton.layer.borderColor = UIColor.blackColor().CGColor
-            
-            
+
+
             profileViewCell.sendMessageButton.center.y = profileViewCell.profileView.loadingImageView.center.y + 120
         }
 
@@ -201,7 +199,7 @@ class MatchProfileView: UIView {
         super.init(frame: frame)
         self.addSubview(profileView)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         //We're never using this method to so fuck it 😁
         fatalError("init(coder:) has not been implemented")

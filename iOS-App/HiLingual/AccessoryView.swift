@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 import AVFoundation
 
-class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+class AccessoryView: UIView, UITextViewDelegate, AVAudioRecorderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -21,7 +21,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     var textViewTested = false
     var origTime = 0.0
     var curTime = 0.0
-    var isRecording = false;
+    var isRecording = false
     var recordTimer: NSTimer!
     var curURL: NSURL!
     var lines: CGFloat = 0
@@ -43,18 +43,16 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
-        }
-        else if (frame != nil) {
+        } else if (frame != nil) {
             super.init(frame: frame!)
-        }
-        else {
-            super.init(frame: CGRectMake(0, 0, 200, 200))
+        } else {
+            super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         }
         NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: self, options: nil)
         self.addSubview(view)
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: ["view": self.view]))
 
         loadViews()
     }
@@ -113,9 +111,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             sendButton.tintColor = UIColor.blueColor()
             sendButton.userInteractionEnabled = true
             print("recorded audio")
-        }
-
-        else {
+        } else {
             print("somethin fucked up rip")
         }
     }
@@ -188,7 +184,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
 
         //post to server
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-        while((topVC!.presentedViewController) != nil){
+        while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
         topVC?.dismissViewControllerAnimated(true, completion: nil)
@@ -197,13 +193,13 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
 
 
     func updateLabel() {
-        curTime = CACurrentMediaTime();
+        curTime = CACurrentMediaTime()
         recordingTimer.text = String(format:"%.1f", curTime-origTime)
     }
 
 
     @IBAction func tapMicUpOut(sender: AnyObject) {
-        if isSend{
+        if isSend {
             return
         }
         if isRecording {
@@ -211,7 +207,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
     }
     @IBAction func tapMicCancel(sender: AnyObject) {
-        if isSend{
+        if isSend {
             return
         }
         if isRecording {
@@ -219,13 +215,12 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         }
     }
     @IBAction func tapMicUpIn(sender: AnyObject) {
-        if isSend{
+        if isSend {
             return
         }
         if isRecording {
             finishRecording()
-        }
-        else if isEditing {
+        } else if isEditing {
             didEndEditing()
         }
     }
@@ -246,19 +241,19 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         do {
             try audioPlayer = AVAudioPlayer(contentsOfURL: audioRecorder.url)
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker)
-            audioPlayer.volume = 1;
+            audioPlayer.volume = 1
             audioPlayer.play()
         } catch let error as NSError {
             print("Failed to preview recording: ", error)
         }
     }
     @IBAction func tapDelete(sender: AnyObject) {
-        textView.hidden = false;
-        textView.editable = true;
+        textView.hidden = false
+        textView.editable = true
         recordingTimer.hidden = true
         previewRecording.hidden = true
         deleteRecording.hidden = true
-        isRecording = false;
+        isRecording = false
 
         isSend = false
         changeToMicroPhone()
@@ -270,7 +265,7 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
 
     @IBAction func sendClicked(sender: AnyObject) {
         var data: NSData? = nil
-        print("isSend: ",isSend)
+        print("isSend: ", isSend)
         if isSend {
             isSend = false
             changeToMicroPhone()
@@ -314,16 +309,16 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
                 try recordingSession.setActive(true)
                 recordingSession.requestRecordPermission() { (allowed: Bool) -> Void in
                     dispatch_async(dispatch_get_main_queue()) {
-                        return;
+                        return
                     }
 
                 }
 
-                isRecording = true;
+                isRecording = true
                 recordingTimer.hidden = false
                 previewRecording.hidden = true
                 deleteRecording.hidden = true
-                origTime =  CACurrentMediaTime();
+                origTime =  CACurrentMediaTime()
                 textView.hidden = true
                 //textView.editable = false;
                 recordTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(AccessoryView.updateLabel), userInfo: nil, repeats: true)
@@ -367,21 +362,19 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
             sendButton.tintColor = UIColor.blueColor()
             isSend = false
             changeToMicroPhone()
-        }
-
-        else {
+        } else {
             isSend = true
             changeToSend()
 
         }
         if isRecording {
             finishRecording()
-            textView.hidden = false;
-            textView.editable = true;
+            textView.hidden = false
+            textView.editable = true
             recordingTimer.hidden = true
             previewRecording.hidden = true
             deleteRecording.hidden = true
-            isRecording = false;
+            isRecording = false
             isSend = false
             changeToSend()
         }
@@ -426,8 +419,8 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
         //textView.font = UIFont(name: "FontAwesome", size: 12)
         //textView.text = "\u{f0f9}"
     }
-    
-    func changeToSend(){
+
+    func changeToSend() {
         sendButton.titleLabel?.font = UIFont(name: "System", size: 15)
         sendButton.setTitle("Send", forState: UIControlState.Normal)
     }
@@ -435,9 +428,9 @@ class AccessoryView: UIView, UITextViewDelegate ,AVAudioRecorderDelegate,UIImage
     func changeToMicroPhone() {
         sendButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 24)
         sendButton.setTitle("\u{f130}", forState: UIControlState.Normal)
-        
+
     }
-    
+
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }
@@ -452,7 +445,7 @@ extension UIImage {
 
         // We need to calculate the proper transformation to make the image upright.
         // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
-        var transform = CGAffineTransformIdentity;
+        var transform = CGAffineTransformIdentity
 
         switch (self.imageOrientation) {
         case .Down, .DownMirrored:
@@ -493,10 +486,10 @@ extension UIImage {
         CGContextConcatCTM(ctx, transform)
         switch (self.imageOrientation) {
         case .Left, .LeftMirrored, .Right, .RightMirrored:
-            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.height,self.size.width), self.CGImage)
+            CGContextDrawImage(ctx, CGRectMake(0, 0,self.size.height, self.size.width), self.CGImage)
 
         default:
-            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.width,self.size.height), self.CGImage)
+            CGContextDrawImage(ctx, CGRectMake(0, 0,self.size.width, self.size.height), self.CGImage)
         }
 
         // And now we just create a new UIImage from the drawing context

@@ -12,8 +12,7 @@ import UIKit
 //Displays the current user's profile
 //Facilitates editing of any aspect of the profile
 
-class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate, LanguageSelectionDelegate
-{
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, LanguageSelectionDelegate {
 
     @IBOutlet var editProfileView: EditProfileView!
     @IBOutlet var profileView: ProfileView!
@@ -23,12 +22,11 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
 
 
     @IBAction func tapEdit(sender: AnyObject) {
-        if(editProfileView.hidden == true){
+        if(editProfileView.hidden == true) {
             editProfileView.hidden = false
             profileView.hidden = true
             self.navigationItem.rightBarButtonItem?.title = "Done".localized
-        }
-        else if(editProfileView.isValidUser()) {
+        } else if(editProfileView.isValidUser()) {
             editProfileView.dismissKeyboard(self)
             editProfileView.dismissPickerView(self)
             editProfileView.user.save()
@@ -39,7 +37,7 @@ class ProfileViewController: UIViewController,UIImagePickerControllerDelegate,UI
             profileView.user = HLUser.getCurrentUser()
         }
     }
-    
+
     @IBAction func showSettings(sender: AnyObject) {
         performSegueWithIdentifier("SettingsSegue", sender: self)
     }

@@ -27,7 +27,7 @@ enum Gender: Int {
     var gender: Gender?
     var birthdate: NSDate?
     var profilePicture: UIImage?
-    
+
     var profilePictureURL: NSURL?
 
     var blockedUsers: [Int64]
@@ -75,7 +75,7 @@ enum Gender: Int {
             }
 
 
-            ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+            ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion: {(picURL: String, error: NSError!) in
                 print("downloaded to: \(picURL)")
             })
 
@@ -96,29 +96,26 @@ enum Gender: Int {
         self.bio = aDecoder.decodeObjectForKey("bio") as? String
         if let rawGender = aDecoder.decodeObjectForKey("gender") as? Int {
             self.gender = Gender(rawValue: rawGender)!
-        }
-        else {
+        } else {
             self.gender = nil
         }
         self.birthdate = aDecoder.decodeObjectForKey("birthdate") as? NSDate
         self.profilePictureURL = aDecoder.decodeObjectForKey("profilePictureURL") as? NSURL
         //self.blockedUsers = (aDecoder.decodeObjectForKey("blockedUsers") as! [HLUser]?)
-        
+
         if let blocked = (aDecoder.decodeObjectForKey("blockedUsers") as? [NSNumber]) {
             self.blockedUsers = blocked.map({ (num) -> Int64 in
                 return num.longLongValue
             })
-        }
-        else {
+        } else {
             self.blockedUsers = []
         }
-        
+
         if let chatted2 = (aDecoder.decodeObjectForKey("usersChattedWith2") as? [NSNumber]) {
             self.usersChattedWith = chatted2.map({ (num) -> Int64 in
                 return num.longLongValue
             })
-        }
-        else {
+        } else {
             self.usersChattedWith = []
         }
 
@@ -126,9 +123,7 @@ enum Gender: Int {
             self.pendingChats = pending.map({ (num) -> Int64 in
                 return num.longLongValue
             })
-        }
-
-        else {
+        } else {
             self.pendingChats = []
         }
 
@@ -167,8 +162,7 @@ enum Gender: Int {
         if let genderString = userDict["gender"] as? String {
             if genderString == "MALE" {
                 gender = Gender.Male
-            }
-            else if genderString == "FEMALE" {
+            } else if genderString == "FEMALE" {
                 gender = Gender.Female
             } else {
                 gender = Gender.Not_Set
@@ -218,18 +212,18 @@ enum Gender: Int {
 
         return HLUser(userId: userId, name: name, displayName: displayName, knownLanguages: knownLanguages, learningLanguages: learningLanguages, bio: bio, gender: gender, birthdate: birthday, profilePictureURL:imageURL)
     }
-    
-    static func downloadProfilePicture(imageURL: NSURL,user: HLUser){
+
+    static func downloadProfilePicture(imageURL: NSURL, user: HLUser) {
         let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
         let picURL = documentsURL.URLByAppendingPathComponent("\(imageURL).png")
-        
+
         if let data = NSData(contentsOfURL: picURL) {
             user.profilePicture = UIImage(data: data)?.scaledToSize(180, height: 180)
             return
             //assign your image here
         } else {
-            
-            ChatViewController.loadFileSync(imageURL, writeTo: picURL, completion:{(picURL:String, error:NSError!) in
+
+            ChatViewController.loadFileSync(imageURL, writeTo: picURL, completion: {(picURL: String, error: NSError!) in
                 print("downloaded to: \(picURL)")
             })
             if let data = NSData(contentsOfURL: picURL) {
@@ -239,9 +233,9 @@ enum Gender: Int {
                 print("Failed to load image")
             }
         }
-        
+
     }
-    
+
     static func fromJSON(jsonData: NSData) -> HLUser? {
         if let obj = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) {
             if let userDict = obj as? NSDictionary {
@@ -265,7 +259,7 @@ enum Gender: Int {
         return userArray
     }
 
-    func save(session: HLUserSession=HLUser.getCurrentUser().session!, toServer:Bool=true) {
+    func save(session: HLUserSession=HLUser.getCurrentUser().session!, toServer: Bool=true) {
         //This should only be called on the current user
 
         HLUser.currentUser = self
@@ -290,7 +284,7 @@ enum Gender: Int {
         }
     }
     func scaleImage(image: UIImage, toSize newSize: CGSize) -> (UIImage) {
-        let newRect = CGRectIntegral(CGRectMake(0,0, newSize.width, newSize.height))
+        let newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         let context = UIGraphicsGetCurrentContext()
         CGContextSetInterpolationQuality(context, .High)
@@ -359,7 +353,7 @@ enum Gender: Int {
         if gender != nil { aCoder.encodeObject(gender!.rawValue, forKey: "gender") }
         aCoder.encodeObject(birthdate, forKey: "birthdate")
         aCoder.encodeObject(profilePictureURL, forKey: "profilePictureURL")
-        
+
         let blocked = blockedUsers.map { (i) -> NSNumber in
             return NSNumber(longLong: i)
         }
@@ -368,7 +362,7 @@ enum Gender: Int {
         let chatted2 = usersChattedWith.map { (i) -> NSNumber in
             return NSNumber(longLong: i)
         }
-        
+
         aCoder.encodeObject(chatted2, forKey: "usersChattedWith2")
 
         let pending = pendingChats.map { (i) -> NSNumber in
@@ -395,7 +389,7 @@ enum Gender: Int {
     }
 
     class func generateTestUser() -> HLUser {
-        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley" , "Joey", "Dick"]
+        let randomNameArray = ["Alfred", "Bob", "Charles", "David", "Eli", "Fred", "George", "Harry", "Riley", "Joey", "Dick"]
         let randomLanguagesArray = Languages.allValues
         let randomGenderArray = [Gender.Female, Gender.Male]
 

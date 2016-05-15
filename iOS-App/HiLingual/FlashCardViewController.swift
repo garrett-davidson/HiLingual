@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-class FlashCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class FlashCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var flashcardTitle = [String]()
     var flashcards = [[HLFlashCard]]()
-    
+
     @IBOutlet weak var flashcardTable: UITableView!
     var sent = 0
-    
+
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = editButtonItem()
     }
@@ -50,12 +50,12 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     @IBAction func AddFlashCard(sender: AnyObject) {
-        
+
         let alert = UIAlertController(title: "Flashcard Name:".localized, message: "", preferredStyle: .Alert)
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.text = ""
         })
-        
+
         alert.addAction(UIAlertAction(title: "Done".localized, style: .Default, handler: { (action) -> Void in
 
             let textField = alert.textFields![0] as UITextField
@@ -64,17 +64,17 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
             self.flashcardTable.beginUpdates()
             self.flashcardTable.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
             self.flashcardTable.endUpdates()
-            
-            
+
+
             self.view.endEditing(true)
-            
+
         }))
         alert.addAction(UIAlertAction(title: "Cancel".localized, style: .Default, handler: { (action) -> Void in
             self.view.endEditing(true)
         }))
         self.presentViewController(alert, animated: true, completion: nil)
     }
-    
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return flashcardTitle.count
     }
@@ -98,9 +98,7 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
             if let messageDetailViewController = segue.destinationViewController as? FlashcardTableViewController {
                 print(sender)
                 //get flashcards from server
-                
-                
-                
+
                 if let selectedMessageCell = sender as? UITableViewCell {
                     let indexPath = flashcardTable.indexPathForCell(selectedMessageCell)!
                     flashcardTable.deselectRowAtIndexPath(indexPath, animated: false)
@@ -110,35 +108,28 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
                     messageDetailViewController.ringTitle = flashcardTitle[indexPath.row]
                 }
             }
-            
         }
-        
-        
     }
     @IBAction func unwindFlashCard(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? FlashcardTableViewController {
             flashcards[sent] = sourceViewController.flashcards
             flashcardTable.reloadData()
-            
         }
-        
-        
         //send to server
-        
     }
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         // remove the dragged row's model
         let val = self.flashcardTitle.removeAtIndex(sourceIndexPath.row)
         let val1 = self.flashcards.removeAtIndex(sourceIndexPath.row)
-        
+
         // insert it into the new position
         self.flashcardTitle.insert(val, atIndex: destinationIndexPath.row)
         self.flashcards.insert(val1, atIndex: destinationIndexPath.row)
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+
         cell.textLabel?.text = flashcardTitle[indexPath.row]
         cell.detailTextLabel?.text = "\(flashcards[indexPath.row].count)"
         return cell
@@ -148,7 +139,7 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         let userDict = [String : [String : String]]()
         for set:[HLFlashCard] in flashcards{
             for card:HLFlashCard in set{
-                
+
             }
         }
         if frontText != nil {
@@ -159,7 +150,5 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         return try? NSJSONSerialization.dataWithJSONObject(userDict, options: NSJSONWritingOptions(rawValue: 0))
     }*/
-    
 
-    
 }

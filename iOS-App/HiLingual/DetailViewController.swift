@@ -9,38 +9,38 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    
+
     var user: HLUser!
     var hiddenName: Bool!
     var spot = 0
-    
+
     @IBOutlet weak var profileView: ProfileView!
-    
+
     override func viewDidLoad() {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        if ((hiddenName) != nil && hiddenName == true){
+        if ((hiddenName) != nil && hiddenName == true) {
             self.title = user.name
             profileView.hiddenName = false
         } else {
             self.title = user.displayName
-            
+
         }
-        for i in 0..<HLUser.getCurrentUser().blockedUsers.count{
-            if HLUser.getCurrentUser().blockedUsers[i] == user.userId{
+        for i in 0..<HLUser.getCurrentUser().blockedUsers.count {
+            if HLUser.getCurrentUser().blockedUsers[i] == user.userId {
                 self.navigationItem.rightBarButtonItem?.title = "Unblock".localized
-                spot = i;
+                spot = i
             }
-            
+
         }
         print(user.displayName)
         profileView.user = user
-        
+
     }
     @IBAction func tapReport(sender: AnyObject) {
-        if(self.navigationItem.rightBarButtonItem?.title == "Report/Block".localized){
+        if(self.navigationItem.rightBarButtonItem?.title == "Report/Block".localized) {
             print("here")
             let alert = UIAlertController(title: "Reason for reporting?", message: "", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addTextFieldWithConfigurationHandler { (textField : UITextField!) -> Void in
+            alert.addTextFieldWithConfigurationHandler { (textField: UITextField!) -> Void in
             }
             let cancelAction = UIAlertAction(title: "Cancel".localized, style: .Cancel) { (action) in
                 return
@@ -56,8 +56,7 @@ class DetailViewController: UIViewController {
             }
             alert.addAction(reportAction)
             self.presentViewController(alert, animated: true, completion: nil)
-        }
-        else {
+        } else {
             let alertController = UIAlertController(title: nil, message: "Are you sure?".localized, preferredStyle: .ActionSheet)
             let cancelAction = UIAlertAction(title: "No".localized, style: .Cancel) { (action) in
                 return
@@ -72,8 +71,4 @@ class DetailViewController: UIViewController {
             self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
-
-    
-    
-
 }

@@ -40,15 +40,13 @@ class HLMessage: NSObject, NSCoding {
     let receiverID: Int64
 
     let audioURL: NSURL?
-    
+
     let pictureURL: NSURL?
 
     var translatedText: String?
     var translatedEdit: String?
 
     var showTranslation: Bool
-
-    private var cachedImage: UIImage?
 
     var image: UIImage?
 
@@ -73,14 +71,12 @@ class HLMessage: NSObject, NSCoding {
 
         if let audio = aDecoder.decodeObjectForKey("audioURL") as? NSURL {
             audioURL = audio
-        }
-        else {
+        } else {
             audioURL = nil
         }
         if let picture = aDecoder.decodeObjectForKey("pictureURL") as? NSURL {
             pictureURL = picture
-        }
-        else {
+        } else {
             pictureURL = nil
         }
     }
@@ -104,22 +100,18 @@ class HLMessage: NSObject, NSCoding {
 
         if HLServer.saveEdit(editedText!, forMessage: self) {
             print("Saved edit")
-        }
-
-        else {
+        } else {
             print("Failed to save edit to server")
         }
     }
 
-    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText:String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, imageURLString: String?=nil) {
+    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText: String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, imageURLString: String?=nil) {
         self.messageUUID = UUID
         self.sentTimestamp = sentTimestamp
 
         if editedTimestamp != NSDate(timeIntervalSince1970: 0) {
             self.editedTimestamp = editedTimestamp
-        }
-
-        else {
+        } else {
             self.editedTimestamp = nil
         }
 
@@ -133,15 +125,13 @@ class HLMessage: NSObject, NSCoding {
 
         if audioURLString != nil && audioURLString! != "" {
             self.audioURL = NSURL(string: audioURLString!)
-        }
-        else {
+        } else {
             self.audioURL = nil
         }
-        
+
         if imageURLString != nil && imageURLString != "" {
             self.pictureURL = NSURL(string: imageURLString!)
-        }
-        else {
+        } else {
             self.pictureURL = nil
         }
     }
@@ -156,7 +146,7 @@ class HLMessage: NSObject, NSCoding {
         self.translatedText = nil
         self.showTranslation = false
         self.audioURL = nil
-        self.pictureURL = nil;
+        self.pictureURL = nil
     }
 
     static func fromJSONArray(messageData: NSData) -> [HLMessage] {
@@ -182,9 +172,7 @@ class HLMessage: NSObject, NSCoding {
                         let editTimestamp: NSDate?
                         if editTime != 0 {
                             editTimestamp = NSDate(timeIntervalSince1970: editTime / 1000)
-                        }
-
-                        else {
+                        } else {
                             editTimestamp = nil
                         }
 
@@ -192,8 +180,7 @@ class HLMessage: NSObject, NSCoding {
 
                         if let encodedEditText = messageDict["editData"] as? String {
                             editText = encodedEditText.fromBase64()
-                        }
-                        else {
+                        } else {
                             editText = nil
                         }
 
@@ -205,12 +192,10 @@ class HLMessage: NSObject, NSCoding {
                                 if let audio = messageDict["audio"] as? String {
                                     if audio == "" {
                                         audioURLString = nil
-                                    }
-                                    else {
+                                    } else {
                                         audioURLString = audio
                                     }
-                                }
-                                else {
+                                } else {
                                     audioURLString = nil
                                 }
 
@@ -232,12 +217,11 @@ class HLMessage: NSObject, NSCoding {
     static func fromJSON(messageData: NSData) -> HLMessage? {
         if let ret = (try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
             return fromDict(ret)
-        }
-        else {
+        } else {
             print("Couldn't parse return value")
         }
 
         return nil
     }
-    
+
 }

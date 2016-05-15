@@ -25,7 +25,7 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
             user = HLUser.getCurrentUser()
         }
         editProfileView.user = user
-        editProfileView.ageLabel.userInteractionEnabled = true;
+        editProfileView.ageLabel.userInteractionEnabled = true
     }
 
     @IBAction func saveUser(sender: AnyObject) {

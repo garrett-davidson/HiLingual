@@ -16,7 +16,7 @@ enum Languages: String {
     case Chinese = "Chinese"
     case French = "French"
     case Malayalam = "Malayalam"
-    
+
     static let allValues: [Languages] = [.English, .Arabic, .Malayalam, .Chinese, .French, .Japanese, .Russian]
 }
 
@@ -35,7 +35,7 @@ extension _ArrayType where Generator.Element == Languages {
         if (string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 2) {
             string = string.substringToIndex(string.endIndex.predecessor().predecessor())
         }
-        
+
         return string
     }
 }

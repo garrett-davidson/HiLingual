@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextViewDelegate, ImageLoadingView {
+class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, ImageLoadingView {
 
     enum PickerField {
         case Gender, Age
@@ -63,15 +63,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
             if user.gender != nil {
                 genderLabel.text = "\(user.gender!)".localized
-            }
-            else {
+            } else {
                 genderLabel.text = "Not Specified".localized
             }
 
             if (user.age != nil) {
                 ageLabel.text = NSString.localizedStringWithFormat("%d", user.age!) as String
-            }
-            else {
+            } else {
                 ageLabel.text = "Not Specified".localized
             }
 
@@ -85,21 +83,20 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
         if NSThread.isMainThread() {
             redraw()
-        }
-        else {
+        } else {
             dispatch_async(dispatch_get_main_queue(), {redraw()})
         }
     }
-    
+
     enum UserValidationError: ErrorType {
         case userId, name, displayName, knownLanguages, learningLanguages, bio, gender, age, profilePicture
     }
-    
+
     func isValidUser() -> Bool {
         var errorMessage: String = ""
-        
+
         do {
-            
+
             func validateUser() throws {
                 //userId
                 if user.userId < 1 {
@@ -112,7 +109,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                 //display name
                 //TODO: Check unique
                 if nameText.text == nil || nameText.text == "" || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 32
-                    || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) < 2  {
+                    || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) < 2 {
                     throw UserValidationError.displayName
                 }
                 //bio
@@ -124,7 +121,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                     throw UserValidationError.knownLanguages
                 }
                 var index = 0
-                for _ in 1...user.knownLanguages.count{
+                for _ in 1...user.knownLanguages.count {
                     if user.learningLanguages.contains(user.knownLanguages[index]) {
                          throw UserValidationError.learningLanguages
                     }
@@ -135,40 +132,24 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
                     throw UserValidationError.displayName
                 }
             }
-            
+
             try validateUser()
-            
-        }
-            
-        catch UserValidationError.userId {
+
+        } catch UserValidationError.userId {
             errorMessage = "Invalid user id"
-        }
-            
-        catch UserValidationError.name {
+        } catch UserValidationError.name {
             errorMessage = "Invalid Name"
-        }
-            
-        catch UserValidationError.displayName {
+        } catch UserValidationError.displayName {
             errorMessage = "Invalid Display Name"
-        }
-            
-        catch UserValidationError.bio {
+        } catch UserValidationError.bio {
             errorMessage = "Invalid Bio"
-        }
-            
-        catch UserValidationError.age {
+        } catch UserValidationError.age {
             errorMessage = "Invalid Age"
-        }
-            
-        catch UserValidationError.knownLanguages {
+        } catch UserValidationError.knownLanguages {
             errorMessage = "Select A Language"
-        }
-            
-        catch UserValidationError.learningLanguages {
+        } catch UserValidationError.learningLanguages {
             errorMessage = "You Cannot Learn And Speak The Same Language"
-        }
-            
-        catch {
+        } catch {
         }
         if(errorMessage != "") {
             let alertController = UIAlertController(title: nil, message: errorMessage.localized, preferredStyle: .ActionSheet)
@@ -198,11 +179,11 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             return
         }
         alertController.addAction(cancelAction)
-        
+
         let takePictureAction = UIAlertAction(title: "Take Picture".localized, style: .Default) { (action) in
             imagePickerController.sourceType = .Camera
             imagePickerController.delegate = self
-            
+
             var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
@@ -213,7 +194,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         let usePhotoLibraryAction = UIAlertAction(title: "Photo Library".localized, style: .Default) { (action) in
             imagePickerController.sourceType = .PhotoLibrary
             imagePickerController.delegate = self
-            
+
             var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
@@ -227,10 +208,10 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         }
         topVC?.presentViewController(alertController, animated: true, completion: nil)
     }
-    
+
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
-        
+
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
@@ -240,15 +221,15 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     static func cropToSquare(image originalImage: UIImage) -> UIImage {
         // Create a copy of the image without the imageOrientation property so it is in its native orientation (landscape)
         let contextImage: UIImage = UIImage(CGImage: originalImage.CGImage!)
-        
+
         // Get the size of the contextImage
         let contextSize: CGSize = contextImage.size
-        
+
         let posX: CGFloat
         let posY: CGFloat
         let width: CGFloat
         let height: CGFloat
-        
+
         // Check to see which length is the longest and create the offset based on that length, then set the width and height of our rect
         if contextSize.width > contextSize.height {
             posX = ((contextSize.width - contextSize.height) / 2)
@@ -261,15 +242,15 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             width = contextSize.width
             height = contextSize.width
         }
-        
+
         let rect: CGRect = CGRectMake(posX, posY, width, height)
-        
+
         // Create bitmap image from context using the rect
         let imageRef: CGImageRef = CGImageCreateWithImageInRect(contextImage.CGImage, rect)!
-        
+
         // Create a new image based on the imageRef and rotate back to the original orientation
         let image: UIImage = UIImage(CGImage: imageRef, scale: originalImage.scale, orientation: originalImage.imageOrientation)
-        
+
         return image
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -278,7 +259,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         user.profilePicture = EditProfileView.cropToSquare(image: selectedImage).rotateImageByOrientation()
 
         var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-        while((topVC!.presentedViewController) != nil){
+        while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
 
@@ -299,7 +280,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
         self.refreshUI()
     }
-    
+
     @IBAction func genderTap(sender: AnyObject) {
         dismissKeyboard(self)
         currentPickerField = .Gender
@@ -313,7 +294,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         pickerView.reloadAllComponents()
         animationUp()
     }
-    
+
     @IBAction func speaksTap(sender: AnyObject) {
         currentLanguageField = .Knows
         languageSelectionDelegate?.performLanguageSelectionSegue(user.knownLanguages)
@@ -323,7 +304,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         currentLanguageField = .Learning
         languageSelectionDelegate?.performLanguageSelectionSegue(user.learningLanguages)
     }
-    
+
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch currentPickerField {
         case .Age:
@@ -333,7 +314,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             return "\(Gender.allValues[row])".localized
         }
     }
-    
+
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch currentPickerField {
         case .Age:
@@ -344,16 +325,16 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             user.gender = Gender(rawValue: row)
         }
     }
-    
+
     @IBAction func dismissPickerView(sender: AnyObject) {
         animationDown()
     }
 
-    
+
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch (currentPickerField) {
         case .Age:
@@ -364,11 +345,11 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             return Gender.allValues.count
         }
     }
-    
+
     @IBAction func donePicker(sender: AnyObject) {
         animationDown()
     }
-    
+
     @IBAction func dismissKeyboard(sender: AnyObject) {
         self.endEditing(false)
     }
@@ -385,18 +366,16 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
     init(decoder: NSCoder?, frame: CGRect?) {
         if (decoder != nil) {
             super.init(coder: decoder!)!
-        }
-        else if (frame != nil) {
+        } else if (frame != nil) {
             super.init(frame: frame!)
-        }
-        else {
-            super.init(frame: CGRectMake(0, 0, 200, 200))
+        } else {
+            super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         }
         NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: self, options: nil)
         self.addSubview(view)
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY , metrics: nil, views: ["view": self.view]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX , metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: ["view": self.view]))
         pickerView.backgroundColor = .whiteColor()
         toolBar.backgroundColor = .whiteColor()
         self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2
@@ -406,7 +385,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
         genderLabel.layer.borderWidth = 0.5
         genderLabel.layer.borderColor = UIColor.grayColor().CGColor
         genderLabel.layer.cornerRadius = 5
-        
+
         ageLabel.layer.borderWidth = 0.5
         ageLabel.layer.borderColor = UIColor.grayColor().CGColor
         ageLabel.layer.cornerRadius = 5
@@ -420,9 +399,9 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
 
         loadingImageView = profileImage
     }
-    
-    
-    func animationUp(){
+
+
+    func animationUp() {
 
         switch currentPickerField {
         case .Age:
@@ -443,8 +422,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate,UIIm
             isPickerViewDown = false
         }
     }
-    
-    func animationDown(){
+
+    func animationDown() {
 
         if (!isPickerViewDown) {
             let animationDuration = 0.2

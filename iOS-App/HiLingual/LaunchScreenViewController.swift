@@ -11,7 +11,7 @@ import UIKit
 
 //Displays a welcome message when the user first install the app
 //Check to make sure the user's session is still valid
-//Shows Log In and Sign Up buttons 
+//Shows Log In and Sign Up buttons
 class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     @IBOutlet weak var googleSignInButton: GIDSignInButton!
 
@@ -19,8 +19,8 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 //        GIDSignIn.sharedInstance().signOut()
     }
 
-    override func viewDidAppear(animated:Bool) {
-        super.viewDidAppear(animated);
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
 
 
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -90,10 +90,9 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
     }
-    
-    
-    func getUserInfo()
-    {
+
+
+    func getUserInfo() {
         let fields = ["fields": "id,name,email"]
         let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: fields)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -130,7 +129,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
     func populateUserFromFacebook(user: HLUser) {
         let halfScreenWidth = Int(view.frame.size.width/2)
-        let fields = ["fields": "bio,birthday,first_name,gender,languages,last_name,link,picture.width(\(halfScreenWidth)).height(\(halfScreenWidth))"];
+        let fields = ["fields": "bio,birthday,first_name,gender,languages,last_name,link,picture.width(\(halfScreenWidth)).height(\(halfScreenWidth))"]
         let request = FBSDKGraphRequest(graphPath: "me", parameters: fields)
 
         request.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -152,8 +151,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             //Bio
             if let bioString = result.valueForKey("bio") as? String {
                 bio = bioString
-            }
-            else {
+            } else {
                 bio = "Bio".localized
             }
 
@@ -163,12 +161,10 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             if let birthdayString = result.valueForKey("birthday") as? String {
                 if let fbBirthday = formatter.dateFromString(birthdayString) {
                     birthday = fbBirthday
-                }
-                else {
+                } else {
                     birthday = NSDate()
                 }
-            }
-            else {
+            } else {
                 birthday = NSDate()
             }
 
@@ -176,8 +172,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             //First name
             if let fbFirstName = result.valueForKey("first_name") as? String {
                 firstName = fbFirstName
-            }
-            else {
+            } else {
                 firstName = ""
             }
 
@@ -193,8 +188,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                 default:
                     gender = .Not_Set
                 }
-            }
-            else {
+            } else {
                 gender = .Not_Set
             }
 
@@ -211,8 +205,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             //Last name
             if let fbLastName = result.valueForKey("last_name") as? String {
                 lastName = fbLastName
-            }
-            else {
+            } else {
                 lastName = ""
             }
 
@@ -253,8 +246,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
 
         if googleUser.profile.hasImage {
             picture = UIImage(data: NSData(contentsOfURL: googleUser.profile.imageURLWithDimension(100))!)
-        }
-        else {
+        } else {
             picture = nil
         }
 
@@ -274,12 +266,12 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         HLUser.getCurrentUser().save()
         self.performSegueWithIdentifier("previousLogin", sender: session)
     }
-    func requestFromServer(url: String,authority: String, signIn: GIDSignIn!){
+    func requestFromServer(url: String, authority: String, signIn: GIDSignIn!) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
 
             var response: NSURLResponse?
             var bodyDict = [String: String]()
-            
+
             if authority == "FACEBOOK" {
                 bodyDict = ["authority": "FACEBOOK",
                                 "authorityAccountId": FBSDKAccessToken.currentAccessToken().userID,
@@ -289,37 +281,37 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                     while GIDSignIn.sharedInstance().currentUser == nil {
                         sleep(1)
                     }
-                    
+
                     bodyDict = ["authority": "GOOGLE",
                                     "authorityAccountId": signIn.currentUser.userID,
-                                    "authorityToken": signIn.currentUser.authentication.idToken]            
+                                    "authorityToken": signIn.currentUser.authentication.idToken]
             }
-            
+
             let request = NSMutableURLRequest(URL: NSURL(string: url)!)
             request.allHTTPHeaderFields = ["Content-Type": "application/json"]
             request.HTTPMethod = "POST"
-            
-            
+
+
             if let deviceToken = (UIApplication.sharedApplication().delegate as? AppDelegate)?.apnsToken {
                 bodyDict["deviceToken"] = deviceToken
             }
-            
-            
-            
+
+
+
             request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(NSDictionary(dictionary: bodyDict), options: NSJSONWritingOptions(rawValue: 0))
-            
+
             if let returnedData = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
                 if let response2 = response as? NSHTTPURLResponse {
-                    if response2.statusCode == 403 && url == "https://gethilingual.com/api/auth/register"  {
+                    if response2.statusCode == 403 && url == "https://gethilingual.com/api/auth/register" {
                         self.requestFromServer("https://gethilingual.com/api/auth/login", authority: authority, signIn: signIn)
-                    }else{
+                    } else {
                         print(returnedData)
                         if let returnString = NSString(data: returnedData, encoding: NSUTF8StringEncoding) {
                             print(returnString)
                             if let ret = (try? NSJSONSerialization.JSONObjectWithData(returnedData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
                                 if url == "https://gethilingual.com/api/auth/register" {
 //                                    self.didRegisterWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int), sessionId: ret["sessionId"] as! String, authority: LoginAuthority(rawValue: authority)!,  authorityAccountId: bodyDict["authorityAccountId"]!, authorityToken: bodyDict["authorityToken"]!))
-                                }else if  url == "https://gethilingual.com/api/auth/login"{
+                                } else if  url == "https://gethilingual.com/api/auth/login"{
 //                                    self.didLoginWithSession(HLUserSession(userId: Int64(ret["userId"] as! Int)))
                                 }
                             } else {
@@ -331,7 +323,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
                     }
                 }
             }
-        
+
         })
     }
 //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

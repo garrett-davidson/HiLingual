@@ -9,9 +9,9 @@
 import UIKit
 
 class FlashcardCell: UITableViewCell {
-    
+
     @IBOutlet weak var front: UITextField!
-    
+
     @IBOutlet weak var back: UITextField!
 
 }

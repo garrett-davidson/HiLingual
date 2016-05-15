@@ -10,7 +10,7 @@ import UIKit
 import AudioToolbox
 
 extension String {
-    func localizedWithComment(comment:String) -> String {
+    func localizedWithComment(comment: String) -> String {
         return NSLocalizedString(self, comment: comment)
     }
 
@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         setupFacebook(application, didFinishLaunchingWithOptions: launchOptions)
         setupGoogle()
 
-        FBSDKLoginManager.renewSystemCredentials { (result:ACAccountCredentialRenewResult, error:NSError?) -> Void in
+        FBSDKLoginManager.renewSystemCredentials { (result: ACAccountCredentialRenewResult, error: NSError?) -> Void in
             print(result)
             print(error)
         }
@@ -187,9 +187,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
         if (url.scheme == "fb1016061888432481") {
             return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
-        }
-
-        else if (url.scheme == "com.googleusercontent.apps.527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46") {
+        } else if (url.scheme == "com.googleusercontent.apps.527151665741-g9epag3c49hs0ecd4gqlu49hg3bpii46") {
                 return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String, annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
         }
 
@@ -202,8 +200,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
             print("Google user signed in")
             print(signIn)
             print(user)
-        }
-        else {
+        } else {
             print(error)
         }
     }
@@ -213,4 +210,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         print(user)
     }
 }
-

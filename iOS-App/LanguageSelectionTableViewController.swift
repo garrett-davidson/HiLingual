@@ -23,8 +23,7 @@ class LanguageSelectionTableViewController: UITableViewController {
         if (selectedLanguages.contains(currentLanguage)) {
             cell.selected = true
             cell.accessoryType = .Checkmark
-        }
-        else {
+        } else {
             cell.selected = false
             cell.accessoryType = .None
         }
@@ -36,9 +35,7 @@ class LanguageSelectionTableViewController: UITableViewController {
         let selectedLanguage = Languages.allValues[indexPath.row]
         if let languageIndex = selectedLanguages.indexOf(selectedLanguage) {
             selectedLanguages.removeAtIndex(languageIndex)
-        }
-
-        else {
+        } else {
             selectedLanguages.append(selectedLanguage)
         }
 

@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 class ChatPictureTableViewCell: UITableViewCell, ImageLoadingView {
-    
+
     @IBOutlet weak var leftPicture: UIImageView!
     @IBOutlet weak var rightPicture: UIImageView!
 

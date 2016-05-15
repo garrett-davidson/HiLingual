@@ -11,19 +11,19 @@ import Foundation
 class HLFlashCard: NSObject, NSCoding {
     var frontText: String?
     var backText: String?
-    
+
     required init?(coder aDecoder: NSCoder) {
-        
+
         frontText = aDecoder.decodeObjectForKey("front") as? String
         backText = aDecoder.decodeObjectForKey("back") as? String
-        
+
     }
     func encodeWithCoder(aCoder: NSCoder) {
-        
+
         aCoder.encodeObject(frontText, forKey: "front")
         aCoder.encodeObject(backText, forKey: "back")
     }
-    init(frontText: String,backText: String){
+    init(frontText: String, backText: String) {
         self.backText = backText
         self.frontText = frontText
     }
