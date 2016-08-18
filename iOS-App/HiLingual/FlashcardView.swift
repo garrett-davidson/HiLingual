@@ -26,10 +26,10 @@ class FlashcardView: UIView {
         } else {
             super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         }
-        NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: self, options: nil)
+        Bundle.main.loadNibNamed(NSStringFromClass(type(of: self)).components(separatedBy: ".").last!, owner: self, options: nil)
         self.addSubview(view)
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["view": self.view]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: NSLayoutFormatOptions.alignAllCenterY, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: ["view": self.view]))
     }
 }

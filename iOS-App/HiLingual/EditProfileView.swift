@@ -11,20 +11,20 @@ import UIKit
 class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, ImageLoadingView {
 
     enum PickerField {
-        case Gender, Age
+        case gender, age
     }
 
     enum LanguageFields {
-        case Knows, Learning
+        case knows, learning
     }
 
-    var currentPickerField = PickerField.Age
+    var currentPickerField = PickerField.age
     let minimunAge = 13
 
     var isPickerViewDown = true
 
     var languageSelectionDelegate: LanguageSelectionDelegate?
-    var currentLanguageField = LanguageFields.Knows
+    var currentLanguageField = LanguageFields.knows
 
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var view: UIView!
@@ -43,7 +43,7 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
 
     var user: HLUser! {
         didSet {
-            ageLabel.userInteractionEnabled = false
+            ageLabel.isUserInteractionEnabled = false
             refreshUI()
         }
     }
@@ -81,14 +81,14 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
             bioText.text = user.bio
         }
 
-        if NSThread.isMainThread() {
+        if Thread.isMainThread {
             redraw()
         } else {
-            dispatch_async(dispatch_get_main_queue(), {redraw()})
+            DispatchQueue.main.async(execute: {redraw()})
         }
     }
 
-    enum UserValidationError: ErrorType {
+    enum UserValidationError: Error {
         case userId, name, displayName, knownLanguages, learningLanguages, bio, gender, age, profilePicture
     }
 
@@ -108,12 +108,12 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
                 }
                 //display name
                 //TODO: Check unique
-                if nameText.text == nil || nameText.text == "" || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 32
-                    || nameText.text!.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) < 2 {
+                if nameText.text == nil || nameText.text == "" || nameText.text!.lengthOfBytes(using: String.Encoding.utf8) > 32
+                    || nameText.text!.lengthOfBytes(using: String.Encoding.utf8) < 2 {
                     throw UserValidationError.displayName
                 }
                 //bio
-                if bioText.text == nil || bioText.text == "" || bioText.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 500 {
+                if bioText.text == nil || bioText.text == "" || bioText.text.lengthOfBytes(using: String.Encoding.utf8) > 500 {
                     throw UserValidationError.bio
                 }
                 //speaking
@@ -152,16 +152,16 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
         } catch {
         }
         if(errorMessage != "") {
-            let alertController = UIAlertController(title: nil, message: errorMessage.localized, preferredStyle: .ActionSheet)
-            let okayAction = UIAlertAction(title: "Okay".localized, style: .Cancel) { (action) in
+            let alertController = UIAlertController(title: nil, message: errorMessage.localized, preferredStyle: .actionSheet)
+            let okayAction = UIAlertAction(title: "Okay".localized, style: .cancel) { (action) in
                 return
             }
             alertController.addAction(okayAction)
-            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            var topVC = UIApplication.shared.keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
             }
-            topVC?.presentViewController(alertController, animated: true, completion: nil)
+            topVC?.present(alertController, animated: true, completion: nil)
             return false
         }
         return true
@@ -174,53 +174,53 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
 
     @IBAction func pictureTap(sender: UITapGestureRecognizer) {
         let imagePickerController = UIImagePickerController()
-        let alertController = UIAlertController(title: nil, message: "Choose Source".localized, preferredStyle: .ActionSheet)
-        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .Cancel) { (action) in
+        let alertController = UIAlertController(title: nil, message: "Choose Source".localized, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel) { (action) in
             return
         }
         alertController.addAction(cancelAction)
 
-        let takePictureAction = UIAlertAction(title: "Take Picture".localized, style: .Default) { (action) in
-            imagePickerController.sourceType = .Camera
+        let takePictureAction = UIAlertAction(title: "Take Picture".localized, style: .default) { (action) in
+            imagePickerController.sourceType = .camera
             imagePickerController.delegate = self
 
-            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            var topVC = UIApplication.shared.keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
             }
-            topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+            topVC?.present(imagePickerController, animated: true, completion: nil)
         }
         alertController.addAction(takePictureAction)
-        let usePhotoLibraryAction = UIAlertAction(title: "Photo Library".localized, style: .Default) { (action) in
-            imagePickerController.sourceType = .PhotoLibrary
+        let usePhotoLibraryAction = UIAlertAction(title: "Photo Library".localized, style: .default) { (action) in
+            imagePickerController.sourceType = .photoLibrary
             imagePickerController.delegate = self
 
-            var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+            var topVC = UIApplication.shared.keyWindow?.rootViewController
             while((topVC!.presentedViewController) != nil) {
                 topVC = topVC!.presentedViewController
             }
-            topVC?.presentViewController(imagePickerController, animated: true, completion: nil)
+            topVC?.present(imagePickerController, animated: true, completion: nil)
         }
         alertController.addAction(usePhotoLibraryAction)
-        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        var topVC = UIApplication.shared.keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
-        topVC?.presentViewController(alertController, animated: true, completion: nil)
+        topVC?.present(alertController, animated: true, completion: nil)
     }
 
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
 
-        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        var topVC = UIApplication.shared.keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
-        topVC?.dismissViewControllerAnimated(true, completion: nil)
+        topVC?.dismiss(animated: true, completion: nil)
     }
     static func cropToSquare(image originalImage: UIImage) -> UIImage {
         // Create a copy of the image without the imageOrientation property so it is in its native orientation (landscape)
-        let contextImage: UIImage = UIImage(CGImage: originalImage.CGImage!)
+        let contextImage: UIImage = UIImage(cgImage: originalImage.cgImage!)
 
         // Get the size of the contextImage
         let contextSize: CGSize = contextImage.size
@@ -243,22 +243,22 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
             height = contextSize.width
         }
 
-        let rect: CGRect = CGRectMake(posX, posY, width, height)
+        let rect: CGRect = CGRect(x: posX, y: posY, width: width, height: height)
 
         // Create bitmap image from context using the rect
-        let imageRef: CGImageRef = CGImageCreateWithImageInRect(contextImage.CGImage, rect)!
+        let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
 
         // Create a new image based on the imageRef and rotate back to the original orientation
-        let image: UIImage = UIImage(CGImage: imageRef, scale: originalImage.scale, orientation: originalImage.imageOrientation)
+        let image: UIImage = UIImage(cgImage: imageRef, scale: originalImage.scale, orientation: originalImage.imageOrientation)
 
         return image
     }
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         profileImage.image = EditProfileView.cropToSquare(image: selectedImage)
         user.profilePicture = EditProfileView.cropToSquare(image: selectedImage).rotateImageByOrientation()
 
-        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+        var topVC = UIApplication.shared.keyWindow?.rootViewController
         while((topVC!.presentedViewController) != nil) {
             topVC = topVC!.presentedViewController
         }
@@ -267,98 +267,98 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
             user.profilePictureURL = picurl
         }
 
-        topVC?.dismissViewControllerAnimated(true, completion: nil)
+        topVC?.dismiss(animated: true, completion: nil)
     }
 
-    func updateSelectedLanguages(selectedLangauges: [Languages]) {
+    func updateSelectedLanguages(_ selectedLangauges: [Languages]) {
         switch currentLanguageField {
-        case .Knows:
+        case .knows:
             user.knownLanguages = selectedLangauges
-        case .Learning:
+        case .learning:
             user.learningLanguages = selectedLangauges
         }
 
         self.refreshUI()
     }
 
-    @IBAction func genderTap(sender: AnyObject) {
+    @IBAction func genderTap(_ sender: AnyObject) {
         dismissKeyboard(self)
-        currentPickerField = .Gender
+        currentPickerField = .gender
         pickerView.reloadAllComponents()
         animationUp()
     }
 
-    @IBAction func ageTap(sender: AnyObject) {
+    @IBAction func ageTap(_ sender: AnyObject) {
         dismissKeyboard(self)
-        currentPickerField = .Age
+        currentPickerField = .age
         pickerView.reloadAllComponents()
         animationUp()
     }
 
-    @IBAction func speaksTap(sender: AnyObject) {
-        currentLanguageField = .Knows
+    @IBAction func speaksTap(_ sender: AnyObject) {
+        currentLanguageField = .knows
         languageSelectionDelegate?.performLanguageSelectionSegue(user.knownLanguages)
     }
 
-    @IBAction func learningTap(sender: AnyObject) {
-        currentLanguageField = .Learning
+    @IBAction func learningTap(_ sender: AnyObject) {
+        currentLanguageField = .learning
         languageSelectionDelegate?.performLanguageSelectionSegue(user.learningLanguages)
     }
 
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch currentPickerField {
-        case .Age:
+        case .age:
             return NSString.localizedStringWithFormat("%d", minimunAge + row) as String
 
-        case .Gender:
+        case .gender:
             return "\(Gender.allValues[row])".localized
         }
     }
 
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch currentPickerField {
-        case .Age:
+        case .age:
             ageLabel.text = "\(minimunAge + row)"
-            user.birthdate = NSCalendar.currentCalendar().dateByAddingUnit(.Year, value: -(minimunAge + row), toDate: NSDate(), options: NSCalendarOptions(rawValue: 0))
-        case .Gender:
+            user.birthdate = NSCalendar.current.date(byAdding: .year, value: -(minimunAge + row), to: Date())
+        case .gender:
             genderLabel.text = "\(Gender.allValues[row])".localized
             user.gender = Gender(rawValue: row)
         }
     }
 
-    @IBAction func dismissPickerView(sender: AnyObject) {
+    @IBAction func dismissPickerView(_ sender: AnyObject) {
         animationDown()
     }
 
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch (currentPickerField) {
-        case .Age:
+        case .age:
             //Max age = 100
             return 100 - minimunAge + 1
 
-        case .Gender:
+        case .gender:
             return Gender.allValues.count
         }
     }
 
-    @IBAction func donePicker(sender: AnyObject) {
+    @IBAction func donePicker(_ sender: AnyObject) {
         animationDown()
     }
 
-    @IBAction func dismissKeyboard(sender: AnyObject) {
+    @IBAction func dismissKeyboard(_ sender: AnyObject) {
         self.endEditing(false)
     }
 
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         self.dismissPickerView(self)
     }
 
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         self.dismissKeyboard(self)
         user.bio = bioText.text
     }
@@ -371,13 +371,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
         } else {
             super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         }
-        NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: self, options: nil)
+        Bundle.main.loadNibNamed(NSStringFromClass(type(of: self)).components(separatedBy: ".").last!, owner: self, options: nil)
         self.addSubview(view)
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["view": self.view]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: ["view": self.view]))
-        pickerView.backgroundColor = .whiteColor()
-        toolBar.backgroundColor = .whiteColor()
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: NSLayoutFormatOptions.alignAllCenterY, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: ["view": self.view]))
+        pickerView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        toolBar.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2
         self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2
         /*
@@ -404,11 +404,11 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
     func animationUp() {
 
         switch currentPickerField {
-        case .Age:
+        case .age:
             if (user.age != nil) {
                 pickerView.selectRow(user.age! - minimunAge, inComponent: 0, animated: false)
             }
-        case .Gender:
+        case .gender:
             if (user.gender != nil) {
                 pickerView.selectRow(user.gender!.rawValue, inComponent: 0, animated: false)
             }
@@ -416,8 +416,8 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
 
         if (isPickerViewDown) {
             let animationDuration = 0.2
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {self.toolBar.center.y = self.frame.height - self.toolBar.frame.height/2 - self.pickerView.frame.height }, completion: nil)
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {self.pickerView.center.y = self.frame.height - self.pickerView.frame.height/2}, completion: nil)
 
             isPickerViewDown = false
         }
@@ -427,13 +427,13 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
 
         if (!isPickerViewDown) {
             let animationDuration = 0.2
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
-            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {self.toolBar.center.y = self.frame.height + self.toolBar.frame.height/2}, completion:nil)
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {self.pickerView.center.y = self.frame.height + self.pickerView.frame.height/2}, completion: nil)
 
             isPickerViewDown = true
         }
     }
-    @IBAction func displayNameDidEndEditing(sender: AnyObject) {
+    @IBAction func displayNameDidEndEditing(_ sender: AnyObject) {
         user.displayName = nameText.text
     }
 }

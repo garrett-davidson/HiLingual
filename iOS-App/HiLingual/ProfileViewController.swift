@@ -21,25 +21,25 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     var selectedLanguages: [Languages]?
 
 
-    @IBAction func tapEdit(sender: AnyObject) {
-        if(editProfileView.hidden == true) {
-            editProfileView.hidden = false
-            profileView.hidden = true
+    @IBAction func tapEdit(_ sender: AnyObject) {
+        if(editProfileView.isHidden == true) {
+            editProfileView.isHidden = false
+            profileView.isHidden = true
             self.navigationItem.rightBarButtonItem?.title = "Done".localized
         } else if(editProfileView.isValidUser()) {
             editProfileView.dismissKeyboard(self)
             editProfileView.dismissPickerView(self)
             editProfileView.user.save()
-            editProfileView.hidden = true
-            profileView.hidden = false
+            editProfileView.isHidden = true
+            profileView.isHidden = false
             self.navigationItem.rightBarButtonItem?.title = "Edit".localized
             editProfileView.user = HLUser.getCurrentUser()
             profileView.user = HLUser.getCurrentUser()
         }
     }
 
-    @IBAction func showSettings(sender: AnyObject) {
-        performSegueWithIdentifier("SettingsSegue", sender: self)
+    @IBAction func showSettings(_ sender: AnyObject) {
+        performSegue(withIdentifier: "SettingsSegue", sender: self)
     }
 
     override func viewDidLoad() {
@@ -50,17 +50,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         editProfileView.languageSelectionDelegate = self
     }
 
-    func setNewSelectedLanguages(selectedLanguages: [Languages]) {
+    func setNewSelectedLanguages(_ selectedLanguages: [Languages]) {
         self.editProfileView.updateSelectedLanguages(selectedLanguages)
     }
 
-    func performLanguageSelectionSegue(selectedLanguages: [Languages]) {
+    func performLanguageSelectionSegue(_ selectedLanguages: [Languages]) {
         self.selectedLanguages = selectedLanguages
-        self.performSegueWithIdentifier("SelectLanguagesSegue", sender: nil)
+        self.performSegue(withIdentifier: "SelectLanguagesSegue", sender: nil)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let destNav = segue.destinationViewController as? UINavigationController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destNav = segue.destination as? UINavigationController {
             if let dest = destNav.topViewController as? LanguageSelectionTableViewController {
                 dest.delegate = self
                 dest.selectedLanguages = self.selectedLanguages

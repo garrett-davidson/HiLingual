@@ -36,17 +36,17 @@ class DetailViewController: UIViewController {
         profileView.user = user
 
     }
-    @IBAction func tapReport(sender: AnyObject) {
+    @IBAction func tapReport(_ sender: AnyObject) {
         if(self.navigationItem.rightBarButtonItem?.title == "Report/Block".localized) {
             print("here")
-            let alert = UIAlertController(title: "Reason for reporting?", message: "", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addTextFieldWithConfigurationHandler { (textField: UITextField!) -> Void in
+            let alert = UIAlertController(title: "Reason for reporting?", message: "", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addTextField { (textField: UITextField!) -> Void in
             }
-            let cancelAction = UIAlertAction(title: "Cancel".localized, style: .Cancel) { (action) in
+            let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel) { (action) in
                 return
             }
             alert.addAction(cancelAction)
-            let reportAction = UIAlertAction(title: "Report".localized, style: .Default) { (action) in
+            let reportAction = UIAlertAction(title: "Report".localized, style: .default) { (action) in
                 let input = alert.textFields![0]
                 self.navigationItem.rightBarButtonItem?.title = "Unblock".localized
                 HLServer.blockUser(self.user.userId)
@@ -55,20 +55,20 @@ class DetailViewController: UIViewController {
                 print(input.text)
             }
             alert.addAction(reportAction)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else {
-            let alertController = UIAlertController(title: nil, message: "Are you sure?".localized, preferredStyle: .ActionSheet)
-            let cancelAction = UIAlertAction(title: "No".localized, style: .Cancel) { (action) in
+            let alertController = UIAlertController(title: nil, message: "Are you sure?".localized, preferredStyle: .actionSheet)
+            let cancelAction = UIAlertAction(title: "No".localized, style: .cancel) { (action) in
                 return
             }
             alertController.addAction(cancelAction)
-            let unblockAction = UIAlertAction(title: "Yes".localized, style: .Default) { (action) in
+            let unblockAction = UIAlertAction(title: "Yes".localized, style: .default) { (action) in
                 self.navigationItem.rightBarButtonItem?.title = "Report/Block".localized
                 HLServer.unblockUser(self.user.userId)
-                HLUser.getCurrentUser().blockedUsers.removeAtIndex(self.spot)
+                HLUser.getCurrentUser().blockedUsers.remove(at: self.spot)
             }
             alertController.addAction(unblockAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
 }

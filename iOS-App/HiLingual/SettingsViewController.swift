@@ -20,8 +20,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        purchaseButton.enabled = false
-        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        purchaseButton.isEnabled = false
+        SKPaymentQueue.default().add(self)
         getProductInfo()
 
         // Do any additional setup after loading the view.
@@ -35,29 +35,28 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-
-    func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
 
         var products = response.products
 
         if (products.count != 0) {
             product = products[0] as SKProduct
-            purchaseButton.enabled = true
+            purchaseButton.isEnabled = true
         }
     }
 
-    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
 
         for transaction in transactions {
 
             switch transaction.transactionState {
 
-            case SKPaymentTransactionState.Purchased:
+            case SKPaymentTransactionState.purchased:
                 self.unlockFeature()
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
 
-            case SKPaymentTransactionState.Failed:
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            case SKPaymentTransactionState.failed:
+                SKPaymentQueue.default().finishTransaction(transaction)
             default:
                 break
             }
@@ -68,26 +67,23 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
 
 
         //send request to server
-        purchaseButton.enabled = false
+        purchaseButton.isEnabled = false
     }
-
-
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settings.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! SettingsCell
-        cell.titleLabel?.text = settings[indexPath.row]
-        let isChecked = NSUserDefaults.standardUserDefaults().boolForKey(settings[indexPath.row])
-        cell.`switch`.on = isChecked
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SettingsCell
+        cell.titleLabel?.text = settings[(indexPath as NSIndexPath).row]
+        let isChecked = UserDefaults.standard.bool(forKey: settings[(indexPath as NSIndexPath).row])
+        cell.`switch`.isOn = isChecked
         return cell
     }
 
@@ -101,13 +97,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     */
 
-    @IBAction func pressedPurchase(sender: AnyObject) {
+    @IBAction func pressedPurchase(_ sender: AnyObject) {
         let payment = SKPayment(product: product!)
-        SKPaymentQueue.defaultQueue().addPayment(payment)
+        SKPaymentQueue.default().add(payment)
 
     }
-    @IBAction func pressedDone(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func pressedDone(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -115,8 +111,8 @@ class SettingsCell: UITableViewCell {
     @IBOutlet weak var `switch`: UISwitch!
     @IBOutlet weak var titleLabel: UILabel!
 
-    @IBAction func switchChanged(sender: UISwitch) {
-        NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: (self.titleLabel?.text)!)
+    @IBAction func switchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.set(sender.isOn, forKey: (self.titleLabel?.text)!)
     }
 
 }

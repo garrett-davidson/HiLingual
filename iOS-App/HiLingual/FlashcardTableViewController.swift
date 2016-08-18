@@ -19,17 +19,17 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
 
     override func viewDidLoad() {
         enableKeyboardHideOnTap()
-        navigationItem.rightBarButtonItem = editButtonItem()
+        navigationItem.rightBarButtonItem = editButtonItem
         self.tableView.tableFooterView = UIView()
     }
 
-    let flashcardDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first! + "/Flashcards/"
+    let flashcardDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! + "/Flashcards/"
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if !NSFileManager.defaultManager().fileExistsAtPath(flashcardDirectory) {
+        if !FileManager.default.fileExists(atPath: flashcardDirectory) {
             do {
-                try NSFileManager.defaultManager().createDirectoryAtPath(flashcardDirectory, withIntermediateDirectories: false, attributes: nil)
+                try FileManager.default.createDirectory(atPath: flashcardDirectory, withIntermediateDirectories: false, attributes: nil)
 
             } catch let createDirectoryError as NSError {
                 print("Error with creating directory at path: \(createDirectoryError.localizedDescription)")
@@ -39,38 +39,38 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
 //        NSKeyedArchiver.archiveRootObject(flashcards, toFile: flashcardDirectory + ringTitle! + ".ring")
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FlashcardCell", forIndexPath: indexPath) as! FlashcardCell
-        cell.front.text = flashcards[indexPath.row].frontText
-        cell.back.text = flashcards[indexPath.row].backText
-        cell.front.tag = indexPath.row
-        cell.back.tag = indexPath.row
-        cell.front.addTarget(self, action: #selector(FlashcardTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
-        cell.back.addTarget(self, action: #selector(FlashcardTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FlashcardCell", for: indexPath) as! FlashcardCell
+        cell.front.text = flashcards[(indexPath as NSIndexPath).row].frontText
+        cell.back.text = flashcards[(indexPath as NSIndexPath).row].backText
+        cell.front.tag = (indexPath as NSIndexPath).row
+        cell.back.tag = (indexPath as NSIndexPath).row
+        cell.front.addTarget(self, action: #selector(FlashcardTableViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+        cell.back.addTarget(self, action: #selector(FlashcardTableViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
 
         return cell
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return flashcards.count
     }
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.1
     }
 
 
-    @IBAction func addFlashcard(sender: AnyObject) {
+    @IBAction func addFlashcard(_ sender: AnyObject) {
         flashcards.append(HLFlashCard(frontText: "", backText: ""))
-        tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: tableView.numberOfRowsInSection(0), inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+        tableView.insertRows(at: [IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)], with: UITableViewRowAnimation.left)
 
 
     }
-    func keyboardWillChangeFrame(notification: NSNotification) {
-        let info = notification.userInfo!
-        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+    func keyboardWillChangeFrame(_ notification: Notification) {
+        let info = (notification as NSNotification).userInfo!
+        let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let duration = (notification as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
 
-        UIView.animateWithDuration(duration) { () -> Void in
+        UIView.animate(withDuration: duration) { () -> Void in
             if let height = self.navigationController?.navigationBar.frame.height {
 
                 let inset = UIEdgeInsetsMake(height + 20, 0, keyboardFrame.size.height, 0)
@@ -79,36 +79,36 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
     }
-    private func enableKeyboardHideOnTap() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillChangeFrame(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
+    fileprivate func enableKeyboardHideOnTap() {
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         tableView.setEditing(editing, animated: animated)
     }
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            flashcards.removeAtIndex(indexPath.row)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            flashcards.remove(at: (indexPath as NSIndexPath).row)
             tableView.beginUpdates()
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
 
         }
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "beginViewing" {
-            let messageDetailViewController = segue.destinationViewController as! FlashcardSetViewController
+            let messageDetailViewController = segue.destination as! FlashcardSetViewController
             print(flashcards.count)
             messageDetailViewController.flashcards = flashcards
             messageDetailViewController.title = title
         }
 
     }
-    func textFieldDidChange(textField: UITextField) {
+    func textFieldDidChange(_ textField: UITextField) {
         let i = textField.tag
-        let index = NSIndexPath(forRow: i, inSection: 0)
-        tableView.scrollToRowAtIndexPath(index, atScrollPosition: .Bottom, animated: true)
-        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? FlashcardCell {
+        let index = IndexPath(row: i, section: 0)
+        tableView.scrollToRow(at: index, at: .bottom, animated: true)
+        if let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? FlashcardCell {
             if textField === cell.front {
                 flashcards[i].frontText = textField.text
             } else {
@@ -116,10 +116,10 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
     }
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         let i = textField.tag
 
-        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? FlashcardCell {
+        if let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? FlashcardCell {
             if textField === cell.front {
                 flashcards[i].frontText = textField.text
             } else {
@@ -127,13 +127,13 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
     }
-    func tableView(tableView: UITableView,
-                   moveRowAtIndexPath sourceIndexPath: NSIndexPath,
-                                      toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView,
+                   moveRowAt sourceIndexPath: IndexPath,
+                                      to destinationIndexPath: IndexPath) {
         // remove the dragged row's model
-        let val1 = self.flashcards.removeAtIndex(sourceIndexPath.row)
+        let val1 = self.flashcards.remove(at: (sourceIndexPath as NSIndexPath).row)
 
         // insert it into the new position
-        self.flashcards.insert(val1, atIndex: destinationIndexPath.row)
+        self.flashcards.insert(val1, at: (destinationIndexPath as NSIndexPath).row)
     }
 }

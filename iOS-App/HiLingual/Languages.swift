@@ -20,20 +20,24 @@ enum Languages: String {
     static let allValues: [Languages] = [.English, .Arabic, .Malayalam, .Chinese, .French, .Japanese, .Russian]
 }
 
-extension _ArrayType where Generator.Element == Languages {
+//TODO: Fix this to only work for [Languages]
+extension Array {
     func toList() -> String {
         var string = ""
 
         for lang in self {
-            if let locaizedLanguage = String.localizedLanguageForLanguageName(lang.rawValue) {
+            guard let lang = lang as? Languages else {
+                return ""
+            }
+            if let locaizedLanguage = String.localizedLanguageForLanguageName(languageName: lang.rawValue) {
                 string += locaizedLanguage + ", "
             }
 
         }
 
         //Remove the trailing ", "
-        if (string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 2) {
-            string = string.substringToIndex(string.endIndex.predecessor().predecessor())
+        if (string.lengthOfBytes(using: String.Encoding.utf8) > 2) {
+            string.remove(at: string.index(string.endIndex, offsetBy: -2))
         }
 
         return string
@@ -42,6 +46,6 @@ extension _ArrayType where Generator.Element == Languages {
 
 extension String {
     static func localizedLanguageForLanguageName(languageName: String) -> String? {
-        return NSLocale.autoupdatingCurrentLocale().displayNameForKey(NSLocaleIdentifier, value: NSLocale.canonicalLanguageIdentifierFromString(languageName))
+        return Locale.current.localizedString(forIdentifier: Locale.canonicalLanguageIdentifier(from: languageName))
     }
 }

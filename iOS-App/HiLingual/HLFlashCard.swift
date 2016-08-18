@@ -14,31 +14,31 @@ class HLFlashCard: NSObject, NSCoding {
 
     required init?(coder aDecoder: NSCoder) {
 
-        frontText = aDecoder.decodeObjectForKey("front") as? String
-        backText = aDecoder.decodeObjectForKey("back") as? String
+        frontText = aDecoder.decodeObject(forKey: "front") as? String
+        backText = aDecoder.decodeObject(forKey: "back") as? String
 
     }
-    func encodeWithCoder(aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
 
-        aCoder.encodeObject(frontText, forKey: "front")
-        aCoder.encodeObject(backText, forKey: "back")
+        aCoder.encode(frontText, forKey: "front")
+        aCoder.encode(backText, forKey: "back")
     }
     init(frontText: String, backText: String) {
         self.backText = backText
         self.frontText = frontText
     }
 
-    func toJSON() -> NSData? {
+    func toJSON() -> Data? {
         let userDict = NSMutableDictionary()
 
         if frontText != nil {
-            userDict.setObject(frontText!, forKey: "front")
+            userDict.setObject(frontText!, forKey: "front" as NSCopying)
         }
 
         if backText != nil {
-            userDict.setObject(backText!, forKey: "back")
+            userDict.setObject(backText!, forKey: "back" as NSCopying)
         }
 
-        return try? NSJSONSerialization.dataWithJSONObject(userDict, options: NSJSONWritingOptions(rawValue: 0))
+        return try? JSONSerialization.data(withJSONObject: userDict, options: JSONSerialization.WritingOptions(rawValue: 0))
     }
 }

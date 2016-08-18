@@ -19,7 +19,7 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
     @IBOutlet weak var shuffle: UIBarButtonItem!
     @IBOutlet weak var carousel: iCarousel!
 
-    func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
+    func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
 
         var view: FlashcardTile
         let width = self.view.frame.width - 50
@@ -45,7 +45,7 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         return view
 
     }
-    func handleTap(sender: AnyObject) {
+    func handleTap(_ sender: AnyObject) {
 
         let index = sender.view.tag
         //transtion here when I figure it out
@@ -56,17 +56,17 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         } else {
             flipped[index] = true
         }
-        carousel.reloadItemAtIndex(index, animated: true)
+        carousel.reloadItem(at: index, animated: true)
     }
     override func viewDidLoad() {
         for _ in 0 ..< flashcards.count {
             flipped.append(false)
         }
         random = flashcards
-        shuffle.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "fontAwesome", size: 24)!], forState: UIControlState.Normal)
+        shuffle.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "fontAwesome", size: 24)!], for: UIControlState())
         shuffle.title = "\u{f074}"
         //self.navigationItem.rightBarButtonItem?.title = "\u{f074}"
-        refresh.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "fontAwesome", size: 24)!], forState: UIControlState.Normal)
+        refresh.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "fontAwesome", size: 24)!], for: UIControlState())
         refresh.title = "\u{f021}"
 
         carousel.bounceDistance = 0.1
@@ -74,27 +74,27 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         carousel.reloadData()
 
     }
-    func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
+    func numberOfItems(in carousel: iCarousel) -> Int {
         return flashcards.count
     }
 
-    @IBAction func refresh(sender: AnyObject) {
+    @IBAction func refresh(_ sender: AnyObject) {
         if isRandom {
             isRandom = false
             carousel.reloadData()
         }
     }
 
-    @IBAction func shuffles(sender: AnyObject) {
+    @IBAction func shuffles(_ sender: AnyObject) {
         isRandom = true
         random.shuffleInPlace()
         carousel.reloadData()
 
     }
 
-    func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault defaultValue: CGFloat) -> CGFloat {
+    func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault defaultValue: CGFloat) -> CGFloat {
         switch option {
-        case .Spacing:
+        case .spacing:
             return 1.05
 
         default:
@@ -102,25 +102,25 @@ class FlashcardSetViewController: UIViewController, iCarouselDelegate, iCarousel
         }
     }
 }
-extension CollectionType {
+extension Collection {
     /// Return a copy of `self` with its elements shuffled
-    func shuffle() -> [Generator.Element] {
+    func shuffle() -> [Iterator.Element] {
         var list = Array(self)
         list.shuffleInPlace()
         return list
     }
 }
 
-extension MutableCollectionType where Index == Int {
+extension MutableCollection where Index == Int {
     /// Shuffle the elements of `self` in-place.
     mutating func shuffleInPlace() {
         // empty and single-element collections don't shuffle
         if count < 2 { return }
 
-        for i in 0..<count - 1 {
-            let j = Int(arc4random_uniform(UInt32(count - i))) + i
+        for i in 0..<count.advanced(by: -1).toIntMax() {
+            let j = Int(arc4random_uniform(UInt32(count.toIntMax() - i))) + i
             guard i != j else { continue }
-            swap(&self[i], &self[j])
+            swap(&self[Int(i)], &self[Int(j)])
         }
     }
 }

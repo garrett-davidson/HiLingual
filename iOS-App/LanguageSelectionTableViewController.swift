@@ -15,43 +15,43 @@ class LanguageSelectionTableViewController: UITableViewController {
     //Make sure you set this from wherever you are using this view!!!
     var selectedLanguages: [Languages]!
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("languageCell")!
-        let currentLanguage = Languages.allValues[indexPath.row]
-        cell.textLabel!.text = String.localizedLanguageForLanguageName(currentLanguage.rawValue)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "languageCell")!
+        let currentLanguage = Languages.allValues[(indexPath as NSIndexPath).row]
+        cell.textLabel!.text = String.localizedLanguageForLanguageName(languageName: currentLanguage.rawValue)
 
         if (selectedLanguages.contains(currentLanguage)) {
-            cell.selected = true
-            cell.accessoryType = .Checkmark
+            cell.isSelected = true
+            cell.accessoryType = .checkmark
         } else {
-            cell.selected = false
-            cell.accessoryType = .None
+            cell.isSelected = false
+            cell.accessoryType = .none
         }
 
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedLanguage = Languages.allValues[indexPath.row]
-        if let languageIndex = selectedLanguages.indexOf(selectedLanguage) {
-            selectedLanguages.removeAtIndex(languageIndex)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedLanguage = Languages.allValues[(indexPath as NSIndexPath).row]
+        if let languageIndex = selectedLanguages.index(of: selectedLanguage) {
+            selectedLanguages.remove(at: languageIndex)
         } else {
             selectedLanguages.append(selectedLanguage)
         }
 
-        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Languages.allValues.count
     }
-    @IBAction func save(sender: AnyObject) {
+    @IBAction func save(_ sender: AnyObject) {
         delegate?.setNewSelectedLanguages(selectedLanguages)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 protocol LanguageSelectionDelegate {
-    func performLanguageSelectionSegue(selectedLanguages: [Languages])
-    func setNewSelectedLanguages(selectedLanguages: [Languages])
+    func performLanguageSelectionSegue(_ selectedLanguages: [Languages])
+    func setNewSelectedLanguages(_ selectedLanguages: [Languages])
 }

@@ -23,13 +23,13 @@ class HLUserSession: NSObject, NSCoding {
     }
 
     @objc required init?(coder aDecoder: NSCoder) {
-        self.userId = (aDecoder.decodeObjectForKey("userId") as! NSNumber).longLongValue
-        self.sessionId = aDecoder.decodeObjectForKey("sessionId") as! String
+        self.userId = (aDecoder.decodeObject(forKey: "userId") as! NSNumber).int64Value
+        self.sessionId = aDecoder.decodeObject(forKey: "sessionId") as! String
     }
 
-    @objc func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(NSNumber(longLong: userId), forKey: "userId")
-        aCoder.encodeObject(sessionId, forKey: "sessionId")
+    @objc func encode(with aCoder: NSCoder) {
+        aCoder.encode(NSNumber(value: userId), forKey: "userId")
+        aCoder.encode(sessionId, forKey: "sessionId")
     }
 
     func isValid() -> Bool {

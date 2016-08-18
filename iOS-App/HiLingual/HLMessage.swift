@@ -9,22 +9,22 @@
 import Foundation
 
 extension UIImage {
-    func scaledToSize(width: CGFloat, height: CGFloat) -> UIImage {
+    func scaledToSize(_ width: CGFloat, height: CGFloat) -> UIImage {
         let newSize = CGSize(width: width, height: height)
 
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
-        self.drawInRect(CGRectMake(0, 0, newSize.width, newSize.height))
+        self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
         let imageResized = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return imageResized
+        return imageResized!
     }
 }
 
 class HLMessage: NSObject, NSCoding {
     let messageUUID: Int64?
-    let sentTimestamp: NSDate
-    var editedTimestamp: NSDate?
+    let sentTimestamp: Date
+    var editedTimestamp: Date?
     let text: String
     var editedText: String? {
         didSet {
@@ -39,9 +39,9 @@ class HLMessage: NSObject, NSCoding {
     let senderID: Int64
     let receiverID: Int64
 
-    let audioURL: NSURL?
+    let audioURL: URL?
 
-    let pictureURL: NSURL?
+    let pictureURL: URL?
 
     var translatedText: String?
     var translatedEdit: String?
@@ -51,49 +51,49 @@ class HLMessage: NSObject, NSCoding {
     var image: UIImage?
 
     required init?(coder aDecoder: NSCoder) {
-        messageUUID = aDecoder.decodeInt64ForKey("uuid")
-        sentTimestamp = aDecoder.decodeObjectForKey("sentTimestamp") as! NSDate
+        messageUUID = aDecoder.decodeInt64(forKey: "uuid")
+        sentTimestamp = aDecoder.decodeObject(forKey: "sentTimestamp") as! Date
 
-        editedTimestamp = aDecoder.decodeObjectForKey("editedTimestamp") as? NSDate
+        editedTimestamp = aDecoder.decodeObject(forKey: "editedTimestamp") as? Date
 
-        text = aDecoder.decodeObjectForKey("text") as! String
+        text = aDecoder.decodeObject(forKey: "text") as! String
 
-        editedText = aDecoder.decodeObjectForKey("editedText") as? String
-        attributedEditedText = aDecoder.decodeObjectForKey("attributedEditedText") as? NSAttributedString
+        editedText = aDecoder.decodeObject(forKey: "editedText") as? String
+        attributedEditedText = aDecoder.decodeObject(forKey: "attributedEditedText") as? NSAttributedString
 
-        senderID = aDecoder.decodeInt64ForKey("senderID")
-        receiverID = aDecoder.decodeInt64ForKey("receiverID")
+        senderID = aDecoder.decodeInt64(forKey: "senderID")
+        receiverID = aDecoder.decodeInt64(forKey: "receiverID")
 
-        translatedText = aDecoder.decodeObjectForKey("translatedText") as? String
-        translatedEdit = aDecoder.decodeObjectForKey("translatedEdit") as? String
+        translatedText = aDecoder.decodeObject(forKey: "translatedText") as? String
+        translatedEdit = aDecoder.decodeObject(forKey: "translatedEdit") as? String
 
         showTranslation = false
 
-        if let audio = aDecoder.decodeObjectForKey("audioURL") as? NSURL {
+        if let audio = aDecoder.decodeObject(forKey: "audioURL") as? URL {
             audioURL = audio
         } else {
             audioURL = nil
         }
-        if let picture = aDecoder.decodeObjectForKey("pictureURL") as? NSURL {
+        if let picture = aDecoder.decodeObject(forKey: "pictureURL") as? URL {
             pictureURL = picture
         } else {
             pictureURL = nil
         }
     }
 
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeInt64(messageUUID!, forKey: "uuid")
-        aCoder.encodeObject(sentTimestamp, forKey: "sentTimestamp")
-        aCoder.encodeObject(editedTimestamp, forKey: "editedTimestamp")
-        aCoder.encodeObject(text, forKey: "text")
-        aCoder.encodeObject(editedText, forKey: "editedText")
-        aCoder.encodeInt64(senderID, forKey: "senderID")
-        aCoder.encodeInt64(receiverID, forKey: "receiverID")
-        aCoder.encodeObject(audioURL, forKey: "audioURL")
-        aCoder.encodeObject(translatedText, forKey: "translatedText")
-        aCoder.encodeObject(translatedEdit, forKey: "translatedEdit")
-        aCoder.encodeObject(attributedEditedText, forKey: "attributedEditedText")
-        aCoder.encodeObject(pictureURL, forKey: "pictureURL")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(messageUUID!, forKey: "uuid")
+        aCoder.encode(sentTimestamp, forKey: "sentTimestamp")
+        aCoder.encode(editedTimestamp, forKey: "editedTimestamp")
+        aCoder.encode(text, forKey: "text")
+        aCoder.encode(editedText, forKey: "editedText")
+        aCoder.encode(senderID, forKey: "senderID")
+        aCoder.encode(receiverID, forKey: "receiverID")
+        aCoder.encode(audioURL, forKey: "audioURL")
+        aCoder.encode(translatedText, forKey: "translatedText")
+        aCoder.encode(translatedEdit, forKey: "translatedEdit")
+        aCoder.encode(attributedEditedText, forKey: "attributedEditedText")
+        aCoder.encode(pictureURL, forKey: "pictureURL")
     }
 
     func saveMessageEdit() {
@@ -105,11 +105,11 @@ class HLMessage: NSObject, NSCoding {
         }
     }
 
-    init(UUID: Int64, sentTimestamp: NSDate, editedTimestamp: NSDate?, text: String, editedText: String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, imageURLString: String?=nil) {
+    init(UUID: Int64, sentTimestamp: Date, editedTimestamp: Date?, text: String, editedText: String?, senderID: Int64, receiverID: Int64, translatedText: String?, showTranslation: Bool, audioURLString: String?=nil, imageURLString: String?=nil) {
         self.messageUUID = UUID
         self.sentTimestamp = sentTimestamp
 
-        if editedTimestamp != NSDate(timeIntervalSince1970: 0) {
+        if editedTimestamp != Date(timeIntervalSince1970: 0) {
             self.editedTimestamp = editedTimestamp
         } else {
             self.editedTimestamp = nil
@@ -124,13 +124,13 @@ class HLMessage: NSObject, NSCoding {
         self.showTranslation = showTranslation
 
         if audioURLString != nil && audioURLString! != "" {
-            self.audioURL = NSURL(string: audioURLString!)
+            self.audioURL = URL(string: audioURLString!)
         } else {
             self.audioURL = nil
         }
 
         if imageURLString != nil && imageURLString != "" {
-            self.pictureURL = NSURL(string: imageURLString!)
+            self.pictureURL = URL(string: imageURLString!)
         } else {
             self.pictureURL = nil
         }
@@ -138,7 +138,7 @@ class HLMessage: NSObject, NSCoding {
 
     init(text: String, senderID: Int64, receiverID: Int64) {
         self.messageUUID = nil
-        self.sentTimestamp = NSDate()
+        self.sentTimestamp = Date()
         self.text = text
         self.editedText = nil
         self.senderID = senderID
@@ -149,9 +149,9 @@ class HLMessage: NSObject, NSCoding {
         self.pictureURL = nil
     }
 
-    static func fromJSONArray(messageData: NSData) -> [HLMessage] {
+    static func fromJSONArray(_ messageData: Data) -> [HLMessage] {
         var messageArray = [HLMessage]()
-        if let obj = try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0)) {
+        if let obj = try? JSONSerialization.jsonObject(with: messageData, options: JSONSerialization.ReadingOptions(rawValue: 0)) {
             if let array = obj as? [NSDictionary] {
                 for messageDict in array {
                     messageArray.append(fromDict(messageDict)!)
@@ -162,16 +162,16 @@ class HLMessage: NSObject, NSCoding {
         return messageArray
     }
 
-    static func fromDict(messageDict: NSDictionary) -> HLMessage? {
-        if let uuid = (messageDict["id"] as? NSNumber)?.longLongValue {
+    static func fromDict(_ messageDict: NSDictionary) -> HLMessage? {
+        if let uuid = (messageDict["id"] as? NSNumber)?.int64Value {
             if let sentTime = (messageDict["sentTimestamp"] as? NSNumber)?.doubleValue {
-                let sentTimestamp = NSDate(timeIntervalSince1970: sentTime / 1000)
+                let sentTimestamp = Date(timeIntervalSince1970: sentTime / 1000)
 
-                if let senderId = (messageDict["sender"] as? NSNumber)?.longLongValue {
+                if let senderId = (messageDict["sender"] as? NSNumber)?.int64Value {
                     if let editTime = (messageDict["editTimestamp"] as? NSNumber)?.doubleValue {
-                        let editTimestamp: NSDate?
+                        let editTimestamp: Date?
                         if editTime != 0 {
-                            editTimestamp = NSDate(timeIntervalSince1970: editTime / 1000)
+                            editTimestamp = Date(timeIntervalSince1970: editTime / 1000)
                         } else {
                             editTimestamp = nil
                         }
@@ -214,8 +214,8 @@ class HLMessage: NSObject, NSCoding {
         return nil
     }
 
-    static func fromJSON(messageData: NSData) -> HLMessage? {
-        if let ret = (try? NSJSONSerialization.JSONObjectWithData(messageData, options: NSJSONReadingOptions(rawValue: 0))) as? NSDictionary {
+    static func fromJSON(_ messageData: Data) -> HLMessage? {
+        if let ret = (try? JSONSerialization.jsonObject(with: messageData, options: JSONSerialization.ReadingOptions(rawValue: 0))) as? NSDictionary {
             return fromDict(ret)
         } else {
             print("Couldn't parse return value")

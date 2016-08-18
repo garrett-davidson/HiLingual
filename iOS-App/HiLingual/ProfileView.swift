@@ -11,14 +11,14 @@ import Foundation
 class ProfileView: UIView, ImageLoadingView {
     var hiddenName = true
     @IBOutlet var view: UIView!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet private weak var displayNameLabel: UILabel!
-    @IBOutlet private weak var genderLabel: UILabel!
-    @IBOutlet private weak var ageLabel: UILabel!
-    @IBOutlet private weak var speaksLabel: UILabel!
-    @IBOutlet private weak var learningLabel: UILabel!
-    @IBOutlet private weak var bioTextView: UITextView!
+    @IBOutlet fileprivate weak var imageView: UIImageView!
+    @IBOutlet fileprivate weak var nameLabel: UILabel!
+    @IBOutlet fileprivate weak var displayNameLabel: UILabel!
+    @IBOutlet fileprivate weak var genderLabel: UILabel!
+    @IBOutlet fileprivate weak var ageLabel: UILabel!
+    @IBOutlet fileprivate weak var speaksLabel: UILabel!
+    @IBOutlet fileprivate weak var learningLabel: UILabel!
+    @IBOutlet fileprivate weak var bioTextView: UITextView!
 
     var user: HLUser! {
         didSet {
@@ -46,7 +46,7 @@ class ProfileView: UIView, ImageLoadingView {
             }
 
             if(hiddenName) {
-                nameLabel.hidden = true
+                nameLabel.isHidden = true
             } else {
                 nameLabel.text = user.name
             }
@@ -72,16 +72,16 @@ class ProfileView: UIView, ImageLoadingView {
             bioTextView.text = user.bio
 
             if (!editing) {
-                bioTextView.editable = false
+                bioTextView.isEditable = false
             } else {
-                bioTextView.editable = true
+                bioTextView.isEditable = true
             }
         }
 
-        if NSThread.isMainThread() {
+        if Thread.isMainThread {
             redraw()
         } else {
-            dispatch_async(dispatch_get_main_queue(), {redraw()})
+            DispatchQueue.main.async(execute: {redraw()})
         }
     }
 
@@ -97,18 +97,18 @@ class ProfileView: UIView, ImageLoadingView {
         } else {
             super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         }
-        NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: self, options: nil)
+        Bundle.main.loadNibNamed(NSStringFromClass(type(of: self)).components(separatedBy: ".").last!, owner: self, options: nil)
         self.addSubview(view)
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["view": self.view]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: NSLayoutFormatOptions.alignAllCenterY, metrics: nil, views: ["view": self.view]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: ["view": self.view]))
         loadingImageView = imageView
 
         imageView.layer.cornerRadius = imageView.frame.size.height / 2
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.borderWidth = 3.0
-        imageView.layer.borderColor = UIColor.blackColor().CGColor
+        imageView.layer.borderColor = UIColor.black.cgColor
 
     }
 }

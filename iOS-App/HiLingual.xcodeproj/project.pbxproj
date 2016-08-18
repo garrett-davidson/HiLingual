@@ -385,6 +385,7 @@
 					6876D9921C5A87A90097332A = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = FL8523SFDK;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -396,10 +397,12 @@
 					};
 					6876D9A61C5A87A90097332A = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 6876D9921C5A87A90097332A;
 					};
 					6876D9B11C5A87A90097332A = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 6876D9921C5A87A90097332A;
 					};
 				};
@@ -806,6 +809,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "HiLingual/HiLingual-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -824,6 +828,7 @@
 				PROVISIONING_PROFILE = "7e86495d-2206-4278-82bc-a7967e3c5edf";
 				SWIFT_OBJC_BRIDGING_HEADER = "HiLingual/HiLingual-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -836,6 +841,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.HiLingualTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HiLingual.app/HiLingual";
 			};
 			name = Debug;
@@ -849,6 +855,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.HiLingualTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HiLingual.app/HiLingual";
 			};
 			name = Release;
@@ -860,6 +867,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.HiLingualUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = HiLingual;
 				USES_XCTRUNNER = YES;
 			};
@@ -872,6 +880,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.HiLingualUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = HiLingual;
 				USES_XCTRUNNER = YES;
 			};

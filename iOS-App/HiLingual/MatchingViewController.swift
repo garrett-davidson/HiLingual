@@ -21,19 +21,19 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
 
     var matches = [HLUser]()
 
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        searchTable.hidden = false
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchTable.isHidden = false
         searchBar.showsCancelButton = true
         searchBar.showsSearchResultsButton = true
         return true
 
     }
 
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         searchResults = []
         searchTable.reloadData()
-        searchTable.hidden = true
+        searchTable.isHidden = true
         searchBar.showsCancelButton = false
         searchBar.showsSearchResultsButton = false
         searchBar.resignFirstResponder()
@@ -48,7 +48,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             searchTable.reloadData()
     }
     */
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         //Mark: Send to the server
         //whatever users that are received go into users
         //fill requests with true for each user
@@ -61,33 +61,33 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         }
     }
 
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchResults = []
         searchTable.reloadData()
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
 
-    @IBAction func sendRequest(sender: UIButton) {
+    @IBAction func sendRequest(_ sender: UIButton) {
         //From search bar
 
         let index = sender.tag
-        sender.hidden = true
+        sender.isHidden = true
         if !HLServer.sendChatRequestToUser(searchResults[index].userId) {
             print("Failed to send request")
         }
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentity = "SearchTableViewCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentity, forIndexPath: indexPath) as! SearchTableViewCell
-        let user = searchResults[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentity, for: indexPath) as! SearchTableViewCell
+        let user = searchResults[(indexPath as NSIndexPath).row]
 
         cell.name.text = user.displayName
         cell.loadingImageView.layer.masksToBounds = false
@@ -101,8 +101,8 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             })
         }
         cell.sendRequestButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 28)
-        cell.sendRequestButton.setTitle("\u{f086}", forState: UIControlState.Normal)
-        cell.sendRequestButton.tag = indexPath.row
+        cell.sendRequestButton.setTitle("\u{f086}", for: UIControlState())
+        cell.sendRequestButton.tag = (indexPath as NSIndexPath).row
         //Mark: Fills the view
         cell.langaugesLearning.text! = "Learning:".localized + " " + user.learningLanguages.toList()
         cell.languagesSpeaks.text! = "Speaks:".localized + " " + user.knownLanguages.toList()
@@ -118,7 +118,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         carousel.reloadData()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         loadMatches()
     }
 
@@ -129,11 +129,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         }
     }
 
-    func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
+    func numberOfItems(in carousel: iCarousel) -> Int {
         return matches.count
     }
 
-    func sendMessageButtonPressed(sender: AnyObject) {
+    func sendMessageButtonPressed(_ sender: AnyObject) {
         //For the carousel view
 
         if !HLServer.sendChatRequestToUser(matches[sender.tag].userId) {
@@ -141,7 +141,7 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         }
     }
 
-    func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
+    func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
         var profileViewCell: MatchProfileView
 
         if let cell = view as? MatchProfileView {
@@ -151,11 +151,11 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
             let height = self.view.frame.height - 150
             profileViewCell = MatchProfileView(frame: CGRect(x: 0, y: 0, width: width, height: height))
 
-            profileViewCell.sendMessageButton = UIButton(type: .System)
+            profileViewCell.sendMessageButton = UIButton(type: .system)
             profileViewCell.sendMessageButton.titleLabel?.font = UIFont(name: "FontAwesome", size: 48)
-            profileViewCell.sendMessageButton.setTitle("\u{f086}", forState: UIControlState.Normal)
+            profileViewCell.sendMessageButton.setTitle("\u{f086}", for: UIControlState())
 
-            profileViewCell.sendMessageButton.addTarget(self, action: #selector(MatchingViewController.sendMessageButtonPressed(_:)), forControlEvents: .TouchUpInside)
+            profileViewCell.sendMessageButton.addTarget(self, action: #selector(MatchingViewController.sendMessageButtonPressed(_:)), for: .touchUpInside)
 
             profileViewCell.profileView.addSubview(profileViewCell.sendMessageButton)
 
@@ -180,9 +180,9 @@ class MatchingViewController: UIViewController, UISearchBarDelegate, UITableView
         return profileViewCell
     }
 
-    func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault defaultValue: CGFloat) -> CGFloat {
+    func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault defaultValue: CGFloat) -> CGFloat {
         switch option {
-        case .Spacing:
+        case .spacing:
             return 1.05
 
         default:

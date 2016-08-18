@@ -20,35 +20,35 @@ class AccountCreationViewController: UIViewController, LanguageSelectionDelegate
         editProfileView.languageSelectionDelegate = self
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if user == nil {
             user = HLUser.getCurrentUser()
         }
         editProfileView.user = user
-        editProfileView.ageLabel.userInteractionEnabled = true
+        editProfileView.ageLabel.isUserInteractionEnabled = true
     }
 
-    @IBAction func saveUser(sender: AnyObject) {
+    @IBAction func saveUser(_ sender: AnyObject) {
         //Runs when done button is pressed
         //Create a new HLUser user with the information from this view
         //Be sure to call user.save() !!
 
         editProfileView.user.save()
 
-        performSegueWithIdentifier("DoneEditing", sender: self)
+        performSegue(withIdentifier: "DoneEditing", sender: self)
     }
 
-    func setNewSelectedLanguages(selectedLanguages: [Languages]) {
+    func setNewSelectedLanguages(_ selectedLanguages: [Languages]) {
         self.editProfileView.updateSelectedLanguages(selectedLanguages)
     }
 
-    func performLanguageSelectionSegue(selectedLanguages: [Languages]) {
+    func performLanguageSelectionSegue(_ selectedLanguages: [Languages]) {
         self.selectedLanguages = selectedLanguages
-        self.performSegueWithIdentifier("SelectLanguagesSegue", sender: nil)
+        self.performSegue(withIdentifier: "SelectLanguagesSegue", sender: nil)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let destNav = segue.destinationViewController as? UINavigationController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destNav = segue.destination as? UINavigationController {
             if let dest = destNav.topViewController as? LanguageSelectionTableViewController {
                 dest.delegate = self
                 dest.selectedLanguages = self.selectedLanguages
