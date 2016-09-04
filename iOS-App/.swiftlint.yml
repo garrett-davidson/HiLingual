@@ -1,0 +1,9 @@
+disabled_rules:
+  - line_length
+  - file_length
+
+opt_in_rules:
+  - vertical_whitespace
+
+excluded:
+  - iOS-App/Pods

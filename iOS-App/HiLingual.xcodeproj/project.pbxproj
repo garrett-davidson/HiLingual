@@ -318,12 +318,12 @@
 			buildConfigurationList = 6876D9BB1C5A87AA0097332A /* Build configuration list for PBXNativeTarget "HiLingual" */;
 			buildPhases = (
 				02938342E9FC328096E7B957 /* Check Pods Manifest.lock */,
+				68937BA01D7CE82900184D62 /* ShellScript */,
 				6876D98F1C5A87A90097332A /* Sources */,
 				6876D9901C5A87A90097332A /* Frameworks */,
 				6876D9911C5A87A90097332A /* Resources */,
 				65ABF1D13BEE18B804FD8265 /* Embed Pods Frameworks */,
 				8A2238EFA89F564571F9F06E /* Copy Pods Resources */,
-				68E5BFFC1D7CDAC3004E50A9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -500,7 +500,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		68E5BFFC1D7CDAC3004E50A9 /* ShellScript */ = {
+		68937BA01D7CE82900184D62 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -511,7 +511,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\n    if [ -f .swiftlint.yml ]; then\n        swiftlint\n    else\n        echo \"warning: Could not find swiftlint configuration\"\n    fi\n\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\nexit 0";
 		};
 		8A2238EFA89F564571F9F06E /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
