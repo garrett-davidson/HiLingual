@@ -10,7 +10,6 @@ import Foundation
 
 class AccountCreationViewController: UIViewController, LanguageSelectionDelegate {
 
-
     @IBOutlet weak var editProfileView: EditProfileView!
 
     var user: HLUser?

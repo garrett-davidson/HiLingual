@@ -13,11 +13,8 @@ class PictureFullScreenView: UIView, UINavigationControllerDelegate {
     @IBOutlet var button: UIButton!
     @IBOutlet var image: UIImageView!
 
-
     @IBAction func buttonTouch(sender: AnyObject) {
 
-
     }
-
 
 }

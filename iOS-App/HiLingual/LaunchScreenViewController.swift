@@ -22,7 +22,6 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().signInSilently()
@@ -91,7 +90,6 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
     }
-
 
     func getUserInfo() {
         let fields = ["fields": "id,name,email"]
@@ -176,7 +174,6 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             } else {
                 birthday = Date()
             }
-
 
             //First name
             if let fbFirstName = result.value(forKey: "first_name") as? String {

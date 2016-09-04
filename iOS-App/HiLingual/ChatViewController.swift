@@ -43,7 +43,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var testView: AccessoryView!
     var selectedCellIndex: Int?
 
-
     var curPlayingMessage: UIButton?
     var isPlayingMessage = false
 
@@ -84,12 +83,9 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         chatTableView.scrollToBottom(animated: true)
     }
 
-
-
     func tappedView() {
         print("image tapped")
     }
-
 
     override func viewWillDisappear(_ animated: Bool) {
         let chatURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("\(recipientId).chat")
@@ -105,7 +101,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 print("Failed to write chat cache")
             }
         })
-
 
         if let lastMessage = last50.last {
             if NSKeyedArchiver.archiveRootObject(lastMessage, toFile: chatURL.appendingPathExtension("last").path) {
@@ -496,7 +491,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             setupTextCell(cell, forMessage: message)
 
-
             return cell
         } else {
             let cellIdentity = "ChatEditedTableViewCell"
@@ -799,7 +793,6 @@ extension UITableView {
         self.scrollToRow(at: IndexPath(item: cellCount-1, section: section), at: .top, animated: animated)
     }
 }
-
 
 extension String {
 

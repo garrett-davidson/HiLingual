@@ -13,7 +13,6 @@ protocol AudioRecorderViewControllerDelegate: class {
     func audioRecorderViewControllerDismissed(withFileURL fileURL: NSURL?)
 }
 
-
 class AudioRecorderViewController: UINavigationController {
 
     internal let childViewController = AudioRecorderChildViewController()
@@ -46,8 +45,6 @@ class AudioRecorderViewController: UINavigationController {
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
-
-
 
     // MARK: AudioRecorderChildViewController
 
@@ -183,7 +180,6 @@ class AudioRecorderViewController: UINavigationController {
             updateControls()
         }
 
-
         func updateControls() {
 
             UIView.animateWithDuration(0.2) { () -> Void in
@@ -206,9 +202,6 @@ class AudioRecorderViewController: UINavigationController {
 
         }
 
-
-
-
         // MARK: Time Label
 
         func updateTimeLabel(timer: NSTimer) {
@@ -219,15 +212,12 @@ class AudioRecorderViewController: UINavigationController {
             timeLabel.text = NSString(format: "%02d:%02d.%02d", min, sec, milli) as String
         }
 
-
         // MARK: Playback Delegate
 
         func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
             self.player = nil
             updateControls()
         }
-
-
 
     }
 

@@ -47,7 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
 
         registerForRemoteNotifications(application)
 
-
         return true
     }
 
@@ -140,7 +139,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
         GGLInstanceID.sharedInstance().token(withAuthorizedEntity: "527151665741", scope: kGGLInstanceIDScopeGCM, options: registrationOptions, handler: nil)
     }
 
-
     func setupGoogle() -> Bool {
         var error: NSError?
         GGLContext.sharedInstance().configureWithError(&error)
@@ -178,7 +176,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, GGLIns
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)

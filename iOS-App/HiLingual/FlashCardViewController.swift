@@ -65,7 +65,6 @@ class FlashCardViewController: UIViewController, UITableViewDelegate, UITableVie
             self.flashcardTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.left)
             self.flashcardTable.endUpdates()
 
-
             self.view.endEditing(true)
 
         }))

@@ -167,7 +167,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
         return true
     }
 
-
     convenience required init?(coder aDecoder: NSCoder) {
         self.init(decoder: aDecoder, frame: nil)
     }
@@ -330,7 +329,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
         animationDown()
     }
 
-
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -399,7 +397,6 @@ class EditProfileView: UIView, UIPickerViewDataSource, UIPickerViewDelegate, UII
 
         loadingImageView = profileImage
     }
-
 
     func animationUp() {
 

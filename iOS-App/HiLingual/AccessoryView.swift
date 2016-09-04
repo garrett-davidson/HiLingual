@@ -29,7 +29,6 @@ class AccessoryView: UIView, UITextViewDelegate, AVAudioRecorderDelegate, UIImag
     @IBOutlet var previewRecording: UIButton!
     @IBOutlet var deleteRecording: UIButton!
 
-
     var isSend = false
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
@@ -162,8 +161,6 @@ class AccessoryView: UIView, UITextViewDelegate, AVAudioRecorderDelegate, UIImag
         alertController.preferredContentSize = alertController.view.frame.size
         topVC?.present(alertController, animated: true, completion: nil)
 
-
-
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -190,13 +187,10 @@ class AccessoryView: UIView, UITextViewDelegate, AVAudioRecorderDelegate, UIImag
         topVC?.dismiss(animated: true, completion: nil)
     }
 
-
-
     func updateLabel() {
         curTime = CACurrentMediaTime()
         recordingTimer.text = String(format:"%.1f", curTime-origTime)
     }
-
 
     @IBAction func tapMicUpOut(_ sender: AnyObject) {
         if isSend {
@@ -258,10 +252,7 @@ class AccessoryView: UIView, UITextViewDelegate, AVAudioRecorderDelegate, UIImag
         isSend = false
         changeToMicroPhone()
 
-
-
     }
-
 
     @IBAction func sendClicked(_ sender: AnyObject) {
         var data: Data? = nil

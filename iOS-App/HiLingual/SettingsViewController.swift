@@ -65,7 +65,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func unlockFeature() {
 
-
         //send request to server
         purchaseButton.isEnabled = false
     }

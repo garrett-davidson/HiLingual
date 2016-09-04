@@ -77,7 +77,6 @@ enum Gender: Int {
                 return
             }
 
-
             ChatViewController.loadFileSync(self.profilePictureURL!, writeTo: picURL, completion: {(picURL: String, error: NSError!) in
                 print("downloaded to: \(picURL)")
             } as! (String, NSError?) -> Void)
@@ -178,7 +177,6 @@ enum Gender: Int {
 
         //TODO: Blocked users
 //        let blockedUsers = userDict["blockedUsers"]
-
 
         let bio: String?
         if let encodedBio = userDict["bio"] as? String {

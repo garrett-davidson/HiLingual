@@ -285,7 +285,6 @@ class MessagesViewController: UIViewController, UITableViewDataSource, UITableVi
 
             }
 
-
         } else if segue.identifier == "SegueToMessages" {
             let messageDetailViewController = segue.destination as! ChatViewController
             if let selectedMessageCell = sender as? ConversationTableViewCell {

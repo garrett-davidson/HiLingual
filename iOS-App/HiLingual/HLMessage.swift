@@ -115,7 +115,6 @@ class HLMessage: NSObject, NSCoding {
             self.editedTimestamp = nil
         }
 
-
         self.text = text
         self.editedText = editedText
         self.senderID = senderID

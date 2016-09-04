@@ -32,7 +32,6 @@ class HiLingualUITests: XCTestCase {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-
         let app = XCUIApplication()
         app.tabBars.buttons["Profile"].tap()
 
@@ -44,8 +43,6 @@ class HiLingualUITests: XCTestCase {
         displayNameTextField.typeText("hi")
 
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
-
-
 
     }
     func testEditBio() {
@@ -76,7 +73,6 @@ class HiLingualUITests: XCTestCase {
         displayNameTextField.typeText("NOah")
 
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
-
 
     }
     func testTextViewHeight() {
@@ -111,7 +107,6 @@ class HiLingualUITests: XCTestCase {
         app.typeText(" oldName")
         displayNameTextField.tap()
         displayNameTextField.press(forDuration: 1.7)
-
 
         app.menuItems["Select All"].tap()
 
@@ -149,7 +144,6 @@ class HiLingualUITests: XCTestCase {
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
 
-
         let tabBarsQuery = XCUIApplication().tabBars
         tabBarsQuery.buttons["Matching"].tap()
         tabBarsQuery.buttons["Profile"].tap()
@@ -180,7 +174,6 @@ class HiLingualUITests: XCTestCase {
 
         app.textFields["Display Name"]
         hilingualProfileviewNavigationBar.buttons["Done"].tap()
-
 
         let tabBarsQuery = XCUIApplication().tabBars
         tabBarsQuery.buttons["Matching"].tap()
@@ -301,13 +294,11 @@ class HiLingualUITests: XCTestCase {
         app.tabBars.buttons["Messages"].tap()
         app.tabBars.buttons["Profile"].tap()
 
-
         let profileviewElement = XCUIApplication().otherElements["ProfileView"]
         let biotextviewTextView = profileviewElement.textViews["BioTextView"]
         biotextviewTextView.tap()
         biotextviewTextView.tap()
         profileviewElement.staticTexts["BioLabel"].tap()
-
 
         let text = XCUIApplication().otherElements["ProfileView"].textViews["BioTextView"].value! as! String
 
@@ -381,7 +372,6 @@ class HiLingualUITests: XCTestCase {
         languagecellCell7.children(matching: .staticText).matching(identifier: "LanguageTitleLabel").element(boundBy: 0).tap()
         app.navigationBars["HiLingual.LanguageSelectionTableView"].buttons["Done"].tap()
 
-
     }
 
     func testEditLearningNoCrash() {
@@ -390,7 +380,6 @@ class HiLingualUITests: XCTestCase {
         app.tabBars.buttons["Profile"].tap()
         app.navigationBars["HiLingual.ProfileView"].buttons["Edit"].tap()
         app.otherElements["EditProfileView"].staticTexts["LearningLabel"].tap()
-
 
         let tablesQuery = app.tables
         let languagecellCell = tablesQuery.children(matching: .cell).matching(identifier: "LanguageCell").element(boundBy: 0)
@@ -421,7 +410,6 @@ class HiLingualUITests: XCTestCase {
         languagecellCell7.staticTexts["LanguageTitleLabel"].tap()
         languagecellCell7.children(matching: .staticText).matching(identifier: "LanguageTitleLabel").element(boundBy: 0).tap()
         app.navigationBars["HiLingual.LanguageSelectionTableView"].buttons["Done"].tap()
-
 
     }
 
@@ -523,7 +511,6 @@ class HiLingualUITests: XCTestCase {
 //        sheetsQuery.collectionViews.buttons["Take Picture"].tap()
 //        app.buttons["PhotoCapture"].tap()
 //        app.buttons["Use Photo"].tap()
-
 
     }
 
@@ -687,7 +674,6 @@ class HiLingualUITests: XCTestCase {
         carouselElement.tap()
         carouselElement.tap()
     }
-
 
     func testSearch() {
         let app = XCUIApplication()
@@ -956,7 +942,6 @@ class HiLingualUITests: XCTestCase {
         }
         XCUIApplication().textViews["InputTextView"].tap()
 
-
         var tempElement = app.tables.children(matching: .cell).matching(identifier: "ChatTableViewCell").element(boundBy: 0)
         var j: UInt = 0
         for _ in 0...app.tables.children(matching: .cell).matching(identifier: "ChatTableViewCell").allElementsBoundByIndex.count {
@@ -984,7 +969,6 @@ class HiLingualUITests: XCTestCase {
             i += 1
         }
         XCUIApplication().textViews["InputTextView"].tap()
-
 
         var tempElement = app.tables.children(matching: .cell).matching(identifier: "ChatTableViewCell").element(boundBy: 0)
         var j: UInt = 0
@@ -1036,7 +1020,6 @@ class HiLingualUITests: XCTestCase {
         app.tabBars.buttons["Flashcards"].tap()
 
         let addButton = app.navigationBars["Flashcards"].buttons["Add"]
-
 
         for i in 0...2 {
             addButton.tap()

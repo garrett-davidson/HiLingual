@@ -20,7 +20,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     var user: HLUser?
     var selectedLanguages: [Languages]?
 
-
     @IBAction func tapEdit(_ sender: AnyObject) {
         if(editProfileView.isHidden == true) {
             editProfileView.isHidden = false

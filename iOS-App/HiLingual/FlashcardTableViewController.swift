@@ -58,11 +58,9 @@ class FlashcardTableViewController: UIViewController, UITableViewDelegate, UITab
         return 0.1
     }
 
-
     @IBAction func addFlashcard(_ sender: AnyObject) {
         flashcards.append(HLFlashCard(frontText: "", backText: ""))
         tableView.insertRows(at: [IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)], with: UITableViewRowAnimation.left)
-
 
     }
     func keyboardWillChangeFrame(_ notification: Notification) {

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class HLServer {
 
     static let apiBase = "https://gethilingual.com/api/"
@@ -224,7 +223,6 @@ class HLServer {
         return nil
     }
 
-
     static func sendVoiceMessageWithData(_ data: Data, receiverID: Int64) -> HLMessage? {
 
         if let messageDict = sendRequestToEndpoint("chat/\(receiverID)/message", method: "POST", withDictionary: ["audio": data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) as AnyObject]) {
@@ -264,7 +262,6 @@ class HLServer {
             let returnedUser = HLUser.fromDict(userDict[0])
 
             loadedUsers[id] = returnedUser
-
 
             if NSKeyedArchiver.archiveRootObject(returnedUser, toFile: userURL.path) {
                 print("Wrote user to cache")
@@ -361,7 +358,6 @@ class HLServer {
                 }
             }
         }
-
 
         return false
     }
