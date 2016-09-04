@@ -447,7 +447,7 @@ extension UIImage {
         // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
         var transform = CGAffineTransform.identity
 
-        switch (self.imageOrientation) {
+        switch self.imageOrientation {
         case .down, .downMirrored:
             transform = transform.translatedBy(x: self.size.width, y: self.size.height)
             transform = transform.rotated(by: CGFloat(M_PI))
@@ -464,7 +464,7 @@ extension UIImage {
             break
         }
 
-        switch (self.imageOrientation) {
+        switch self.imageOrientation {
         case .upMirrored, .downMirrored:
             transform = transform.translatedBy(x: self.size.width, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
@@ -486,10 +486,10 @@ extension UIImage {
         ctx?.concatenate(transform)
         switch (self.imageOrientation) {
         case .left, .leftMirrored, .right, .rightMirrored:
-            ctx?.draw(self.cgImage!, in: CGRect(x: 0, y: 0,width: self.size.height, height: self.size.width))
+            ctx?.draw(self.cgImage!, in: CGRect(x: 0, y: 0, width: self.size.height, height: self.size.width))
 
         default:
-            ctx?.draw(self.cgImage!, in: CGRect(x: 0, y: 0,width: self.size.width, height: self.size.height))
+            ctx?.draw(self.cgImage!, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
         }
 
         // And now we just create a new UIImage from the drawing context

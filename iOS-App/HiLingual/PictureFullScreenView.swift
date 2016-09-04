@@ -7,16 +7,16 @@
 //
 
 import Foundation
-class PictureFullScreenView: UIView ,UINavigationControllerDelegate {
-    
+class PictureFullScreenView: UIView, UINavigationControllerDelegate {
+
     @IBOutlet var view: UIView!
     @IBOutlet var button: UIButton!
     @IBOutlet var image: UIImageView!
-    
-    
+
+
     @IBAction func buttonTouch(sender: AnyObject) {
-        
-        
+
+
     }
 
 

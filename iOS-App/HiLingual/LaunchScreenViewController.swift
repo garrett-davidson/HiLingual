@@ -44,7 +44,7 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
 
         //TODO: Should this be _?
-        if let user = HLUser.getCurrentUser() {
+        if let _ = HLUser.getCurrentUser() {
             // if let _ = user.getSession() {
             self.performSegue(withIdentifier: "previousLogin", sender: self)
             // }
@@ -276,12 +276,14 @@ class LaunchScreenViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     func didRegisterWithSession(_ session: HLUserSession) {
         self.performSegue(withIdentifier: "InitialLogin", sender: session)
     }
+
     func didLoginWithSession(_ session: HLUserSession) {
         HLServer.getUserById(session.userId, session: session)?.save(session)
         HLUser.getCurrentUser().setSession(session)
         HLUser.getCurrentUser().save()
         self.performSegue(withIdentifier: "previousLogin", sender: session)
     }
+
     func requestFromServer(_ url: String, authority: String, signIn: GIDSignIn!) {
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
 
